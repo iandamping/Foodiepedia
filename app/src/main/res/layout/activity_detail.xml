@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="@dimen/spacing_medium"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivDetailFood"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        tools:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tvDetailFoodName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:textSize="@dimen/letter_xlarge"
+        android:textStyle="bold"
+        tools:text="Spicy Arrabiata Penne"/>
+
+    <TextView
+        android:id="@+id/tvDetailFoodCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:textSize="@dimen/letter_large"
+        tools:text="Vegetarian"/>
+
+    <TextView
+        android:id="@+id/tvDetailFoodArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:textSize="@dimen/letter_large"
+        tools:text="Italia"/>
+
+    <TextView
+        android:id="@+id/tvDetailFoodInstruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:layout_gravity="center_horizontal|center"
+        tools:text="Instruction"/>
+
+</LinearLayout>

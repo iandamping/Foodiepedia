@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginBottom="16dp"
+    app:cardCornerRadius="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/ivAllFood"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
+
+
+        <TextView
+            android:id="@+id/tvAllFoodName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:textSize="@dimen/letter_xlarge"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:textColor="#000000"
+            tools:text="Spicy Arrabiata Penne"/>
+
+        <TextView
+            android:id="@+id/tvAllFoodCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:layout_gravity="center"
+            android:textSize="@dimen/letter_large"
+            tools:text="Vegetarian"/>
+
+        <TextView
+            android:id="@+id/tvAllFoodArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:layout_gravity="center"
+            tools:text="Italia"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="fab_margin">20dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+
+    <dimen name="spacing_xsmall">2dp</dimen>
+    <dimen name="spacing_small">4dp</dimen>
+    <dimen name="spacing_medium">8dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+    <dimen name="spacing_huge">32dp</dimen>
+    <dimen name="spacing_extra_huge">64dp</dimen>
+
+    <dimen name="letter_xsmall">12sp</dimen>
+    <dimen name="letter_small">14sp</dimen>
+    <dimen name="letter_medium">16sp</dimen>
+    <dimen name="letter_large">18sp</dimen>
+    <dimen name="letter_xlarge">21sp</dimen>
+
+    <dimen name="button_height">46dp</dimen>
+    <dimen name="button_width">100dp</dimen>
+
+    <dimen name="button_height_two">30dp</dimen>
+    <dimen name="button_width_two">85dp</dimen>
+
+    <dimen name="button_height_three">56dp</dimen>
+
+    <dimen name="button_width_four">45dp</dimen>
+
+    <dimen name="item_offset">10dp</dimen>
+    <dimen name="detail_backdrop_height">250dp</dimen>
+    <dimen name="backdrop_title">30dp</dimen>
+    <dimen name="backdrop_subtitle">18dp</dimen>
+    <dimen name="card_margin">5dp</dimen>
+    <dimen name="card_album_radius">0dp</dimen>
+    <dimen name="album_cover_height_pop_up">190dp</dimen>
+    <dimen name="album_cover_height">130dp</dimen>
+    <dimen name="album_title_padding">10dp</dimen>
+    <dimen name="album_title">15dp</dimen>
+    <dimen name="songs_count_padding_bottom">5dp</dimen>
+    <dimen name="songs_count">12dp</dimen>
+    <dimen name="ic_album_overflow_width">35dp</dimen>
+    <dimen name="ic_album_overflow_height">35dp</dimen>
+    <dimen name="ic_album_overflow_margin_top">10dp</dimen>
+    <dimen name="font_trip_planner">10dp</dimen>
+</resources>
