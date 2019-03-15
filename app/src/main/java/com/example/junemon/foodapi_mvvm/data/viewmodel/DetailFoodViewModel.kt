@@ -14,16 +14,16 @@ class DetailFoodViewModel(private val repo: DetailFoodRepo) : BaseViewModel() {
 
     fun setDetailFoodData(foodId: String) {
         compose.add(repo.getDetailFood(foodId).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
-                liveDataState.value = OnComplete(false)
-            }.subscribe({
-                if (it != null) {
-                    liveDataState.value = OnShowDetailFoodData(it)
-                    liveDataState.value = OnComplete(true)
-                }
-            }, {
-                liveDataState.value = OnError(it.localizedMessage)
-            })
+                .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
+                    liveDataState.value = OnComplete(false)
+                }.subscribe({
+                    if (it != null) {
+                        liveDataState.value = OnShowDetailFoodData(it)
+                        liveDataState.value = OnComplete(true)
+                    }
+                }, {
+                    liveDataState.value = OnError(it.localizedMessage)
+                })
         )
     }
 

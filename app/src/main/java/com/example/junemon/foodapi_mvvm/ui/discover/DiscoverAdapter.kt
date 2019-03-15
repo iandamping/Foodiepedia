@@ -11,10 +11,10 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_discover_food.*
 
 class DiscoverAdapter(
-    var data: List<AllFoodCategoryDetail.Category>,
-    var listener: (AllFoodCategoryDetail.Category) -> Unit
+        var data: List<AllFoodCategoryDetail.Category>,
+        var listener: (AllFoodCategoryDetail.Category) -> Unit
 ) :
-    RecyclerView.Adapter<DiscoverAdapter.AllFoodCategoryDetailViewHolder>() {
+        RecyclerView.Adapter<DiscoverAdapter.AllFoodCategoryDetailViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllFoodCategoryDetailViewHolder {
         return AllFoodCategoryDetailViewHolder(parent.inflates(R.layout.item_discover_food))
     }
@@ -27,7 +27,7 @@ class DiscoverAdapter(
 
 
     class AllFoodCategoryDetailViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
-        LayoutContainer {
+            LayoutContainer {
         fun bind(data: AllFoodCategoryDetail.Category, listener: (AllFoodCategoryDetail.Category) -> Unit) {
             tvDiscoverFoodCategory.text = data.strCategory
             tvDiscoverFoodDescription.text = data.strCategoryDescription

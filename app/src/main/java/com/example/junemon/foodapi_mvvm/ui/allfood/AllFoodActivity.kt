@@ -9,6 +9,7 @@ import com.example.junemon.foodapi_mvvm.model.AllFood
 import com.example.junemon.foodapi_mvvm.ui.detail.DetailFoodActivity
 import com.example.junemon.foodapi_mvvm.ui.discover.DiscoverActivity
 import com.example.junemon.foodapi_mvvm.util.Constant.intentDetailKey
+import com.example.junemon.foodapi_mvvm.util.fullScreenAnimation
 import com.example.junemon.foodapi_mvvm.util.startActivity
 import com.example.junemon.foodapi_mvvm.util.startActivityWithString
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,6 +22,7 @@ class AllFoodActivity : AppCompatActivity(), AllFoodView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        fullScreenAnimation()
         setContentView(R.layout.activity_main)
         overridePendingTransition(R.anim.fade_in_activity, R.anim.fade_out_activity)
         presenter = AllFoodPresenter(vm, this)

@@ -4,7 +4,6 @@ object Constant {
     const val dialogTittle = "Please Wait"
     const val dialogMessage = "Extracting Data"
     const val baseUrl = "https://www.themealdb.com/api/json/v1/1/"
-    const val searchFoodByName = "search.php"
     const val detailFood = "lookup.php"
     const val getAllFood = "latest.php"
     const val getAllFoodCategoryDetail = "categories.php"

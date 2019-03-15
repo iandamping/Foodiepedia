@@ -5,6 +5,7 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.example.junemon.foodapi_mvvm.R
 import com.example.junemon.foodapi_mvvm.ui.allfood.AllFoodActivity
+import com.example.junemon.foodapi_mvvm.util.fullScreenAnimation
 import com.example.junemon.foodapi_mvvm.util.startActivity
 
 class SplashActivity : AppCompatActivity() {
@@ -12,6 +13,7 @@ class SplashActivity : AppCompatActivity() {
     private val splashDelay = 3000L
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        fullScreenAnimation()
         setContentView(R.layout.activity_splash)
         mHandler = Handler()
         mHandler.postDelayed(mRunnable, splashDelay)
