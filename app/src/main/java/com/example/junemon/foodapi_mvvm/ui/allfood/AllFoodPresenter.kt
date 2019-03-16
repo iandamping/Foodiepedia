@@ -1,26 +1,42 @@
 package com.example.junemon.foodapi_mvvm.ui.allfood
 
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
-import com.example.junemon.foodapi_mvvm.base.BasePresenter
-import com.example.junemon.foodapi_mvvm.base.OnComplete
-import com.example.junemon.foodapi_mvvm.base.OnShowAllFood
+import com.example.junemon.foodapi_mvvm.base.*
+import com.example.junemon.foodapi_mvvm.data.viewmodel.AllFoodListDataViewModel
 import com.example.junemon.foodapi_mvvm.data.viewmodel.AllFoodViewModel
 
-class AllFoodPresenter(private val vm: AllFoodViewModel, private val mView: AllFoodView) : BasePresenter() {
+class AllFoodPresenter(private val vmFood: AllFoodViewModel, private val vmListFood: AllFoodListDataViewModel) :
+    BasePresenter<AllFoodView>() {
 
-    override fun onCreate(lifeCycleOwner: FragmentActivity) {
-        setBaseDialog(lifeCycleOwner)
-        vm.liveDataState.observe(lifeCycleOwner, Observer {
+    override fun onCreate() {
+        vmFood.getAllFoodData()
+        vmListFood.getAllFoodArea()
+        vmListFood.getAllFoodCategory()
+        vmListFood.getAllFoodIngredient()
+        initAllData()
+        view()?.initView()
+    }
+
+    private fun initAllData() {
+        vmFood.liveDataState.observe(getLifeCycleOwner(), Observer {
             when (it) {
-                is OnShowAllFood -> mView.getDetailFood(it.data)
+                is OnShowAllFood -> view()?.getDetailFood(it.data)
                 is OnComplete -> setDialogShow(it.show)
             }
         })
-        mView.initView()
+        vmListFood.liveDataState.observe(getLifeCycleOwner(), Observer {
+            when (it) {
+                is OnShowAreaFood -> {
+                    view()?.getAreaData(it.data)
+                }
+                is OnShowCategoryFood -> {
+                    view()?.getCategoryData(it.data)
+                }
+                is OnShowIngredientFood -> {
+                    view()?.getIngredientData(it.data)
+                }
+            }
+        })
     }
 
-    fun setData() {
-        vm.getAllFoodData()
-    }
 }

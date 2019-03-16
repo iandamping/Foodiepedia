@@ -1,6 +1,5 @@
 package com.example.junemon.foodapi_mvvm.ui.detail
 
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import com.example.junemon.foodapi_mvvm.base.BasePresenter
 import com.example.junemon.foodapi_mvvm.base.OnComplete
@@ -9,27 +8,29 @@ import com.example.junemon.foodapi_mvvm.data.viewmodel.DetailFoodViewModel
 import com.example.junemon.foodapi_mvvm.model.DetailFood
 
 
-class DetailFoodPresenter(private val vm: DetailFoodViewModel, private val mView: DetailFoodView) : BasePresenter() {
+class DetailFoodPresenter(private val vm: DetailFoodViewModel) : BasePresenter<DetailFoodView>() {
     //    private val type = object : TypeToken<String>() {}.type
     private var listIngredient: MutableList<String> = mutableListOf()
     private var listMeasurement: MutableList<String> = mutableListOf()
-    override fun onCreate(lifeCycleOwner: FragmentActivity) {
-        setBaseDialog(lifeCycleOwner)
-        vm.liveDataState.observe(lifeCycleOwner, Observer {
+
+    override fun onCreate() {
+        view()?.initView()
+
+    }
+
+    fun setData(passedData: String?) {
+        passedData?.let { vm.setDetailFoodData(it) }
+        vm.liveDataState.observe(getLifeCycleOwner(), Observer {
             when (it) {
                 is OnShowDetailFoodData -> {
-                    mView.showDetailData(it.data[0])
+                    view()?.showDetailData(it.data[0])
                     extractData(it.data[0])
                 }
                 is OnComplete -> setDialogShow(it.show)
             }
         })
-        mView.initView()
     }
 
-    fun setData(passedData: String?) {
-        passedData?.let { vm.setDetailFoodData(it) }
-    }
 
     private fun extractData(data: DetailFood.Meal) {
         listIngredient.run {
@@ -77,7 +78,7 @@ class DetailFoodPresenter(private val vm: DetailFoodViewModel, private val mView
             if (!data.strMeasure20.equals("") && !data.strMeasure20.equals(" ")) data.strMeasure20?.let { add(it) }
         }
 
-        mView.showIngredientData(listIngredient, listMeasurement)
+        view()?.showIngredientData(listIngredient, listMeasurement)
 
 
     }

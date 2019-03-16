@@ -18,7 +18,8 @@ class MeasurementAdapter(var data: List<String>) : RecyclerView.Adapter<Measurem
         holder.bind(data[position])
     }
 
-    class MeasurementViewHolder(override var containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+    class MeasurementViewHolder(override var containerView: View) : RecyclerView.ViewHolder(containerView),
+        LayoutContainer {
         fun bind(data: String) {
             tvMeasurementAdapter.text = data
         }

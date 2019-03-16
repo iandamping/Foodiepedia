@@ -1,7 +1,7 @@
 package com.example.junemon.foodapi_mvvm.base
 
-import androidx.fragment.app.FragmentActivity
+import android.content.Context
 
 interface BasePresenterHelper {
-    fun onCreate(lifeCycleOwner: FragmentActivity)
+    fun onCreate()
 }
