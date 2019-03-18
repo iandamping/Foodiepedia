@@ -13,18 +13,10 @@ inline fun <reified T : ViewModel> FragmentActivity.viewModelHelperForActivity()
     return ViewModelProviders.of(this).get(T::class.java)
 }
 
-//inline fun <reified T : ViewModel> FragmentActivity.withViewModel(body: T.() -> Unit): T {
-//    val vm = viewModelHelperForActivity<T>()
-//    vm.body()
-//    return vm
-//}
-
 inline fun <reified T : ViewModel> FragmentActivity.getViewModel(crossinline factory: () -> T): T {
-
     val vmFactory = object : ViewModelProvider.Factory {
         override fun <U : ViewModel> create(modelClass: Class<U>): U = factory() as U
     }
-
     return ViewModelProviders.of(this, vmFactory)[T::class.java]
 }
 
@@ -35,5 +27,8 @@ inline fun <reified T : ViewModel> FragmentActivity.withViewModel(crossinline fa
 }
 
 
+inline fun <reified T : ViewModel> FragmentActivity.initPresenter(crossinline factory: () -> T): T {
+    return getViewModel(factory)
+}
 
 

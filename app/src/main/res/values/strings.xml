@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">FoodAPI_MVVM</string>
+    <string-array name="item">
+        <item>Category</item>
+        <item>Area</item>
+        <item>Ingredient</item>
+    </string-array>
 </resources>

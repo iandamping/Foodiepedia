@@ -3,7 +3,10 @@ package com.example.junemon.foodapi_mvvm.base
 import android.app.ProgressDialog
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ViewModel
 import com.example.junemon.foodapi_mvvm.util.Constant
 
 abstract class BasePresenter<View> : ViewModel(), LifecycleObserver, BasePresenterHelper {
@@ -25,7 +28,7 @@ abstract class BasePresenter<View> : ViewModel(), LifecycleObserver, BasePresent
         return view
     }
 
-    protected fun getLifeCycleOwner(): LifecycleOwner {
+    protected fun getLifeCycleOwner(): FragmentActivity {
         return lifecycleOwner
     }
 
@@ -43,12 +46,10 @@ abstract class BasePresenter<View> : ViewModel(), LifecycleObserver, BasePresent
     }
 
     protected fun setDialogShow(status: Boolean) {
-        if (dialog != null) {
-            if (status) {
-                dialog.dismiss()
-            } else {
-                dialog.show()
-            }
+        if (status) {
+            dialog.dismiss()
+        } else {
+            dialog.show()
         }
     }
 }

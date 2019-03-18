@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_medium"
+            android:textSize="@dimen/letter_xlarge"
+            android:fontFamily="@font/montserrat"
+            android:textStyle="bold"
+            android:text="All area information" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvInformationArea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_medium" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_medium"
+            android:textSize="@dimen/letter_xlarge"
+            android:fontFamily="@font/montserrat"
+            android:textStyle="bold"
+            android:text="All ingredient information" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvInformationIngredient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_medium" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_medium"
+            android:textSize="@dimen/letter_xlarge"
+            android:fontFamily="@font/montserrat"
+            android:textStyle="bold"
+            android:text="All category information" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvInformationCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_medium" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -25,6 +25,8 @@
                   android:theme="@style/FullScreen"/>
         <activity android:name="com.example.junemon.foodapi_mvvm.ui.discover.DiscoverActivity"
                   android:theme="@style/FullScreen"/>
+        <activity android:name=".ui.detailinformation.DetailInformationActivity"
+                  android:theme="@style/FullScreen"/>
     </application>
 
 </manifest>

@@ -21,7 +21,7 @@ class IngredientAdapter(var data: List<String>) : RecyclerView.Adapter<Ingredien
 
 
     class IngredientViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
-        LayoutContainer {
+            LayoutContainer {
         fun bind(data: String) {
             tvIngredientAdapter.text = data
         }

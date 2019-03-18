@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import com.example.junemon.foodapi_mvvm.FoodApp.Companion.gson
 
 inline fun <reified T : Activity> FragmentActivity.startActivity(
-    options: Bundle? = null, noinline init: Intent.() -> Unit = {}) {
+        options: Bundle? = null, noinline init: Intent.() -> Unit = {}) {
     val intent = newIntent<T>(this)
     intent.init()
     startActivity(intent, options)

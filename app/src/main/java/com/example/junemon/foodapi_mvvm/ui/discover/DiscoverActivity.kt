@@ -2,7 +2,6 @@ package com.example.junemon.foodapi_mvvm.ui.discover
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.junemon.foodapi_mvvm.R
 import com.example.junemon.foodapi_mvvm.data.viewmodel.AllFoodCategoryViewModel
 import com.example.junemon.foodapi_mvvm.model.AllFoodCategoryDetail
@@ -25,12 +24,8 @@ class DiscoverActivity : AppCompatActivity(), DiscoverView {
     }
 
     override fun onShowDefaultFoodCategory(data: List<AllFoodCategoryDetail.Category>?) {
-        rvDiscoverFood.layoutManager = GridLayoutManager(this, 2)
-        data?.let {
-            rvDiscoverFood.adapter = DiscoverAdapter(it) {
-            }
+        DiscoverAdapter(rvDiscoverFood,data,R.layout.item_discover_food){
         }
-
     }
 
     override fun initView() {

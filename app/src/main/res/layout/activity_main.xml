@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="56dp"
-            android:text="Showing all"
+            android:text="Showing all information"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             android:textStyle="bold" />
