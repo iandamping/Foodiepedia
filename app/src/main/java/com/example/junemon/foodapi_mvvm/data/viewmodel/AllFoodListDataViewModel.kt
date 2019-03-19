@@ -9,46 +9,46 @@ class AllFoodListDataViewModel(private val repo: AllFoodListDataRepo) : BaseView
 
     fun getAllFoodCategory() {
         compose.add(repo.getAllFoodCategory().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
-                    liveDataState.value = OnComplete(false)
-                }.subscribe({
-                    if (it != null) {
-                        liveDataState.value = OnShowCategoryFood(it)
-                        liveDataState.value = OnComplete(true)
-                    }
-                }, {
-                    liveDataState.value = OnError(it.localizedMessage)
-                })
+            .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
+                liveDataState.value = OnComplete(false)
+            }.subscribe({
+                if (it != null) {
+                    liveDataState.value = OnShowCategoryFood(it)
+                    liveDataState.value = OnComplete(true)
+                }
+            }, {
+                liveDataState.value = OnError(it.localizedMessage)
+            })
         )
     }
 
     fun getAllFoodArea() {
         compose.add(repo.getAllFoodArea().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
-                    liveDataState.value = OnComplete(false)
-                }.subscribe({
-                    if (it != null) {
-                        liveDataState.value = OnShowAreaFood(it)
-                        liveDataState.value = OnComplete(true)
-                    }
-                }, {
-                    liveDataState.value = OnError(it.localizedMessage)
-                })
+            .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
+                liveDataState.value = OnComplete(false)
+            }.subscribe({
+                if (it != null) {
+                    liveDataState.value = OnShowAreaFood(it)
+                    liveDataState.value = OnComplete(true)
+                }
+            }, {
+                liveDataState.value = OnError(it.localizedMessage)
+            })
         )
     }
 
     fun getAllFoodIngredient() {
         compose.add(repo.getAllFoodIngredient().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
-                    liveDataState.value = OnComplete(false)
-                }.subscribe({
-                    if (it != null) {
-                        liveDataState.value = OnShowIngredientFood(it)
-                        liveDataState.value = OnComplete(true)
-                    }
-                }, {
-                    liveDataState.value = OnError(it.localizedMessage)
-                })
+            .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
+                liveDataState.value = OnComplete(false)
+            }.subscribe({
+                if (it != null) {
+                    liveDataState.value = OnShowIngredientFood(it)
+                    liveDataState.value = OnComplete(true)
+                }
+            }, {
+                liveDataState.value = OnError(it.localizedMessage)
+            })
         )
     }
 }

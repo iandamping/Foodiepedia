@@ -12,7 +12,6 @@ object Constant {
     const val getAllFoodIngredient = "list.php"
     const val allCategoryValue = "list"
     const val intentDetailKey = "detailfood"
-    const val allInformationKey = "categoryKey"
     const val categoryType = "Category"
     const val areaType = "Area"
     const val ingredientType = "Ingredient"

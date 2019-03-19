@@ -6,7 +6,12 @@ import com.example.junemon.foodapi_mvvm.util.loadUrl
 import com.example.junemon.foodapi_mvvm.util.setUpWithGrid
 import kotlinx.android.synthetic.main.item_discover_food.view.*
 
-class DiscoverAdapter(view: RecyclerView, data: List<AllFoodCategoryDetail.Category>?, layout: Int, private val listener: (AllFoodCategoryDetail.Category) -> Unit) {
+class DiscoverAdapter(
+    view: RecyclerView,
+    data: List<AllFoodCategoryDetail.Category>?,
+    layout: Int,
+    private val listener: (AllFoodCategoryDetail.Category) -> Unit
+) {
     init {
         data?.let { data ->
             view.setUpWithGrid(data, layout, 2, {

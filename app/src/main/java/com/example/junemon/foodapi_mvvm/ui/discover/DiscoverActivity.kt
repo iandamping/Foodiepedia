@@ -24,7 +24,7 @@ class DiscoverActivity : AppCompatActivity(), DiscoverView {
     }
 
     override fun onShowDefaultFoodCategory(data: List<AllFoodCategoryDetail.Category>?) {
-        DiscoverAdapter(rvDiscoverFood,data,R.layout.item_discover_food){
+        DiscoverAdapter(rvDiscoverFood, data, R.layout.item_discover_food) {
         }
     }
 

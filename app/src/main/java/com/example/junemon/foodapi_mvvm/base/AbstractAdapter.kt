@@ -7,7 +7,7 @@ import com.example.junemon.foodapi_mvvm.util.inflates
 import kotlinx.android.extensions.LayoutContainer
 
 abstract class AbstractAdapter<T> constructor(protected var data: List<T>, private val layout: Int) :
-        RecyclerView.Adapter<AbstractAdapter.AbstractHolder>() {
+    RecyclerView.Adapter<AbstractAdapter.AbstractHolder>() {
 
     override fun getItemCount() = data.size
 
