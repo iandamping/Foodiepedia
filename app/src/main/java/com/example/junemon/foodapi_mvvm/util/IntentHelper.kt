@@ -13,7 +13,7 @@ Github = https://github.com/iandamping
  */
 
 inline fun <reified T : Activity> FragmentActivity.startActivity(
-        options: Bundle? = null, noinline init: Intent.() -> Unit = {}
+    options: Bundle? = null, noinline init: Intent.() -> Unit = {}
 ) {
     val intent = newIntent<T>(this)
     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

@@ -4,4 +4,24 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorIngredient">#ffffffee</color>
+
+    <color name="splash_background">#FDBF9C</color>
+    <color name="colorComment">#235EA7</color>
+    <color name="colorTitle">#1554A1</color>
+    <color name="colorBackgroundET">#F1F6F7</color>
+    <color name="color_white">#FCFCFC</color>
+    <color name="dc_gray">#ff888888</color>
+    <color name="active_dots">#FFFFFF</color>
+    <color name="inactive_dots">#235EA7</color>
+    <color name="background_button_upload">#0072FF</color>
+    <color name="text_button_upload">#0072FF</color>
+    <color name="status_diolak">#F50D0D</color>
+    <color name="black">#000000</color>
+    <color name="text_blue">#0072FF</color>
+    <color name="white">#FFFF</color>
+    <color name="placeholder_bg">#dddddd</color>
+    <color name="gray_almost_white">#E5E5E5</color>
+    <color name="textviewr_bg">#F1F6F7</color>
+    <color name="custom_dialog_failed">#F23030</color>
+    <color name="custom_dialog_succed">#13A418</color>
 </resources>

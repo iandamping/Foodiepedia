@@ -15,11 +15,11 @@ Github = https://github.com/iandamping
  */
 
 fun <T> RecyclerView.setUp(
-        items: List<T>,
-        layoutResId: Int,
-        bindHolder: View.(T) -> Unit,
-        itemClick: T.() -> Unit = {},
-        manager: RecyclerView.LayoutManager = LinearLayoutManager(this.context)
+    items: List<T>,
+    layoutResId: Int,
+    bindHolder: View.(T) -> Unit,
+    itemClick: T.() -> Unit = {},
+    manager: RecyclerView.LayoutManager = LinearLayoutManager(this.context)
 ): MyKotlinAdapter<T> {
 
     return MyKotlinAdapter(items, layoutResId, { bindHolder(it) }, {
@@ -31,12 +31,12 @@ fun <T> RecyclerView.setUp(
 }
 
 fun <T> RecyclerView.setUpWithGrid(
-        items: List<T>,
-        layoutResId: Int,
-        gridSize: Int,
-        bindHolder: View.(T) -> Unit,
-        itemClick: T.() -> Unit = {},
-        manager: RecyclerView.LayoutManager = GridLayoutManager(this.context, gridSize)
+    items: List<T>,
+    layoutResId: Int,
+    gridSize: Int,
+    bindHolder: View.(T) -> Unit,
+    itemClick: T.() -> Unit = {},
+    manager: RecyclerView.LayoutManager = GridLayoutManager(this.context, gridSize)
 ): MyKotlinAdapter<T> {
 
     return MyKotlinAdapter(items, layoutResId, { bindHolder(it) }, {
@@ -48,11 +48,11 @@ fun <T> RecyclerView.setUpWithGrid(
 }
 
 fun <T> RecyclerView.setUpWithSkid(
-        items: List<T>,
-        layoutResId: Int,
-        bindHolder: View.(T) -> Unit,
-        itemClick: (T) -> Unit = {},
-        manager: RecyclerView.LayoutManager = SkidRightLayoutManager(1.5f, 0.85f)
+    items: List<T>,
+    layoutResId: Int,
+    bindHolder: View.(T) -> Unit,
+    itemClick: (T) -> Unit = {},
+    manager: RecyclerView.LayoutManager = SkidRightLayoutManager(1.5f, 0.85f)
 ): MyKotlinAdapter<T> {
 
     return MyKotlinAdapter(items, layoutResId, { bindHolder(it) }, itemClick).apply {
@@ -62,11 +62,11 @@ fun <T> RecyclerView.setUpWithSkid(
 }
 
 fun <T> RecyclerView.setUpWithEchelon(
-        items: List<T>,
-        layoutResId: Int,
-        bindHolder: View.(T) -> Unit,
-        itemClick: (T) -> Unit = {},
-        manager: RecyclerView.LayoutManager = EchelonLayoutManager(this.context)
+    items: List<T>,
+    layoutResId: Int,
+    bindHolder: View.(T) -> Unit,
+    itemClick: (T) -> Unit = {},
+    manager: RecyclerView.LayoutManager = EchelonLayoutManager(this.context)
 ): MyKotlinAdapter<T> {
 
     return MyKotlinAdapter(items, layoutResId, { bindHolder(it) }, itemClick).apply {

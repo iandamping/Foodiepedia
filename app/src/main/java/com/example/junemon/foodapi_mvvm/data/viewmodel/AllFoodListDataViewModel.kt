@@ -9,16 +9,21 @@ class AllFoodListDataViewModel(private val repo: AllFoodListDataRepo) : BaseView
 
     fun getAllData() {
         liveDataState.value = OnComplete(false)
-        compose.executes(obsWithTripleZip(repo.getAllFoodArea(), repo.getAllFoodCategory(), repo.getAllFoodIngredient()), {
-            liveDataState.value = OnComplete(true)
-            liveDataState.value = OnError(it.localizedMessage)
-        }, {
-            it?.let { data ->
+        compose.executes(
+            obsWithTripleZip(
+                repo.getAllFoodArea(),
+                repo.getAllFoodCategory(),
+                repo.getAllFoodIngredient()
+            ), {
                 liveDataState.value = OnComplete(true)
-                liveDataState.value = OnShowAreaFood(data.first)
-                liveDataState.value = OnShowCategoryFood(data.second)
-                liveDataState.value = OnShowIngredientFood(data.third)
-            }
-        })
+                liveDataState.value = OnError(it.localizedMessage)
+            }, {
+                it?.let { data ->
+                    liveDataState.value = OnComplete(true)
+                    liveDataState.value = OnShowAreaFood(data.first)
+                    liveDataState.value = OnShowCategoryFood(data.second)
+                    liveDataState.value = OnShowIngredientFood(data.third)
+                }
+            })
     }
 }

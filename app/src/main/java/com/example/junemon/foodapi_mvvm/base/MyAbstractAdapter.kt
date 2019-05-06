@@ -12,11 +12,11 @@ Created by Ian Damping on 06/05/2019.
 Github = https://github.com/iandamping
  */
 abstract class MyAbstractAdapter<T>(
-        protected var data: List<T>,
-        private val layout: Int,
-        private val clickListener: (T) -> Unit
+    protected var data: List<T>,
+    private val layout: Int,
+    private val clickListener: (T) -> Unit
 ) :
-        RecyclerView.Adapter<MyAbstractAdapter.MyAbstractViewHolder>() {
+    RecyclerView.Adapter<MyAbstractAdapter.MyAbstractViewHolder>() {
 
     override fun getItemCount(): Int = data.size
 
@@ -34,5 +34,5 @@ abstract class MyAbstractAdapter<T>(
     }
 
     class MyAbstractViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
-            LayoutContainer
+        LayoutContainer
 }

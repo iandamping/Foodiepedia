@@ -5,9 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.junemon.foodapi_mvvm.R
 import com.example.junemon.foodapi_mvvm.data.viewmodel.FilterFoodViewModel
 import com.example.junemon.foodapi_mvvm.model.FilterFood
-import com.example.junemon.foodapi_mvvm.util.loadUrl
-import com.example.junemon.foodapi_mvvm.util.setUpWithGrid
-import com.example.junemon.foodapi_mvvm.util.withViewModel
+import com.example.junemon.foodapi_mvvm.ui.detail.DetailFoodActivity
+import com.example.junemon.foodapi_mvvm.util.*
 import kotlinx.android.synthetic.main.activity_filter.*
 import kotlinx.android.synthetic.main.item_filter_food.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -41,6 +40,10 @@ class FilterActivity : AppCompatActivity(), FilterView {
         rvFilterFood.setUpWithGrid(data, R.layout.item_filter_food, 2, {
             ivFilteringFood.loadUrl(it.strMealThumb)
             tvFilteringFoodCategory.text = it.strMeal
+        }, {
+            startActivity<DetailFoodActivity> {
+                putExtra(Constant.intentDetailKey, idMeal)
+            }
         })
     }
 

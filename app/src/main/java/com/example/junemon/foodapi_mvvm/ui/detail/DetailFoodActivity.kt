@@ -6,11 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.junemon.foodapi_mvvm.R
 import com.example.junemon.foodapi_mvvm.data.viewmodel.DetailFoodViewModel
 import com.example.junemon.foodapi_mvvm.model.DetailFood
+import com.example.junemon.foodapi_mvvm.util.*
 import com.example.junemon.foodapi_mvvm.util.Constant.intentDetailKey
-import com.example.junemon.foodapi_mvvm.util.fullScreenAnimation
-import com.example.junemon.foodapi_mvvm.util.loadUrl
-import com.example.junemon.foodapi_mvvm.util.setUp
-import com.example.junemon.foodapi_mvvm.util.withViewModel
 import kotlinx.android.synthetic.main.activity_detailed_food.*
 import kotlinx.android.synthetic.main.item_ingredient_adapter.view.*
 import kotlinx.android.synthetic.main.item_measurement_adapter.view.*
@@ -39,6 +36,9 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
 
     override fun showDetailData(data: DetailFood.Meal) {
         ivDetailedFood.loadUrl(data.strMealThumb)
+        ivDetailedFood.setOnClickListener {
+            fullScreen(data.strMealThumb)
+        }
         tvDetailedFoodCategory.text = "Food category : ${data.strCategory}"
         tvDetailedFoodArea.text = "Common food in ${data.strArea}"
         tvDetailedFoodInstruction.text = data.strInstructions

@@ -13,7 +13,7 @@ Github = https://github.com/iandamping
  */
 
 class AllFoodPresenter(private val vmFood: AllFoodViewModel) :
-        BasePresenter<AllFoodView>() {
+    BasePresenter<AllFoodView>() {
 
     override fun onCreate() {
         vmFood.getAllFoodData()
