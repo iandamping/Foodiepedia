@@ -4,57 +4,117 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/lnAreaSearch"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_medium"
-                android:textSize="@dimen/letter_xlarge"
                 android:fontFamily="@font/lato"
-                android:textStyle="bold"
-                android:text="All area information"/>
+                android:text="All area information"
+                android:textSize="@dimen/letter_xlarge"
+                android:textStyle="bold" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvInformationArea"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvInformationArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium" />
+        </LinearLayout>
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_home"
+            android:paddingTop="@dimen/spacing_medium"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:paddingTop="@dimen/spacing_medium"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_ingredient_shimmer" />
+
+                <include layout="@layout/item_ingredient_shimmer" />
+
+                <include layout="@layout/item_ingredient_shimmer" />
+
+                <include layout="@layout/item_ingredient_shimmer" />
+
+                <include layout="@layout/item_ingredient_shimmer" />
+
+                <include layout="@layout/item_ingredient_shimmer" />
+
+                <include layout="@layout/item_ingredient_shimmer" />
+
+
+
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_below="@id/lnAreaSearch"
+            android:id="@+id/lnIngredientsSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_medium" />
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_medium"
-            android:textSize="@dimen/letter_xlarge"
-            android:fontFamily="@font/lato"
-            android:textStyle="bold"
-            android:text="All ingredient information" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium"
+                android:fontFamily="@font/lato"
+                android:text="All ingredient information"
+                android:textSize="@dimen/letter_xlarge"
+                android:textStyle="bold" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvInformationIngredient"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvInformationIngredient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_below="@id/lnIngredientsSearch"
+            android:id="@+id/lnCategorySearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_medium" />
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_medium"
-            android:textSize="@dimen/letter_xlarge"
-            android:fontFamily="@font/lato"
-            android:textStyle="bold"
-            android:text="All category information" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium"
+                android:fontFamily="@font/lato"
+                android:text="All category information"
+                android:textSize="@dimen/letter_xlarge"
+                android:textStyle="bold" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvInformationCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_medium" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvInformationCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium" />
+        </LinearLayout>
 
-    </LinearLayout>
+
+    </RelativeLayout>
 
 </androidx.core.widget.NestedScrollView>

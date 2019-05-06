@@ -23,6 +23,7 @@ class FilterActivity : AppCompatActivity(), FilterView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        fullScreenAnimation()
         setContentView(R.layout.activity_filter)
         withViewModel({ FilterPresenter(vm) }) {
             this.attachView(this@FilterActivity, this@FilterActivity)

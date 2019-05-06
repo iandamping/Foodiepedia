@@ -63,4 +63,6 @@ dependencies {
     implementation 'com.airbnb.android:lottie:2.5.5'
     //custom layout manager
     implementation 'com.github.DingMouRen:LayoutManagerGroup:1e6f4f96eb'
+    //shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.4.0'
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginBottom="16dp"
@@ -26,29 +26,59 @@
 
 
         <TextView
-                android:id="@+id/tvAllFoodName"
+            android:id="@+id/tvAllFoodName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato"
+            android:textColor="#000000"
+            android:textSize="@dimen/letter_large"
+            android:textStyle="bold"
+            tools:text="Spicy Arrabiata Penne" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/spacing_medium"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/category" />
+
+            <TextView
+                android:id="@+id/tvAllFoodCategory"
                 android:layout_width="wrap_content"
-                android:layout_height="19dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_medium"
                 android:fontFamily="@font/lato"
                 android:textSize="@dimen/letter_large"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                tools:text="Spicy Arrabiata Penne"/>
+                tools:text="Vegetarian" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvAllFoodCategory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lato"
-            android:textSize="@dimen/letter_large"
-            tools:text="Vegetarian"/>
 
-        <TextView
-            android:id="@+id/tvAllFoodArea"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_margin="@dimen/spacing_medium"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/lato"
-            tools:text="Italia"/>
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/area" />
+
+            <TextView
+                android:id="@+id/tvAllFoodArea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_medium"
+                android:fontFamily="@font/lato"
+                tools:text="Italia" />
+        </LinearLayout>
+
+
 
     </LinearLayout>
 

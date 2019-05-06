@@ -9,6 +9,10 @@ import com.example.junemon.foodapi_mvvm.ui.detail.DetailFoodActivity
 import com.example.junemon.foodapi_mvvm.ui.detailinformation.DetailInformationActivity
 import com.example.junemon.foodapi_mvvm.ui.discover.DiscoverActivity
 import com.example.junemon.foodapi_mvvm.util.*
+import com.example.junemon.foodapi_mvvm.util.Constant.areaDetail
+import com.example.junemon.foodapi_mvvm.util.Constant.categoryDetail
+import com.example.junemon.foodapi_mvvm.util.Constant.goingToDetail
+import com.example.junemon.foodapi_mvvm.util.Constant.ingredientDetail
 import com.example.junemon.foodapi_mvvm.util.Constant.intentDetailKey
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_all_food.view.*
@@ -54,9 +58,21 @@ class AllFoodActivity : AppCompatActivity(), AllFoodView {
         ivDiscover.setOnClickListener {
             startActivity<DiscoverActivity>()
         }
-        rela_bottom.setOnClickListener {
-            startActivity<DetailInformationActivity>()
 
+        lnCategory.setOnClickListener {
+            startActivity<DetailInformationActivity> {
+                putExtra(categoryDetail, categoryDetail)
+            }
+        }
+        lnIngredients.setOnClickListener {
+            startActivity<DetailInformationActivity> {
+                putExtra(ingredientDetail, ingredientDetail)
+            }
+        }
+        lnArea.setOnClickListener {
+            startActivity<DetailInformationActivity> {
+                putExtra(areaDetail, areaDetail)
+            }
         }
     }
 

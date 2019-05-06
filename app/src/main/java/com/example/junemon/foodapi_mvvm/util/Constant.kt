@@ -7,8 +7,10 @@ Github = https://github.com/iandamping
  */
 
 object Constant {
-    const val dialogTittle = "Please Wait"
-    const val dialogMessage = "Extracting Data"
+    const val goingToDetail = "go to detailed"
+    const val areaDetail = "go to area"
+    const val categoryDetail = "go to category"
+    const val ingredientDetail = "go to ingredient"
     const val baseUrl = "https://www.themealdb.com/api/json/v1/1/"
     const val detailFood = "lookup.php"
     const val getAllFood = "latest.php"

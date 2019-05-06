@@ -1,6 +1,7 @@
 package com.example.junemon.foodapi_mvvm.ui.detailinformation
 
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.junemon.foodapi_mvvm.R
 import com.example.junemon.foodapi_mvvm.data.viewmodel.AllFoodListDataViewModel
@@ -22,23 +23,39 @@ Github = https://github.com/iandamping
  */
 
 class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
+
     private val vm: AllFoodListDataViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fullScreenAnimation()
         setContentView(R.layout.activity_detail_information)
         withViewModel({ DetailInformationPresenter(vm) }) {
-            this.attachView(this@DetailInformationActivity, this@DetailInformationActivity)
-            this.onCreate()
+            attachView(this@DetailInformationActivity, this@DetailInformationActivity)
+            onCreate()
+            getData(intent)
         }
     }
 
     override fun initView() {
+        shimmer_home
+    }
+
+    override fun onPause() {
+        super.onPause()
+        shimmer_home?.stopShimmer()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        shimmer_home?.startShimmer()
     }
 
 
     override fun getAreaData(data: List<AreaFood.Meal>?) {
         data?.let {
+            shimmer_home?.stopShimmer()
+            shimmer_home?.gone()
+            lnAreaSearch.visible()
             rvInformationArea.setUpWithGrid(it, R.layout.item_information_area, 3, {
                 with(this) {
                     tvDescriptionArea.text = it.strArea
@@ -53,9 +70,13 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
 
     override fun getIngredientData(data: List<IngredientFood.Meal>?) {
         data?.let {
+            shimmer_home?.stopShimmer()
+            shimmer_home?.gone()
+            lnIngredientsSearch.visible()
             rvInformationIngredient.setUpWithGrid(it, R.layout.item_information_ingredient, 3, {
                 with(this) {
                     tvInformationIngredient.text = it.strIngredient
+                    ivIngredientImages.loadUrlResize(resources.getString(R.string.ingredient_images_helper) + it.strIngredient +"-Small.png")
                 }
             }, {
                 startActivity<FilterActivity> {
@@ -67,8 +88,12 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
 
     override fun getCategoryData(data: List<CategoryFood.Meal>?) {
         data?.let {
+            shimmer_home?.stopShimmer()
+            shimmer_home?.gone()
+            lnCategorySearch.visible()
             rvInformationCategory.setUpWithGrid(it, R.layout.item_information_category, 3, {
                 with(this) {
+                    ivDescriptionImages.loadUrl(resources.getString(R.string.category_images_helper) + it.category +".png")
                     tvDescriptionCategory.text = it.category
                 }
             }, {
