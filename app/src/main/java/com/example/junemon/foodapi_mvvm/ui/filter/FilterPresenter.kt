@@ -23,19 +23,14 @@ class FilterPresenter(private val vm: FilterFoodViewModel) : BasePresenter<Filte
     }
 
     fun getData(intent: Intent) {
-        if (intent.getStringExtra(categoryType).isNotBlank()) {
-            vm.getIngredientFilterCategory(intent.getStringExtra(categoryType))
-            return
+        val tmpCategoryData = intent.getStringExtra(categoryType)
+        val tmpAreaData = intent.getStringExtra(areaType)
+        val tmpIngredientData = intent.getStringExtra(ingredientType)
+        when{
+            !tmpCategoryData.isNullOrEmpty() ->  vm.getIngredientFilterCategory(tmpCategoryData)
+            !tmpAreaData.isNullOrEmpty() ->  vm.getIngredientFilterArea(tmpAreaData)
+            !tmpIngredientData.isNullOrEmpty() ->  vm.getIngredientFilterData(tmpIngredientData)
         }
-        if (intent.getStringExtra(areaType).isNotBlank()) {
-            vm.getIngredientFilterArea(intent.getStringExtra(areaType))
-            return
-        }
-        if (intent.getStringExtra(ingredientType).isNotBlank()) {
-            vm.getIngredientFilterData(intent.getStringExtra(ingredientType))
-            return
-        }
-
     }
 
     private fun initGetData() {
