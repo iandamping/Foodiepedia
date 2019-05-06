@@ -1,4 +1,5 @@
 package com.example.junemon.foodapi_mvvm.util
+
 /**
  *
 Created by Ian Damping on 06/05/2019.

@@ -29,6 +29,7 @@
                   android:theme="@style/FullScreen"/>
         <activity android:name=".ui.filter.FilterActivity"
                   android:theme="@style/FullScreen"/>
+        <meta-data android:name="preloaded_fonts" android:resource="@array/preloaded_fonts"/>
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@
 
     <RelativeLayout
         android:id="@+id/rlTitle"
+        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -14,7 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="40dp"
             android:orientation="vertical">
 
             <TextView
@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="Explore the natural wonders of the world"
+                android:text="@string/explore_the_natural_wonders_food_of_the_world"
                 android:textColor="#2B2B2B" />
         </LinearLayout>
 
@@ -51,17 +51,13 @@
         android:layout_centerVertical="true" />
 
     <RelativeLayout
+
         android:id="@+id/rela_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="56dp" />
 
         <TextView
             android:layout_width="wrap_content"

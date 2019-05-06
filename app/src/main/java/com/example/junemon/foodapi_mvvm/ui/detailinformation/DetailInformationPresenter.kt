@@ -3,6 +3,7 @@ package com.example.junemon.foodapi_mvvm.ui.detailinformation
 import androidx.lifecycle.Observer
 import com.example.junemon.foodapi_mvvm.base.*
 import com.example.junemon.foodapi_mvvm.data.viewmodel.AllFoodListDataViewModel
+
 /**
  *
 Created by Ian Damping on 06/05/2019.

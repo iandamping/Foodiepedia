@@ -6,9 +6,13 @@ import com.example.junemon.foodapi_mvvm.R
 import com.example.junemon.foodapi_mvvm.data.viewmodel.AllFoodCategoryViewModel
 import com.example.junemon.foodapi_mvvm.model.AllFoodCategoryDetail
 import com.example.junemon.foodapi_mvvm.util.fullScreenAnimation
+import com.example.junemon.foodapi_mvvm.util.loadUrl
+import com.example.junemon.foodapi_mvvm.util.setUpWithGrid
 import com.example.junemon.foodapi_mvvm.util.withViewModel
 import kotlinx.android.synthetic.main.activity_discover.*
+import kotlinx.android.synthetic.main.item_discover_food.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
+
 /**
  *
 Created by Ian Damping on 06/05/2019.
@@ -29,7 +33,14 @@ class DiscoverActivity : AppCompatActivity(), DiscoverView {
     }
 
     override fun onShowDefaultFoodCategory(data: List<AllFoodCategoryDetail.Category>?) {
-        DiscoverAdapter(rvDiscoverFood, data, R.layout.item_discover_food) {
+        data?.let {
+            rvDiscoverFood.setUpWithGrid(it, R.layout.item_discover_food, 2, {
+                with(this) {
+                    tvDiscoverFoodCategory.text = it.strCategory
+                    tvDiscoverFoodDescription.text = it.strCategoryDescription
+                    ivDiscoverFood.loadUrl(it.strCategoryThumb)
+                }
+            })
         }
     }
 

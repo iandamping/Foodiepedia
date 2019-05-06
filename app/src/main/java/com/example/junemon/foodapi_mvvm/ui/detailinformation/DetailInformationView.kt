@@ -4,6 +4,7 @@ import com.example.junemon.foodapi_mvvm.base.BaseView
 import com.example.junemon.foodapi_mvvm.model.AreaFood
 import com.example.junemon.foodapi_mvvm.model.CategoryFood
 import com.example.junemon.foodapi_mvvm.model.IngredientFood
+
 /**
  *
 Created by Ian Damping on 06/05/2019.

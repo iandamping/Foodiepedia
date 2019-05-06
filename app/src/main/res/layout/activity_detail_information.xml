@@ -11,13 +11,13 @@
 
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_medium"
-            android:textSize="@dimen/letter_xlarge"
-            android:fontFamily="@font/montserrat"
-            android:textStyle="bold"
-            android:text="All area information" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium"
+                android:textSize="@dimen/letter_xlarge"
+                android:fontFamily="@font/lato"
+                android:textStyle="bold"
+                android:text="All area information"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvInformationArea"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_medium"
             android:textSize="@dimen/letter_xlarge"
-            android:fontFamily="@font/montserrat"
+            android:fontFamily="@font/lato"
             android:textStyle="bold"
             android:text="All ingredient information" />
 
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_medium"
             android:textSize="@dimen/letter_xlarge"
-            android:fontFamily="@font/montserrat"
+            android:fontFamily="@font/lato"
             android:textStyle="bold"
             android:text="All category information" />
 

@@ -11,6 +11,7 @@ import com.example.junemon.foodapi_mvvm.util.withViewModel
 import kotlinx.android.synthetic.main.activity_filter.*
 import kotlinx.android.synthetic.main.item_filter_food.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
+
 /**
  *
 Created by Ian Damping on 06/05/2019.

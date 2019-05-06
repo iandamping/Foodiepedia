@@ -26,22 +26,20 @@
 
 
         <TextView
-            android:id="@+id/tvAllFoodName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat"
-            android:textSize="@dimen/letter_xlarge"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:textColor="#000000"
-            tools:text="Spicy Arrabiata Penne"/>
+                android:id="@+id/tvAllFoodName"
+                android:layout_width="wrap_content"
+                android:layout_height="19dp"
+                android:fontFamily="@font/lato"
+                android:textSize="@dimen/letter_large"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                tools:text="Spicy Arrabiata Penne"/>
 
         <TextView
             android:id="@+id/tvAllFoodCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat"
-            android:layout_gravity="center"
+            android:fontFamily="@font/lato"
             android:textSize="@dimen/letter_large"
             tools:text="Vegetarian"/>
 
@@ -49,8 +47,7 @@
             android:id="@+id/tvAllFoodArea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat"
-            android:layout_gravity="center"
+            android:fontFamily="@font/lato"
             tools:text="Italia"/>
 
     </LinearLayout>

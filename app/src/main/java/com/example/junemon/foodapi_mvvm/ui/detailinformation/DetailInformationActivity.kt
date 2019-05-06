@@ -7,16 +7,14 @@ import com.example.junemon.foodapi_mvvm.data.viewmodel.AllFoodListDataViewModel
 import com.example.junemon.foodapi_mvvm.model.AreaFood
 import com.example.junemon.foodapi_mvvm.model.CategoryFood
 import com.example.junemon.foodapi_mvvm.model.IngredientFood
-import com.example.junemon.foodapi_mvvm.ui.adapter.InformationAreaAdapter
-import com.example.junemon.foodapi_mvvm.ui.adapter.InformationFoodAdapter
-import com.example.junemon.foodapi_mvvm.ui.adapter.InformationIngredientAdapter
 import com.example.junemon.foodapi_mvvm.ui.filter.FilterActivity
-import com.example.junemon.foodapi_mvvm.util.Constant
-import com.example.junemon.foodapi_mvvm.util.fullScreenAnimation
-import com.example.junemon.foodapi_mvvm.util.startActivity
-import com.example.junemon.foodapi_mvvm.util.withViewModel
+import com.example.junemon.foodapi_mvvm.util.*
 import kotlinx.android.synthetic.main.activity_detail_information.*
+import kotlinx.android.synthetic.main.item_information_area.view.*
+import kotlinx.android.synthetic.main.item_information_category.view.*
+import kotlinx.android.synthetic.main.item_information_ingredient.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
+
 /**
  *
 Created by Ian Damping on 06/05/2019.
@@ -40,26 +38,44 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
 
 
     override fun getAreaData(data: List<AreaFood.Meal>?) {
-        InformationAreaAdapter(rvInformationArea, data, R.layout.item_information_area) {
-            startActivity<FilterActivity> {
-                putExtra(Constant.areaType, it.strArea)
-            }
+        data?.let {
+            rvInformationArea.setUpWithGrid(it, R.layout.item_information_area, 3, {
+                with(this) {
+                    tvDescriptionArea.text = it.strArea
+                }
+            }, {
+                startActivity<FilterActivity> {
+                    putExtra(Constant.areaType, strArea)
+                }
+            })
         }
     }
 
     override fun getIngredientData(data: List<IngredientFood.Meal>?) {
-        InformationIngredientAdapter(rvInformationIngredient, data, R.layout.item_information_ingredient) {
-            startActivity<FilterActivity> {
-                putExtra(Constant.ingredientType, it.strIngredient)
-            }
+        data?.let {
+            rvInformationIngredient.setUpWithGrid(it, R.layout.item_information_ingredient, 3, {
+                with(this) {
+                    tvInformationIngredient.text = it.strIngredient
+                }
+            }, {
+                startActivity<FilterActivity> {
+                    putExtra(Constant.ingredientType, strIngredient)
+                }
+            })
         }
     }
 
     override fun getCategoryData(data: List<CategoryFood.Meal>?) {
-        InformationFoodAdapter(rvInformationCategory, data, R.layout.item_information_category) {
-            startActivity<FilterActivity> {
-                putExtra(Constant.categoryType, it.category)
-            }
+        data?.let {
+            rvInformationCategory.setUpWithGrid(it, R.layout.item_information_category, 3, {
+                with(this) {
+                    tvDescriptionCategory.text = it.category
+                }
+            }, {
+                startActivity<FilterActivity> {
+                    putExtra(Constant.categoryType, category)
+                }
+            })
         }
     }
 

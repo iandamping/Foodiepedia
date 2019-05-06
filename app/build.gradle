@@ -57,6 +57,8 @@ dependencies {
     //internet logging
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-
+    //lottie
+    implementation 'com.airbnb.android:lottie:2.5.5'
+    //custom layout manager
     implementation 'com.github.DingMouRen:LayoutManagerGroup:1e6f4f96eb'
 }

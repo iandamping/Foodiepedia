@@ -9,6 +9,7 @@ import com.example.junemon.foodapi_mvvm.data.viewmodel.FilterFoodViewModel
 import com.example.junemon.foodapi_mvvm.util.Constant.areaType
 import com.example.junemon.foodapi_mvvm.util.Constant.categoryType
 import com.example.junemon.foodapi_mvvm.util.Constant.ingredientType
+
 /**
  *
 Created by Ian Damping on 06/05/2019.
@@ -26,10 +27,10 @@ class FilterPresenter(private val vm: FilterFoodViewModel) : BasePresenter<Filte
         val tmpCategoryData = intent.getStringExtra(categoryType)
         val tmpAreaData = intent.getStringExtra(areaType)
         val tmpIngredientData = intent.getStringExtra(ingredientType)
-        when{
-            !tmpCategoryData.isNullOrEmpty() ->  vm.getIngredientFilterCategory(tmpCategoryData)
-            !tmpAreaData.isNullOrEmpty() ->  vm.getIngredientFilterArea(tmpAreaData)
-            !tmpIngredientData.isNullOrEmpty() ->  vm.getIngredientFilterData(tmpIngredientData)
+        when {
+            !tmpCategoryData.isNullOrEmpty() -> vm.getIngredientFilterCategory(tmpCategoryData)
+            !tmpAreaData.isNullOrEmpty() -> vm.getIngredientFilterArea(tmpAreaData)
+            !tmpIngredientData.isNullOrEmpty() -> vm.getIngredientFilterData(tmpIngredientData)
         }
     }
 

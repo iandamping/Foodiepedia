@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
-import com.example.junemon.foodapi_mvvm.FoodApp.Companion.gson
+
 /**
  *
 Created by Ian Damping on 06/05/2019.

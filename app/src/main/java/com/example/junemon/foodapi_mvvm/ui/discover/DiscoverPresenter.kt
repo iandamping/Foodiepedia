@@ -5,6 +5,7 @@ import com.example.junemon.foodapi_mvvm.base.BasePresenter
 import com.example.junemon.foodapi_mvvm.base.OnComplete
 import com.example.junemon.foodapi_mvvm.base.OnShowCategoryFoodDetail
 import com.example.junemon.foodapi_mvvm.data.viewmodel.AllFoodCategoryViewModel
+
 /**
  *
 Created by Ian Damping on 06/05/2019.

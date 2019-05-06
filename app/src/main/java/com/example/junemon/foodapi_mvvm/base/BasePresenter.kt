@@ -1,13 +1,17 @@
 package com.example.junemon.foodapi_mvvm.base
 
-import android.app.ProgressDialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
-import com.example.junemon.foodapi_mvvm.util.Constant
+import com.example.junemon.foodapi_mvvm.R
+import org.jetbrains.anko.layoutInflater
+
 /**
  *
 Created by Ian Damping on 06/05/2019.
@@ -18,7 +22,7 @@ abstract class BasePresenter<View> : ViewModel(), LifecycleObserver, BasePresent
     private var view: View? = null
     private var viewLifecycle: Lifecycle? = null
     private lateinit var lifecycleOwner: FragmentActivity
-    private lateinit var dialog: ProgressDialog
+    private lateinit var dialog: AlertDialog
 
 
     fun attachView(view: View, lifeCycleOwner: FragmentActivity) {
@@ -44,10 +48,15 @@ abstract class BasePresenter<View> : ViewModel(), LifecycleObserver, BasePresent
     }
 
     private fun setBaseDialog(ctx: Context) {
-        dialog = ProgressDialog(ctx)
-        dialog.setTitle(Constant.dialogTittle)
-        dialog.setMessage(Constant.dialogMessage)
-        dialog.isIndeterminate = true
+        val dialogBuilder = AlertDialog.Builder(ctx)
+        val inflater = ctx.layoutInflater
+        val dialogView = inflater.inflate(R.layout.custom_loading, null)
+
+        dialogBuilder.setView(dialogView)
+        dialog = dialogBuilder.create()
+        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
     }
 
     protected fun setDialogShow(status: Boolean) {

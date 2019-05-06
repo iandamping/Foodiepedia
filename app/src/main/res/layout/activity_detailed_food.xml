@@ -68,7 +68,7 @@
                 android:id="@+id/tvDetailedFoodCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/lato"
                 android:padding="@dimen/spacing_medium"
                 android:textSize="@dimen/letter_xlarge"
                 android:textStyle="bold"
@@ -78,7 +78,7 @@
                 android:id="@+id/tvDetailedFoodArea"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/lato"
                 android:padding="@dimen/spacing_medium"
                 android:textSize="@dimen/letter_large"
                 tools:text="Italia" />
@@ -138,7 +138,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/lato"
                 android:padding="@dimen/spacing_medium"
                 tools:text="Instruction" />
 

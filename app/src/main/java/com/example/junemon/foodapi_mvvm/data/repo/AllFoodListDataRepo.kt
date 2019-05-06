@@ -6,6 +6,7 @@ import com.example.junemon.foodapi_mvvm.model.CategoryFood
 import com.example.junemon.foodapi_mvvm.model.IngredientFood
 import com.example.junemon.foodapi_mvvm.util.Constant.allCategoryValue
 import io.reactivex.Observable
+
 /**
  *
 Created by Ian Damping on 06/05/2019.

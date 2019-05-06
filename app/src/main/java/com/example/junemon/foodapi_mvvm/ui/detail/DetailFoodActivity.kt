@@ -6,14 +6,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.junemon.foodapi_mvvm.R
 import com.example.junemon.foodapi_mvvm.data.viewmodel.DetailFoodViewModel
 import com.example.junemon.foodapi_mvvm.model.DetailFood
-import com.example.junemon.foodapi_mvvm.ui.adapter.IngredientAdapter
-import com.example.junemon.foodapi_mvvm.ui.adapter.MeasurementAdapter
 import com.example.junemon.foodapi_mvvm.util.Constant.intentDetailKey
 import com.example.junemon.foodapi_mvvm.util.fullScreenAnimation
 import com.example.junemon.foodapi_mvvm.util.loadUrl
+import com.example.junemon.foodapi_mvvm.util.setUp
 import com.example.junemon.foodapi_mvvm.util.withViewModel
 import kotlinx.android.synthetic.main.activity_detailed_food.*
+import kotlinx.android.synthetic.main.item_ingredient_adapter.view.*
+import kotlinx.android.synthetic.main.item_measurement_adapter.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
+
 /**
  *
 Created by Ian Damping on 06/05/2019.
@@ -52,8 +54,18 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
         rvDetailedMeasurement.layoutManager = LinearLayoutManager(this)
         rvDetailedIngredients.isNestedScrollingEnabled = false
         rvDetailedMeasurement.isNestedScrollingEnabled = false
-        dataIngredient.let { rvDetailedIngredients.adapter = IngredientAdapter(it) }
-        dataMeasurement.let { rvDetailedMeasurement.adapter = MeasurementAdapter(it) }
+
+
+        dataIngredient.let { data ->
+            rvDetailedIngredients.setUp(data, R.layout.item_ingredient_adapter, {
+                this@setUp.tvIngredientAdapter.text = it
+            })
+        }
+        dataMeasurement.let { data ->
+            rvDetailedMeasurement.setUp(data, R.layout.item_measurement_adapter, {
+                this@setUp.tvMeasurementAdapter.text = it
+            })
+        }
     }
 
 

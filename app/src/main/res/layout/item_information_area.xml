@@ -10,13 +10,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_medium"
-        android:fontFamily="@font/montserrat" />
+        android:fontFamily="@font/lato" />
 
     <TextView
         android:id="@+id/tvDescriptionArea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_medium"
-        android:fontFamily="@font/montserrat" />
+        android:fontFamily="@font/lato" />
 
 </LinearLayout>

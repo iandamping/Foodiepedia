@@ -11,6 +11,7 @@ import com.example.junemon.foodapi_mvvm.util.Constant.getFilterData
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
+
 /**
  *
 Created by Ian Damping on 06/05/2019.

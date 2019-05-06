@@ -1,6 +1,7 @@
 package com.example.junemon.foodapi_mvvm.model
 
 import com.google.gson.annotations.SerializedName
+
 /**
  *
 Created by Ian Damping on 06/05/2019.

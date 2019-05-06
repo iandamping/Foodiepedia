@@ -8,12 +8,12 @@ import com.example.junemon.foodapi_mvvm.model.AllFood
 import com.example.junemon.foodapi_mvvm.ui.detail.DetailFoodActivity
 import com.example.junemon.foodapi_mvvm.ui.detailinformation.DetailInformationActivity
 import com.example.junemon.foodapi_mvvm.ui.discover.DiscoverActivity
+import com.example.junemon.foodapi_mvvm.util.*
 import com.example.junemon.foodapi_mvvm.util.Constant.intentDetailKey
-import com.example.junemon.foodapi_mvvm.util.fullScreenAnimation
-import com.example.junemon.foodapi_mvvm.util.startActivity
-import com.example.junemon.foodapi_mvvm.util.withViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_all_food.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
+
 /**
  *
 Created by Ian Damping on 06/05/2019.
@@ -33,11 +33,21 @@ class AllFoodActivity : AppCompatActivity(), AllFoodView {
     }
 
     override fun getDetailFood(data: List<AllFood.Meal>?) {
-        AllFoodAdapter(rvAllFood, data, R.layout.item_all_food) {
-            startActivity<DetailFoodActivity> {
-                putExtra(intentDetailKey, it.idMeal)
-            }
+        data?.let {
+            rvAllFood.setUpWithSkid(it, R.layout.item_all_food, {
+                with(this) {
+                    tvAllFoodName.text = it.strMeal
+                    tvAllFoodCategory.text = it.strCategory
+                    tvAllFoodArea.text = it.strArea
+                    ivAllFood.loadUrl(it.strMealThumb)
+                }
+            }, {
+                startActivity<DetailFoodActivity> {
+                    putExtra(intentDetailKey, it.idMeal)
+                }
+            })
         }
+
     }
 
     override fun initView() {
