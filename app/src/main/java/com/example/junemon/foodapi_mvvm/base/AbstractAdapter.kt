@@ -5,9 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.junemon.foodapi_mvvm.util.inflates
 import kotlinx.android.extensions.LayoutContainer
+/**
+ *
+Created by Ian Damping on 06/05/2019.
+Github = https://github.com/iandamping
+ */
 
 abstract class AbstractAdapter<T> constructor(protected var data: List<T>, private val layout: Int) :
-    RecyclerView.Adapter<AbstractAdapter.AbstractHolder>() {
+        RecyclerView.Adapter<AbstractAdapter.AbstractHolder>() {
 
     override fun getItemCount() = data.size
 

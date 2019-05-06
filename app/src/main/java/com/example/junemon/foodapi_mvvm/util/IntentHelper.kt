@@ -6,21 +6,19 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import com.example.junemon.foodapi_mvvm.FoodApp.Companion.gson
+/**
+ *
+Created by Ian Damping on 06/05/2019.
+Github = https://github.com/iandamping
+ */
 
 inline fun <reified T : Activity> FragmentActivity.startActivity(
-    options: Bundle? = null, noinline init: Intent.() -> Unit = {}
+        options: Bundle? = null, noinline init: Intent.() -> Unit = {}
 ) {
     val intent = newIntent<T>(this)
+    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
     intent.init()
     startActivity(intent, options)
-}
-
-//inline fun <reified T : Activity> FragmentActivity.startActivityWithString(key: String?, value: String?) {
-//    startActivity(Intent(this, T::class.java).putExtra(key, value))
-//}
-
-inline fun <reified T : Activity> FragmentActivity.startActivityWithData(key: String?, value: Any?) {
-    startActivity(Intent(this, T::class.java).putExtra(key, gson.toJson(value)))
 }
 
 inline fun <reified T : Any> newIntent(ctx: Context): Intent = Intent(ctx, T::class.java)

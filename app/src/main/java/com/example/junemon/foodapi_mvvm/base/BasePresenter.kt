@@ -8,6 +8,11 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
 import com.example.junemon.foodapi_mvvm.util.Constant
+/**
+ *
+Created by Ian Damping on 06/05/2019.
+Github = https://github.com/iandamping
+ */
 
 abstract class BasePresenter<View> : ViewModel(), LifecycleObserver, BasePresenterHelper {
     private var view: View? = null

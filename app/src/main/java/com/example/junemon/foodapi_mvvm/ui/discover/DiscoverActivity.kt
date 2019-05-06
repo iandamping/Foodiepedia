@@ -9,6 +9,11 @@ import com.example.junemon.foodapi_mvvm.util.fullScreenAnimation
 import com.example.junemon.foodapi_mvvm.util.withViewModel
 import kotlinx.android.synthetic.main.activity_discover.*
 import org.koin.android.viewmodel.ext.android.viewModel
+/**
+ *
+Created by Ian Damping on 06/05/2019.
+Github = https://github.com/iandamping
+ */
 
 class DiscoverActivity : AppCompatActivity(), DiscoverView {
     private val defaultVm: AllFoodCategoryViewModel by viewModel()

@@ -14,6 +14,11 @@ import com.example.junemon.foodapi_mvvm.util.loadUrl
 import com.example.junemon.foodapi_mvvm.util.withViewModel
 import kotlinx.android.synthetic.main.activity_detailed_food.*
 import org.koin.android.viewmodel.ext.android.viewModel
+/**
+ *
+Created by Ian Damping on 06/05/2019.
+Github = https://github.com/iandamping
+ */
 
 class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
     private val vm: DetailFoodViewModel by viewModel()

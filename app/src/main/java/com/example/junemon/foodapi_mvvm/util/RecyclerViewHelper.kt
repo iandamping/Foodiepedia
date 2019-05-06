@@ -7,13 +7,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dingmouren.layoutmanagergroup.echelon.EchelonLayoutManager
 import com.dingmouren.layoutmanagergroup.skidright.SkidRightLayoutManager
 import com.example.junemon.foodapi_mvvm.base.KotlinAdapter
+/**
+ *
+Created by Ian Damping on 06/05/2019.
+Github = https://github.com/iandamping
+ */
 
 fun <T> RecyclerView.setUp(
-    items: List<T>,
-    layoutResId: Int,
-    bindHolder: View.(T) -> Unit,
-    itemClick: T.() -> Unit = {},
-    manager: RecyclerView.LayoutManager = LinearLayoutManager(this.context)
+        items: List<T>,
+        layoutResId: Int,
+        bindHolder: View.(T) -> Unit,
+        itemClick: T.() -> Unit = {},
+        manager: RecyclerView.LayoutManager = LinearLayoutManager(this.context)
 ): KotlinAdapter<T> {
 
     return KotlinAdapter(items, layoutResId, { bindHolder(it) }, {
@@ -25,12 +30,12 @@ fun <T> RecyclerView.setUp(
 }
 
 fun <T> RecyclerView.setUpWithGrid(
-    items: List<T>,
-    layoutResId: Int,
-    gridSize: Int,
-    bindHolder: View.(T) -> Unit,
-    itemClick: T.() -> Unit = {},
-    manager: RecyclerView.LayoutManager = GridLayoutManager(this.context, gridSize)
+        items: List<T>,
+        layoutResId: Int,
+        gridSize: Int,
+        bindHolder: View.(T) -> Unit,
+        itemClick: T.() -> Unit = {},
+        manager: RecyclerView.LayoutManager = GridLayoutManager(this.context, gridSize)
 ): KotlinAdapter<T> {
 
     return KotlinAdapter(items, layoutResId, { bindHolder(it) }, {
@@ -42,11 +47,11 @@ fun <T> RecyclerView.setUpWithGrid(
 }
 
 fun <T> RecyclerView.setUpWithSkid(
-    items: List<T>,
-    layoutResId: Int,
-    bindHolder: View.(T) -> Unit,
-    itemClick: (T) -> Unit,
-    manager: RecyclerView.LayoutManager = SkidRightLayoutManager(1.5f, 0.85f)
+        items: List<T>,
+        layoutResId: Int,
+        bindHolder: View.(T) -> Unit,
+        itemClick: (T) -> Unit,
+        manager: RecyclerView.LayoutManager = SkidRightLayoutManager(1.5f, 0.85f)
 ): KotlinAdapter<T> {
 
     return KotlinAdapter(items, layoutResId, { bindHolder(it) }, itemClick).apply {
@@ -56,11 +61,11 @@ fun <T> RecyclerView.setUpWithSkid(
 }
 
 fun <T> RecyclerView.setUpWithEchelon(
-    items: List<T>,
-    layoutResId: Int,
-    bindHolder: View.(T) -> Unit,
-    itemClick: (T) -> Unit,
-    manager: RecyclerView.LayoutManager = EchelonLayoutManager(this.context)
+        items: List<T>,
+        layoutResId: Int,
+        bindHolder: View.(T) -> Unit,
+        itemClick: (T) -> Unit,
+        manager: RecyclerView.LayoutManager = EchelonLayoutManager(this.context)
 ): KotlinAdapter<T> {
 
     return KotlinAdapter(items, layoutResId, { bindHolder(it) }, itemClick).apply {

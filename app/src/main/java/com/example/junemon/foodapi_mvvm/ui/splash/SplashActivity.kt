@@ -7,6 +7,11 @@ import com.example.junemon.foodapi_mvvm.R
 import com.example.junemon.foodapi_mvvm.ui.allfood.AllFoodActivity
 import com.example.junemon.foodapi_mvvm.util.fullScreenAnimation
 import com.example.junemon.foodapi_mvvm.util.startActivity
+/**
+ *
+Created by Ian Damping on 06/05/2019.
+Github = https://github.com/iandamping
+ */
 
 class SplashActivity : AppCompatActivity() {
     private lateinit var mHandler: Handler

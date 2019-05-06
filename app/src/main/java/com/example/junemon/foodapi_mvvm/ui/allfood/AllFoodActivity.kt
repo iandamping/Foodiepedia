@@ -10,20 +10,23 @@ import com.example.junemon.foodapi_mvvm.ui.detailinformation.DetailInformationAc
 import com.example.junemon.foodapi_mvvm.ui.discover.DiscoverActivity
 import com.example.junemon.foodapi_mvvm.util.Constant.intentDetailKey
 import com.example.junemon.foodapi_mvvm.util.fullScreenAnimation
-import com.example.junemon.foodapi_mvvm.util.initPresenter
 import com.example.junemon.foodapi_mvvm.util.startActivity
+import com.example.junemon.foodapi_mvvm.util.withViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
+/**
+ *
+Created by Ian Damping on 06/05/2019.
+Github = https://github.com/iandamping
+ */
 
 class AllFoodActivity : AppCompatActivity(), AllFoodView {
     private val vm: AllFoodViewModel by viewModel()
-    private lateinit var presenter: AllFoodPresenter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fullScreenAnimation()
         setContentView(R.layout.activity_main)
-
-        presenter = initPresenter { AllFoodPresenter(vm) }.apply {
+        withViewModel({ AllFoodPresenter(vm) }) {
             this.attachView(this@AllFoodActivity, this@AllFoodActivity)
             this.onCreate()
         }

@@ -7,24 +7,21 @@ import com.example.junemon.foodapi_mvvm.base.OnComplete
 import com.example.junemon.foodapi_mvvm.base.OnError
 import com.example.junemon.foodapi_mvvm.base.OnShowAllFood
 import com.example.junemon.foodapi_mvvm.data.repo.AllFoodRepo
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.example.junemon.foodapi_mvvm.util.executes
 
 class AllFoodViewModel(private val repo: AllFoodRepo) : BaseViewModel() {
 
     fun getAllFoodData() {
-        compose.add(repo.getCategoryFood().subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
-                liveDataState.value = OnComplete(false)
-            }.subscribe({
-                if (it != null) {
-                    liveDataState.value = OnShowAllFood(it)
-                    liveDataState.value = OnComplete(true)
-                }
-            }, {
-                liveDataState.value = OnError(it.localizedMessage)
-            })
-        )
+        liveDataState.value = OnComplete(false)
+        compose.executes(repo.getCategoryFood(), {
+            liveDataState.value = OnError(it.localizedMessage)
+            liveDataState.value = OnComplete(true)
+        }, {
+            it?.let { data ->
+                liveDataState.value = OnComplete(true)
+                liveDataState.value = OnShowAllFood(data)
+            }
+        })
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)

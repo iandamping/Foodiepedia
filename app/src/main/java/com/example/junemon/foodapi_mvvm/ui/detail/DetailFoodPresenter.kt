@@ -7,9 +7,13 @@ import com.example.junemon.foodapi_mvvm.base.OnShowDetailFoodData
 import com.example.junemon.foodapi_mvvm.data.viewmodel.DetailFoodViewModel
 import com.example.junemon.foodapi_mvvm.model.DetailFood
 
+/**
+ *
+Created by Ian Damping on 06/05/2019.
+Github = https://github.com/iandamping
+ */
 
 class DetailFoodPresenter(private val vm: DetailFoodViewModel) : BasePresenter<DetailFoodView>() {
-    //    private val type = object : TypeToken<String>() {}.type
     private var listIngredient: MutableList<String> = mutableListOf()
     private var listMeasurement: MutableList<String> = mutableListOf()
 

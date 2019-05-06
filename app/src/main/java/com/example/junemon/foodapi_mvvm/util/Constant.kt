@@ -1,4 +1,9 @@
 package com.example.junemon.foodapi_mvvm.util
+/**
+ *
+Created by Ian Damping on 06/05/2019.
+Github = https://github.com/iandamping
+ */
 
 object Constant {
     const val dialogTittle = "Please Wait"
@@ -10,6 +15,7 @@ object Constant {
     const val getAllFoodCategory = "list.php"
     const val getAllFoodArea = "list.php"
     const val getAllFoodIngredient = "list.php"
+    const val getFilterData = "filter.php"
     const val allCategoryValue = "list"
     const val intentDetailKey = "detailfood"
     const val categoryType = "Category"

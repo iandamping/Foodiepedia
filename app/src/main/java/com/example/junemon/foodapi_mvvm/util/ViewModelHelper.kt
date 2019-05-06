@@ -6,9 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 
-/*
-Created by ian 10/March/2019
+/**
+ *
+Created by Ian Damping on 06/05/2019.
+Github = https://github.com/iandamping
  */
+
 inline fun <reified T : ViewModel> FragmentActivity.viewModelHelperForActivity(): T {
     return ViewModelProviders.of(this).get(T::class.java)
 }
