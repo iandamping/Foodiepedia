@@ -10,7 +10,6 @@
         android:layout_height="fill_parent"
         android:scaleType="centerCrop"
         android:cropToPadding="false"
-        android:id="@+id/splash_bg"
         android:src="@drawable/splash" />
 
     <LinearLayout

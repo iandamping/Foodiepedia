@@ -16,5 +16,6 @@ object RepositoryModule {
         single { AllFoodCategoryDetailRepo(get()) }
         single { AllFoodListDataRepo(get()) }
         single { FilterFoodRepo(get()) }
+        single { RandomFoodRepo(get()) }
     }
 }

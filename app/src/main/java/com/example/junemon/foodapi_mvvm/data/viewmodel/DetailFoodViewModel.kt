@@ -1,7 +1,5 @@
 package com.example.junemon.foodapi_mvvm.data.viewmodel
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.OnLifecycleEvent
 import com.example.junemon.foodapi_mvvm.base.BaseViewModel
 import com.example.junemon.foodapi_mvvm.base.OnComplete
 import com.example.junemon.foodapi_mvvm.base.OnError
@@ -24,8 +22,8 @@ class DetailFoodViewModel(private val repo: DetailFoodRepo) : BaseViewModel() {
         })
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    private fun onDestroy() {
+    override fun onCleared() {
+        super.onCleared()
         dispose()
     }
 

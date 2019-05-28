@@ -57,4 +57,9 @@ class AllFoodListDataViewModel(private val repo: AllFoodListDataRepo) : BaseView
             it?.let { data -> liveDataState.value = OnShowCategoryFood(data) }
         })
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        dispose()
+    }
 }

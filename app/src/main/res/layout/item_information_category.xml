@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:maxLength="12"
             android:ellipsize="end"
             android:layout_margin="@dimen/spacing_medium"
             android:fontFamily="@font/lato" />

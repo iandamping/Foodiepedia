@@ -1,7 +1,6 @@
 package com.example.junemon.foodapi_mvvm.ui.detailinformation
 
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.junemon.foodapi_mvvm.R
 import com.example.junemon.foodapi_mvvm.data.viewmodel.AllFoodListDataViewModel
@@ -75,8 +74,13 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
             lnIngredientsSearch.visible()
             rvInformationIngredient.setUpWithGrid(it, R.layout.item_information_ingredient, 3, {
                 with(this) {
-                    tvInformationIngredient.text = it.strIngredient
-                    ivIngredientImages.loadUrlResize(resources.getString(R.string.ingredient_images_helper) + it.strIngredient +"-Small.png")
+                    if (it.strIngredient?.length!! >= 12) {
+                        val tmp = it.strIngredient.substring(0, 12) + " ..."
+                        tvInformationIngredient.text = tmp
+                    } else {
+                        tvInformationIngredient.text = it.strIngredient
+                    }
+                    ivIngredientImages.loadUrlResize(resources.getString(R.string.ingredient_images_helper) + it.strIngredient + "-Small.png")
                 }
             }, {
                 startActivity<FilterActivity> {
@@ -93,7 +97,7 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
             lnCategorySearch.visible()
             rvInformationCategory.setUpWithGrid(it, R.layout.item_information_category, 3, {
                 with(this) {
-                    ivDescriptionImages.loadUrl(resources.getString(R.string.category_images_helper) + it.category +".png")
+                    ivDescriptionImages.loadUrl(resources.getString(R.string.category_images_helper) + it.category + ".png")
                     tvDescriptionCategory.text = it.category
                 }
             }, {

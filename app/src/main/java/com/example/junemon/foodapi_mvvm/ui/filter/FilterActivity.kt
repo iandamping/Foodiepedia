@@ -40,7 +40,13 @@ class FilterActivity : AppCompatActivity(), FilterView {
     override fun onGetFilterData(data: List<FilterFood.Meal>) {
         rvFilterFood.setUpWithGrid(data, R.layout.item_filter_food, 2, {
             ivFilteringFood.loadUrl(it.strMealThumb)
-            tvFilteringFoodCategory.text = it.strMeal
+            if (it.strMeal?.length!! >= 12) {
+                val tmp = it.strMeal.substring(0, 12) + " ..."
+                tvFilteringFoodCategory.text = tmp
+            } else {
+                tvFilteringFoodCategory.text = it.strMeal
+            }
+
         }, {
             startActivity<DetailFoodActivity> {
                 putExtra(Constant.intentDetailKey, idMeal)

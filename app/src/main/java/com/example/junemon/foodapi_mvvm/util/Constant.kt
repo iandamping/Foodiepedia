@@ -14,6 +14,7 @@ object Constant {
     const val baseUrl = "https://www.themealdb.com/api/json/v1/1/"
     const val detailFood = "lookup.php"
     const val getAllFood = "latest.php"
+    const val getRandomFood = "random.php"
     const val getAllFoodCategoryDetail = "categories.php"
     const val getAllFoodCategory = "list.php"
     const val getAllFoodArea = "list.php"
@@ -24,4 +25,5 @@ object Constant {
     const val categoryType = "Category"
     const val areaType = "Area"
     const val ingredientType = "Ingredient"
+    const val delayMillis = 3000L
 }

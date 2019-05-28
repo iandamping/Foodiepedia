@@ -4,14 +4,9 @@ import android.content.Intent
 import androidx.lifecycle.Observer
 import com.example.junemon.foodapi_mvvm.base.*
 import com.example.junemon.foodapi_mvvm.data.viewmodel.AllFoodListDataViewModel
-import com.example.junemon.foodapi_mvvm.util.Constant
 import com.example.junemon.foodapi_mvvm.util.Constant.areaDetail
-import com.example.junemon.foodapi_mvvm.util.Constant.areaType
 import com.example.junemon.foodapi_mvvm.util.Constant.categoryDetail
-import com.example.junemon.foodapi_mvvm.util.Constant.categoryType
-import com.example.junemon.foodapi_mvvm.util.Constant.goingToDetail
 import com.example.junemon.foodapi_mvvm.util.Constant.ingredientDetail
-import com.example.junemon.foodapi_mvvm.util.Constant.ingredientType
 
 /**
  *

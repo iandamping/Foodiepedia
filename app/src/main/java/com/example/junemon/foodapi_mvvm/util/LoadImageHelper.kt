@@ -16,6 +16,6 @@ fun ImageView.loadUrl(url: String?) {
 }
 
 fun ImageView.loadUrlResize(url: String?) {
-    url?.let { Picasso.get().load(it).placeholder(R.drawable.empty_image).resize(100,100).into(this) }
+    url?.let { Picasso.get().load(it).placeholder(R.drawable.empty_image).resize(100, 100).into(this) }
 
 }

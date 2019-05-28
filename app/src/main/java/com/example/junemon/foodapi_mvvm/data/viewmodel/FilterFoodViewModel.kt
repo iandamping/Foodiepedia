@@ -46,4 +46,9 @@ class FilterFoodViewModel(private val repo: FilterFoodRepo) : BaseViewModel() {
             }
         })
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        dispose()
+    }
 }

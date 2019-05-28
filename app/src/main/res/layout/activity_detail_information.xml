@@ -1,65 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                                       android:layout_width="match_parent"
+                                       android:layout_height="match_parent">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
 
         <LinearLayout
-            android:id="@+id/lnAreaSearch"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium"
-                android:fontFamily="@font/lato"
-                android:text="All area information"
-                android:textSize="@dimen/letter_xlarge"
-                android:textStyle="bold" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvInformationArea"
+                android:id="@+id/lnAreaSearch"
+                android:visibility="gone"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium" />
+                android:orientation="vertical">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_medium"
+                    android:fontFamily="@font/lato"
+                    android:text="All area information"
+                    android:textSize="@dimen/letter_xlarge"
+                    android:textStyle="bold"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_gravity="center"
+                    android:id="@+id/rvInformationArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_medium"/>
         </LinearLayout>
 
         <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_home"
-            android:paddingTop="@dimen/spacing_medium"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
+                android:id="@+id/shimmer_home"
                 android:paddingTop="@dimen/spacing_medium"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                <include layout="@layout/item_ingredient_shimmer" />
+            <LinearLayout
+                    android:paddingTop="@dimen/spacing_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
 
-                <include layout="@layout/item_ingredient_shimmer" />
+                <include layout="@layout/item_ingredient_shimmer"/>
 
-                <include layout="@layout/item_ingredient_shimmer" />
+                <include layout="@layout/item_ingredient_shimmer"/>
 
-                <include layout="@layout/item_ingredient_shimmer" />
+                <include layout="@layout/item_ingredient_shimmer"/>
 
-                <include layout="@layout/item_ingredient_shimmer" />
+                <include layout="@layout/item_ingredient_shimmer"/>
 
-                <include layout="@layout/item_ingredient_shimmer" />
+                <include layout="@layout/item_ingredient_shimmer"/>
 
-                <include layout="@layout/item_ingredient_shimmer" />
+                <include layout="@layout/item_ingredient_shimmer"/>
 
+                <include layout="@layout/item_ingredient_shimmer"/>
 
 
             </LinearLayout>
@@ -67,51 +68,55 @@
         </com.facebook.shimmer.ShimmerFrameLayout>
 
         <LinearLayout
-            android:visibility="gone"
-            android:layout_below="@id/lnAreaSearch"
-            android:id="@+id/lnIngredientsSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium"
-                android:fontFamily="@font/lato"
-                android:text="All ingredient information"
-                android:textSize="@dimen/letter_xlarge"
-                android:textStyle="bold" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvInformationIngredient"
+                android:visibility="gone"
+                android:gravity="center"
+                android:layout_below="@id/lnAreaSearch"
+                android:id="@+id/lnIngredientsSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium" />
+                android:orientation="vertical">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_medium"
+                    android:fontFamily="@font/lato"
+                    android:text="All ingredient information"
+                    android:textSize="@dimen/letter_xlarge"
+                    android:textStyle="bold"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_gravity="center"
+                    android:id="@+id/rvInformationIngredient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_medium"/>
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
-            android:layout_below="@id/lnIngredientsSearch"
-            android:id="@+id/lnCategorySearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium"
-                android:fontFamily="@font/lato"
-                android:text="All category information"
-                android:textSize="@dimen/letter_xlarge"
-                android:textStyle="bold" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvInformationCategory"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_below="@id/lnIngredientsSearch"
+                android:id="@+id/lnCategorySearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium" />
+                android:orientation="vertical">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_medium"
+                    android:fontFamily="@font/lato"
+                    android:text="All category information"
+                    android:textSize="@dimen/letter_xlarge"
+                    android:textStyle="bold"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_gravity="center"
+                    android:id="@+id/rvInformationCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_medium"/>
         </LinearLayout>
 
 

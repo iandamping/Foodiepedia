@@ -16,12 +16,23 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     androidExtensions {
         experimental = true
+    }
+    dataBinding {
+        enabled = true
     }
 }
 
@@ -37,6 +48,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    //logger helper
+    implementation 'com.jakewharton.timber:timber:4.7.1'
     //fullscreen image viewer
     implementation 'com.github.chrisbanes:PhotoView:1.2.6'
     //anko
@@ -65,4 +78,8 @@ dependencies {
     implementation 'com.github.DingMouRen:LayoutManagerGroup:1e6f4f96eb'
     //shimmer
     implementation 'com.facebook.shimmer:shimmer:0.4.0'
+    //circleprofile
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+    //slider indicator
+    implementation 'me.relex:circleindicator:1.2.2@aar'
 }

@@ -6,6 +6,7 @@ import com.example.junemon.foodapi_mvvm.di.RepositoryModule.allRepoModul
 import com.example.junemon.foodapi_mvvm.di.ViewModelModule.allViewmodelModule
 import com.google.gson.Gson
 import org.koin.android.ext.android.startKoin
+import timber.log.Timber
 
 /**
  *
@@ -21,5 +22,6 @@ class FoodApp : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin(this, listOf(networkMod, allViewmodelModule, allRepoModul))
+        Timber.plant(Timber.DebugTree())
     }
 }

@@ -2,7 +2,6 @@ package com.example.junemon.foodapi_mvvm.ui.detail
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.junemon.foodapi_mvvm.R
 import com.example.junemon.foodapi_mvvm.data.viewmodel.DetailFoodViewModel
 import com.example.junemon.foodapi_mvvm.model.DetailFood
@@ -50,8 +49,6 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
     }
 
     override fun showIngredientData(dataIngredient: List<String>, dataMeasurement: List<String>) {
-        rvDetailedIngredients.layoutManager = LinearLayoutManager(this)
-        rvDetailedMeasurement.layoutManager = LinearLayoutManager(this)
         rvDetailedIngredients.isNestedScrollingEnabled = false
         rvDetailedMeasurement.isNestedScrollingEnabled = false
 

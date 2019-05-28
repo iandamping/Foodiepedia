@@ -19,8 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.example.junemon.foodapi_mvvm.ui.allfood.AllFoodActivity"
-                  android:theme="@style/FullScreen"/>
         <activity android:name="com.example.junemon.foodapi_mvvm.ui.detail.DetailFoodActivity"
                   android:theme="@style/FullScreen"/>
         <activity android:name="com.example.junemon.foodapi_mvvm.ui.discover.DiscoverActivity"
@@ -28,6 +26,8 @@
         <activity android:name=".ui.detailinformation.DetailInformationActivity"
                   android:theme="@style/FullScreen"/>
         <activity android:name=".ui.filter.FilterActivity"
+                  android:theme="@style/FullScreen"/>
+        <activity android:name=".ui.home.HomeActivity"
                   android:theme="@style/FullScreen"/>
         <meta-data android:name="preloaded_fonts" android:resource="@array/preloaded_fonts"/>
     </application>

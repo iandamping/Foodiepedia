@@ -8,6 +8,7 @@ import com.example.junemon.foodapi_mvvm.util.Constant.getAllFoodCategory
 import com.example.junemon.foodapi_mvvm.util.Constant.getAllFoodCategoryDetail
 import com.example.junemon.foodapi_mvvm.util.Constant.getAllFoodIngredient
 import com.example.junemon.foodapi_mvvm.util.Constant.getFilterData
+import com.example.junemon.foodapi_mvvm.util.Constant.getRandomFood
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -27,6 +28,9 @@ interface ApiInterface {
 
     @GET(detailFood)
     fun getDetailedFood(@Query("i") foodID: String): Observable<DetailFood>
+
+    @GET(getRandomFood)
+    fun getRandomFood(): Observable<DetailFood>
 
     @GET(getAllFoodCategory)
     fun getAllFoodCategory(@Query("c") data: String): Observable<CategoryFood>

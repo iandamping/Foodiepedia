@@ -1,31 +1,40 @@
 package com.example.junemon.foodapi_mvvm.data.viewmodel
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.OnLifecycleEvent
-import com.example.junemon.foodapi_mvvm.base.BaseViewModel
-import com.example.junemon.foodapi_mvvm.base.OnComplete
-import com.example.junemon.foodapi_mvvm.base.OnError
-import com.example.junemon.foodapi_mvvm.base.OnShowAllFood
+import com.example.junemon.foodapi_mvvm.base.*
+import com.example.junemon.foodapi_mvvm.data.repo.AllFoodCategoryDetailRepo
 import com.example.junemon.foodapi_mvvm.data.repo.AllFoodRepo
+import com.example.junemon.foodapi_mvvm.data.repo.RandomFoodRepo
 import com.example.junemon.foodapi_mvvm.util.executes
+import com.example.junemon.foodapi_mvvm.util.obsWithTripleZip
 
-class AllFoodViewModel(private val repo: AllFoodRepo) : BaseViewModel() {
+class AllFoodViewModel(private val allFoodRepo: AllFoodRepo,
+                       private val allFoodCategoryDetailRepo: AllFoodCategoryDetailRepo,
+                       private val randomFoodRepo: RandomFoodRepo
+) : BaseViewModel() {
 
     fun getAllFoodData() {
         liveDataState.value = OnComplete(false)
-        compose.executes(repo.getCategoryFood(), {
+        compose.executes(
+                obsWithTripleZip(
+                        allFoodRepo.getCategoryFood(),
+                        allFoodCategoryDetailRepo.getAllCategoryDetailRepo(),
+                        randomFoodRepo.getRandomFood()
+                ), {
             liveDataState.value = OnError(it.localizedMessage)
             liveDataState.value = OnComplete(true)
         }, {
-            it?.let { data ->
+            if (it != null) {
                 liveDataState.value = OnComplete(true)
-                liveDataState.value = OnShowAllFood(data)
+                liveDataState.value = OnShowAllFood(it.first)
+                liveDataState.value = OnShowCategoryFoodDetail(it.second)
+                liveDataState.value = OnShowRandomFood(it.third)
             }
         })
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    private fun onDestroy() {
+
+    override fun onCleared() {
+        super.onCleared()
         dispose()
     }
 
