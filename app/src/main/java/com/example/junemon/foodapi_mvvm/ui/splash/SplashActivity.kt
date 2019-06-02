@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.junemon.foodapi_mvvm.R
 import com.example.junemon.foodapi_mvvm.ui.home.HomeActivity
 import com.example.junemon.foodapi_mvvm.util.Constant.delayMillis
-import com.example.junemon.foodapi_mvvm.util.fullScreenAnimation
-import com.example.junemon.foodapi_mvvm.util.startActivity
+import com.ian.app.helper.util.fullScreenAnimation
+import com.ian.app.helper.util.startActivity
 
 /**
  *

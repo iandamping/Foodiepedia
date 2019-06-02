@@ -22,7 +22,7 @@ class HomePresenter(private val allFoodVM: AllFoodViewModel) : BasePresenter<Hom
             when (it) {
                 is OnShowCategoryFoodDetail -> view()?.onGetAllFoodCategoryDetails(it.data)
                 is OnShowAllFood -> view()?.onGetAllFood(it.data)
-                is OnShowRandomFood -> view()?.onGetRandomFood(it.data[0])
+                is OnShowRandomFood -> view()?.onGetRandomFood(it.data?.get(0))
                 is OnComplete -> setDialogShow(it.show)
                 is OnError -> view()?.onFailGetAllFoodCategoryDetails()
             }

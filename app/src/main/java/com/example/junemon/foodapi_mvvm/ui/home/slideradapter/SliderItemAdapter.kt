@@ -8,9 +8,9 @@ import com.example.junemon.foodapi_mvvm.R
 import com.example.junemon.foodapi_mvvm.model.AllFood
 import com.example.junemon.foodapi_mvvm.ui.detail.DetailFoodActivity
 import com.example.junemon.foodapi_mvvm.util.Constant
-import com.example.junemon.foodapi_mvvm.util.inflates
-import com.example.junemon.foodapi_mvvm.util.loadUrl
-import com.example.junemon.foodapi_mvvm.util.startActivity
+import com.ian.app.helper.util.inflates
+import com.ian.app.helper.util.loadWithGlide
+import com.ian.app.helper.util.startActivity
 import kotlinx.android.synthetic.main.item_slider.view.*
 
 /**
@@ -18,14 +18,14 @@ import kotlinx.android.synthetic.main.item_slider.view.*
 Created by Ian Damping on 16/04/2019.
 Github = https://github.com/iandamping
  */
-class SliderItemAdapter(private val data: List<AllFood.Meal>, private val ctx: Context?) : PagerAdapter() {
+class SliderItemAdapter(private val data: List<AllFood.Meal>, private val ctx: Context) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val views = container.inflates(R.layout.item_slider)
-        views.ivSliderImage.loadUrl(data[position].strMealThumb)
+        views.ivSliderImage.loadWithGlide(data[position].strMealThumb, ctx)
         views.ivSliderImage?.setOnClickListener {
 
-            ctx?.startActivity<DetailFoodActivity> {
+            ctx.startActivity<DetailFoodActivity> {
                 putExtra(Constant.intentDetailKey, this@SliderItemAdapter.data[position].idMeal)
 
             }

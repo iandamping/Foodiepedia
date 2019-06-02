@@ -2,7 +2,7 @@ package com.example.junemon.foodapi_mvvm.data.viewmodel
 
 import com.example.junemon.foodapi_mvvm.base.*
 import com.example.junemon.foodapi_mvvm.data.repo.AllFoodListDataRepo
-import com.example.junemon.foodapi_mvvm.util.executes
+import com.ian.app.helper.util.executes
 
 class AllFoodListDataViewModel(private val repo: AllFoodListDataRepo) : BaseViewModel() {
 
@@ -29,7 +29,7 @@ class AllFoodListDataViewModel(private val repo: AllFoodListDataRepo) : BaseView
         liveDataState.value = OnComplete(false)
         compose.executes(repo.getAllFoodIngredient(), {
             liveDataState.value = OnComplete(true)
-            liveDataState.value = OnError(it.localizedMessage)
+            liveDataState.value = OnError(it?.localizedMessage)
         }, {
             liveDataState.value = OnComplete(true)
             it?.let { data -> liveDataState.value = OnShowIngredientFood(data) }
@@ -40,7 +40,7 @@ class AllFoodListDataViewModel(private val repo: AllFoodListDataRepo) : BaseView
         liveDataState.value = OnComplete(false)
         compose.executes(repo.getAllFoodArea(), {
             liveDataState.value = OnComplete(true)
-            liveDataState.value = OnError(it.localizedMessage)
+            liveDataState.value = OnError(it?.localizedMessage)
         }, {
             liveDataState.value = OnComplete(true)
             it?.let { data -> liveDataState.value = OnShowAreaFood(data) }
@@ -51,7 +51,7 @@ class AllFoodListDataViewModel(private val repo: AllFoodListDataRepo) : BaseView
         liveDataState.value = OnComplete(false)
         compose.executes(repo.getAllFoodCategory(), {
             liveDataState.value = OnComplete(true)
-            liveDataState.value = OnError(it.localizedMessage)
+            liveDataState.value = OnError(it?.localizedMessage)
         }, {
             liveDataState.value = OnComplete(true)
             it?.let { data -> liveDataState.value = OnShowCategoryFood(data) }

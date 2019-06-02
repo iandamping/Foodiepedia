@@ -16,7 +16,13 @@ import com.example.junemon.foodapi_mvvm.ui.home.slideradapter.SliderItemAdapter
 import com.example.junemon.foodapi_mvvm.util.*
 import com.example.junemon.foodapi_mvvm.util.Constant.delayMillis
 import com.example.junemon.foodapi_mvvm.util.Constant.intentDetailKey
+import com.ian.app.helper.util.fullScreenAnimation
+import com.ian.app.helper.util.gone
+import com.ian.app.helper.util.loadWithGlide
+import com.ian.app.helper.util.startActivity
+import com.ian.recyclerviewhelper.helper.setUpHorizontal
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.item_home.*
 import kotlinx.android.synthetic.main.item_home.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -71,7 +77,7 @@ class HomeActivity : AppCompatActivity(), HomeView {
             rvFood.setUpHorizontal(nonNullData, R.layout.item_home, {
                 with(this) {
                     tvHomeFoodName.text = it.strCategory
-                    ivHomeFood.loadUrl(it.strCategoryThumb)
+                    ivHomeFood.loadWithGlide(it.strCategoryThumb,this@HomeActivity)
                 }
             }, {
                 startActivity<FilterActivity> {
@@ -98,11 +104,11 @@ class HomeActivity : AppCompatActivity(), HomeView {
         }
     }
 
-    override fun onGetRandomFood(data: DetailFood.Meal) {
-        ivRandomFood.loadUrl(data.strMealThumb)
+    override fun onGetRandomFood(data: DetailFood.Meal?) {
+        ivRandomFood.loadWithGlide(data?.strMealThumb,this@HomeActivity)
         lnIcon1.setOnClickListener {
             startActivity<DetailFoodActivity> {
-                putExtra(intentDetailKey, data.idMeal)
+                putExtra(intentDetailKey, data?.idMeal)
             }
         }
     }

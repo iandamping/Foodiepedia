@@ -7,7 +7,12 @@ import com.example.junemon.foodapi_mvvm.data.viewmodel.FilterFoodViewModel
 import com.example.junemon.foodapi_mvvm.model.FilterFood
 import com.example.junemon.foodapi_mvvm.ui.detail.DetailFoodActivity
 import com.example.junemon.foodapi_mvvm.util.*
+import com.ian.app.helper.util.fullScreenAnimation
+import com.ian.app.helper.util.loadWithGlide
+import com.ian.app.helper.util.startActivity
+import com.ian.recyclerviewhelper.helper.setUpWithGrid
 import kotlinx.android.synthetic.main.activity_filter.*
+import kotlinx.android.synthetic.main.item_filter_food.*
 import kotlinx.android.synthetic.main.item_filter_food.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -39,7 +44,7 @@ class FilterActivity : AppCompatActivity(), FilterView {
 
     override fun onGetFilterData(data: List<FilterFood.Meal>) {
         rvFilterFood.setUpWithGrid(data, R.layout.item_filter_food, 2, {
-            ivFilteringFood.loadUrl(it.strMealThumb)
+            ivFilteringFood.loadWithGlide(it.strMealThumb,this@FilterActivity)
             if (it.strMeal?.length!! >= 12) {
                 val tmp = it.strMeal.substring(0, 12) + " ..."
                 tvFilteringFoodCategory.text = tmp

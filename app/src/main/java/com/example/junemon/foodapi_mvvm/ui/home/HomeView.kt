@@ -13,7 +13,7 @@ Github = https://github.com/iandamping
 interface HomeView : BaseView {
     fun onGetAllFood(data: List<AllFood.Meal>?)
     fun onGetAllFoodCategoryDetails(data: List<AllFoodCategoryDetail.Category>?)
-    fun onGetRandomFood(data: DetailFood.Meal)
+    fun onGetRandomFood(data: DetailFood.Meal?)
     fun onFailGetAllFood()
     fun onFailGetAllFoodCategoryDetails()
 

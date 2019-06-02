@@ -5,8 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.junemon.foodapi_mvvm.R
 import com.example.junemon.foodapi_mvvm.data.viewmodel.DetailFoodViewModel
 import com.example.junemon.foodapi_mvvm.model.DetailFood
-import com.example.junemon.foodapi_mvvm.util.*
 import com.example.junemon.foodapi_mvvm.util.Constant.intentDetailKey
+import com.example.junemon.foodapi_mvvm.util.withViewModel
+import com.ian.app.helper.util.fullScreen
+import com.ian.app.helper.util.fullScreenAnimation
+import com.ian.app.helper.util.loadWithGlide
+import com.ian.recyclerviewhelper.helper.setUpVertical
 import kotlinx.android.synthetic.main.activity_detailed_food.*
 import kotlinx.android.synthetic.main.item_ingredient_adapter.view.*
 import kotlinx.android.synthetic.main.item_measurement_adapter.view.*
@@ -34,7 +38,7 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
 
 
     override fun showDetailData(data: DetailFood.Meal) {
-        ivDetailedFood.loadUrl(data.strMealThumb)
+        ivDetailedFood.loadWithGlide(data.strMealThumb, this@DetailFoodActivity)
         ivDetailedFood.setOnClickListener {
             fullScreen(data.strMealThumb)
         }
@@ -54,13 +58,17 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
 
 
         dataIngredient.let { data ->
-            rvDetailedIngredients.setUp(data, R.layout.item_ingredient_adapter, {
-                this@setUp.tvIngredientAdapter.text = it
+            rvDetailedIngredients.setUpVertical(data, R.layout.item_ingredient_adapter, {
+                with(this) {
+                    tvIngredientAdapter.text = it
+                }
             })
         }
         dataMeasurement.let { data ->
-            rvDetailedMeasurement.setUp(data, R.layout.item_measurement_adapter, {
-                this@setUp.tvMeasurementAdapter.text = it
+            rvDetailedMeasurement.setUpVertical(data, R.layout.item_measurement_adapter, {
+                with(this) {
+                    tvMeasurementAdapter.text = it
+                }
             })
         }
     }

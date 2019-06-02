@@ -9,9 +9,13 @@ import com.example.junemon.foodapi_mvvm.model.CategoryFood
 import com.example.junemon.foodapi_mvvm.model.IngredientFood
 import com.example.junemon.foodapi_mvvm.ui.filter.FilterActivity
 import com.example.junemon.foodapi_mvvm.util.*
+import com.example.junemon.foodapi_mvvm.util.Constant
+import com.ian.app.helper.util.*
+import com.ian.recyclerviewhelper.helper.setUpWithGrid
 import kotlinx.android.synthetic.main.activity_detail_information.*
 import kotlinx.android.synthetic.main.item_information_area.view.*
 import kotlinx.android.synthetic.main.item_information_category.view.*
+import kotlinx.android.synthetic.main.item_information_ingredient.*
 import kotlinx.android.synthetic.main.item_information_ingredient.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -80,7 +84,7 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
                     } else {
                         tvInformationIngredient.text = it.strIngredient
                     }
-                    ivIngredientImages.loadUrlResize(resources.getString(R.string.ingredient_images_helper) + it.strIngredient + "-Small.png")
+                    ivIngredientImages.loadResizeWithGlide(resources.getString(R.string.ingredient_images_helper) + it.strIngredient + "-Small.png",this@DetailInformationActivity)
                 }
             }, {
                 startActivity<FilterActivity> {
@@ -97,7 +101,7 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
             lnCategorySearch.visible()
             rvInformationCategory.setUpWithGrid(it, R.layout.item_information_category, 3, {
                 with(this) {
-                    ivDescriptionImages.loadUrl(resources.getString(R.string.category_images_helper) + it.category + ".png")
+                    ivDescriptionImages.loadWithGlide(resources.getString(R.string.category_images_helper) + it.category + ".png",this@DetailInformationActivity)
                     tvDescriptionCategory.text = it.category
                 }
             }, {

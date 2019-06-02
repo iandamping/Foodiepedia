@@ -5,7 +5,7 @@ import com.example.junemon.foodapi_mvvm.base.OnComplete
 import com.example.junemon.foodapi_mvvm.base.OnError
 import com.example.junemon.foodapi_mvvm.base.OnShowCategoryFoodDetail
 import com.example.junemon.foodapi_mvvm.data.repo.AllFoodCategoryDetailRepo
-import com.example.junemon.foodapi_mvvm.util.executes
+import com.ian.app.helper.util.executes
 
 class AllFoodCategoryViewModel(private val repo: AllFoodCategoryDetailRepo) : BaseViewModel() {
 
@@ -13,7 +13,7 @@ class AllFoodCategoryViewModel(private val repo: AllFoodCategoryDetailRepo) : Ba
         liveDataState.value = OnComplete(false)
         compose.executes(repo.getAllCategoryDetailRepo(), {
             liveDataState.value = OnComplete(true)
-            liveDataState.value = OnError(it.localizedMessage)
+            liveDataState.value = OnError(it?.localizedMessage)
         }, {
             it?.let { data ->
                 liveDataState.value = OnComplete(true)

@@ -7,7 +7,12 @@ import com.example.junemon.foodapi_mvvm.data.viewmodel.AllFoodCategoryViewModel
 import com.example.junemon.foodapi_mvvm.model.AllFoodCategoryDetail
 import com.example.junemon.foodapi_mvvm.ui.filter.FilterActivity
 import com.example.junemon.foodapi_mvvm.util.*
+import com.ian.app.helper.util.fullScreenAnimation
+import com.ian.app.helper.util.loadWithGlide
+import com.ian.app.helper.util.startActivity
+import com.ian.recyclerviewhelper.helper.setUpWithGrid
 import kotlinx.android.synthetic.main.activity_discover.*
+import kotlinx.android.synthetic.main.item_discover_food.*
 import kotlinx.android.synthetic.main.item_discover_food.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -36,7 +41,7 @@ class DiscoverActivity : AppCompatActivity(), DiscoverView {
                 with(this) {
                     tvDiscoverFoodCategory.text = it.strCategory
                     tvDiscoverFoodDescription.text = it.strCategoryDescription
-                    ivDiscoverFood.loadUrl(it.strCategoryThumb)
+                    ivDiscoverFood.loadWithGlide(it.strCategoryThumb,this@DiscoverActivity)
                 }
             },{
                 startActivity<FilterActivity> {
