@@ -188,10 +188,6 @@
 
                             <include layout="@layout/shimmer_recycler_bg" />
 
-                            <include layout="@layout/shimmer_recycler_bg" />
-
-                            <include layout="@layout/shimmer_recycler_bg" />
-
                         </LinearLayout>
 
                     </com.facebook.shimmer.ShimmerFrameLayout>
