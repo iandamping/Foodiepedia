@@ -16,5 +16,6 @@ object ViewModelModule {
         factory { AllFoodCategoryViewModel(get()) }
         factory { AllFoodListDataViewModel(get()) }
         factory { FilterFoodViewModel(get()) }
+        factory { LocalDataViewModel(get()) }
     }
 }

@@ -11,7 +11,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.splash.SplashActivity"
+        <activity android:name="com.example.junemon.foodapi_mvvm.ui.activity.splash.SplashActivity"
                   android:theme="@style/FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -19,16 +19,24 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.example.junemon.foodapi_mvvm.ui.detail.DetailFoodActivity"
-                  android:theme="@style/FullScreen"/>
-        <activity android:name="com.example.junemon.foodapi_mvvm.ui.discover.DiscoverActivity"
-                  android:theme="@style/FullScreen"/>
-        <activity android:name=".ui.detailinformation.DetailInformationActivity"
-                  android:theme="@style/FullScreen"/>
-        <activity android:name=".ui.filter.FilterActivity"
-                  android:theme="@style/FullScreen"/>
-        <activity android:name=".ui.home.HomeActivity"
-                  android:theme="@style/FullScreen"/>
+        <activity android:name=".ui.activity.MainActivity"
+                  android:theme="@style/FullScreen"
+                  android:screenOrientation="portrait"/>
+        <activity android:name="com.example.junemon.foodapi_mvvm.ui.activity.detail.DetailFoodActivity"
+                  android:theme="@style/FullScreen"
+                  android:screenOrientation="portrait"/>
+        <activity android:name="com.example.junemon.foodapi_mvvm.ui.activity.discover.DiscoverActivity"
+                  android:theme="@style/FullScreen"
+                  android:screenOrientation="portrait"/>
+        <activity android:name="com.example.junemon.foodapi_mvvm.ui.activity.detailinformation.DetailInformationActivity"
+                  android:theme="@style/FullScreen"
+                  android:screenOrientation="portrait"/>
+        <activity android:name="com.example.junemon.foodapi_mvvm.ui.activity.filter.FilterActivity"
+                  android:theme="@style/FullScreen"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.fragment.home.HomeFragment"
+                  android:theme="@style/FullScreen"
+                  android:screenOrientation="portrait"/>
         <meta-data android:name="preloaded_fonts" android:resource="@array/preloaded_fonts"/>
     </application>
 

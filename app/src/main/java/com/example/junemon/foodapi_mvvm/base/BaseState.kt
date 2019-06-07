@@ -1,5 +1,7 @@
 package com.example.junemon.foodapi_mvvm.base
 
+import androidx.lifecycle.LiveData
+import com.example.junemon.foodapi_mvvm.data.local_data.LocalFoodData
 import com.example.junemon.foodapi_mvvm.model.*
 
 /**
@@ -10,6 +12,7 @@ Github = https://github.com/iandamping
 
 sealed class BaseState
 
+data class OnGetLocalData(val data: LiveData<List<LocalFoodData>>) : BaseState()
 data class OnShowRandomFood(val data: List<DetailFood.Meal>?) : BaseState()
 data class OnShowDetailFoodData(val data: List<DetailFood.Meal>) : BaseState()
 data class OnShowAllFood(val data: List<AllFood.Meal>?) : BaseState()

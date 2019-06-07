@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FoodAPI_MVVM</string>
+    <string name="app_name">Food Everyone Love</string>
     <string name="explore_the_natural_wonders_food_of_the_world">Explore the natural wonders Food of the world</string>
     <string name="ingredient">Ingredient</string>
     <string name="area">Area</string>
@@ -8,4 +8,8 @@
     <string name="category_images_helper">https://www.themealdb.com/images/category/</string>
     <string name="see_all">See All</string>
     <string name="all_meal_category">All Meal Category</string>
+    <string name="saved_food">Saved Food</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="favorite">Favorite</string>
 </resources>

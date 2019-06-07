@@ -8,29 +8,26 @@ import com.ian.app.helper.util.executes
 import com.ian.app.helper.util.obsWithTripleZip
 
 class AllFoodViewModel(
-    private val allFoodRepo: AllFoodRepo,
-    private val allFoodCategoryDetailRepo: AllFoodCategoryDetailRepo,
-    private val randomFoodRepo: RandomFoodRepo
+        private val allFoodRepo: AllFoodRepo,
+        private val allFoodCategoryDetailRepo: AllFoodCategoryDetailRepo,
+        private val randomFoodRepo: RandomFoodRepo
 ) : BaseViewModel() {
 
     fun getAllFoodData() {
-        liveDataState.value = OnComplete(false)
         compose.executes(
-            obsWithTripleZip(
-                allFoodRepo.getCategoryFood(),
-                allFoodCategoryDetailRepo.getAllCategoryDetailRepo(),
-                randomFoodRepo.getRandomFood()
-            )!!, {
-                liveDataState.value = OnError(it?.localizedMessage)
-                liveDataState.value = OnComplete(true)
-            }, {
-                if (it != null) {
-                    liveDataState.value = OnComplete(true)
-                    liveDataState.value = OnShowAllFood(it.first)
-                    liveDataState.value = OnShowCategoryFoodDetail(it.second)
-                    liveDataState.value = OnShowRandomFood(it.third)
-                }
-            })
+                obsWithTripleZip(
+                        allFoodRepo.getCategoryFood(),
+                        allFoodCategoryDetailRepo.getAllCategoryDetailRepo(),
+                        randomFoodRepo.getRandomFood()
+                )!!, {
+            liveDataState.value = OnError(it?.localizedMessage)
+        }, {
+            if (it != null) {
+                liveDataState.value = OnShowAllFood(it.first)
+                liveDataState.value = OnShowCategoryFoodDetail(it.second)
+                liveDataState.value = OnShowRandomFood(it.third)
+            }
+        })
     }
 
 

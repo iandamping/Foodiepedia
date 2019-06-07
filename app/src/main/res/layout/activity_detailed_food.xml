@@ -8,12 +8,14 @@
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarDetailLayout"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
@@ -61,6 +63,16 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_medium"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvDetailTittles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:padding="@dimen/spacing_medium"
+                android:textSize="@dimen/letter_xlarge"
+                android:textStyle="bold"
+                tools:text="Vegetarian" />
 
             <TextView
                 android:id="@+id/tvDetailedFoodCategory"

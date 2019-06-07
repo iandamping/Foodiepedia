@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -31,9 +33,7 @@ android {
     androidExtensions {
         experimental = true
     }
-    dataBinding {
-        enabled = true
-    }
+
 }
 
 dependencies {
@@ -53,9 +53,12 @@ dependencies {
     //fullscreen image viewer
     implementation 'com.github.chrisbanes:PhotoView:1.2.6'
     //recyclerview helper
-    implementation 'com.github.iandamping:RecyclerViewHelper:0.0.3'
+    implementation 'com.github.iandamping:RecyclerViewHelper:0.0.4'
     //common helper
-    implementation 'com.github.iandamping:CommonHelper:0.0.3'
+    implementation 'com.github.iandamping:CommonHelper:0.0.7'
+    //room
+    implementation 'androidx.room:room-runtime:2.1.0-rc01'
+    kapt 'androidx.room:room-compiler:2.1.0-rc01'
     //anko
     implementation "org.jetbrains.anko:anko:$anko_version"
     implementation "org.jetbrains.anko:anko-design:$anko_version"

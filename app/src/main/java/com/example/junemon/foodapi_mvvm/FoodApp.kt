@@ -1,6 +1,7 @@
 package com.example.junemon.foodapi_mvvm
 
 import android.app.Application
+import com.example.junemon.foodapi_mvvm.di.DatabaseModule.databaseModule
 import com.example.junemon.foodapi_mvvm.di.NetworkModule.networkMod
 import com.example.junemon.foodapi_mvvm.di.RepositoryModule.allRepoModul
 import com.example.junemon.foodapi_mvvm.di.ViewModelModule.allViewmodelModule
@@ -21,7 +22,7 @@ class FoodApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        startKoin(this, listOf(networkMod, allViewmodelModule, allRepoModul))
+        startKoin(this, listOf(networkMod, allViewmodelModule, allRepoModul, databaseModule))
         Timber.plant(Timber.DebugTree())
     }
 }
