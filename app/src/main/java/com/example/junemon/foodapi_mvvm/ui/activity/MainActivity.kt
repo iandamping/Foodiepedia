@@ -5,6 +5,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.junemon.foodapi_mvvm.R
 import com.example.junemon.foodapi_mvvm.ui.fragment.home.HomeFragment
+import com.example.junemon.foodapi_mvvm.ui.fragment.saved_food.SavedFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ian.app.helper.util.fullScreenAnimation
 import com.ian.app.helper.util.switchFragment
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 true
             }
             R.id.navigation_saved -> {
-//                supportFragmentManager.switchFragment(null, R.id.main_container, SavedMovieFragment())
+                supportFragmentManager.switchFragment(null, R.id.main_container, SavedFragment())
                 true
             }
 

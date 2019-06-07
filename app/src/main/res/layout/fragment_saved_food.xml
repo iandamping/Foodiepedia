@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarSavedFood"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="Food You Saved"/>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_below="@id/toolbarSavedFood"
+        android:id="@+id/shimmerSavedFood"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <include layout="@layout/shimmer_saved_food" />
+
+            <include layout="@layout/shimmer_saved_food" />
+
+            <include layout="@layout/shimmer_saved_food" />
+
+            <include layout="@layout/shimmer_saved_food" />
+
+            <include layout="@layout/shimmer_saved_food" />
+
+            <include layout="@layout/shimmer_saved_food" />
+
+            <include layout="@layout/shimmer_saved_food" />
+
+
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <TextView
+        android:id="@+id/tvSavedFoodEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/lato"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/you_have_no_food_saved"
+        android:visibility="gone" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSavedFood"
+        android:layout_below="@id/toolbarSavedFood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

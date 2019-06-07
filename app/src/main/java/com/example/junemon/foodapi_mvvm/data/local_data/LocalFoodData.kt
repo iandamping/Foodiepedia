@@ -14,5 +14,6 @@ data class LocalFoodData(
         @PrimaryKey(autoGenerate = true) var localID: Int?,
         @ColumnInfo(name = "food_id_meal") var idMeal: String?,
         @ColumnInfo(name = "food_id_name") var strMeal: String?,
+        @ColumnInfo(name = "food_id_photo") var strMealThumb: String?,
         @ColumnInfo(name = "food_id_category") var strCategory: String?
 )

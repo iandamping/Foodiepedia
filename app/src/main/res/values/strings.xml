@@ -12,4 +12,5 @@
     <string name="home">Home</string>
     <string name="profile">Profile</string>
     <string name="favorite">Favorite</string>
+    <string name="you_have_no_food_saved">You have no food saved</string>
 </resources>

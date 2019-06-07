@@ -99,7 +99,7 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
                 setFavoriteState()
             }
         }
-        this.foodDataToSave = LocalFoodData(null, data.idMeal, data.strMeal, data.strCategory)
+        this.foodDataToSave = LocalFoodData(null, data.idMeal, data.strMeal, data.strMealThumb, data.strCategory)
         ivDetailedFood.loadWithGlide(data.strMealThumb, this@DetailFoodActivity)
         ivDetailedFood.setOnClickListener {
             fullScreen(data.strMealThumb)
