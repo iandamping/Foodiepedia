@@ -36,9 +36,7 @@ class DetailInformationPresenter(private val vm: AllFoodListDataViewModel) : Bas
     private fun initData() {
         vm.liveDataState.observe(getLifeCycleOwner(), Observer {
             when (it) {
-                is OnComplete -> {
-                    setDialogShow(it.show)
-                }
+
                 is OnShowAreaFood -> {
                     view()?.getAreaData(it.data)
                 }

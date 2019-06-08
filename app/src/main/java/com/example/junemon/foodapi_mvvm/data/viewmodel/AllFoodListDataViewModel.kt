@@ -26,34 +26,25 @@ class AllFoodListDataViewModel(private val repo: AllFoodListDataRepo) : BaseView
 //            })
 //    }
     fun getIngredientData() {
-        liveDataState.value = OnComplete(false)
         compose.executes(repo.getAllFoodIngredient(), {
-            liveDataState.value = OnComplete(true)
             liveDataState.value = OnError(it?.localizedMessage)
         }, {
-            liveDataState.value = OnComplete(true)
             it?.let { data -> liveDataState.value = OnShowIngredientFood(data) }
         })
     }
 
     fun getAreaData() {
-        liveDataState.value = OnComplete(false)
         compose.executes(repo.getAllFoodArea(), {
-            liveDataState.value = OnComplete(true)
             liveDataState.value = OnError(it?.localizedMessage)
         }, {
-            liveDataState.value = OnComplete(true)
             it?.let { data -> liveDataState.value = OnShowAreaFood(data) }
         })
     }
 
     fun getCategoryData() {
-        liveDataState.value = OnComplete(false)
         compose.executes(repo.getAllFoodCategory(), {
-            liveDataState.value = OnComplete(true)
             liveDataState.value = OnError(it?.localizedMessage)
         }, {
-            liveDataState.value = OnComplete(true)
             it?.let { data -> liveDataState.value = OnShowCategoryFood(data) }
         })
     }
