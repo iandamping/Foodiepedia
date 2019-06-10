@@ -48,8 +48,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
-    //logger helper
-    implementation 'com.jakewharton.timber:timber:4.7.1'
+//    //logger helper
+//    implementation 'com.jakewharton.timber:timber:4.7.1'
     //fullscreen image viewer
     implementation 'com.github.chrisbanes:PhotoView:1.2.6'
     //recyclerview helper
