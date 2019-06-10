@@ -50,7 +50,8 @@ class DetailFoodPresenter(private val vm: DetailFoodViewModel, private val local
         })
     }
 
-    fun saveLocalData(data: LocalFoodData) {
+    fun saveLocalData(data: LocalFoodData?) {
+        if (data!=null)
         localVm.insertLocalData(data)
     }
 

@@ -16,7 +16,7 @@ interface LocalFoodDao {
     @Query("SELECT * FROM food_data WHERE localID = :id")
     fun loadAllFoodeDataById(id: Int?): LiveData<LocalFoodData>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFoodData(inputFood: LocalFoodData?)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)

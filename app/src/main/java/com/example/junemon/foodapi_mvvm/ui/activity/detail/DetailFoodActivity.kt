@@ -11,6 +11,7 @@ import com.example.junemon.foodapi_mvvm.data.local_data.LocalFoodData
 import com.example.junemon.foodapi_mvvm.data.viewmodel.DetailFoodViewModel
 import com.example.junemon.foodapi_mvvm.data.viewmodel.LocalDataViewModel
 import com.example.junemon.foodapi_mvvm.model.DetailFood
+import com.example.junemon.foodapi_mvvm.model.toDatabaseModel
 import com.example.junemon.foodapi_mvvm.ui.activity.MainActivity
 import com.example.junemon.foodapi_mvvm.util.Constant.intentDetailKey
 import com.example.junemon.foodapi_mvvm.util.initPresenter
@@ -35,7 +36,7 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
     private val localVm: LocalDataViewModel by viewModel()
     private val vm: DetailFoodViewModel by viewModel()
     private lateinit var presenter: DetailFoodPresenter
-    private lateinit var foodDataToSave: LocalFoodData
+    private var foodDataToSave: DetailFood.Meal? = null
     private var idForDeleteItem: Int? = null
     private var isFavorite: Boolean = false
     private var foodLocalData: MutableList<LocalFoodData> = mutableListOf()
@@ -81,7 +82,7 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
                     isFavorite = false
                     setFavoriteState()
                 } else {
-                    presenter.saveLocalData(foodDataToSave)
+                    presenter.saveLocalData(foodDataToSave?.toDatabaseModel())
                     isFavorite = true
                     setFavoriteState()
                 }
@@ -99,7 +100,7 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
                 setFavoriteState()
             }
         }
-        this.foodDataToSave = LocalFoodData(null, data.idMeal, data.strMeal, data.strMealThumb, data.strCategory)
+        this.foodDataToSave = data
         ivDetailedFood.loadWithGlide(data.strMealThumb, this@DetailFoodActivity)
         ivDetailedFood.setOnClickListener {
             fullScreen(data.strMealThumb)

@@ -1,5 +1,6 @@
 package com.example.junemon.foodapi_mvvm.model
 
+import com.example.junemon.foodapi_mvvm.data.local_data.LocalFoodData
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -61,4 +62,8 @@ data class DetailFood(@field:SerializedName("meals") val food: List<Meal>?) {
             @field:SerializedName("strMeasure20") val strMeasure20: String?,
             @field:SerializedName("strSource") val strSource: String?
     )
+}
+
+fun DetailFood.Meal.toDatabaseModel():LocalFoodData{
+    return LocalFoodData(null,idMeal,strMeal,strMealThumb,strCategory)
 }
