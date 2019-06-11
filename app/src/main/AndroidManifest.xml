@@ -34,6 +34,9 @@
         <activity android:name="com.example.junemon.foodiepedia.ui.activity.filter.FilterActivity"
                   android:theme="@style/FullScreen"
                   android:screenOrientation="portrait"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_application_id"/>
         <meta-data android:name="preloaded_fonts" android:resource="@array/preloaded_fonts"/>
     </application>
 

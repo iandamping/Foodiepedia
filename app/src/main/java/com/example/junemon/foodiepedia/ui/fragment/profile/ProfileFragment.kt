@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.junemon.foodiepedia.BuildConfig
 import com.example.junemon.foodiepedia.R
 import com.example.junemon.foodiepedia.model.UserProfileData
 import com.example.junemon.foodiepedia.util.Constant.RequestSignIn
@@ -23,9 +24,11 @@ class ProfileFragment : Fragment(), ProfileView {
 
     private lateinit var presenter: ProfilePresenter
     private var actualView: View? = null
-    private val loginProvider = arrayListOf(
+    private val gmailLoginProvider = arrayListOf(
             AuthUI.IdpConfig.GoogleBuilder().build()
     )
+    private val facebookLoginProvider = arrayListOf(
+            AuthUI.IdpConfig.FacebookBuilder().build())
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -61,7 +64,7 @@ class ProfileFragment : Fragment(), ProfileView {
         }
         actualView?.lnAfterLogin?.visible()
         actualView?.btnLogin?.visible()
-        actualView?.lnGoogleLogin?.gone()
+        actualView?.lnLoginFirebaseAuth?.gone()
         actualView?.btnLogin?.text = context?.getString(R.string.logout)
         actualView?.btnLogin?.setOnClickListener {
             presenter.logOut()
@@ -70,11 +73,11 @@ class ProfileFragment : Fragment(), ProfileView {
 
     override fun initView(view: View) {
         this.actualView = view
-        actualView?.lnGoogleLogin?.setOnClickListener {
-            createSignInIntent()
+        actualView?.lnGmailLogin?.setOnClickListener {
+            createGmailSignInIntent()
         }
-        actualView?.btnProfileEditUser?.setOnClickListener {
-            createSignInIntent()
+        actualView?.lnFacebookLogin?.setOnClickListener {
+            createFacebookSignInIntent()
         }
     }
 
@@ -93,16 +96,27 @@ class ProfileFragment : Fragment(), ProfileView {
         actualView?.btnProfileEditUser?.gone()
         actualView?.lnProfileEmail?.gone()
         actualView?.btnLogin?.gone()
-        actualView?.lnGoogleLogin?.visible()
+        actualView?.lnLoginFirebaseAuth?.visible()
     }
 
 
-    private fun createSignInIntent() {
+    private fun createGmailSignInIntent() {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setIsSmartLockEnabled(false)
-                        .setAvailableProviders(loginProvider)
+                        .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
+                        .setAvailableProviders(gmailLoginProvider)
+                        .build(),
+                RequestSignIn
+        )
+    }
+
+    private fun createFacebookSignInIntent() {
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
+                        .setAvailableProviders(facebookLoginProvider)
                         .build(),
                 RequestSignIn
         )
