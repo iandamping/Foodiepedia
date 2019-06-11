@@ -1,6 +1,7 @@
 package com.example.junemon.foodiepedia.ui.activity.detail
 
 import androidx.lifecycle.Observer
+import com.example.junemon.foodiepedia.FoodApp
 import com.example.junemon.foodiepedia.base.BasePresenter
 import com.example.junemon.foodiepedia.base.OnComplete
 import com.example.junemon.foodiepedia.base.OnGetLocalData
@@ -9,6 +10,7 @@ import com.example.junemon.foodiepedia.data.local_data.LocalFoodData
 import com.example.junemon.foodiepedia.data.viewmodel.DetailFoodViewModel
 import com.example.junemon.foodiepedia.data.viewmodel.LocalDataViewModel
 import com.example.junemon.foodiepedia.model.DetailFood
+import com.example.junemon.foodiepedia.util.Constant
 
 /**
  *
@@ -22,7 +24,16 @@ class DetailFoodPresenter(private val vm: DetailFoodViewModel, private val local
 
     override fun onCreate() {
         view()?.initView()
+        getLoggedinStatus()
         getLocalData()
+    }
+
+    private fun getLoggedinStatus(){
+        if (!FoodApp.prefHelper.getStringInSharedPreference(Constant.saveUserProfile).isNullOrBlank()){
+            view()?.isAlreadyLoggedin(true)
+        }else{
+            view()?.isAlreadyLoggedin(false)
+        }
     }
 
     private fun getLocalData() {

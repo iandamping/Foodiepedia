@@ -19,8 +19,6 @@ abstract class BasePresenter<View> : ViewModel(), BasePresenterHelper {
     private var view: View? = null
     private lateinit var lifecycleOwner: FragmentActivity
     private lateinit var dialog: AlertDialog
-//    private lateinit var userData: UserProfileData
-//    private var listener: FirebaseAuth.AuthStateListener? = null
 
 
     fun attachView(view: View, lifeCycleOwner: FragmentActivity) {
@@ -29,24 +27,6 @@ abstract class BasePresenter<View> : ViewModel(), BasePresenterHelper {
         setBaseDialog(lifecycleOwner)
     }
 
-//    protected fun getFirebaseUserData(loggedIn: (UserProfileData) -> Unit, notLoggedIn: () -> Unit) {
-//        listener = FirebaseAuth.AuthStateListener { auth ->
-//            if (auth.currentUser != null) {
-//                if (!prefHelper.getStringInSharedPreference(saveUserProfile).isNullOrBlank()) {
-//                    this.userData = gson.fromJson(prefHelper.getStringInSharedPreference(saveUserProfile), UserProfileData::class.java)
-//                    loggedIn(userData)
-//                } else {
-//                    this.userData = UserProfileData(mFirebaseAuth.currentUser?.uid,
-//                            mFirebaseAuth.currentUser?.photoUrl.toString(),
-//                            mFirebaseAuth.currentUser?.displayName,
-//                            mFirebaseAuth.currentUser?.email)
-//                    prefHelper.saveStringInSharedPreference(saveUserProfile, gson.toJson(userData))
-//                    loggedIn(userData)
-//                }
-//            } else notLoggedIn
-//        }
-//    }
-
     protected fun view(): View? {
         return view
     }
@@ -54,16 +34,6 @@ abstract class BasePresenter<View> : ViewModel(), BasePresenterHelper {
     protected fun getLifeCycleOwner(): FragmentActivity {
         return lifecycleOwner
     }
-
-//    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-//    private fun onResume() {
-//        listener?.let { FoodApp.mFirebaseAuth.addAuthStateListener(it) }
-//    }
-//
-//    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-//    private fun onPause() {
-//        listener?.let { FoodApp.mFirebaseAuth.removeAuthStateListener(it) }
-//    }
 
     override fun onCleared() {
         super.onCleared()

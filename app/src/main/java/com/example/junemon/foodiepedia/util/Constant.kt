@@ -28,4 +28,5 @@ object Constant {
     const val prefHelperInit = " init preference helper"
     const val saveUserProfile = " save user profile"
     const val RequestSignIn = 2341
+    const val switchBackToMain = " switching back"
 }

@@ -22,4 +22,8 @@ class PreferenceHelper(app: Application) {
     fun getStringInSharedPreference(key: String?): String? {
         return prefHelp.getString(key, "")
     }
+
+    fun deleteSharedPreference() {
+        preHelperEditor.clear().apply()
+    }
 }

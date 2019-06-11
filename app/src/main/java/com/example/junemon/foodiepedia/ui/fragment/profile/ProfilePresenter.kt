@@ -61,6 +61,7 @@ class ProfilePresenter : BaseFragmentPresenter<ProfileView>() {
 
     fun logOut() {
         ctx?.let { AuthUI.getInstance().signOut(it) }
+        prefHelper.deleteSharedPreference()
         ctx?.startActivity<MainActivity>()
     }
 }

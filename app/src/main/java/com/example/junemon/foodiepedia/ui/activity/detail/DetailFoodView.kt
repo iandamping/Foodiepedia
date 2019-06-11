@@ -12,6 +12,7 @@ Github = https://github.com/iandamping
 
 interface DetailFoodView : BaseView {
     fun showDetailData(data: DetailFood.Meal)
+    fun isAlreadyLoggedin(data:Boolean)
     fun showIngredientData(dataIngredient: List<String>, dataMeasurement: List<String>)
     fun onSuccessGetLocalData(data: List<LocalFoodData>)
 }

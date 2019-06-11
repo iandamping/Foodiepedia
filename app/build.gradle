@@ -60,7 +60,7 @@ dependencies {
     //recyclerview helper
     implementation 'com.github.iandamping:RecyclerViewHelper:0.0.4'
     //common helper
-    implementation 'com.github.iandamping:CommonHelper:0.0.8b'
+    implementation 'com.github.iandamping:CommonHelper:0.0.9b'
     //room
     implementation 'androidx.room:room-runtime:2.1.0-rc01'
     kapt 'androidx.room:room-compiler:2.1.0-rc01'

@@ -14,12 +14,10 @@ import com.example.junemon.foodiepedia.model.DetailFood
 import com.example.junemon.foodiepedia.model.toDatabaseModel
 import com.example.junemon.foodiepedia.ui.activity.MainActivity
 import com.example.junemon.foodiepedia.util.Constant.intentDetailKey
+import com.example.junemon.foodiepedia.util.Constant.switchBackToMain
 import com.example.junemon.foodiepedia.util.initPresenter
 import com.google.android.material.appbar.AppBarLayout
-import com.ian.app.helper.util.fullScreen
-import com.ian.app.helper.util.fullScreenAnimation
-import com.ian.app.helper.util.loadWithGlide
-import com.ian.app.helper.util.startActivity
+import com.ian.app.helper.util.*
 import com.ian.recyclerviewhelper.helper.setUpVertical
 import kotlinx.android.synthetic.main.activity_detailed_food.*
 import kotlinx.android.synthetic.main.item_ingredient_adapter.view.*
@@ -33,6 +31,8 @@ Github = https://github.com/iandamping
  */
 
 class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
+
+    private var isLoggedIn: Boolean = false
     private val localVm: LocalDataViewModel by viewModel()
     private val vm: DetailFoodViewModel by viewModel()
     private lateinit var presenter: DetailFoodPresenter
@@ -53,10 +53,13 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
         }
     }
 
+    override fun isAlreadyLoggedin(data: Boolean) {
+        this.isLoggedIn = data
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.detail_saving_data_menu, menu)
         menuItem = menu
-
         return true
     }
 
@@ -77,14 +80,20 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
                 true
             }
             R.id.add_to_favorite -> {
-                if (isFavorite) {
-                    presenter.deleteLocalID(idForDeleteItem)
-                    isFavorite = false
-                    setFavoriteState()
-                } else {
-                    presenter.saveLocalData(foodDataToSave?.toDatabaseModel())
-                    isFavorite = true
-                    setFavoriteState()
+                if (isLoggedIn){
+                    if (isFavorite) {
+                        presenter.deleteLocalID(idForDeleteItem)
+                        isFavorite = false
+                        setFavoriteState()
+                    } else {
+                        presenter.saveLocalData(foodDataToSave?.toDatabaseModel())
+                        isFavorite = true
+                        setFavoriteState()
+                    }
+                } else{
+                    alertHelperFailed<MainActivity>("Please Login First") {
+                        putExtra(switchBackToMain,"3")
+                    }
                 }
                 true
             }

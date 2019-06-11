@@ -7,6 +7,7 @@ import com.example.junemon.foodiepedia.R
 import com.example.junemon.foodiepedia.ui.fragment.home.HomeFragment
 import com.example.junemon.foodiepedia.ui.fragment.profile.ProfileFragment
 import com.example.junemon.foodiepedia.ui.fragment.saved_food.SavedFragment
+import com.example.junemon.foodiepedia.util.Constant.switchBackToMain
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ian.app.helper.util.fullScreenAnimation
 import com.ian.app.helper.util.switchFragment
@@ -24,7 +25,16 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         fullScreenAnimation()
         setContentView(R.layout.activity_main)
         initBottomNav()
-//        moveToSpesificFragment(intent?.getStringExtra(Constant.switchBackToMain))
+        moveToSpesificFragment(intent?.getStringExtra(switchBackToMain))
+    }
+
+    private fun moveToSpesificFragment(dataCallback: String?) {
+        when {
+            dataCallback != null && dataCallback.contentEquals("3") -> {
+                supportFragmentManager.switchFragment(null, R.id.main_container, ProfileFragment())
+                bottom_navigation.selectedItemId = R.id.navigation_profile
+            }
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
