@@ -10,7 +10,8 @@ import com.example.junemon.foodiepedia.data.local_data.LocalFoodData
 import com.example.junemon.foodiepedia.data.viewmodel.LocalDataViewModel
 import com.example.junemon.foodiepedia.ui.activity.detail.DetailFoodActivity
 import com.example.junemon.foodiepedia.util.Constant.intentDetailKey
-import com.example.junemon.foodiepedia.util.withViewModel
+import com.example.junemon.foodiepedia.util.alertHelperDelete
+import com.example.junemon.foodiepedia.util.initPresenter
 import com.ian.app.helper.util.*
 import com.ian.recyclerviewhelper.helper.setUpVertical
 import kotlinx.android.synthetic.main.fragment_saved_food.view.*
@@ -25,10 +26,10 @@ Github = https://github.com/iandamping
 class SavedFragment : Fragment(), SavedView {
     private var actualView: View? = null
     private val vm: LocalDataViewModel by viewModel()
-
+    private lateinit var presenter: SavedPresenter
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        this.withViewModel({ SavedPresenter(vm) }) {
+        presenter = initPresenter { SavedPresenter(vm) }.apply {
             attachView(this@SavedFragment, this@SavedFragment)
             initLocalData()
         }
@@ -48,6 +49,11 @@ class SavedFragment : Fragment(), SavedView {
                 ivSavedFood.loadWithGlide(it.strMealThumb)
                 tvSavedFoodTittle.text = it.strMeal
                 tvSavedFoodCategory.text = it.strCategory
+                ivDeleteFood.setOnClickListener { v ->
+                    context?.alertHelperDelete(it.strMealThumb) {
+                        presenter.deleteSelectedFood(it.localID)
+                    }
+                }
             }
         }, {
             context?.startActivity<DetailFoodActivity> {

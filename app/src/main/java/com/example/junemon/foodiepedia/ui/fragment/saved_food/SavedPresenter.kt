@@ -38,6 +38,10 @@ class SavedPresenter(private val vm: LocalDataViewModel) : BaseFragmentPresenter
         }
     }
 
+    fun deleteSelectedFood(foodID: Int?) {
+        if (foodID != null) vm.deleteSelectedLocalData(foodID)
+    }
+
     override fun onCreateView(view: View) {
         view()?.initView(view)
     }

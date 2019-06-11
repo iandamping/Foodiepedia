@@ -80,7 +80,7 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
                 true
             }
             R.id.add_to_favorite -> {
-                if (isLoggedIn){
+                if (isLoggedIn) {
                     if (isFavorite) {
                         presenter.deleteLocalID(idForDeleteItem)
                         isFavorite = false
@@ -90,9 +90,9 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
                         isFavorite = true
                         setFavoriteState()
                     }
-                } else{
+                } else {
                     alertHelperFailed<MainActivity>("Please Login First") {
-                        putExtra(switchBackToMain,"3")
+                        putExtra(switchBackToMain, "3")
                     }
                 }
                 true

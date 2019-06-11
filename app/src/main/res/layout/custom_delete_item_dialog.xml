@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivAlertDelete"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:src="@drawable/ic_dinner" />
+
+    <TextView
+        android:id="@+id/tvAlertDeleteMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:fontFamily="@font/lato"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:text="@string/are_you_sure_want_to_delete_this"/>
+
+</LinearLayout>

@@ -28,10 +28,10 @@ class DetailFoodPresenter(private val vm: DetailFoodViewModel, private val local
         getLocalData()
     }
 
-    private fun getLoggedinStatus(){
-        if (!FoodApp.prefHelper.getStringInSharedPreference(Constant.saveUserProfile).isNullOrBlank()){
+    private fun getLoggedinStatus() {
+        if (!FoodApp.prefHelper.getStringInSharedPreference(Constant.saveUserProfile).isNullOrBlank()) {
             view()?.isAlreadyLoggedin(true)
-        }else{
+        } else {
             view()?.isAlreadyLoggedin(false)
         }
     }
