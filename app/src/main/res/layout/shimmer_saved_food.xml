@@ -19,14 +19,12 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvSimilarMovieTittle"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_medium"
             android:background="@color/placeholder_bg" />
 
         <TextView
-            android:id="@+id/tvSimilarMovieReleaseDate"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_medium"

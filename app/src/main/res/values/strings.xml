@@ -13,13 +13,8 @@
     <string name="profile">Profile</string>
     <string name="favorite">Favorite</string>
     <string name="you_have_no_food_saved">You have no food saved</string>
-    <string name="user_address">User Address</string>
-    <string name="user_province">User Province</string>
-    <string name="user_city">User City</string>
     <string name="user_name">User Name</string>
-    <string name="nomer_hp">Nomer HP</string>
     <string name="email">Email</string>
-    <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="facebook_application_id" translatable="false">398327677559709</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb398327677559709</string>
