@@ -11,10 +11,7 @@ import com.example.junemon.foodiepedia.data.viewmodel.LocalDataViewModel
 import com.example.junemon.foodiepedia.ui.activity.detail.DetailFoodActivity
 import com.example.junemon.foodiepedia.util.Constant.intentDetailKey
 import com.example.junemon.foodiepedia.util.withViewModel
-import com.ian.app.helper.util.gone
-import com.ian.app.helper.util.inflates
-import com.ian.app.helper.util.loadWithGlide
-import com.ian.app.helper.util.startActivity
+import com.ian.app.helper.util.*
 import com.ian.recyclerviewhelper.helper.setUpVertical
 import kotlinx.android.synthetic.main.fragment_saved_food.view.*
 import kotlinx.android.synthetic.main.item_saved_food.view.*
@@ -48,7 +45,7 @@ class SavedFragment : Fragment(), SavedView {
         actualView?.shimmerSavedFood?.gone()
         actualView?.rvSavedFood?.setUpVertical(data, R.layout.item_saved_food, {
             with(this) {
-                ivSavedFood.loadWithGlide(it.strMealThumb, context)
+                ivSavedFood.loadWithGlide(it.strMealThumb)
                 tvSavedFoodTittle.text = it.strMeal
                 tvSavedFoodCategory.text = it.strCategory
             }
@@ -64,6 +61,7 @@ class SavedFragment : Fragment(), SavedView {
     }
 
     override fun onFailedGetData(msg: String?) {
+        actualView?.tvSavedFoodEmpty?.visible()
         actualView?.shimmerSavedFood?.stopShimmer()
         actualView?.shimmerSavedFood?.gone()
     }

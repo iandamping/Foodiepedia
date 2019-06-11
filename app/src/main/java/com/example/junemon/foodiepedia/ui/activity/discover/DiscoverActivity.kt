@@ -41,7 +41,7 @@ class DiscoverActivity : AppCompatActivity(), DiscoverView {
                 with(this) {
                     tvDiscoverFoodCategory.text = it.strCategory
                     tvDiscoverFoodDescription.text = it.strCategoryDescription
-                    ivDiscoverFood.loadWithGlide(it.strCategoryThumb, this@DiscoverActivity)
+                    ivDiscoverFood.loadWithGlide(it.strCategoryThumb)
                 }
             }, {
                 startActivity<FilterActivity> {

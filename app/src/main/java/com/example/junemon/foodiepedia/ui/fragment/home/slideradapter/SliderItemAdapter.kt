@@ -22,7 +22,7 @@ class SliderItemAdapter(private val data: List<AllFood.Meal>, private val ctx: C
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val views = container.inflates(R.layout.item_slider)
-        views.ivSliderImage.loadWithGlide(data[position].strMealThumb, ctx)
+        views.ivSliderImage.loadWithGlide(data[position].strMealThumb)
         views.ivSliderImage?.setOnClickListener {
 
             ctx.startActivity<DetailFoodActivity> {

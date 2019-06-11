@@ -64,6 +64,6 @@ data class DetailFood(@field:SerializedName("meals") val food: List<Meal>?) {
     )
 }
 
-fun DetailFood.Meal.toDatabaseModel():LocalFoodData{
-    return LocalFoodData(null,idMeal,strMeal,strMealThumb,strCategory)
+fun DetailFood.Meal.toDatabaseModel(): LocalFoodData {
+    return LocalFoodData(null, idMeal, strMeal, strMealThumb, strCategory)
 }

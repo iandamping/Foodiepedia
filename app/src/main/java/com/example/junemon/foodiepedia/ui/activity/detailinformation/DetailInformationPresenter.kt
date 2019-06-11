@@ -2,7 +2,10 @@ package com.example.junemon.foodiepedia.ui.activity.detailinformation
 
 import android.content.Intent
 import androidx.lifecycle.Observer
-import com.example.junemon.foodiepedia.base.*
+import com.example.junemon.foodiepedia.base.BasePresenter
+import com.example.junemon.foodiepedia.base.OnShowAreaFood
+import com.example.junemon.foodiepedia.base.OnShowCategoryFood
+import com.example.junemon.foodiepedia.base.OnShowIngredientFood
 import com.example.junemon.foodiepedia.data.viewmodel.AllFoodListDataViewModel
 import com.example.junemon.foodiepedia.util.Constant.areaDetail
 import com.example.junemon.foodiepedia.util.Constant.categoryDetail

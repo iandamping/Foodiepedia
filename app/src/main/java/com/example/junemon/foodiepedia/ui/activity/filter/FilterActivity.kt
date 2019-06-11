@@ -44,7 +44,7 @@ class FilterActivity : AppCompatActivity(), FilterView {
 
     override fun onGetFilterData(data: List<FilterFood.Meal>) {
         rvFilterFood.setUpWithGrid(data, R.layout.item_filter_food, 2, {
-            ivFilteringFood.loadWithGlide(it.strMealThumb, this@FilterActivity)
+            ivFilteringFood.loadWithGlide(it.strMealThumb)
             if (it.strMeal?.length!! >= 12) {
                 val tmp = it.strMeal.substring(0, 12) + " ..."
                 tvFilteringFoodCategory.text = tmp

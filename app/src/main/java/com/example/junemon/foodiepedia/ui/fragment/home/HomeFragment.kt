@@ -115,7 +115,7 @@ class HomeFragment : Fragment(), HomeView {
             actualView?.rvFood?.setUpHorizontal(nonNullData, R.layout.item_home, {
                 with(this) {
                     tvHomeFoodName.text = it.strCategory
-                    ivHomeFood.loadWithGlide(it.strCategoryThumb, context)
+                    ivHomeFood.loadWithGlide(it.strCategoryThumb)
                 }
             }, {
                 context?.startActivity<FilterActivity> {
@@ -127,7 +127,7 @@ class HomeFragment : Fragment(), HomeView {
 
 
     override fun onGetRandomFood(data: DetailFood.Meal?) {
-        context?.let { ivRandomFood.loadWithGlide(data?.strMealThumb, it) }
+        ivRandomFood.loadWithGlide(data?.strMealThumb)
         lnIcon1.setOnClickListener {
             context?.startActivity<DetailFoodActivity> {
                 putExtra(intentDetailKey, data?.idMeal)

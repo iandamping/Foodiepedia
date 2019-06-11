@@ -6,10 +6,12 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.junemon.foodapi_mvvm"
+        applicationId "com.example.junemon.foodiepedia"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
@@ -48,28 +50,26 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
-//    //logger helper
-//    implementation 'com.jakewharton.timber:timber:4.7.1'
-    //fullscreen image viewer
-    implementation 'com.github.chrisbanes:PhotoView:1.2.6'
+    //firebase
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation "com.google.firebase:firebase-auth:17.0.0"
+    implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
+    implementation 'com.facebook.android:facebook-android-sdk:4.39.0'
+    implementation 'com.facebook.android:facebook-login:4.39.0'
+
     //recyclerview helper
     implementation 'com.github.iandamping:RecyclerViewHelper:0.0.4'
     //common helper
-    implementation 'com.github.iandamping:CommonHelper:0.0.7'
+    implementation 'com.github.iandamping:CommonHelper:0.0.8b'
     //room
     implementation 'androidx.room:room-runtime:2.1.0-rc01'
     kapt 'androidx.room:room-compiler:2.1.0-rc01'
-    //anko
-    implementation "org.jetbrains.anko:anko:$anko_version"
-    implementation "org.jetbrains.anko:anko-design:$anko_version"
     //livedata
     implementation "androidx.lifecycle:lifecycle-runtime:$livedata_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$livedata_version"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$livedata_version"
     //koin
     implementation 'org.koin:koin-android-viewmodel:1.0.2'
-    //image downloader
-    implementation 'com.squareup.picasso:picasso:2.71828'
     //internet
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
@@ -81,8 +81,6 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     //lottie
     implementation 'com.airbnb.android:lottie:2.5.5'
-    //custom layout manager
-    implementation 'com.github.DingMouRen:LayoutManagerGroup:1e6f4f96eb'
     //shimmer
     implementation 'com.facebook.shimmer:shimmer:0.4.0'
     //circleprofile

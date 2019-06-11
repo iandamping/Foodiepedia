@@ -83,7 +83,7 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
                     } else {
                         tvInformationIngredient.text = it.strIngredient
                     }
-                    ivIngredientImages.loadResizeWithGlide(resources.getString(R.string.ingredient_images_helper) + it.strIngredient + "-Small.png", this@DetailInformationActivity)
+                    ivIngredientImages.loadResizeWithGlide(resources.getString(R.string.ingredient_images_helper) + it.strIngredient + "-Small.png")
                 }
             }, {
                 startActivity<FilterActivity> {
@@ -100,7 +100,7 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
             lnCategorySearch.visible()
             rvInformationCategory.setUpWithGrid(it, R.layout.item_information_category, 3, {
                 with(this) {
-                    ivDescriptionImages.loadWithGlide(resources.getString(R.string.category_images_helper) + it.category + ".png", this@DetailInformationActivity)
+                    ivDescriptionImages.loadWithGlide(resources.getString(R.string.category_images_helper) + it.category + ".png")
                     tvDescriptionCategory.text = it.category
                 }
             }, {

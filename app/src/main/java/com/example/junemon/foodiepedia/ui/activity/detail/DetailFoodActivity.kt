@@ -101,7 +101,7 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
             }
         }
         this.foodDataToSave = data
-        ivDetailedFood.loadWithGlide(data.strMealThumb, this@DetailFoodActivity)
+        ivDetailedFood.loadWithGlide(data.strMealThumb)
         ivDetailedFood.setOnClickListener {
             fullScreen(data.strMealThumb)
         }

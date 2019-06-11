@@ -34,9 +34,6 @@
         <activity android:name="com.example.junemon.foodiepedia.ui.activity.filter.FilterActivity"
                   android:theme="@style/FullScreen"
                   android:screenOrientation="portrait"/>
-        <activity android:name="com.example.junemon.foodiepedia.ui.fragment.home.HomeFragment"
-                  android:theme="@style/FullScreen"
-                  android:screenOrientation="portrait"/>
         <meta-data android:name="preloaded_fonts" android:resource="@array/preloaded_fonts"/>
     </application>
 

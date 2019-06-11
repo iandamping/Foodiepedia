@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Food Everyone Love</string>
+    <string name="app_name">FoodiePedia</string>
     <string name="explore_the_natural_wonders_food_of_the_world">Explore the natural wonders Food of the world</string>
     <string name="ingredient">Ingredient</string>
     <string name="area">Area</string>
@@ -13,4 +13,12 @@
     <string name="profile">Profile</string>
     <string name="favorite">Favorite</string>
     <string name="you_have_no_food_saved">You have no food saved</string>
+    <string name="user_address">User Address</string>
+    <string name="user_province">User Province</string>
+    <string name="user_city">User City</string>
+    <string name="user_name">User Name</string>
+    <string name="nomer_hp">Nomer HP</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
 </resources>

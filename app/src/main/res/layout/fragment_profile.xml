@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.fragment.profile.ProfileFragment">
+
+
+    <ImageView
+        android:id="@+id/ivSettingProfile"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end"
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_settings" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivPhotoProfile"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/ivSettingProfile"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/ic_ingredients" />
+
+
+    <TextView
+        android:id="@+id/tvProfileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivPhotoProfile"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="18dp"
+        android:fontFamily="@font/lato"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="@string/user_name" />
+
+    <Button
+        android:id="@+id/btnProfileEditUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvProfileName"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/button_edit_profile"
+        android:padding="@dimen/spacing_medium"
+        android:text="Ubah Profil" />
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/lnProfileEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnProfileEditUser"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/ic_email_black" />
+
+
+        <TextView
+            android:id="@+id/tvEmailUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            tools:text="@string/email" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lnGoogleLogin"
+        android:visibility="gone"
+        android:layout_below="@+id/lnProfileEmail"
+        android:layout_margin="@dimen/spacing_medium"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_medium"
+            android:background="@drawable/gray_stroke_bg"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_medium">
+
+            <ImageView
+                android:padding="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_google_logo" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/lato"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="Google" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_medium"
+            android:background="@drawable/gray_stroke_bg"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_medium">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_facebook" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/lato"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="Facebook" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato"
+            android:gravity="center"
+            android:text="Login first so you can save your Foodie! "/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lnProfileEmail"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:background="@color/fui_transparent"
+        android:fontFamily="@font/lato"
+        tools:text="Login"
+        android:textStyle="bold" />
+
+</RelativeLayout>

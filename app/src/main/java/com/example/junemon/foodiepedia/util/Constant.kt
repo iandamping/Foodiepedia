@@ -7,7 +7,6 @@ Github = https://github.com/iandamping
  */
 
 object Constant {
-    const val goingToDetail = "go to detailed"
     const val areaDetail = "go to area"
     const val categoryDetail = "go to category"
     const val ingredientDetail = "go to ingredient"
@@ -26,4 +25,7 @@ object Constant {
     const val areaType = "Area"
     const val ingredientType = "Ingredient"
     const val delayMillis = 3000L
+    const val prefHelperInit = " init preference helper"
+    const val saveUserProfile = " save user profile"
+    const val RequestSignIn = 2341
 }
