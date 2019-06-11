@@ -59,9 +59,8 @@ class ProfileFragment : Fragment(), ProfileView {
         } else {
             actualView?.lnProfileEmail?.gone()
         }
-
+        actualView?.lnAfterLogin?.visible()
         actualView?.btnLogin?.visible()
-        actualView?.ivSettingProfile?.visible()
         actualView?.lnGoogleLogin?.gone()
         actualView?.btnLogin?.text = context?.getString(R.string.logout)
         actualView?.btnLogin?.setOnClickListener {
@@ -94,7 +93,6 @@ class ProfileFragment : Fragment(), ProfileView {
         actualView?.btnProfileEditUser?.gone()
         actualView?.lnProfileEmail?.gone()
         actualView?.btnLogin?.gone()
-        actualView?.ivSettingProfile?.gone()
         actualView?.lnGoogleLogin?.visible()
     }
 
