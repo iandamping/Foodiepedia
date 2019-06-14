@@ -16,6 +16,14 @@
     <string name="user_name">User Name</string>
     <string name="email">Email</string>
     <string name="logout">Logout</string>
+    <string name="admobID">ca-app-pub-5657961827660648/2959369594</string>
+    <string name ="admobID_banner_test">ca-app-pub-3940256099942544~3347511713</string>
+    <!--<string name ="admobID_banner_test">ca-app-pub-3940256099942544/6300978111</string>-->
+    <string name ="admobID_interstitial_test">ca-app-pub-3940256099942544/1033173712</string>
+    <string name ="admobID_interstitial_video_test">ca-app-pub-3940256099942544/8691691433</string>
+    <string name ="admobID_rewarded_video_test">ca-app-pub-3940256099942544/5224354917</string>
+    <string name ="admobID_native_advanced_test">cca-app-pub-3940256099942544/2247696110</string>
+    <string name ="admobID_native_advanced_video_test">ca-app-pub-3940256099942544/1044960115</string>
     <string name="facebook_application_id" translatable="false">398327677559709</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb398327677559709</string>
     <string name="are_you_sure_want_to_delete_this">Are you sure want to delete this ?</string>

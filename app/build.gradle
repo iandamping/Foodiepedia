@@ -8,6 +8,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'com.google.gms.google-services'
 
+apply plugin: 'io.fabric'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -52,6 +54,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
     //firebase
     implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.android.gms:play-services-ads:17.2.1'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation "com.google.firebase:firebase-auth:17.0.0"
     implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
     implementation 'com.facebook.android:facebook-android-sdk:4.39.0'
@@ -87,4 +91,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     //slider indicator
     implementation 'me.relex:circleindicator:1.2.2@aar'
+    //coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 }

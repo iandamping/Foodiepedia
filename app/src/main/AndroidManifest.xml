@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools" package="com.example.junemon.foodiepedia">
+          xmlns:tools="http://schemas.android.com/tools" package="com.ian.junemon.foodiepedia">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
             android:allowBackup="true"
-            android:name="com.example.junemon.foodiepedia.FoodApp"
+            android:name="com.ian.junemon.foodiepedia.FoodApp"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.example.junemon.foodiepedia.ui.activity.splash.SplashActivity"
+        <activity android:name="com.ian.junemon.foodiepedia.ui.activity.splash.SplashActivity"
                   android:theme="@style/FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -19,21 +19,29 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.example.junemon.foodiepedia.ui.activity.MainActivity"
+        <activity android:name="com.ian.junemon.foodiepedia.ui.activity.MainActivity"
                   android:theme="@style/FullScreen"
                   android:screenOrientation="portrait"/>
-        <activity android:name="com.example.junemon.foodiepedia.ui.activity.detail.DetailFoodActivity"
+        <activity android:name="com.ian.junemon.foodiepedia.ui.activity.detail.DetailFoodActivity"
                   android:theme="@style/FullScreen"
                   android:screenOrientation="portrait"/>
-        <activity android:name="com.example.junemon.foodiepedia.ui.activity.discover.DiscoverActivity"
+        <activity android:name="com.ian.junemon.foodiepedia.ui.activity.discover.DiscoverActivity"
                   android:theme="@style/FullScreen"
                   android:screenOrientation="portrait"/>
-        <activity android:name="com.example.junemon.foodiepedia.ui.activity.detailinformation.DetailInformationActivity"
+        <activity android:name="com.ian.junemon.foodiepedia.ui.activity.detailinformation.DetailInformationActivity"
                   android:theme="@style/FullScreen"
                   android:screenOrientation="portrait"/>
-        <activity android:name="com.example.junemon.foodiepedia.ui.activity.filter.FilterActivity"
+        <activity android:name="com.ian.junemon.foodiepedia.ui.activity.filter.FilterActivity"
                   android:theme="@style/FullScreen"
                   android:screenOrientation="portrait"/>
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admobID_banner_test"/>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_application_id"/>
