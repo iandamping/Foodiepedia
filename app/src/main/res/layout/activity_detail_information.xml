@@ -119,6 +119,20 @@
                     android:layout_margin="@dimen/spacing_medium"/>
         </LinearLayout>
 
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/detailInformationAdView"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId ="@string/admobUnitID">
+
+            <!--ads:adSize="BANNER"-->
+            <!--ads:adUnitId="@string/admobID_banner_test">-->
+
+        </com.google.android.gms.ads.AdView>
+
 
     </RelativeLayout>
 

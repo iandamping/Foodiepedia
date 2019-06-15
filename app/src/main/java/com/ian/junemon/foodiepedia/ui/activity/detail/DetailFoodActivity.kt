@@ -7,6 +7,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.material.appbar.AppBarLayout
+import com.ian.app.helper.util.*
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.data.local_data.LocalFoodData
 import com.ian.junemon.foodiepedia.data.viewmodel.DetailFoodViewModel
@@ -17,12 +21,8 @@ import com.ian.junemon.foodiepedia.ui.activity.MainActivity
 import com.ian.junemon.foodiepedia.util.Constant.intentDetailKey
 import com.ian.junemon.foodiepedia.util.Constant.switchBackToMain
 import com.ian.junemon.foodiepedia.util.initPresenter
-import com.google.android.material.appbar.AppBarLayout
-import com.ian.app.helper.util.*
 import com.ian.recyclerviewhelper.helper.setUpVertical
 import kotlinx.android.synthetic.main.activity_detailed_food.*
-import kotlinx.android.synthetic.main.activity_detailed_food.adView
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_ingredient_adapter.view.*
 import kotlinx.android.synthetic.main.item_measurement_adapter.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -49,12 +49,17 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
         super.onCreate(savedInstanceState)
         fullScreenAnimation()
         setContentView(R.layout.activity_detailed_food)
-        adView.loadAd(AdRequest.Builder().addTestDevice("33BE2250B43518CCDA7DE426D04EE231").build())
+        initAdsView()
         presenter = this.initPresenter { DetailFoodPresenter(vm, localVm) }.apply {
             this.attachView(this@DetailFoodActivity, this@DetailFoodActivity)
             this.onCreate()
             this.setData(intent?.getStringExtra(intentDetailKey))
         }
+    }
+
+    private fun initAdsView() {
+        val request = AdRequest.Builder().build()
+        detailAdView.loadAd(request)
     }
 
     override fun isAlreadyLoggedin(data: Boolean) {

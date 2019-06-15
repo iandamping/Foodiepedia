@@ -16,7 +16,8 @@
     <string name="user_name">User Name</string>
     <string name="email">Email</string>
     <string name="logout">Logout</string>
-    <string name="admobID">ca-app-pub-5657961827660648/2959369594</string>
+    <string name="admobAppID">ca-app-pub-5657961827660648~4986713230</string>
+    <string name="admobUnitID">ca-app-pub-5657961827660648/2959369594</string>
     <string name ="admobID_banner_test">ca-app-pub-3940256099942544~3347511713</string>
     <!--<string name ="admobID_banner_test">ca-app-pub-3940256099942544/6300978111</string>-->
     <string name ="admobID_interstitial_test">ca-app-pub-3940256099942544/1033173712</string>

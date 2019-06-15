@@ -40,7 +40,7 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admobID_banner_test"/>
+            android:value="@string/admobAppID"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

@@ -2,6 +2,7 @@ package com.ian.junemon.foodiepedia.ui.activity.filter
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.ads.AdRequest
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.data.viewmodel.FilterFoodViewModel
 import com.ian.junemon.foodiepedia.model.FilterFood
@@ -12,6 +13,7 @@ import com.ian.app.helper.util.fullScreenAnimation
 import com.ian.app.helper.util.loadWithGlide
 import com.ian.app.helper.util.startActivity
 import com.ian.recyclerviewhelper.helper.setUpWithGrid
+import kotlinx.android.synthetic.main.activity_detailed_food.*
 import kotlinx.android.synthetic.main.activity_filter.*
 import kotlinx.android.synthetic.main.item_filter_food.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -30,6 +32,7 @@ class FilterActivity : AppCompatActivity(), FilterView {
         super.onCreate(savedInstanceState)
         fullScreenAnimation()
         setContentView(R.layout.activity_filter)
+        initAdsView()
         withViewModel({ FilterPresenter(vm) }) {
             this.attachView(this@FilterActivity, this@FilterActivity)
             this.onCreate()
@@ -40,6 +43,11 @@ class FilterActivity : AppCompatActivity(), FilterView {
 //            this.onCreate()
 //        }
 //        presenter.getData(intent)
+    }
+
+    private fun initAdsView() {
+        val request = AdRequest.Builder().build()
+        filterActAdView.loadAd(request)
     }
 
     override fun onGetFilterData(data: List<FilterFood.Meal>) {

@@ -10,6 +10,7 @@ import com.ian.junemon.foodiepedia.di.NetworkModule.networkMod
 import com.ian.junemon.foodiepedia.di.RepositoryModule.allRepoModul
 import com.ian.junemon.foodiepedia.di.ViewModelModule.allViewmodelModule
 import com.ian.junemon.foodiepedia.util.PreferenceHelper
+import com.ian.junemon.foodiepedia.util.SecretKeyHelper.Admob
 import io.fabric.sdk.android.Fabric
 import org.koin.android.ext.android.startKoin
 
@@ -35,7 +36,7 @@ class FoodApp : Application() {
     override fun onCreate() {
         super.onCreate()
         Fabric.with(this, Crashlytics())
-        MobileAds.initialize(this, getString(R.string.admobID_banner_test))
+        MobileAds.initialize(this, Admob)
         mFirebaseAuth = FirebaseAuth.getInstance()
         prefHelper = PreferenceHelper(this)
         startKoin(this, listOf(networkMod, allViewmodelModule, allRepoModul, databaseModule))

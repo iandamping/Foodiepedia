@@ -9,7 +9,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/discoverAdView"
+            android:layout_margin="@dimen/spacing_medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId ="@string/admobUnitID">
+
+            <!--ads:adSize="BANNER"-->
+            <!--ads:adUnitId="@string/admobID_banner_test">-->
+
+        </com.google.android.gms.ads.AdView>
+
         <RelativeLayout
+            android:layout_below="@id/discoverAdView"
             android:id="@+id/rlTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -18,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="18dp"
                 android:orientation="vertical">
 
                 <TextView
