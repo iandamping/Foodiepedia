@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.data.local_data
+package com.ian.junemon.foodiepedia.data.local_data.detail
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -1,7 +1,7 @@
 package com.ian.junemon.foodiepedia.base
 
 import androidx.lifecycle.LiveData
-import com.ian.junemon.foodiepedia.data.local_data.LocalFoodData
+import com.ian.junemon.foodiepedia.data.local_data.detail.LocalFoodData
 import com.ian.junemon.foodiepedia.model.*
 
 /**

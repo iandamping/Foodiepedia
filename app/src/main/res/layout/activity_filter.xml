@@ -8,18 +8,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/filterActAdView"
-            android:layout_margin="@dimen/spacing_medium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            ads:adSize="SMART_BANNER"
-            ads:adUnitId ="@string/admobUnitID"/>
+        <!--<com.google.android.gms.ads.AdView-->
+            <!--xmlns:ads="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/filterActAdView"-->
+            <!--android:layout_margin="@dimen/spacing_medium"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--ads:adSize="SMART_BANNER"-->
+            <!--ads:adUnitId ="@string/admobUnitID"/>-->
 
         <RelativeLayout
             android:id="@+id/rlTitle"
-            android:layout_below="@id/filterActAdView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

@@ -1,7 +1,7 @@
 package com.ian.junemon.foodiepedia.ui.activity.detail
 
 import com.ian.junemon.foodiepedia.base.BaseView
-import com.ian.junemon.foodiepedia.data.local_data.LocalFoodData
+import com.ian.junemon.foodiepedia.data.local_data.detail.LocalFoodData
 import com.ian.junemon.foodiepedia.model.DetailFood
 
 /**

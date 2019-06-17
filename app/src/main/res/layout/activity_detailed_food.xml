@@ -152,18 +152,18 @@
                 android:padding="@dimen/spacing_medium"
                 tools:text="Instruction" />
 
-            <com.google.android.gms.ads.AdView
-                xmlns:ads="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/detailAdView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                ads:adSize="SMART_BANNER"
-                ads:adUnitId ="@string/admobUnitID">
+            <!--<com.google.android.gms.ads.AdView-->
+                <!--xmlns:ads="http://schemas.android.com/apk/res-auto"-->
+                <!--android:id="@+id/detailAdView"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--ads:adSize="SMART_BANNER"-->
+                <!--ads:adUnitId ="@string/admobUnitID">-->
 
-                <!--ads:adSize="BANNER"-->
-                <!--ads:adUnitId="@string/admobID_banner_test">-->
+                <!--&lt;!&ndash;ads:adSize="BANNER"&ndash;&gt;-->
+                <!--&lt;!&ndash;ads:adUnitId="@string/admobID_banner_test">&ndash;&gt;-->
 
-            </com.google.android.gms.ads.AdView>
+            <!--</com.google.android.gms.ads.AdView>-->
 
 
         </LinearLayout>

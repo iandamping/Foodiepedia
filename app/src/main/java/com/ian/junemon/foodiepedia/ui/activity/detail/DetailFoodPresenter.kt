@@ -6,7 +6,7 @@ import com.ian.junemon.foodiepedia.base.BasePresenter
 import com.ian.junemon.foodiepedia.base.OnComplete
 import com.ian.junemon.foodiepedia.base.OnGetLocalData
 import com.ian.junemon.foodiepedia.base.OnShowDetailFoodData
-import com.ian.junemon.foodiepedia.data.local_data.LocalFoodData
+import com.ian.junemon.foodiepedia.data.local_data.detail.LocalFoodData
 import com.ian.junemon.foodiepedia.data.viewmodel.DetailFoodViewModel
 import com.ian.junemon.foodiepedia.data.viewmodel.LocalDataViewModel
 import com.ian.junemon.foodiepedia.model.DetailFood

@@ -2,7 +2,6 @@ package com.ian.junemon.foodiepedia.ui.activity.discover
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.ads.AdRequest
 import com.ian.app.helper.util.fullScreenAnimation
 import com.ian.app.helper.util.loadWithGlide
 import com.ian.app.helper.util.startActivity
@@ -30,17 +29,17 @@ class DiscoverActivity : AppCompatActivity(), DiscoverView {
         super.onCreate(savedInstanceState)
         fullScreenAnimation()
         setContentView(R.layout.activity_discover)
-        initAdsView()
+//        initAdsView()
         withViewModel({ DiscoverPresenter(defaultVm) }) {
             this.attachView(this@DiscoverActivity, this@DiscoverActivity)
             this.onCreate()
         }
     }
 
-    private fun initAdsView() {
-        val request = AdRequest.Builder().build()
-        discoverAdView.loadAd(request)
-    }
+//    private fun initAdsView() {
+//        val request = AdRequest.Builder().build()
+//        discoverAdView.loadAd(request)
+//    }
 
     override fun onShowDefaultFoodCategory(data: List<AllFoodCategoryDetail.Category>?) {
         data?.let {

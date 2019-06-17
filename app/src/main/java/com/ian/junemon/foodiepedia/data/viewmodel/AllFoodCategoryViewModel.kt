@@ -1,24 +1,26 @@
 package com.ian.junemon.foodiepedia.data.viewmodel
 
+import com.ian.app.helper.util.asyncRxExecutor
 import com.ian.app.helper.util.executes
 import com.ian.junemon.foodiepedia.base.BaseViewModel
-import com.ian.junemon.foodiepedia.base.OnComplete
 import com.ian.junemon.foodiepedia.base.OnError
-import com.ian.junemon.foodiepedia.base.OnShowCategoryFoodDetail
+import com.ian.junemon.foodiepedia.data.local_data.FoodDatabase
 import com.ian.junemon.foodiepedia.data.repo.AllFoodCategoryDetailRepo
+import com.ian.junemon.foodiepedia.model.toDatabaseModel
 
-class AllFoodCategoryViewModel(private val repo: AllFoodCategoryDetailRepo) : BaseViewModel() {
+class AllFoodCategoryViewModel(private val repo: AllFoodCategoryDetailRepo, private val db: FoodDatabase) : BaseViewModel() {
 
     fun getAllFoodCategoryDetail() {
-        liveDataState.value = OnComplete(false)
         compose.executes(repo.getAllCategoryDetailRepo(), {
-            liveDataState.value = OnComplete(true)
             liveDataState.value = OnError(it?.localizedMessage)
         }, {
-            it?.let { data ->
-                liveDataState.value = OnComplete(true)
-                liveDataState.value = OnShowCategoryFoodDetail(data)
+            if (it != null) {
+                compose.asyncRxExecutor {
+                    db.allFoodCategoryDetailDao().insertAllFoodCategoryDetailData(it.toDatabaseModel())
+
+                }
             }
+
         })
     }
 

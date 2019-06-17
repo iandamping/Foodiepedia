@@ -15,5 +15,11 @@ object DatabaseModule {
         single { Room.databaseBuilder(get(), FoodDatabase::class.java, "LocalFoodData").build() }
         // localDao instance (get instance from FoodDatabase)
         single { get<FoodDatabase>().foodDao() }
+        single { get<FoodDatabase>().allFoodDao() }
+        single { get<FoodDatabase>().allFoodCategoryDetailDao() }
+        single { get<FoodDatabase>().areaDao() }
+        single { get<FoodDatabase>().categoryDao() }
+        single { get<FoodDatabase>().filterDao() }
+        single { get<FoodDatabase>().ingredientDao() }
     }
 }

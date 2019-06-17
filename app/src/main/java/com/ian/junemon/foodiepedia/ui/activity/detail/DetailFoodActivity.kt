@@ -6,11 +6,10 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.google.android.gms.ads.AdRequest
 import com.google.android.material.appbar.AppBarLayout
 import com.ian.app.helper.util.*
 import com.ian.junemon.foodiepedia.R
-import com.ian.junemon.foodiepedia.data.local_data.LocalFoodData
+import com.ian.junemon.foodiepedia.data.local_data.detail.LocalFoodData
 import com.ian.junemon.foodiepedia.data.viewmodel.DetailFoodViewModel
 import com.ian.junemon.foodiepedia.data.viewmodel.LocalDataViewModel
 import com.ian.junemon.foodiepedia.model.DetailFood
@@ -47,7 +46,7 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
         super.onCreate(savedInstanceState)
         fullScreenAnimation()
         setContentView(R.layout.activity_detailed_food)
-        initAdsView()
+//        initAdsView()
         presenter = this.initPresenter { DetailFoodPresenter(vm, localVm) }.apply {
             this.attachView(this@DetailFoodActivity, this@DetailFoodActivity)
             this.onCreate()
@@ -55,10 +54,10 @@ class DetailFoodActivity : AppCompatActivity(), DetailFoodView {
         }
     }
 
-    private fun initAdsView() {
-        val request = AdRequest.Builder().build()
-        detailAdView.loadAd(request)
-    }
+//    private fun initAdsView() {
+//        val request = AdRequest.Builder().build()
+//        detailAdView.loadAd(request)
+//    }
 
     override fun isAlreadyLoggedin(data: Boolean) {
         this.isLoggedIn = data
