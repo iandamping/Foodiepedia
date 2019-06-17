@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.ian.app.helper.util.*
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.data.viewmodel.AllFoodViewModel
 import com.ian.junemon.foodiepedia.model.AllFood
@@ -20,7 +21,6 @@ import com.ian.junemon.foodiepedia.util.Constant
 import com.ian.junemon.foodiepedia.util.Constant.delayMillis
 import com.ian.junemon.foodiepedia.util.Constant.intentDetailKey
 import com.ian.junemon.foodiepedia.util.withViewModel
-import com.ian.app.helper.util.*
 import com.ian.recyclerviewhelper.helper.setUpHorizontal
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*

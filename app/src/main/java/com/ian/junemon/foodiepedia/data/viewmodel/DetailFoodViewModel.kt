@@ -1,11 +1,11 @@
 package com.ian.junemon.foodiepedia.data.viewmodel
 
+import com.ian.app.helper.util.executes
 import com.ian.junemon.foodiepedia.base.BaseViewModel
 import com.ian.junemon.foodiepedia.base.OnComplete
 import com.ian.junemon.foodiepedia.base.OnError
 import com.ian.junemon.foodiepedia.base.OnShowDetailFoodData
 import com.ian.junemon.foodiepedia.data.repo.DetailFoodRepo
-import com.ian.app.helper.util.executes
 
 class DetailFoodViewModel(private val repo: DetailFoodRepo) : BaseViewModel() {
 

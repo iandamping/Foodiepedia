@@ -1,10 +1,10 @@
 package com.ian.junemon.foodiepedia.data.viewmodel
 
+import com.ian.app.helper.util.asyncRxExecutor
 import com.ian.junemon.foodiepedia.base.BaseViewModel
 import com.ian.junemon.foodiepedia.base.OnGetLocalData
 import com.ian.junemon.foodiepedia.data.local_data.FoodDatabase
 import com.ian.junemon.foodiepedia.data.local_data.LocalFoodData
-import com.ian.app.helper.util.asyncRxExecutor
 
 /**
  *

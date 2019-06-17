@@ -3,6 +3,7 @@ package com.ian.junemon.foodiepedia.ui.activity.detailinformation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.AdRequest
+import com.ian.app.helper.util.*
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.data.viewmodel.AllFoodListDataViewModel
 import com.ian.junemon.foodiepedia.model.AreaFood
@@ -11,10 +12,8 @@ import com.ian.junemon.foodiepedia.model.IngredientFood
 import com.ian.junemon.foodiepedia.ui.activity.filter.FilterActivity
 import com.ian.junemon.foodiepedia.util.Constant
 import com.ian.junemon.foodiepedia.util.withViewModel
-import com.ian.app.helper.util.*
 import com.ian.recyclerviewhelper.helper.setUpWithGrid
 import kotlinx.android.synthetic.main.activity_detail_information.*
-import kotlinx.android.synthetic.main.activity_discover.*
 import kotlinx.android.synthetic.main.item_information_area.view.*
 import kotlinx.android.synthetic.main.item_information_category.view.*
 import kotlinx.android.synthetic.main.item_information_ingredient.view.*

@@ -4,13 +4,13 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
+import com.ian.app.helper.util.inflates
+import com.ian.app.helper.util.loadWithGlide
+import com.ian.app.helper.util.startActivity
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.model.AllFood
 import com.ian.junemon.foodiepedia.ui.activity.detail.DetailFoodActivity
 import com.ian.junemon.foodiepedia.util.Constant
-import com.ian.app.helper.util.inflates
-import com.ian.app.helper.util.loadWithGlide
-import com.ian.app.helper.util.startActivity
 import kotlinx.android.synthetic.main.item_slider.view.*
 
 /**

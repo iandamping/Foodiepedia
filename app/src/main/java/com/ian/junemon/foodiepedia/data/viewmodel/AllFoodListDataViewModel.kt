@@ -1,8 +1,8 @@
 package com.ian.junemon.foodiepedia.data.viewmodel
 
+import com.ian.app.helper.util.executes
 import com.ian.junemon.foodiepedia.base.*
 import com.ian.junemon.foodiepedia.data.repo.AllFoodListDataRepo
-import com.ian.app.helper.util.executes
 
 class AllFoodListDataViewModel(private val repo: AllFoodListDataRepo) : BaseViewModel() {
 

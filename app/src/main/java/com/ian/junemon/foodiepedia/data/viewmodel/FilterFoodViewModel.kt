@@ -1,11 +1,11 @@
 package com.ian.junemon.foodiepedia.data.viewmodel
 
+import com.ian.app.helper.util.executes
 import com.ian.junemon.foodiepedia.base.BaseViewModel
 import com.ian.junemon.foodiepedia.base.OnComplete
 import com.ian.junemon.foodiepedia.base.OnError
 import com.ian.junemon.foodiepedia.base.OnShowFilterData
 import com.ian.junemon.foodiepedia.data.repo.FilterFoodRepo
-import com.ian.app.helper.util.executes
 
 class FilterFoodViewModel(private val repo: FilterFoodRepo) : BaseViewModel() {
     fun getIngredientFilterData(data: String) {

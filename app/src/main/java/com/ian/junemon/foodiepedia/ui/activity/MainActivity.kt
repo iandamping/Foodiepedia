@@ -3,16 +3,14 @@ package com.ian.junemon.foodiepedia.ui.activity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.ian.app.helper.util.fullScreenAnimation
+import com.ian.app.helper.util.switchFragment
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.ui.fragment.home.HomeFragment
 import com.ian.junemon.foodiepedia.ui.fragment.profile.ProfileFragment
 import com.ian.junemon.foodiepedia.ui.fragment.saved_food.SavedFragment
 import com.ian.junemon.foodiepedia.util.Constant.switchBackToMain
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.ian.app.helper.util.fullScreenAnimation
-import com.ian.app.helper.util.switchFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**

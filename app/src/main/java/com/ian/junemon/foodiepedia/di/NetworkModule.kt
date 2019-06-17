@@ -1,8 +1,8 @@
 package com.ian.junemon.foodiepedia.di
 
+import com.google.gson.GsonBuilder
 import com.ian.junemon.foodiepedia.api.ApiInterface
 import com.ian.junemon.foodiepedia.util.Constant.baseUrl
-import com.google.gson.GsonBuilder
 import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

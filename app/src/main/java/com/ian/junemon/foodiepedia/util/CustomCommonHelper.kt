@@ -2,9 +2,9 @@ package com.ian.junemon.foodiepedia.util
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
-import com.ian.junemon.foodiepedia.R
 import com.ian.app.helper.util.layoutInflater
 import com.ian.app.helper.util.loadWithGlide
+import com.ian.junemon.foodiepedia.R
 import kotlinx.android.synthetic.main.custom_delete_item_dialog.view.*
 
 /**

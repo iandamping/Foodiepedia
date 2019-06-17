@@ -1,7 +1,7 @@
 package com.ian.junemon.foodiepedia.model
 
-import com.ian.junemon.foodiepedia.data.local_data.LocalFoodData
 import com.google.gson.annotations.SerializedName
+import com.ian.junemon.foodiepedia.data.local_data.LocalFoodData
 
 /**
  *

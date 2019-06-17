@@ -6,13 +6,13 @@ import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
-import com.ian.junemon.foodiepedia.R
-import com.ian.junemon.foodiepedia.model.UserProfileData
-import com.ian.junemon.foodiepedia.ui.activity.MainActivity
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.ian.app.helper.util.layoutInflater
 import com.ian.app.helper.util.startActivity
+import com.ian.junemon.foodiepedia.R
+import com.ian.junemon.foodiepedia.model.UserProfileData
+import com.ian.junemon.foodiepedia.ui.activity.MainActivity
 
 /**
  *

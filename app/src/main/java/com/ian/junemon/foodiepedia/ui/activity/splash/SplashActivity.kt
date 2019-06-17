@@ -3,11 +3,11 @@ package com.ian.junemon.foodiepedia.ui.activity.splash
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import com.ian.app.helper.util.fullScreenAnimation
+import com.ian.app.helper.util.startActivity
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.ui.activity.MainActivity
 import com.ian.junemon.foodiepedia.util.Constant.delayMillis
-import com.ian.app.helper.util.fullScreenAnimation
-import com.ian.app.helper.util.startActivity
 
 /**
  *

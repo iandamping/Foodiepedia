@@ -6,13 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.firebase.ui.auth.AuthUI
+import com.ian.app.helper.util.*
 import com.ian.junemon.foodiepedia.BuildConfig
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.model.UserProfileData
 import com.ian.junemon.foodiepedia.util.Constant.RequestSignIn
 import com.ian.junemon.foodiepedia.util.initPresenter
-import com.firebase.ui.auth.AuthUI
-import com.ian.app.helper.util.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 /**

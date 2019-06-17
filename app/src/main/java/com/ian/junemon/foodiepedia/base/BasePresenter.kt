@@ -6,8 +6,8 @@ import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
-import com.ian.junemon.foodiepedia.R
 import com.ian.app.helper.util.layoutInflater
+import com.ian.junemon.foodiepedia.R
 
 /**
  *

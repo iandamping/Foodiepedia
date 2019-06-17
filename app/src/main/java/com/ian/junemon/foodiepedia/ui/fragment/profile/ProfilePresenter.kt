@@ -2,6 +2,9 @@ package com.ian.junemon.foodiepedia.ui.fragment.profile
 
 import android.content.Context
 import android.view.View
+import com.firebase.ui.auth.AuthUI
+import com.google.firebase.auth.FirebaseAuth
+import com.ian.app.helper.util.startActivity
 import com.ian.junemon.foodiepedia.FoodApp
 import com.ian.junemon.foodiepedia.FoodApp.Companion.mFirebaseAuth
 import com.ian.junemon.foodiepedia.FoodApp.Companion.prefHelper
@@ -9,9 +12,6 @@ import com.ian.junemon.foodiepedia.base.BaseFragmentPresenter
 import com.ian.junemon.foodiepedia.model.UserProfileData
 import com.ian.junemon.foodiepedia.ui.activity.MainActivity
 import com.ian.junemon.foodiepedia.util.Constant
-import com.firebase.ui.auth.AuthUI
-import com.google.firebase.auth.FirebaseAuth
-import com.ian.app.helper.util.startActivity
 
 /**
  *

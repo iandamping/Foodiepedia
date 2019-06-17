@@ -1,11 +1,11 @@
 package com.ian.junemon.foodiepedia.data.viewmodel
 
+import com.ian.app.helper.util.executes
+import com.ian.app.helper.util.obsWithTripleZip
 import com.ian.junemon.foodiepedia.base.*
 import com.ian.junemon.foodiepedia.data.repo.AllFoodCategoryDetailRepo
 import com.ian.junemon.foodiepedia.data.repo.AllFoodRepo
 import com.ian.junemon.foodiepedia.data.repo.RandomFoodRepo
-import com.ian.app.helper.util.executes
-import com.ian.app.helper.util.obsWithTripleZip
 
 class AllFoodViewModel(
         private val allFoodRepo: AllFoodRepo,
