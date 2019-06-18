@@ -1,9 +1,9 @@
 package com.ian.junemon.foodiepedia.ui.activity.detailinformation
 
 import com.ian.junemon.foodiepedia.base.BaseView
-import com.ian.junemon.foodiepedia.model.AreaFood
-import com.ian.junemon.foodiepedia.model.CategoryFood
-import com.ian.junemon.foodiepedia.model.IngredientFood
+import com.ian.junemon.foodiepedia.data.local_data.area.LocalAreaData
+import com.ian.junemon.foodiepedia.data.local_data.category.LocalCategoryData
+import com.ian.junemon.foodiepedia.data.local_data.ingredient.LocalIngredientData
 
 /**
  *
@@ -12,7 +12,7 @@ Github = https://github.com/iandamping
  */
 
 interface DetailInformationView : BaseView {
-    fun getAreaData(data: List<AreaFood.Meal>?)
-    fun getIngredientData(data: List<IngredientFood.Meal>?)
-    fun getCategoryData(data: List<CategoryFood.Meal>?)
+    fun getAreaData(data: List<LocalAreaData>?)
+    fun getIngredientData(data: List<LocalIngredientData>?)
+    fun getCategoryData(data: List<LocalCategoryData>?)
 }

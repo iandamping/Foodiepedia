@@ -15,6 +15,13 @@ Github = https://github.com/iandamping
 class DiscoverPresenter(private val vm: AllFoodCategoryViewModel) : BasePresenter<DiscoverView>() {
 
     override fun onCreate() {
+//        getLifeCycleOwner().checkConnectivityStatus {
+//            if (it) {
+//                vm.getAllFoodCategoryDetail()
+//            } else {
+//                getLifeCycleOwner().myToast(Constant.checkYourConnection)
+//            }
+//        }
         view()?.initView()
         vm.getAllFoodCategoryDetail()
         funInitData()
@@ -23,7 +30,11 @@ class DiscoverPresenter(private val vm: AllFoodCategoryViewModel) : BasePresente
     private fun funInitData() {
         vm.liveDataState.observe(getLifeCycleOwner(), Observer {
             when (it) {
-                is OnShowCategoryFoodDetail -> view()?.onShowDefaultFoodCategory(it.data)
+                is OnShowCategoryFoodDetail -> {
+                    it.data?.observe(getLifeCycleOwner(), Observer { data ->
+                        view()?.onShowDefaultFoodCategory(data)
+                    })
+                }
                 is OnComplete -> setDialogShow(it.show)
             }
         })

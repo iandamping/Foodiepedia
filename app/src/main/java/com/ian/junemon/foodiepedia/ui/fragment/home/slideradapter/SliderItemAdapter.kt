@@ -8,7 +8,7 @@ import com.ian.app.helper.util.inflates
 import com.ian.app.helper.util.loadWithGlide
 import com.ian.app.helper.util.startActivity
 import com.ian.junemon.foodiepedia.R
-import com.ian.junemon.foodiepedia.model.AllFood
+import com.ian.junemon.foodiepedia.data.local_data.all_food.LocalAllFoodData
 import com.ian.junemon.foodiepedia.ui.activity.detail.DetailFoodActivity
 import com.ian.junemon.foodiepedia.util.Constant
 import kotlinx.android.synthetic.main.item_slider.view.*
@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.item_slider.view.*
 Created by Ian Damping on 16/04/2019.
 Github = https://github.com/iandamping
  */
-class SliderItemAdapter(private val data: List<AllFood.Meal>, private val ctx: Context) : PagerAdapter() {
+class SliderItemAdapter(private val data: List<LocalAllFoodData>, private val ctx: Context) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val views = container.inflates(R.layout.item_slider)

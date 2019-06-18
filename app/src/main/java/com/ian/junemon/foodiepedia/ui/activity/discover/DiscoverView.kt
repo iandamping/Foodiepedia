@@ -1,7 +1,7 @@
 package com.ian.junemon.foodiepedia.ui.activity.discover
 
 import com.ian.junemon.foodiepedia.base.BaseView
-import com.ian.junemon.foodiepedia.model.AllFoodCategoryDetail
+import com.ian.junemon.foodiepedia.data.local_data.all_food_category_detail.LocalAllFoodCategoryDetailData
 
 /**
  *
@@ -10,5 +10,5 @@ Github = https://github.com/iandamping
  */
 
 interface DiscoverView : BaseView {
-    fun onShowDefaultFoodCategory(data: List<AllFoodCategoryDetail.Category>?)
+    fun onShowDefaultFoodCategory(data: List<LocalAllFoodCategoryDetailData>?)
 }

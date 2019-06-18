@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
 import com.ian.app.helper.util.*
-import com.ian.junemon.foodiepedia.BuildConfig
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.model.UserProfileData
 import com.ian.junemon.foodiepedia.util.Constant.RequestSignIn
@@ -104,7 +103,8 @@ class ProfileFragment : Fragment(), ProfileView {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
+                        .setIsSmartLockEnabled(false)
+//                        .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
                         .setAvailableProviders(gmailLoginProvider)
                         .build(),
                 RequestSignIn
@@ -115,7 +115,8 @@ class ProfileFragment : Fragment(), ProfileView {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
+//                        .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
+                        .setIsSmartLockEnabled(false)
                         .setAvailableProviders(facebookLoginProvider)
                         .build(),
                 RequestSignIn

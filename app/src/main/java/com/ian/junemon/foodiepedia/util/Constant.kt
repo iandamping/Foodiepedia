@@ -29,4 +29,5 @@ object Constant {
     const val saveUserProfile = " save user profile"
     const val RequestSignIn = 2341
     const val switchBackToMain = " switching back"
+    const val checkYourConnection = "Please check your connection"
 }

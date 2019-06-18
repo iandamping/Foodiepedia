@@ -1,6 +1,8 @@
 package com.ian.junemon.foodiepedia.ui.activity.detail
 
 import androidx.lifecycle.Observer
+import com.ian.app.helper.util.checkConnectivityStatus
+import com.ian.app.helper.util.myToast
 import com.ian.junemon.foodiepedia.FoodApp
 import com.ian.junemon.foodiepedia.base.BasePresenter
 import com.ian.junemon.foodiepedia.base.OnComplete
@@ -11,6 +13,7 @@ import com.ian.junemon.foodiepedia.data.viewmodel.DetailFoodViewModel
 import com.ian.junemon.foodiepedia.data.viewmodel.LocalDataViewModel
 import com.ian.junemon.foodiepedia.model.DetailFood
 import com.ian.junemon.foodiepedia.util.Constant
+import com.ian.junemon.foodiepedia.util.Constant.checkYourConnection
 
 /**
  *
@@ -49,7 +52,15 @@ class DetailFoodPresenter(private val vm: DetailFoodViewModel, private val local
     }
 
     fun setData(passedData: String?) {
-        passedData?.let { vm.setDetailFoodData(it) }
+        getLifeCycleOwner().checkConnectivityStatus {
+            if (it) {
+                if (passedData != null) {
+                    vm.setDetailFoodData(passedData)
+                }
+            } else {
+                getLifeCycleOwner().myToast(checkYourConnection)
+            }
+        }
         vm.liveDataState.observe(getLifeCycleOwner(), Observer {
             when (it) {
                 is OnShowDetailFoodData -> {

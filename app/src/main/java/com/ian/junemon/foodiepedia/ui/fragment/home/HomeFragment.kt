@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.ian.app.helper.util.*
 import com.ian.junemon.foodiepedia.R
+import com.ian.junemon.foodiepedia.data.local_data.all_food.LocalAllFoodData
+import com.ian.junemon.foodiepedia.data.local_data.all_food_category_detail.LocalAllFoodCategoryDetailData
 import com.ian.junemon.foodiepedia.data.viewmodel.AllFoodViewModel
-import com.ian.junemon.foodiepedia.model.AllFood
-import com.ian.junemon.foodiepedia.model.AllFoodCategoryDetail
 import com.ian.junemon.foodiepedia.model.DetailFood
 import com.ian.junemon.foodiepedia.ui.activity.detail.DetailFoodActivity
 import com.ian.junemon.foodiepedia.ui.activity.detailinformation.DetailInformationActivity
@@ -91,7 +91,7 @@ class HomeFragment : Fragment(), HomeView {
         }
     }
 
-    override fun onGetAllFood(data: List<AllFood.Meal>?) {
+    override fun onGetAllFood(data: List<LocalAllFoodData>?) {
         pageSize = data?.size
         actualView?.vpBestFood?.adapter = data?.let {
             context?.let { nonNullContext ->
@@ -108,7 +108,7 @@ class HomeFragment : Fragment(), HomeView {
         mHandler?.postDelayed(slideRunnable, delayMillis)
     }
 
-    override fun onGetAllFoodCategoryDetails(data: List<AllFoodCategoryDetail.Category>?) {
+    override fun onGetAllFoodCategoryDetails(data: List<LocalAllFoodCategoryDetailData>?) {
         actualView?.shimmerHome?.stopShimmer()
         actualView?.shimmerHome?.gone()
         data?.let { nonNullData ->

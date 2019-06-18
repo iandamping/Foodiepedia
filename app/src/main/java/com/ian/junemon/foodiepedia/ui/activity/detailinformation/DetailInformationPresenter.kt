@@ -25,6 +25,20 @@ class DetailInformationPresenter(private val vm: AllFoodListDataViewModel) : Bas
     }
 
     fun getData(intent: Intent) {
+//        getLifeCycleOwner().checkConnectivityStatus {
+//            if (it) {
+//                val tmpCategoryData = intent.getStringExtra(categoryDetail)
+//                val tmpAreaData = intent.getStringExtra(areaDetail)
+//                val tmpIngredientData = intent.getStringExtra(ingredientDetail)
+//                when {
+//                    !tmpCategoryData.isNullOrEmpty() -> vm.getCategoryData()
+//                    !tmpAreaData.isNullOrEmpty() -> vm.getAreaData()
+//                    !tmpIngredientData.isNullOrEmpty() -> vm.getIngredientData()
+//                }
+//            } else {
+//                getLifeCycleOwner().myToast(Constant.checkYourConnection)
+//            }
+//        }
         val tmpCategoryData = intent.getStringExtra(categoryDetail)
         val tmpAreaData = intent.getStringExtra(areaDetail)
         val tmpIngredientData = intent.getStringExtra(ingredientDetail)
@@ -41,13 +55,22 @@ class DetailInformationPresenter(private val vm: AllFoodListDataViewModel) : Bas
             when (it) {
 
                 is OnShowAreaFood -> {
-                    view()?.getAreaData(it.data)
+                    it.data?.observe(getLifeCycleOwner(), Observer { data ->
+                        view()?.getAreaData(data)
+
+                    })
                 }
                 is OnShowCategoryFood -> {
-                    view()?.getCategoryData(it.data)
+                    it.data?.observe(getLifeCycleOwner(), Observer { data ->
+                        view()?.getCategoryData(data)
+
+                    })
                 }
                 is OnShowIngredientFood -> {
-                    view()?.getIngredientData(it.data)
+                    it.data?.observe(getLifeCycleOwner(), Observer { data ->
+                        view()?.getIngredientData(data)
+
+                    })
                 }
             }
         })

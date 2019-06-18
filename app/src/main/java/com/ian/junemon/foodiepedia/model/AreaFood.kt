@@ -15,6 +15,6 @@ data class AreaFood(@field:SerializedName("meals") val allCategory: List<Meal>?)
 
 fun List<AreaFood.Meal>.toDatabaseModel(): MutableList<LocalAreaData> {
     return this.map { nonNullData ->
-        LocalAreaData( nonNullData.strArea!!)
+        LocalAreaData(nonNullData.strArea!!)
     }.toMutableList()
 }

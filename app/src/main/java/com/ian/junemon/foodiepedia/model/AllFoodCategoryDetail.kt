@@ -20,6 +20,6 @@ data class AllFoodCategoryDetail(@field:SerializedName("categories") val list: L
 
 fun List<AllFoodCategoryDetail.Category>.toDatabaseModel(): MutableList<LocalAllFoodCategoryDetailData> {
     return this.map { nonNullData ->
-        LocalAllFoodCategoryDetailData( nonNullData.idCategory!!, nonNullData.strCategory, nonNullData.strCategoryThumb, nonNullData.strCategoryDescription)
+        LocalAllFoodCategoryDetailData(nonNullData.idCategory!!, nonNullData.strCategory, nonNullData.strCategoryThumb, nonNullData.strCategoryDescription)
     }.toMutableList()
 }

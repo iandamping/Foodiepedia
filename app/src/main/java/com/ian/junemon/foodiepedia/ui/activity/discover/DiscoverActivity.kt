@@ -6,8 +6,8 @@ import com.ian.app.helper.util.fullScreenAnimation
 import com.ian.app.helper.util.loadWithGlide
 import com.ian.app.helper.util.startActivity
 import com.ian.junemon.foodiepedia.R
+import com.ian.junemon.foodiepedia.data.local_data.all_food_category_detail.LocalAllFoodCategoryDetailData
 import com.ian.junemon.foodiepedia.data.viewmodel.AllFoodCategoryViewModel
-import com.ian.junemon.foodiepedia.model.AllFoodCategoryDetail
 import com.ian.junemon.foodiepedia.ui.activity.filter.FilterActivity
 import com.ian.junemon.foodiepedia.util.Constant
 import com.ian.junemon.foodiepedia.util.withViewModel
@@ -41,7 +41,7 @@ class DiscoverActivity : AppCompatActivity(), DiscoverView {
 //        discoverAdView.loadAd(request)
 //    }
 
-    override fun onShowDefaultFoodCategory(data: List<AllFoodCategoryDetail.Category>?) {
+    override fun onShowDefaultFoodCategory(data: List<LocalAllFoodCategoryDetailData>??) {
         data?.let {
             rvDiscoverFood.setUpWithGrid(it, R.layout.item_discover_food, 2, {
                 with(this) {

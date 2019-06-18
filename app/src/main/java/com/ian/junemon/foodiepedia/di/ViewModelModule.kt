@@ -12,10 +12,10 @@ Github = https://github.com/iandamping
 object ViewModelModule {
     val allViewmodelModule = module {
         factory { DetailFoodViewModel(get()) }
-        factory { AllFoodViewModel(get(), get(), get(),get()) }
-        factory { AllFoodCategoryViewModel(get(),get()) }
-        factory { AllFoodListDataViewModel(get(),get()) }
-        factory { FilterFoodViewModel(get(),get()) }
+        factory { AllFoodViewModel(get(), get(), get(), get()) }
+        factory { AllFoodCategoryViewModel(get(), get()) }
+        factory { AllFoodListDataViewModel(get(), get()) }
+        factory { FilterFoodViewModel(get(), get()) }
         factory { LocalDataViewModel(get()) }
     }
 }

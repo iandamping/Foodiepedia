@@ -13,6 +13,13 @@ Github = https://github.com/iandamping
 class HomePresenter(private val allFoodVM: AllFoodViewModel) : BaseFragmentPresenter<HomeView>() {
 
     override fun onAttach() {
+//        getLifeCycleOwner().checkConnectivityStatus {
+//            if (it) {
+//                allFoodVM.getAllFoodData()
+//            } else {
+//                getLifeCycleOwner().context?.myToast(Constant.checkYourConnection)
+//            }
+//        }
         allFoodVM.getAllFoodData()
     }
 
@@ -24,8 +31,16 @@ class HomePresenter(private val allFoodVM: AllFoodViewModel) : BaseFragmentPrese
     fun initAllData() {
         allFoodVM.liveDataState.observe(getLifeCycleOwner().viewLifecycleOwner, Observer {
             when (it) {
-                is OnShowCategoryFoodDetail -> view()?.onGetAllFoodCategoryDetails(it.data)
-                is OnShowAllFood -> view()?.onGetAllFood(it.data)
+                is OnShowCategoryFoodDetail -> {
+                    it.data?.observe(getLifeCycleOwner().viewLifecycleOwner, Observer { categoryData ->
+                        view()?.onGetAllFoodCategoryDetails(categoryData)
+                    })
+                }
+                is OnShowAllFood -> {
+                    it.data?.observe(getLifeCycleOwner().viewLifecycleOwner, Observer { allFoodData ->
+                        view()?.onGetAllFood(allFoodData)
+                    })
+                }
                 is OnShowRandomFood -> view()?.onGetRandomFood(it.data?.get(0))
                 is OnError -> view()?.onFailGetAllFoodCategoryDetails()
             }

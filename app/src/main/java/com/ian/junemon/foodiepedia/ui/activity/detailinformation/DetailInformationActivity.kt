@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.ian.app.helper.util.*
 import com.ian.junemon.foodiepedia.R
+import com.ian.junemon.foodiepedia.data.local_data.area.LocalAreaData
+import com.ian.junemon.foodiepedia.data.local_data.category.LocalCategoryData
+import com.ian.junemon.foodiepedia.data.local_data.ingredient.LocalIngredientData
 import com.ian.junemon.foodiepedia.data.viewmodel.AllFoodListDataViewModel
-import com.ian.junemon.foodiepedia.model.AreaFood
-import com.ian.junemon.foodiepedia.model.CategoryFood
-import com.ian.junemon.foodiepedia.model.IngredientFood
 import com.ian.junemon.foodiepedia.ui.activity.filter.FilterActivity
 import com.ian.junemon.foodiepedia.util.Constant
 import com.ian.junemon.foodiepedia.util.withViewModel
@@ -59,7 +59,7 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
     }
 
 
-    override fun getAreaData(data: List<AreaFood.Meal>?) {
+    override fun getAreaData(data: List<LocalAreaData>?) {
         data?.let {
             shimmer_home?.stopShimmer()
             shimmer_home?.gone()
@@ -76,7 +76,7 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
         }
     }
 
-    override fun getIngredientData(data: List<IngredientFood.Meal>?) {
+    override fun getIngredientData(data: List<LocalIngredientData>?) {
         data?.let {
             shimmer_home?.stopShimmer()
             shimmer_home?.gone()
@@ -99,7 +99,7 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
         }
     }
 
-    override fun getCategoryData(data: List<CategoryFood.Meal>?) {
+    override fun getCategoryData(data: List<LocalCategoryData>?) {
         data?.let {
             shimmer_home?.stopShimmer()
             shimmer_home?.gone()
