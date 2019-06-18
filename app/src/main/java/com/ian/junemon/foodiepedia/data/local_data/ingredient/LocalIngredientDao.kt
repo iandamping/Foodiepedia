@@ -16,9 +16,6 @@ interface LocalIngredientDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertIngredientData(inputIngredient: List<LocalIngredientData>?)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateIngredientData(updateIngredient: LocalIngredientData?)
-
     @Query("DELETE FROM ingredient_data")
     fun deleteAllData()
 

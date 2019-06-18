@@ -17,9 +17,6 @@ interface LocalAllFoodCategoryDetailDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllFoodCategoryDetailData(inputAllFoodCategoryDetail: List<LocalAllFoodCategoryDetailData>?)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateAllFoodCategoryDetailData(updateAllFoodCategoryDetail: LocalAllFoodCategoryDetailData?)
-
     @Query("DELETE FROM all_food_category_detail")
     fun deleteAllData()
 

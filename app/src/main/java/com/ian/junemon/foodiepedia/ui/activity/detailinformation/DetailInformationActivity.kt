@@ -2,6 +2,7 @@ package com.ian.junemon.foodiepedia.ui.activity.detailinformation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.ads.AdRequest
 import com.ian.app.helper.util.*
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.data.local_data.area.LocalAreaData
@@ -32,7 +33,7 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
         super.onCreate(savedInstanceState)
         fullScreenAnimation()
         setContentView(R.layout.activity_detail_information)
-//        initAdsView()
+        initAdsView()
         withViewModel({ DetailInformationPresenter(vm) }) {
             attachView(this@DetailInformationActivity, this@DetailInformationActivity)
             onCreate()
@@ -40,10 +41,10 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
         }
     }
 
-//    private fun initAdsView() {
-//        val request = AdRequest.Builder().build()
-//        detailInformationAdView.loadAd(request)
-//    }
+    private fun initAdsView() {
+        val request = AdRequest.Builder().build()
+        detailInformationAdView.loadAd(request)
+    }
 
     override fun initView() {
         shimmer_home

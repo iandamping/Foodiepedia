@@ -17,9 +17,6 @@ interface LocalAreaDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAreaData(inputArea: List<LocalAreaData>?)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateAreaData(updateArea: LocalAreaData?)
-
     @Query("DELETE FROM area_data")
     fun deleteAllData()
 

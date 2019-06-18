@@ -16,9 +16,6 @@ interface LocalAllFoodDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllFoodData(inputAllFood: List<LocalAllFoodData>?)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateAllFoodData(updateAllFood: LocalAllFoodData?)
-
     @Query("DELETE FROM all_food_data")
     fun deleteAllData()
 

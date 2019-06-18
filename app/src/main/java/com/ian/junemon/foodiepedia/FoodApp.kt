@@ -2,6 +2,7 @@ package com.ian.junemon.foodiepedia
 
 import android.app.Application
 import com.crashlytics.android.Crashlytics
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.di.DatabaseModule.databaseModule
@@ -9,6 +10,7 @@ import com.ian.junemon.foodiepedia.di.NetworkModule.networkMod
 import com.ian.junemon.foodiepedia.di.RepositoryModule.allRepoModul
 import com.ian.junemon.foodiepedia.di.ViewModelModule.allViewmodelModule
 import com.ian.junemon.foodiepedia.util.PreferenceHelper
+import com.ian.junemon.foodiepedia.util.SecretKeyHelper.Admob
 import io.fabric.sdk.android.Fabric
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +29,7 @@ class FoodApp : Application() {
     private fun delayedInit(app: Application) {
         applicationScope.launch {
             Fabric.with(app, Crashlytics())
-//            MobileAds.initialize(app, Admob)
+            MobileAds.initialize(app, Admob)
             mFirebaseAuth = FirebaseAuth.getInstance()
             prefHelper = PreferenceHelper(app)
             startKoin(app, listOf(networkMod, allViewmodelModule, allRepoModul, databaseModule))
