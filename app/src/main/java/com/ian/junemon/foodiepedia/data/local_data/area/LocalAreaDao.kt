@@ -13,8 +13,6 @@ interface LocalAreaDao {
     @Query("SELECT * FROM area_data")
     fun loadAllIngredientData(): LiveData<List<LocalAreaData>>
 
-//    @Query("SELECT * FROM area_data WHERE localID = :id")
-//    fun loadAllAreaeDataById(id: Int?): LiveData<LocalAreaData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAreaData(inputArea: List<LocalAreaData>?)
@@ -25,6 +23,4 @@ interface LocalAreaDao {
     @Query("DELETE FROM area_data")
     fun deleteAllData()
 
-//    @Query("DELETE FROM area_data where localID = :selectedId")
-//    fun deleteSelectedId(selectedId: Int)
 }

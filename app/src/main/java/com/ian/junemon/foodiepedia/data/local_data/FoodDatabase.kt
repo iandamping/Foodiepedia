@@ -8,12 +8,8 @@ import com.ian.junemon.foodiepedia.data.local_data.all_food_category_detail.Loca
 import com.ian.junemon.foodiepedia.data.local_data.all_food_category_detail.LocalAllFoodCategoryDetailData
 import com.ian.junemon.foodiepedia.data.local_data.area.LocalAreaDao
 import com.ian.junemon.foodiepedia.data.local_data.area.LocalAreaData
-import com.ian.junemon.foodiepedia.data.local_data.category.LocalCategoryDao
-import com.ian.junemon.foodiepedia.data.local_data.category.LocalCategoryData
 import com.ian.junemon.foodiepedia.data.local_data.detail.LocalFoodDao
 import com.ian.junemon.foodiepedia.data.local_data.detail.LocalFoodData
-import com.ian.junemon.foodiepedia.data.local_data.filter.LocalFilterDao
-import com.ian.junemon.foodiepedia.data.local_data.filter.LocalFilterData
 import com.ian.junemon.foodiepedia.data.local_data.ingredient.LocalIngredientDao
 import com.ian.junemon.foodiepedia.data.local_data.ingredient.LocalIngredientData
 
@@ -23,13 +19,11 @@ Created by Ian Damping on 07/06/2019.
 Github = https://github.com/iandamping
  */
 @Database(entities = [LocalFoodData::class, LocalAllFoodData::class, LocalAllFoodCategoryDetailData::class, LocalAreaData::class,
-    LocalCategoryData::class, LocalFilterData::class, LocalIngredientData::class], version = 2, exportSchema = false)
+    LocalIngredientData::class], version = 2, exportSchema = false)
 abstract class FoodDatabase : RoomDatabase() {
     abstract fun foodDao(): LocalFoodDao
     abstract fun allFoodDao(): LocalAllFoodDao
     abstract fun allFoodCategoryDetailDao(): LocalAllFoodCategoryDetailDao
     abstract fun areaDao(): LocalAreaDao
-    abstract fun categoryDao(): LocalCategoryDao
-    abstract fun filterDao(): LocalFilterDao
     abstract fun ingredientDao(): LocalIngredientDao
 }

@@ -6,8 +6,8 @@ import com.ian.app.helper.util.fullScreenAnimation
 import com.ian.app.helper.util.loadWithGlide
 import com.ian.app.helper.util.startActivity
 import com.ian.junemon.foodiepedia.R
-import com.ian.junemon.foodiepedia.data.local_data.filter.LocalFilterData
 import com.ian.junemon.foodiepedia.data.viewmodel.FilterFoodViewModel
+import com.ian.junemon.foodiepedia.model.FilterFood
 import com.ian.junemon.foodiepedia.ui.activity.detail.DetailFoodActivity
 import com.ian.junemon.foodiepedia.util.Constant
 import com.ian.junemon.foodiepedia.util.withViewModel
@@ -48,7 +48,7 @@ class FilterActivity : AppCompatActivity(), FilterView {
 //        filterActAdView.loadAd(request)
 //    }
 
-    override fun onGetFilterData(data: List<LocalFilterData>) {
+    override fun onGetFilterData(data: List<FilterFood.Meal>) {
         rvFilterFood.setUpWithGrid(data, R.layout.item_filter_food, 2, {
             ivFilteringFood.loadWithGlide(it.strMealThumb)
             if (it.strMeal?.length!! >= 12) {

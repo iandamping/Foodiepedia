@@ -1,7 +1,6 @@
 package com.ian.junemon.foodiepedia.model
 
 import com.google.gson.annotations.SerializedName
-import com.ian.junemon.foodiepedia.data.local_data.category.LocalCategoryData
 
 /**
  *
@@ -13,8 +12,8 @@ data class CategoryFood(@field:SerializedName("meals") val allCategory: List<Mea
     data class Meal(@field:SerializedName("strCategory") val category: String?)
 }
 
-fun List<CategoryFood.Meal>.toDatabaseModel(): MutableList<LocalCategoryData> {
-    return this.map { nonNullData ->
-        LocalCategoryData(nonNullData.category!!)
-    }.toMutableList()
-}
+//fun List<CategoryFood.Meal>.toDatabaseModel(): MutableList<LocalCategoryData> {
+//    return this.map { nonNullData ->
+//        LocalCategoryData(nonNullData.category!!)
+//    }.toMutableList()
+//}

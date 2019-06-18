@@ -1,7 +1,7 @@
 package com.ian.junemon.foodiepedia.ui.activity.filter
 
 import com.ian.junemon.foodiepedia.base.BaseView
-import com.ian.junemon.foodiepedia.data.local_data.filter.LocalFilterData
+import com.ian.junemon.foodiepedia.model.FilterFood
 
 /**
  *
@@ -10,5 +10,5 @@ Github = https://github.com/iandamping
  */
 
 interface FilterView : BaseView {
-    fun onGetFilterData(data: List<LocalFilterData>)
+    fun onGetFilterData(data: List<FilterFood.Meal>)
 }

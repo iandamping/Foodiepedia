@@ -18,8 +18,6 @@ object DatabaseModule {
         single { get<FoodDatabase>().allFoodDao() }
         single { get<FoodDatabase>().allFoodCategoryDetailDao() }
         single { get<FoodDatabase>().areaDao() }
-        single { get<FoodDatabase>().categoryDao() }
-        single { get<FoodDatabase>().filterDao() }
         single { get<FoodDatabase>().ingredientDao() }
     }
 }

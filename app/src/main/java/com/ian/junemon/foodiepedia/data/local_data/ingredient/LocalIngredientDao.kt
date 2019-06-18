@@ -13,9 +13,6 @@ interface LocalIngredientDao {
     @Query("SELECT * FROM ingredient_data")
     fun loadAllIngredientData(): LiveData<List<LocalIngredientData>>
 
-//    @Query("SELECT * FROM ingredient_data WHERE localID = :id")
-//    fun loadAllIngredienteDataById(id: Int?): LiveData<LocalIngredientData>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertIngredientData(inputIngredient: List<LocalIngredientData>?)
 
@@ -25,6 +22,4 @@ interface LocalIngredientDao {
     @Query("DELETE FROM ingredient_data")
     fun deleteAllData()
 
-//    @Query("DELETE FROM ingredient_data where localID = :selectedId")
-//    fun deleteSelectedId(selectedId: Int)
 }

@@ -29,7 +29,7 @@ class AllFoodCategoryViewModel(private val repo: AllFoodCategoryDetailRepo, priv
         })
     }
 
-    private fun getAllLocalData() {
+    fun getAllLocalData() {
         liveDataState.value = OnShowCategoryFoodDetail(db.allFoodCategoryDetailDao().loadAllIngredientData())
     }
 

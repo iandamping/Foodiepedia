@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.ian.app.helper.util.*
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.data.local_data.area.LocalAreaData
-import com.ian.junemon.foodiepedia.data.local_data.category.LocalCategoryData
 import com.ian.junemon.foodiepedia.data.local_data.ingredient.LocalIngredientData
 import com.ian.junemon.foodiepedia.data.viewmodel.AllFoodListDataViewModel
 import com.ian.junemon.foodiepedia.ui.activity.filter.FilterActivity
@@ -14,7 +13,6 @@ import com.ian.junemon.foodiepedia.util.withViewModel
 import com.ian.recyclerviewhelper.helper.setUpWithGrid
 import kotlinx.android.synthetic.main.activity_detail_information.*
 import kotlinx.android.synthetic.main.item_information_area.view.*
-import kotlinx.android.synthetic.main.item_information_category.view.*
 import kotlinx.android.synthetic.main.item_information_ingredient.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -94,24 +92,6 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
             }, {
                 startActivity<FilterActivity> {
                     putExtra(Constant.ingredientType, strIngredient)
-                }
-            })
-        }
-    }
-
-    override fun getCategoryData(data: List<LocalCategoryData>?) {
-        data?.let {
-            shimmer_home?.stopShimmer()
-            shimmer_home?.gone()
-            lnCategorySearch.visible()
-            rvInformationCategory.setUpWithGrid(it, R.layout.item_information_category, 3, {
-                with(this) {
-                    ivDescriptionImages.loadWithGlide(resources.getString(R.string.category_images_helper) + it.category + ".png")
-                    tvDescriptionCategory.text = it.category
-                }
-            }, {
-                startActivity<FilterActivity> {
-                    putExtra(Constant.categoryType, category)
                 }
             })
         }

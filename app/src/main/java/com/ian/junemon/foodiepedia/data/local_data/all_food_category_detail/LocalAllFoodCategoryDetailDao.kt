@@ -13,8 +13,6 @@ interface LocalAllFoodCategoryDetailDao {
     @Query("SELECT * FROM all_food_category_detail")
     fun loadAllIngredientData(): LiveData<List<LocalAllFoodCategoryDetailData>>
 
-//    @Query("SELECT * FROM all_food_category_detail WHERE localID = :id")
-//    fun loadAllAllFoodCategoryDetaileDataById(id: Int?): LiveData<LocalAllFoodCategoryDetailData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllFoodCategoryDetailData(inputAllFoodCategoryDetail: List<LocalAllFoodCategoryDetailData>?)
@@ -25,6 +23,4 @@ interface LocalAllFoodCategoryDetailDao {
     @Query("DELETE FROM all_food_category_detail")
     fun deleteAllData()
 
-//    @Query("DELETE FROM all_food_category_detail where localID = :selectedId")
-//    fun deleteSelectedId(selectedId: Int)
 }
