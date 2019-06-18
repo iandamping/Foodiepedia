@@ -14,6 +14,9 @@ import com.ian.recyclerviewhelper.helper.setUpWithGrid
 import kotlinx.android.synthetic.main.activity_detail_information.*
 import kotlinx.android.synthetic.main.item_information_area.view.*
 import kotlinx.android.synthetic.main.item_information_ingredient.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
@@ -23,7 +26,7 @@ Github = https://github.com/iandamping
  */
 
 class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
-
+    private val applicationScope = CoroutineScope(Dispatchers.Main)
     private val vm: AllFoodListDataViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +90,9 @@ class DetailInformationActivity : AppCompatActivity(), DetailInformationView {
                     } else {
                         tvInformationIngredient.text = it.strIngredient
                     }
-                    ivIngredientImages.loadResizeWithGlide(resources.getString(R.string.ingredient_images_helper) + it.strIngredient + "-Small.png")
+                    applicationScope.launch {
+                        ivIngredientImages.loadResizeWithGlide(resources.getString(R.string.ingredient_images_helper) + it.strIngredient + "-Small.png")
+                    }
                 }
             }, {
                 startActivity<FilterActivity> {
