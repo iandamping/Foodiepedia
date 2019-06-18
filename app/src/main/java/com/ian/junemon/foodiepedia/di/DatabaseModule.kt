@@ -12,7 +12,7 @@ Github = https://github.com/iandamping
 object DatabaseModule {
     val databaseModule = module {
         // Room Database instance
-        single { Room.databaseBuilder(get(), FoodDatabase::class.java, "LocalFoodData").build() }
+        single { Room.databaseBuilder(get(), FoodDatabase::class.java, "LocalFoodData").fallbackToDestructiveMigration().build() }
         // localDao instance (get instance from FoodDatabase)
         single { get<FoodDatabase>().foodDao() }
         single { get<FoodDatabase>().allFoodDao() }
