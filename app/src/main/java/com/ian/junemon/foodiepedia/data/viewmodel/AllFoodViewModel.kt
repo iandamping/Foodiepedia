@@ -1,7 +1,7 @@
 package com.ian.junemon.foodiepedia.data.viewmodel
 
 import com.ian.app.helper.util.asyncRxExecutor
-import com.ian.app.helper.util.executes
+import com.ian.app.helper.util.obsExecutes
 import com.ian.app.helper.util.obsWithTripleZip
 import com.ian.junemon.foodiepedia.base.*
 import com.ian.junemon.foodiepedia.data.local_data.FoodDatabase
@@ -17,7 +17,7 @@ class AllFoodViewModel(
 ) : BaseViewModel() {
 
     fun getAllFoodData() {
-        compose.executes(
+        compose.obsExecutes(
                 obsWithTripleZip(
                         allFoodRepo.getCategoryFood(),
                         allFoodCategoryDetailRepo.getAllCategoryDetailRepo(),

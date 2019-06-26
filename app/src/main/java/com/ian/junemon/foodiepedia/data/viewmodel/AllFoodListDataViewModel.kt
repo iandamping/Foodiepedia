@@ -1,7 +1,7 @@
 package com.ian.junemon.foodiepedia.data.viewmodel
 
 import com.ian.app.helper.util.asyncRxExecutor
-import com.ian.app.helper.util.executes
+import com.ian.app.helper.util.obsExecutes
 import com.ian.junemon.foodiepedia.base.BaseViewModel
 import com.ian.junemon.foodiepedia.base.OnError
 import com.ian.junemon.foodiepedia.base.OnShowAreaFood
@@ -13,7 +13,7 @@ import com.ian.junemon.foodiepedia.model.toDatabaseModel
 class AllFoodListDataViewModel(private val repo: AllFoodListDataRepo, private val db: FoodDatabase) : BaseViewModel() {
 
     fun getIngredientData() {
-        compose.executes(repo.getAllFoodIngredient(), {
+        compose.obsExecutes(repo.getAllFoodIngredient(), {
             liveDataState.value = OnError(it?.localizedMessage)
         }, {
             if (it != null) {
@@ -26,7 +26,7 @@ class AllFoodListDataViewModel(private val repo: AllFoodListDataRepo, private va
 
 
     fun getAreaData() {
-        compose.executes(repo.getAllFoodArea(), {
+        compose.obsExecutes(repo.getAllFoodArea(), {
             liveDataState.value = OnError(it?.localizedMessage)
         }, {
             if (it != null) {

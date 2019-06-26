@@ -62,5 +62,4 @@ data class LocalAllFoodData constructor(
         @ColumnInfo(name = "all_food_str_measure_19") val strMeasure19: String?,
         @ColumnInfo(name = "all_food_str_measure_20") val strMeasure20: String?,
         @ColumnInfo(name = "all_food_str_source") val strSource: String?
-) {
-}
+)

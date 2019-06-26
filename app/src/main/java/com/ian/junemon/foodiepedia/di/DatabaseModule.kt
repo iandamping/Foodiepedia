@@ -2,14 +2,13 @@ package com.ian.junemon.foodiepedia.di
 
 import androidx.room.Room
 import com.ian.junemon.foodiepedia.data.local_data.FoodDatabase
-import org.koin.dsl.module.module
+import org.koin.dsl.module
 
 /**
  *
 Created by Ian Damping on 07/06/2019.
 Github = https://github.com/iandamping
  */
-object DatabaseModule {
     val databaseModule = module {
         // Room Database instance
         single { Room.databaseBuilder(get(), FoodDatabase::class.java, "LocalFoodData").fallbackToDestructiveMigration().build() }
@@ -20,4 +19,3 @@ object DatabaseModule {
         single { get<FoodDatabase>().areaDao() }
         single { get<FoodDatabase>().ingredientDao() }
     }
-}

@@ -1,6 +1,6 @@
 package com.ian.junemon.foodiepedia.data.viewmodel
 
-import com.ian.app.helper.util.executes
+import com.ian.app.helper.util.obsExecutes
 import com.ian.junemon.foodiepedia.base.BaseViewModel
 import com.ian.junemon.foodiepedia.base.OnComplete
 import com.ian.junemon.foodiepedia.base.OnError
@@ -11,7 +11,7 @@ class FilterFoodViewModel(private val repo: FilterFoodRepo) : BaseViewModel() {
 
     fun getIngredientFilterData(data: String) {
         liveDataState.value = OnComplete(false)
-        compose.executes(repo.getIngredientFilterData(data), {
+        compose.obsExecutes(repo.getIngredientFilterData(data), {
             liveDataState.value = OnError(it?.localizedMessage)
             liveDataState.value = OnComplete(true)
         }, {
@@ -24,7 +24,7 @@ class FilterFoodViewModel(private val repo: FilterFoodRepo) : BaseViewModel() {
 
     fun getIngredientFilterArea(data: String) {
         liveDataState.value = OnComplete(false)
-        compose.executes(repo.getIngredientFilterArea(data), {
+        compose.obsExecutes(repo.getIngredientFilterArea(data), {
             liveDataState.value = OnComplete(true)
             liveDataState.value = OnError(it?.localizedMessage)
         }, {
@@ -37,7 +37,7 @@ class FilterFoodViewModel(private val repo: FilterFoodRepo) : BaseViewModel() {
 
     fun getIngredientFilterCategory(data: String) {
         liveDataState.value = OnComplete(false)
-        compose.executes(repo.getIngredientFilterCategory(data), {
+        compose.obsExecutes(repo.getIngredientFilterCategory(data), {
             liveDataState.value = OnComplete(true)
             liveDataState.value = OnError(it?.localizedMessage)
         }, {
