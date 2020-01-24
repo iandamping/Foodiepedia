@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import timber.log.Timber
 
 /**
  *
@@ -36,6 +37,10 @@ class FoodApp : Application() {
             startKoin {
                 androidContext(app)
                 modules(listOf(networkMod,allViewmodelModule, allRepoModul, databaseModule))
+            }
+
+            if (BuildConfig.DEBUG) {
+                Timber.plant(Timber.DebugTree())
             }
         }
     }

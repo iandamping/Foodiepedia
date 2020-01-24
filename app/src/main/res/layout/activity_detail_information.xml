@@ -97,8 +97,7 @@
                 android:gravity="center"
                 android:visibility="gone"
                 android:layout_below="@id/lnIngredientsSearch"
-                android:id="@+id/lnCategorySearch"
-                android:layout_width="match_parent"
+            android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
@@ -113,8 +112,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                     android:layout_gravity="center"
-                    android:id="@+id/rvInformationCategory"
-                    android:layout_width="match_parent"
+                android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_medium"/>
         </LinearLayout>
