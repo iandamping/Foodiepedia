@@ -1,6 +1,9 @@
 package com.ian.junemon.foodiepedia.core.cache.di
 
+import com.ian.junemon.foodiepedia.core.cache.util.classes.DaoUserProfileHelperImpl
 import com.ian.junemon.foodiepedia.core.cache.util.classes.FoodDaoHelperImpl
+import com.ian.junemon.foodiepedia.core.cache.util.interfaces.FoodDaoHelper
+import com.ian.junemon.foodiepedia.core.cache.util.interfaces.ProfileDaoHelper
 import dagger.Binds
 import dagger.Module
 
@@ -13,5 +16,8 @@ import dagger.Module
 abstract class DatabaseHelperModule {
 
     @Binds
-    abstract fun bindDatabaseHelper(foodDatabaseHelper:FoodDaoHelperImpl):FoodDaoHelperImpl
+    abstract fun bindFoodHelper(foodDatabaseHelper:FoodDaoHelperImpl):FoodDaoHelper
+
+    @Binds
+    abstract fun bindProfileHelper(profileHelperImpl: DaoUserProfileHelperImpl):ProfileDaoHelper
 }

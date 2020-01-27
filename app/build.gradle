@@ -51,8 +51,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-
     implementation project(':core')
     implementation project(':model')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -74,54 +72,6 @@ dependencies {
     implementation "androidx.activity:activity-ktx:1.0.0"
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
-
-
-
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
-    //firebase
-    implementation 'com.google.firebase:firebase-core:16.0.9'
-    implementation 'com.google.android.gms:play-services-ads:17.2.1'
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
-    implementation "com.google.firebase:firebase-auth:17.0.0"
-    implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
-    implementation 'com.facebook.android:facebook-android-sdk:4.39.0'
-    implementation 'com.facebook.android:facebook-login:4.39.0'
-
-    //recyclerview helper
-    implementation 'com.github.iandamping:RecyclerViewHelper:0.0.4'
-    //common helper
-    implementation 'com.github.iandamping:CommonHelper:0.0.12'
-    //room
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    //livedata
-    implementation "androidx.lifecycle:lifecycle-runtime:$livedata_version"
-    implementation "androidx.lifecycle:lifecycle-extensions:$livedata_version"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$livedata_version"
-    //koin
-    implementation 'org.koin:koin-android-viewmodel:2.0.1'
-    //internet
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation 'com.google.code.gson:gson:2.8.6'
-    implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
-    //internet logging
-    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-    //lottie
-    implementation 'com.airbnb.android:lottie:3.2.2'
-    //shimmer
-    implementation 'com.facebook.shimmer:shimmer:0.5.0'
-    //circleprofile
-    implementation 'de.hdodenhof:circleimageview:3.0.1'
-    //slider indicator
-    implementation 'me.relex:circleindicator:1.2.2@aar'
-    //coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 }

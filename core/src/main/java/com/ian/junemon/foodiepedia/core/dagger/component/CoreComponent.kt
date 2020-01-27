@@ -1,14 +1,9 @@
 package com.ian.junemon.foodiepedia.core.dagger.component
 
 import android.app.Application
+import com.ian.junemon.foodiepedia.core.cache.di.DatabaseHelperModule
 import com.ian.junemon.foodiepedia.core.cache.di.DatabaseModule
-import com.ian.junemon.foodiepedia.core.presentation.di.PresentationModule
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ImageUtilHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.IntentUtilHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.PermissionHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
+import com.ian.junemon.foodiepedia.core.data.di.DataModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -20,16 +15,17 @@ import javax.inject.Singleton
  */
 
 @Component(
-    modules = [
-        DatabaseModule::class],dependencies = [CoreUtilComponent::class]
+    modules = [DatabaseModule::class, DatabaseHelperModule::class,DataModule::class]
 )
 @Singleton
 interface CoreComponent {
 
+    /* val providePlacesDaoHelper: FoodDaoHelper
 
+     val provideFoodDaoHelper: ProfileDaoHelper*/
 
     @Component.Factory
     interface Factory {
-        fun injectApplication(@BindsInstance application: Application,coreUtilComponent: CoreUtilComponent): CoreComponent
+        fun injectApplication(@BindsInstance application: Application): CoreComponent
     }
 }

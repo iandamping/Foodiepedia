@@ -10,7 +10,6 @@ object Constant {
     const val areaDetail = "go to area"
     const val categoryDetail = "go to category"
     const val ingredientDetail = "go to ingredient"
-    val baseUrl = SecretKeyHelper.BaseUrl
     const val detailFood = "lookup.php"
     const val getAllFood = "latest.php"
     const val getRandomFood = "random.php"
@@ -19,10 +18,6 @@ object Constant {
     const val getAllFoodArea = "list.php"
     const val getAllFoodIngredient = "list.php"
     const val getFilterData = "filter.php"
-    val allCategoryValue = SecretKeyHelper.AllCategoryValue
-    val categoryType = SecretKeyHelper.CategoryType
-    val areaType = SecretKeyHelper.AreaType
-    val ingredientType = SecretKeyHelper.IngredientType
     const val intentDetailKey = "detailfood"
     const val delayMillis = 3000L
     const val prefHelperInit = " init preference helper"

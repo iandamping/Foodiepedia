@@ -1,5 +1,6 @@
 package com.ian.junemon.foodiepedia.core.remote.di
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -27,5 +28,11 @@ object RemoteModule {
     @JvmStatic
     fun provideFirebaseStorage(): StorageReference {
         return FirebaseStorage.getInstance().getReferenceFromUrl(firebaseStorageUrl)
+    }
+
+    @Provides
+    @JvmStatic
+    fun provideFirebaseAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
     }
 }

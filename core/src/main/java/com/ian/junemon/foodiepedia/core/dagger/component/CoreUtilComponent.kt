@@ -1,7 +1,6 @@
 package com.ian.junemon.foodiepedia.core.dagger.component
 
-import com.ian.junemon.foodiepedia.core.cache.di.DatabaseHelperModule
-import com.ian.junemon.foodiepedia.core.cache.util.interfaces.FoodDaoHelper
+import com.ian.junemon.foodiepedia.core.data.di.CoroutineModule
 import com.ian.junemon.foodiepedia.core.presentation.di.PresentationModule
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ImageUtilHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.IntentUtilHelper
@@ -10,7 +9,8 @@ import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.PermissionH
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.core.remote.di.RemoteHelperModule
-import com.ian.junemon.foodiepedia.core.remote.util.RemoteHelper
+import com.ian.junemon.foodiepedia.core.remote.di.RemoteModule
+import com.ian.junemon.foodiepedia.core.remote.util.FoodRemoteHelper
 import dagger.Component
 
 /**
@@ -18,7 +18,9 @@ import dagger.Component
  * Github https://github.com/iandamping
  * Indonesia.
  */
-@Component(modules = [PresentationModule::class, RemoteHelperModule::class, DatabaseHelperModule::class])
+@Component(
+    modules = [RemoteModule::class, PresentationModule::class, RemoteHelperModule::class, CoroutineModule::class]
+)
 interface CoreUtilComponent {
 
     val provideLoadImageHelper: LoadImageHelper
@@ -33,7 +35,5 @@ interface CoreUtilComponent {
 
     val provideViewHelper: ViewHelper
 
-    fun providePlacesDaoHelper(): FoodDaoHelper
-
-    fun provideRemoteHelper(): RemoteHelper
+    val provideFoodRemoteHelper: FoodRemoteHelper
 }
