@@ -1,0 +1,35 @@
+package com.ian.junemon.foodiepedia.core.cache.db
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
+import com.ian.junemon.foodiepedia.core.cache.model.Food
+import kotlinx.coroutines.flow.Flow
+
+/**
+ * Created by Ian Damping on 24,January,2020
+ * Github https://github.com/iandamping
+ * Indonesia.
+ */
+@Dao
+interface FoodDao {
+    @Query("SELECT * FROM table_food")
+    fun loadFood(): Flow<List<Food>>
+
+    /*@Query("SELECT * FROM place_table WHERE place_type = :placeType")
+    fun loadAllBalanceByMonth(placeType: String): Flow<List<PlaceDbEntity>>*/
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveFood(vararg tagsData: Food)
+
+    @Query("DELETE FROM table_food")
+    suspend fun deleteAllFood()
+
+    @Transaction
+    suspend fun insertFood(vararg tagsData: Food) {
+        deleteAllFood()
+        saveFood(*tagsData)
+    }
+}
