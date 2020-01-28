@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="blue_food">#0072FF</color>
+    <color name="color_white">#FCFCFC</color>
     <color name="gray_food">#A1A1A1</color>
     <color name="yellow_food">#F3C021</color>
     <color name="view_border">#E5E5E5</color>
     <color name="textColor">#383838</color>
+    <color name="textColorHint">#CCCCCC</color>
     <color name="gray_food_2">#ff888888</color>
 </resources>

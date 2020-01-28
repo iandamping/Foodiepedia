@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.food.databinding.FragmentHomeBinding
 import com.ian.junemon.foodiepedia.food.di.sharedFoodComponent
@@ -32,8 +33,16 @@ class HomeFragment : BaseFragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
+            initView()
         }
         return binding.root
+    }
+
+
+    private fun FragmentHomeBinding.initView() {
+        apply {
+            fabHome.setOnClickListener {it.findNavController().navigate( HomeFragmentDirections.actionHomeFragmentToUploadFragment()) }
+        }
     }
 
     override fun onDestroyView() {
