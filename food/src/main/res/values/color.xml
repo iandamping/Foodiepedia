@@ -3,4 +3,6 @@
     <color name="gray_food">#A1A1A1</color>
     <color name="yellow_food">#F3C021</color>
     <color name="view_border">#E5E5E5</color>
+    <color name="textColor">#383838</color>
+    <color name="gray_food_2">#ff888888</color>
 </resources>
