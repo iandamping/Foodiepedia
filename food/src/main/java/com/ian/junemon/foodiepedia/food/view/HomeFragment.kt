@@ -41,7 +41,7 @@ class HomeFragment : BaseFragment() {
 
     private fun FragmentHomeBinding.initView() {
         apply {
-            fabHome.setOnClickListener {it.findNavController().navigate( HomeFragmentDirections.actionHomeFragmentToUploadFragment()) }
+            fabHome.setOnClickListener { it.findNavController().navigate( HomeFragmentDirections.actionHomeFragmentToUploadFragment()) }
         }
     }
 
