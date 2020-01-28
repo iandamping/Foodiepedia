@@ -1,5 +1,6 @@
 package com.ian.junemon.foodiepedia.dagger
 
+import com.google.firebase.storage.StorageReference
 import com.ian.junemon.foodiepedia.core.dagger.component.CoreComponent
 import com.ian.junemon.foodiepedia.core.dagger.scope.ApplicationScope
 import dagger.Component
@@ -31,6 +32,8 @@ interface AppComponent {
     fun providePlacesDaoHelper(): PlacesDaoHelper
 
     fun provideRemoteHelper(): RemoteHelper*/
+
+    val provideStorageReference: StorageReference
 
     @Component.Factory
     interface Factory {

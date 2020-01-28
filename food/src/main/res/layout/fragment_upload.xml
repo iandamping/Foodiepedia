@@ -11,7 +11,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="224dp"
-            android:background="@color/blue_food">
+            android:background="@color/yellow_food">
 
             <ImageView
                 android:id="@+id/ivPickPhoto"

@@ -57,6 +57,7 @@ abstract class BaseFragment : Fragment() {
         try {
             function.invoke()
         } catch (e: IllegalStateException) {
+            Timber.e(e)
             // commonHelper.timberLogE(e.message)
         }
     }

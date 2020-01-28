@@ -4,6 +4,7 @@ import com.ian.junemon.foodiepedia.core.dagger.scope.FeatureScope
 import com.ian.junemon.foodiepedia.dagger.ActivityComponent
 import com.ian.junemon.foodiepedia.food.view.DetailFragment
 import com.ian.junemon.foodiepedia.food.view.HomeFragment
+import com.ian.junemon.foodiepedia.food.view.UploadFoodFragment
 import dagger.Component
 
 /**
@@ -16,6 +17,8 @@ import dagger.Component
 interface FoodComponent {
 
     fun inject(fragment: DetailFragment)
+
+    fun inject(fragment: UploadFoodFragment)
 
     fun inject(fragment: HomeFragment)
 

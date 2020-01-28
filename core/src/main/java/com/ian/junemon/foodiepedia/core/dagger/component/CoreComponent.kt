@@ -1,6 +1,7 @@
 package com.ian.junemon.foodiepedia.core.dagger.component
 
 import android.app.Application
+import com.google.firebase.storage.StorageReference
 import com.ian.junemon.foodiepedia.core.cache.di.DatabaseHelperModule
 import com.ian.junemon.foodiepedia.core.cache.di.DatabaseModule
 import com.ian.junemon.foodiepedia.core.data.di.CoroutineModule
@@ -25,6 +26,8 @@ import javax.inject.Singleton
 )
 @Singleton
 interface CoreComponent {
+
+    val provideStorageReference:StorageReference
 
     /* val providePlacesDaoHelper: FoodDaoHelper
 
