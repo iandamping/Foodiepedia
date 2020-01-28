@@ -13,7 +13,7 @@
         android:padding="@dimen/spacing_medium"
         app:lottie_enableMergePathsForKitKatAndAbove="true"
         app:lottie_autoPlay="true"
-        app:lottie_fileName="the_best_loading.json"
+        app:lottie_fileName="knife_loading.json"
         app:lottie_loop="true" />
 
 

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+        <variable
+            name="foodViewModel"
+            type="com.ian.junemon.foodiepedia.food.vm.FoodViewModel" />
+    </data>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -25,10 +31,10 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/etPlaceName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:text="@={foodViewModel.etFoodName}"
                     android:background="@drawable/et_background"
                     android:padding="15dp" />
 
@@ -60,6 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:text="@={foodViewModel.etFoodArea}"
                     android:background="@drawable/et_background"
                     android:padding="15dp" />
 

@@ -5,10 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.RequestSelectGalleryImage
 import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ImageUtilHelper
@@ -19,6 +21,7 @@ import com.ian.junemon.foodiepedia.food.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.food.view.adapter.UploadAdapter
 import com.ian.junemon.foodiepedia.food.vm.FoodViewModel
 import kotlinx.android.synthetic.main.fragment_upload.*
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -64,8 +67,8 @@ class UploadFoodFragment : BaseFragment() {
             initView()
             tabMainPage.setupWithViewPager(vpMainPage)
             vpMainPage.adapter = UploadAdapter(childFragmentManager)
-
         }
+
         return binding.root
     }
 
@@ -128,4 +131,5 @@ class UploadFoodFragment : BaseFragment() {
             }
         }
     }
+
 }
