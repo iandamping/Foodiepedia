@@ -1,6 +1,13 @@
 package com.ian.junemon.foodiepedia
 
+import android.app.Activity
 import android.app.Application
+import com.ian.junemon.foodiepedia.core.dagger.component.CoreComponent
+import com.ian.junemon.foodiepedia.core.dagger.component.DaggerCoreComponent
+import com.ian.junemon.foodiepedia.dagger.ActivityComponent
+import com.ian.junemon.foodiepedia.dagger.AppComponent
+import com.ian.junemon.foodiepedia.dagger.DaggerActivityComponent
+import com.ian.junemon.foodiepedia.dagger.DaggerAppComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,19 +20,36 @@ Github = https://github.com/iandamping
  */
 
 class FoodApp : Application() {
-    private val applicationScope = CoroutineScope(Dispatchers.Default)
+    val appComponent: AppComponent by lazy {
+        initializeAppComponent()
+    }
 
-    private fun delayedInit(app: Application) {
-        applicationScope.launch {
+    val coreComponent: CoreComponent by lazy {
+        initializeCoreComponent()
+    }
 
-            if (BuildConfig.DEBUG) {
-                Timber.plant(Timber.DebugTree())
-            }
-        }
+    val activityComponent: ActivityComponent by lazy {
+        initializeActivityComponent()
     }
 
     override fun onCreate() {
         super.onCreate()
-        delayedInit(this)
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
+    }
+
+    private fun initializeAppComponent(): AppComponent {
+        return DaggerAppComponent.factory().coreComponent(coreComponent)
+    }
+
+    private fun initializeCoreComponent():CoreComponent{
+        return DaggerCoreComponent.factory().injectApplication(this)
+    }
+
+    private fun initializeActivityComponent():ActivityComponent{
+        return DaggerActivityComponent.factory().appComponent(appComponent)
     }
 }
+
+fun Activity.activityComponent() = (application as FoodApp).activityComponent

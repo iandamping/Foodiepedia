@@ -32,8 +32,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    androidExtensions {
-        experimental = true
+    dataBinding {
+        enabled = true
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     bundle {
@@ -64,6 +72,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.0-alpha02'
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVer"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVer"
+    // Kotlin
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
     implementation "com.jakewharton.timber:timber:$timberVersion"
     implementation "me.relex:circleindicator:1.2.2@aar"
     implementation "com.facebook.shimmer:shimmer:$shimmerVer"

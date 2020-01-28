@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name="com.ian.junemon.foodiepedia.ui.activity.splash.SplashActivity"
+            android:name=".ui.SplashActivity"
+            android:noHistory="true"
             android:theme="@style/FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,25 +25,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ian.junemon.foodiepedia.ui.activity.MainActivity"
+            android:name="com.ian.junemon.foodiepedia.ui.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreen" />
-        <activity
-            android:name="com.ian.junemon.foodiepedia.ui.activity.detail.DetailFoodActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/FullScreen" />
-        <activity
-            android:name="com.ian.junemon.foodiepedia.ui.activity.discover.DiscoverActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/FullScreen" />
-        <activity
-            android:name="com.ian.junemon.foodiepedia.ui.activity.detailinformation.DetailInformationActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/FullScreen" />
-        <activity
-            android:name="com.ian.junemon.foodiepedia.ui.activity.filter.FilterActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/FullScreen" />
+
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"

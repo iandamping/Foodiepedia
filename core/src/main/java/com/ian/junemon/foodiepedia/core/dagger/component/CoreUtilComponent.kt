@@ -18,6 +18,7 @@ import dagger.Component
  * Github https://github.com/iandamping
  * Indonesia.
  */
+/*
 @Component(
     modules = [RemoteModule::class, PresentationModule::class, RemoteHelperModule::class, CoroutineModule::class]
 )
@@ -36,4 +37,4 @@ interface CoreUtilComponent {
     val provideViewHelper: ViewHelper
 
     val provideFoodRemoteHelper: FoodRemoteHelper
-}
+}*/

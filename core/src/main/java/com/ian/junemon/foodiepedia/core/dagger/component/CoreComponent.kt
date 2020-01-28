@@ -21,7 +21,7 @@ import javax.inject.Singleton
 
 @Component(
     modules = [DatabaseModule::class, DatabaseHelperModule::class, DataModule::class, DomainModule::class,
-        RemoteModule ::class, PresentationModule::class, RemoteHelperModule::class, CoroutineModule::class]
+        RemoteModule ::class, RemoteHelperModule::class, CoroutineModule::class]
 )
 @Singleton
 interface CoreComponent {
