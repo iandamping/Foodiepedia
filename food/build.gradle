@@ -1,66 +1,38 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.dynamic-feature'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.gms.google-services'
 apply plugin: 'androidx.navigation.safeargs'
-apply plugin: 'io.fabric'
-
+apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    
+
+
     defaultConfig {
-        applicationId "com.ian.junemon.foodiepedia"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 6
-        versionName "6.0"
-        resConfigs "en"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
+        versionCode 1
+        versionName "1.0"
+
     }
     dataBinding {
         enabled = true
     }
-
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    bundle {
-        language {
-            enableSplit = true
-        }
-        density {
-            enableSplit = true
-        }
-        abi {
-            enableSplit = true
-        }
-    }
-    dynamicFeatures = [":food"]
-
 
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':app')
     implementation project(':core')
     implementation project(':model')
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
@@ -71,16 +43,11 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.0-alpha02'
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVer"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVer"
-    // Kotlin
-    implementation "androidx.fragment:fragment-ktx:$fragment_version"
     implementation "com.jakewharton.timber:timber:$timberVersion"
     implementation "me.relex:circleindicator:1.2.2@aar"
     implementation "com.facebook.shimmer:shimmer:$shimmerVer"
     implementation "com.google.code.gson:gson:$gson_version"
     implementation 'com.mikhaellopez:circularimageview:4.1.0'
-    implementation "androidx.activity:activity-ktx:1.0.0"
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 }

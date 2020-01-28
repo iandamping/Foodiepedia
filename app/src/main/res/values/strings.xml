@@ -16,10 +16,12 @@
     <string name="email">Email</string>
     <string name="logout">Logout</string>
     <string name="admobAppID">ca-app-pub-5657961827660648~4986713230</string>
-<!--    <string name="admobUnitID">ca-app-pub-5657961827660648/2959369594</string> //ini asli-->
-    <string name="admobUnitID">ca-app-pub-5657961827660648/6300978111</string> //ini palsu
+    <!--    <string name="admobUnitID">ca-app-pub-5657961827660648/2959369594</string> //ini asli-->
+    <string name="admobUnitID">ca-app-pub-5657961827660648/6300978111</string>
+    //ini palsu
     <!--<string name ="admobID_banner_test">ca-app-pub-3940256099942544/6300978111</string>-->
     <string name="facebook_application_id" translatable="false">398327677559709</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb398327677559709</string>
     <string name="are_you_sure_want_to_delete_this">Are you sure want to delete this ?</string>
+    <string name="title_food">Food Feature</string>
 </resources>
