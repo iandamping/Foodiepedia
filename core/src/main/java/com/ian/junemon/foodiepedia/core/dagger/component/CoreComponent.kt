@@ -3,7 +3,12 @@ package com.ian.junemon.foodiepedia.core.dagger.component
 import android.app.Application
 import com.ian.junemon.foodiepedia.core.cache.di.DatabaseHelperModule
 import com.ian.junemon.foodiepedia.core.cache.di.DatabaseModule
+import com.ian.junemon.foodiepedia.core.data.di.CoroutineModule
 import com.ian.junemon.foodiepedia.core.data.di.DataModule
+import com.ian.junemon.foodiepedia.core.domain.di.DomainModule
+import com.ian.junemon.foodiepedia.core.presentation.di.PresentationModule
+import com.ian.junemon.foodiepedia.core.remote.di.RemoteHelperModule
+import com.ian.junemon.foodiepedia.core.remote.di.RemoteModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -15,7 +20,8 @@ import javax.inject.Singleton
  */
 
 @Component(
-    modules = [DatabaseModule::class, DatabaseHelperModule::class,DataModule::class]
+    modules = [DatabaseModule::class, DatabaseHelperModule::class, DataModule::class, DomainModule::class,
+        RemoteModule ::class, PresentationModule::class, RemoteHelperModule::class, CoroutineModule::class]
 )
 @Singleton
 interface CoreComponent {
