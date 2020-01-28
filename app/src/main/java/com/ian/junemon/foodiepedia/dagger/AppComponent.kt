@@ -3,37 +3,20 @@ package com.ian.junemon.foodiepedia.dagger
 import com.google.firebase.storage.StorageReference
 import com.ian.junemon.foodiepedia.core.dagger.component.CoreComponent
 import com.ian.junemon.foodiepedia.core.dagger.scope.ApplicationScope
+import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
+import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
 import dagger.Component
 
 @ApplicationScope
 @Component(dependencies = [CoreComponent::class])
 interface AppComponent {
 
-   /* fun provideLoadImageHelper(): LoadImageHelper
-
-    fun provideIntentUtil(): IntentHelper
-
-    fun provideImageUtil(): ImageHelper
-
-    fun providePermissionHelperUtil(): PermissionHelper
-
-    fun provideRecyclerViewHelper(): RecyclerHelper
-
-    fun provideViewHelper(): ViewHelper
-
-    fun provideCommmonHelper(): CommonHelper
-
-    fun providePlaceRepository(): PlaceRepository
-
-    fun providePlaceRemoteDataSource(): PlaceRemoteDataSource
-
-    fun providePlaceCacheDataSource(): PlaceCacheDataSource
-
-    fun providePlacesDaoHelper(): PlacesDaoHelper
-
-    fun provideRemoteHelper(): RemoteHelper*/
-
     val provideStorageReference: StorageReference
+
+    val provideFoodRepository: FoodRepository
+
+    val provideProfileRepository: ProfileRepository
+
 
     @Component.Factory
     interface Factory {

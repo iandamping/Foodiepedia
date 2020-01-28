@@ -4,10 +4,18 @@ import android.app.Application
 import com.google.firebase.storage.StorageReference
 import com.ian.junemon.foodiepedia.core.cache.di.DatabaseHelperModule
 import com.ian.junemon.foodiepedia.core.cache.di.DatabaseModule
+import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodCacheDataSource
+import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodRemoteDataSource
+import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileCacheDataSource
+import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileRemoteDataSource
+import com.ian.junemon.foodiepedia.core.data.datasource.cache.FoodCacheDataSourceImpl
+import com.ian.junemon.foodiepedia.core.data.datasource.remote.FoodRemoteDataSourceImpl
+import com.ian.junemon.foodiepedia.core.data.datasource.remote.ProfileRemoteDataSourceImpl
 import com.ian.junemon.foodiepedia.core.data.di.CoroutineModule
 import com.ian.junemon.foodiepedia.core.data.di.DataModule
 import com.ian.junemon.foodiepedia.core.domain.di.DomainModule
-import com.ian.junemon.foodiepedia.core.presentation.di.PresentationModule
+import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
+import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
 import com.ian.junemon.foodiepedia.core.remote.di.RemoteHelperModule
 import com.ian.junemon.foodiepedia.core.remote.di.RemoteModule
 import dagger.BindsInstance
@@ -22,16 +30,16 @@ import javax.inject.Singleton
 
 @Component(
     modules = [DatabaseModule::class, DatabaseHelperModule::class, DataModule::class, DomainModule::class,
-        RemoteModule ::class, RemoteHelperModule::class, CoroutineModule::class]
+        RemoteModule::class, RemoteHelperModule::class, CoroutineModule::class]
 )
 @Singleton
 interface CoreComponent {
 
-    val provideStorageReference:StorageReference
+    val provideStorageReference: StorageReference
 
-    /* val providePlacesDaoHelper: FoodDaoHelper
+    val provideFoodRepository: FoodRepository
 
-     val provideFoodDaoHelper: ProfileDaoHelper*/
+    val provideProfileRepository: ProfileRepository
 
     @Component.Factory
     interface Factory {

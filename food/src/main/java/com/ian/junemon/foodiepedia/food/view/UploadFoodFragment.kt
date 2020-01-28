@@ -17,6 +17,7 @@ import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.food.databinding.FragmentUploadBinding
 import com.ian.junemon.foodiepedia.food.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.food.view.adapter.UploadAdapter
+import com.ian.junemon.foodiepedia.food.vm.FoodViewModel
 import kotlinx.android.synthetic.main.fragment_upload.*
 import javax.inject.Inject
 import kotlin.properties.Delegates
@@ -33,6 +34,8 @@ class UploadFoodFragment : BaseFragment() {
     lateinit var permissionHelper: PermissionHelper
     @Inject
     lateinit var imageHelper: ImageUtilHelper
+    @Inject
+    lateinit var foodVm: FoodViewModel
 
     private var isPermisisonGranted by Delegates.notNull<Boolean>()
     private var selectedUriForFirebase by Delegates.notNull<Uri>()

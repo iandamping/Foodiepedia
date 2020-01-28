@@ -13,13 +13,14 @@ import com.junemon.model.domain.UserProfileDataModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import javax.inject.Inject
 
 /**
  * Created by Ian Damping on 27,January,2020
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class ProfileRepositoryImpl(
+class ProfileRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val cacheDataSource: ProfileCacheDataSource,
     private val remoteDataSource: ProfileRemoteDataSource

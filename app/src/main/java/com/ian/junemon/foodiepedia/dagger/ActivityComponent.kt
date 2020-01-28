@@ -1,6 +1,8 @@
 package com.ian.junemon.foodiepedia.dagger
 
 import com.ian.junemon.foodiepedia.core.dagger.scope.PerActivities
+import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
+import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
 import com.ian.junemon.foodiepedia.core.presentation.di.PresentationModule
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ImageUtilHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.PermissionHelper
@@ -27,6 +29,10 @@ interface ActivityComponent {
     val providePermissionHelper: PermissionHelper
 
     val provideImageUtilHelper: ImageUtilHelper
+
+    val provideFoodRepository: FoodRepository
+
+    val provideProfileRepository: ProfileRepository
 
     @Component.Factory
     interface Factory {
