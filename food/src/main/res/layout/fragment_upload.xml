@@ -120,7 +120,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_medium"
-                    android:text="Food Area"
+                    android:text="Food From"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 

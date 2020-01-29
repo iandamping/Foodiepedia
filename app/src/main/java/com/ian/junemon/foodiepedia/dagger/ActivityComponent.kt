@@ -5,7 +5,9 @@ import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
 import com.ian.junemon.foodiepedia.core.presentation.di.PresentationModule
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ImageUtilHelper
+import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.PermissionHelper
+import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.ui.MainActivity
 import com.ian.junemon.foodiepedia.ui.SplashActivity
@@ -25,6 +27,10 @@ interface ActivityComponent {
     fun inject(activity: MainActivity)
 
     val provideViewHelper: ViewHelper
+
+    val provideRecyclerHelper: RecyclerHelper
+
+    val provideLoadImageHelper: LoadImageHelper
 
     val providePermissionHelper: PermissionHelper
 
