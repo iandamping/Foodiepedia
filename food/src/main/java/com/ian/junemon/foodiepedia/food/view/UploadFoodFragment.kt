@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.RequestSelectGalleryImage
@@ -15,6 +16,7 @@ import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ImageUtilHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.PermissionHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
+import com.ian.junemon.foodiepedia.food.R
 import com.ian.junemon.foodiepedia.food.databinding.FragmentUploadBinding
 import com.ian.junemon.foodiepedia.food.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.food.vm.FoodViewModel
@@ -74,6 +76,15 @@ class UploadFoodFragment : BaseFragment() {
 
     private fun FragmentUploadBinding.initView() {
         apply {
+            val allFoodCategory: Array<String> =
+                context?.resources?.getStringArray(R.array.food_category)!!
+            val arrayTypeFoodSpinnerAdapter: ArrayAdapter<String>? =
+                ArrayAdapter(context!!, android.R.layout.simple_spinner_item, allFoodCategory)
+            arrayTypeFoodSpinnerAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spPlaceType.adapter = arrayTypeFoodSpinnerAdapter
+
+
+
             btnUnggahFoto.setOnClickListener {
                 openGalleryAndCamera(isPermisisonGranted)
             }
@@ -174,6 +185,7 @@ class UploadFoodFragment : BaseFragment() {
 
             btnUnggah.setOnClickListener {
                 setDialogShow(false)
+                remoteFoodUpload.foodCategory = binding.spPlaceType.selectedItem.toString()
                 foodVm.uploadFirebaseData(result, selectedUriForFirebase)
                     .observe(viewLifecycleOwner, Observer { result ->
                         when (result) {
@@ -188,5 +200,10 @@ class UploadFoodFragment : BaseFragment() {
             }
 
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
