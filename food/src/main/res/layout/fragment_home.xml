@@ -36,6 +36,7 @@
                         android:textStyle="bold" />
 
                     <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/ivPhotoProfile"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_alignParentEnd="true"
@@ -83,7 +84,6 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvHome"
-                    tools:listitem="@layout/item_home"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>

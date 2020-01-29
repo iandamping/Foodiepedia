@@ -10,6 +10,7 @@ import com.junemon.model.presentation.FoodCachePresentation
  * Indonesia.
  */
 object FoodConstant {
+    const val requestSignIn = 2341
 
     val foodDomainRvCallback = object : DiffUtil.ItemCallback<FoodCacheDomain?>() {
         override fun areItemsTheSame(oldItem: FoodCacheDomain, newItem: FoodCacheDomain): Boolean {

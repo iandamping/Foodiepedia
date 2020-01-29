@@ -18,8 +18,8 @@ interface FoodDao {
     @Query("SELECT * FROM table_food")
     fun loadFood(): Flow<List<Food>>
 
-    /*@Query("SELECT * FROM place_table WHERE place_type = :placeType")
-    fun loadAllBalanceByMonth(placeType: String): Flow<List<PlaceDbEntity>>*/
+    @Query("SELECT * FROM table_food WHERE food_category = :foodCategory")
+    fun loadFoodByCategory(foodCategory: String): Flow<List<Food>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveFood(vararg tagsData: Food)

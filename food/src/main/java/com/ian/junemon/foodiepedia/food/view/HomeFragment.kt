@@ -101,6 +101,7 @@ class HomeFragment : BaseFragment() {
                 }
             })
             fabHome.setOnClickListener { it.findNavController().navigate( HomeFragmentDirections.actionHomeFragmentToUploadFragment()) }
+            ivPhotoProfile.setOnClickListener { it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment()) }
         }
     }
 

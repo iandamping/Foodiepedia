@@ -19,6 +19,10 @@ class FoodCacheDataSourceImpl @Inject constructor(private val foodDao: FoodDaoHe
         return foodDao.loadFood().map { it.mapToCacheDomain() }
     }
 
+    override fun getCategirizeCache(foodCategory: String): Flow<List<FoodCacheDomain>> {
+        return foodDao.loadCategorizeFood(foodCategory).map { it.mapToCacheDomain() }
+    }
+
     override suspend fun setCache(data: List<FoodCacheDomain>) {
         foodDao.insertFood(*data.mapToDatabase().toTypedArray())
     }

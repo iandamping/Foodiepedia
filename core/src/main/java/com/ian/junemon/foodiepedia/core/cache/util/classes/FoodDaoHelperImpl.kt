@@ -16,6 +16,10 @@ class FoodDaoHelperImpl @Inject constructor(private val foodDao: FoodDao) : Food
         return foodDao.loadFood()
     }
 
+    override fun loadCategorizeFood(foodCategory: String): Flow<List<Food>> {
+        return foodDao.loadFoodByCategory(foodCategory)
+    }
+
     override suspend fun deleteAllFood() {
        foodDao.deleteAllFood()
     }

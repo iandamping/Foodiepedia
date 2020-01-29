@@ -13,7 +13,7 @@ import dagger.Component
  * Github https://github.com/iandamping
  * Indonesia.
  */
-@Component(modules = [FoodModule::class],dependencies = [ActivityComponent::class])
+@Component(modules = [FoodModule::class], dependencies = [ActivityComponent::class])
 @FeatureScope
 interface FoodComponent {
 

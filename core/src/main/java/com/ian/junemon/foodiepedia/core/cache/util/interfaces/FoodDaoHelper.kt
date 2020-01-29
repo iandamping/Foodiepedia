@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.Flow
 interface FoodDaoHelper {
     fun loadFood(): Flow<List<Food>>
 
+    fun loadCategorizeFood(foodCategory: String):Flow<List<Food>>
+
     suspend fun deleteAllFood()
 
     suspend fun insertFood(vararg tagsData: Food)

@@ -19,6 +19,15 @@
             app:popEnterAnim="@anim/fragment_fade_enter"
             app:popExitAnim="@anim/fragment_fade_exit"
             app:popUpTo="@+id/homeFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit"
+            app:popUpTo="@+id/homeFragment" />
         <!--<action
             android:id="@+id/action_homeFragment_to_detailFragment"
             app:destination="@id/detailFragment"
@@ -46,5 +55,10 @@
         android:id="@+id/uploadFoodFragment"
         android:name="com.ian.junemon.foodiepedia.food.view.UploadFoodFragment"
         android:label="UploadFragment" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.ian.junemon.foodiepedia.food.view.ProfileFragment"
+        android:label="ProfileFragment" />
 
 </navigation>
