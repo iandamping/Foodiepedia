@@ -9,11 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.food.databinding.FragmentProfileBinding
-import com.ian.junemon.foodiepedia.food.di.sharedProfileComponent
+import com.ian.junemon.foodiepedia.food.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.food.util.FoodConstant.requestSignIn
 import com.ian.junemon.foodiepedia.food.vm.ProfileViewModel
 import javax.inject.Inject
@@ -33,7 +32,7 @@ class ProfileFragment:BaseFragment() {
     private val binding get() = _binding!!
 
     override fun onAttach(context: Context) {
-        sharedProfileComponent().inject(this)
+        sharedFoodComponent().inject(this)
         super.onAttach(context)
     }
 

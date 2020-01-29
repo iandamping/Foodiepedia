@@ -22,6 +22,7 @@ import com.ian.junemon.foodiepedia.food.R
 import com.ian.junemon.foodiepedia.food.databinding.FragmentUploadBinding
 import com.ian.junemon.foodiepedia.food.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.food.vm.FoodViewModel
+import com.ian.junemon.foodiepedia.food.vm.ProfileViewModel
 import com.junemon.model.FirebaseResult
 import com.junemon.model.domain.FoodRemoteDomain
 import kotlinx.android.synthetic.main.fragment_upload.*
@@ -42,6 +43,8 @@ class UploadFoodFragment : BaseFragment() {
     lateinit var imageHelper: ImageUtilHelper
     @Inject
     lateinit var foodVm: FoodViewModel
+    @Inject
+    lateinit var profileVm: ProfileViewModel
 
     private val remoteFoodUpload: FoodRemoteDomain = FoodRemoteDomain()
     private var selectedUriForFirebase by Delegates.notNull<Uri>()
@@ -74,6 +77,7 @@ class UploadFoodFragment : BaseFragment() {
             foodViewModel = foodVm
         }
         consumeViewModelData()
+        consumeProfileData()
         observeViewModelData()
         return binding.root
     }
@@ -169,6 +173,14 @@ class UploadFoodFragment : BaseFragment() {
                 setFood(remoteFoodUpload)
             }
         }
+    }
+
+    private fun consumeProfileData() {
+        profileVm.getUser().observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                remoteFoodUpload.foodContributor = it.nameUser
+            }
+        })
     }
 
     private fun observeViewModelData() {

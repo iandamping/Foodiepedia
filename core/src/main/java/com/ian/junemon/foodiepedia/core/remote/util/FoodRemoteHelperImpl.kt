@@ -76,7 +76,6 @@ class FoodRemoteHelperImpl @Inject constructor(
                 addOnFailureListener {
                     cancellableContinuation.resume(FirebaseResult.ErrorPush(it))
                 }
-
             }
         }
     }
