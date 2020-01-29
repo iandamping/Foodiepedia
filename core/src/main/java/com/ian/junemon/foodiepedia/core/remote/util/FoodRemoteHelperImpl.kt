@@ -62,15 +62,21 @@ class FoodRemoteHelperImpl @Inject constructor(
             val reference = storagePlaceReference.child(imageUri.lastPathSegment!!)
 
             reference.putFile(imageUri).apply {
-                reference.downloadUrl.addOnSuccessListener {
-                    data.foodImage = it.toString()
-                    databasePlaceReference.push().setValue(data)
-                        .addOnFailureListener { exceptions ->
-                            cancellableContinuation.resume(FirebaseResult.ErrorPush(exceptions))
-                        }.addOnSuccessListener {
-                            cancellableContinuation.resume(FirebaseResult.SuccessPush)
-                        }
+                addOnSuccessListener {
+                    reference.downloadUrl.addOnSuccessListener {
+                        data.foodImage = it.toString()
+                        databasePlaceReference.push().setValue(data)
+                            .addOnFailureListener { exceptions ->
+                                cancellableContinuation.resume(FirebaseResult.ErrorPush(exceptions))
+                            }.addOnSuccessListener {
+                                cancellableContinuation.resume(FirebaseResult.SuccessPush)
+                            }
+                    }
                 }
+                addOnFailureListener {
+                    cancellableContinuation.resume(FirebaseResult.ErrorPush(it))
+                }
+
             }
         }
     }

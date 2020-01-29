@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.RequestSelectGalleryImage
 import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ImageUtilHelper
@@ -40,9 +42,11 @@ class UploadFoodFragment : BaseFragment() {
     lateinit var imageHelper: ImageUtilHelper
     @Inject
     lateinit var foodVm: FoodViewModel
+
     private val remoteFoodUpload: FoodRemoteDomain = FoodRemoteDomain()
     private var selectedUriForFirebase by Delegates.notNull<Uri>()
     private var isPermisisonGranted by Delegates.notNull<Boolean>()
+
     private var _binding: FragmentUploadBinding? = null
     private val binding get() = _binding!!
 
@@ -191,9 +195,11 @@ class UploadFoodFragment : BaseFragment() {
                         when (result) {
                             is FirebaseResult.SuccessPush -> {
                                 setDialogShow(true)
+                                binding.root.findNavController().navigateUp()
                             }
                             is FirebaseResult.ErrorPush -> {
                                 setDialogShow(true)
+                                Snackbar.make(binding.root, "Something happen ${result.exception}", Snackbar.LENGTH_SHORT).show()
                             }
                         }
                     })
