@@ -13,7 +13,7 @@ Github = https://github.com/iandamping
  */
 class MainActivity : AppCompatActivity() {
     val mainActivityComponent by lazy { (application as FoodApp).activityComponent }
-    private lateinit var binding:ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         mainActivityComponent.inject(this)
         super.onCreate(savedInstanceState)

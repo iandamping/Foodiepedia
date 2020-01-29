@@ -11,7 +11,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class ProfileUseCase @Inject constructor(private val repo:ProfileRepository) {
+class ProfileUseCase @Inject constructor(private val repo: ProfileRepository) {
 
     fun inflateLogin(): LiveData<UserProfileDataModel> = repo.inflateLogin()
 

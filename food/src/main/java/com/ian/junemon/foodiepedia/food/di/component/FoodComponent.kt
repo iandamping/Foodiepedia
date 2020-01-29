@@ -6,9 +6,6 @@ import com.ian.junemon.foodiepedia.food.di.module.FoodModule
 import com.ian.junemon.foodiepedia.food.view.DetailFragment
 import com.ian.junemon.foodiepedia.food.view.HomeFragment
 import com.ian.junemon.foodiepedia.food.view.UploadFoodFragment
-import com.ian.junemon.foodiepedia.food.view.upload.FragmentIngredientFood
-import com.ian.junemon.foodiepedia.food.view.upload.FragmentInstructionFood
-import com.ian.junemon.foodiepedia.food.view.upload.FragmentNameFood
 import dagger.Component
 
 /**
@@ -23,12 +20,6 @@ interface FoodComponent {
     fun inject(fragment: DetailFragment)
 
     fun inject(fragment: UploadFoodFragment)
-
-    fun inject(fragment: FragmentIngredientFood)
-
-    fun inject(fragment: FragmentInstructionFood)
-
-    fun inject(fragment: FragmentNameFood)
 
     fun inject(fragment: HomeFragment)
 

@@ -9,7 +9,6 @@ interface ProfileCacheDataSource {
     suspend fun setCache(data: UserProfileDataModel)
 
     fun getCache(): Flow<UserProfileDataModel>
-
 }
 
 interface ProfileRemoteDataSource {

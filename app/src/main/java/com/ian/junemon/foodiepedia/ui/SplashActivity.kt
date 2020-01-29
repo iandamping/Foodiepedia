@@ -4,11 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.activityComponent
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.IntentUtilHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.ActivitySplashBinding
 import javax.inject.Inject
@@ -18,9 +16,9 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SplashActivity: AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
 
-    private lateinit var binding:ActivitySplashBinding
+    private lateinit var binding: ActivitySplashBinding
 
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
@@ -47,7 +45,7 @@ class SplashActivity: AppCompatActivity() {
         }
     }
 
-    private fun ActivitySplashBinding.initView(){
+    private fun ActivitySplashBinding.initView() {
         apply {
             loadImageHelper.run {
                 ivLoadSplash.loadWithGlide(ContextCompat.getDrawable(this@SplashActivity, R.drawable.splash)!!)

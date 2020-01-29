@@ -15,7 +15,6 @@ import com.junemon.model.data.dto.mapRemoteToCacheDomain
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -29,7 +28,7 @@ class FoodRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val remoteDataSource: FoodRemoteDataSource,
     private val cacheDataSource: FoodCacheDataSource
-): FoodRepository {
+) : FoodRepository {
     override fun getCache(): LiveData<Results<List<FoodCacheDomain>>> {
         return liveData(ioDispatcher) {
             val disposables = emitSource(cacheDataSource.getCache().map {
@@ -63,7 +62,14 @@ class FoodRepositoryImpl @Inject constructor(
     override fun uploadFirebaseData(
         data: FoodRemoteDomain,
         imageUri: Uri
-    ): Flow<FirebaseResult<Nothing>> {
-       return remoteDataSource.uploadFirebaseData(data, imageUri)
+    ): LiveData<FirebaseResult<Nothing>> {
+        return liveData {
+            val pushStatus = remoteDataSource.uploadFirebaseData(data, imageUri)
+            when (pushStatus) {
+                is FirebaseResult.SuccessPush -> emit(FirebaseResult.SuccessPush)
+
+                is FirebaseResult.ErrorPush -> emit(FirebaseResult.ErrorPush(pushStatus.exception))
+            }
+        }
     }
 }

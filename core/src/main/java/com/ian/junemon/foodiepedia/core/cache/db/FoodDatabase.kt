@@ -10,8 +10,8 @@ import com.ian.junemon.foodiepedia.core.cache.model.UserProfile
  * Github https://github.com/iandamping
  * Indonesia.
  */
-@Database(entities = [Food::class,UserProfile::class], version = 1, exportSchema = false)
-abstract class FoodDatabase: RoomDatabase() {
-    abstract fun foodDao():FoodDao
-    abstract fun profileDao():ProfileDao
+@Database(entities = [Food::class, UserProfile::class], version = 1, exportSchema = false)
+abstract class FoodDatabase : RoomDatabase() {
+    abstract fun foodDao(): FoodDao
+    abstract fun profileDao(): ProfileDao
 }

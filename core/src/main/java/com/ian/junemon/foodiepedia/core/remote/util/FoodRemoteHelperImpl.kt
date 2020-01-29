@@ -16,7 +16,9 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
+import kotlin.coroutines.resume
 
 /**
  * Created by Ian Damping on 07,January,2020
@@ -51,34 +53,25 @@ class FoodRemoteHelperImpl @Inject constructor(
     }
 
     @ExperimentalCoroutinesApi
-    override fun uploadFirebaseData(
+    override suspend fun uploadFirebaseData(
         data: FoodRemoteDomain,
         imageUri: Uri
-    ): Flow<FirebaseResult<Nothing>> {
-        return callbackFlow {
+    ): FirebaseResult<Nothing> {
+
+        return suspendCancellableCoroutine { cancellableContinuation ->
             val reference = storagePlaceReference.child(imageUri.lastPathSegment!!)
+
             reference.putFile(imageUri).apply {
-                addOnSuccessListener {
-                    reference.downloadUrl.addOnSuccessListener {
-                        data.foodImage = it.toString()
-                        databasePlaceReference.push().setValue(data)
-                    }
-                }
-                addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        if (!this@callbackFlow.channel.isClosedForSend) {
-                            offer(FirebaseResult.SuccessPush)
+                reference.downloadUrl.addOnSuccessListener {
+                    data.foodImage = it.toString()
+                    databasePlaceReference.push().setValue(data)
+                        .addOnFailureListener { exceptions ->
+                            cancellableContinuation.resume(FirebaseResult.ErrorPush(exceptions))
+                        }.addOnSuccessListener {
+                            cancellableContinuation.resume(FirebaseResult.SuccessPush)
                         }
-                    }
                 }
-                addOnFailureListener {
-                    if (!this@callbackFlow.channel.isClosedForSend) {
-                        offer(FirebaseResult.ErrorPush(it))
-                    }
-                }
-                addOnCanceledListener { close() }
             }
-            awaitClose { cancel() }
         }
     }
 }

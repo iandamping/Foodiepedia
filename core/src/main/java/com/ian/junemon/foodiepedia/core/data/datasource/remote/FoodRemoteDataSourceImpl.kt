@@ -14,15 +14,15 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class FoodRemoteDataSourceImpl @Inject constructor(private val foodRemoteHelper:FoodRemoteHelper):FoodRemoteDataSource {
+class FoodRemoteDataSourceImpl @Inject constructor(private val foodRemoteHelper: FoodRemoteHelper) : FoodRemoteDataSource {
     override suspend fun getFirebaseData(): Flow<DataHelper<List<FoodRemoteDomain>>> {
         return foodRemoteHelper.getFirebaseData()
     }
 
-    override fun uploadFirebaseData(
+    override suspend fun uploadFirebaseData(
         data: FoodRemoteDomain,
         imageUri: Uri
-    ): Flow<FirebaseResult<Nothing>> {
+    ): FirebaseResult<Nothing> {
        return foodRemoteHelper.uploadFirebaseData(data, imageUri)
     }
 }

@@ -16,7 +16,10 @@ interface FoodRemoteDataSource {
 
     suspend fun getFirebaseData(): Flow<DataHelper<List<FoodRemoteDomain>>>
 
-    fun uploadFirebaseData(data: FoodRemoteDomain, imageUri: Uri): Flow<FirebaseResult<Nothing>>
+    suspend fun uploadFirebaseData(
+        data: FoodRemoteDomain,
+        imageUri: Uri
+    ): FirebaseResult<Nothing>
 }
 
 interface FoodCacheDataSource {

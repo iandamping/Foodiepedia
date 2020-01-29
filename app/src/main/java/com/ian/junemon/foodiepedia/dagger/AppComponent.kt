@@ -17,7 +17,6 @@ interface AppComponent {
 
     val provideProfileRepository: ProfileRepository
 
-
     @Component.Factory
     interface Factory {
         fun coreComponent(coreComponent: CoreComponent): AppComponent

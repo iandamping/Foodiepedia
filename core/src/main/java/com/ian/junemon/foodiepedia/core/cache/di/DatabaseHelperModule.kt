@@ -16,8 +16,8 @@ import dagger.Module
 abstract class DatabaseHelperModule {
 
     @Binds
-    abstract fun bindFoodHelper(foodDatabaseHelper:FoodDaoHelperImpl):FoodDaoHelper
+    abstract fun bindFoodHelper(foodDatabaseHelper: FoodDaoHelperImpl): FoodDaoHelper
 
     @Binds
-    abstract fun bindProfileHelper(profileHelperImpl: DaoUserProfileHelperImpl):ProfileDaoHelper
+    abstract fun bindProfileHelper(profileHelperImpl: DaoUserProfileHelperImpl): ProfileDaoHelper
 }

@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +17,10 @@ import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.PermissionH
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.food.databinding.FragmentUploadBinding
 import com.ian.junemon.foodiepedia.food.di.sharedFoodComponent
-import com.ian.junemon.foodiepedia.food.view.adapter.UploadAdapter
 import com.ian.junemon.foodiepedia.food.vm.FoodViewModel
+import com.junemon.model.FirebaseResult
+import com.junemon.model.domain.FoodRemoteDomain
 import kotlinx.android.synthetic.main.fragment_upload.*
-import timber.log.Timber
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -39,9 +38,9 @@ class UploadFoodFragment : BaseFragment() {
     lateinit var imageHelper: ImageUtilHelper
     @Inject
     lateinit var foodVm: FoodViewModel
-
-    private var isPermisisonGranted by Delegates.notNull<Boolean>()
+    private val remoteFoodUpload: FoodRemoteDomain = FoodRemoteDomain()
     private var selectedUriForFirebase by Delegates.notNull<Uri>()
+    private var isPermisisonGranted by Delegates.notNull<Boolean>()
     private var _binding: FragmentUploadBinding? = null
     private val binding get() = _binding!!
 
@@ -61,14 +60,15 @@ class UploadFoodFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setBaseDialog()
         _binding = FragmentUploadBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             initView()
-            tabMainPage.setupWithViewPager(vpMainPage)
-            vpMainPage.adapter = UploadAdapter(childFragmentManager)
+            foodViewModel = foodVm
         }
-
+        consumeViewModelData()
+        observeViewModelData()
         return binding.root
     }
 
@@ -77,6 +77,7 @@ class UploadFoodFragment : BaseFragment() {
             btnUnggahFoto.setOnClickListener {
                 openGalleryAndCamera(isPermisisonGranted)
             }
+
         }
     }
 
@@ -104,7 +105,8 @@ class UploadFoodFragment : BaseFragment() {
                     requireNotNull(data)
                     requireNotNull(data.data)
                     checkNotNull(context)
-                    selectedUriForFirebase = data.data!!
+                    foodVm.setFoodUri(data.data!!)
+
                     val bitmap = imageHelper.getBitmapFromGallery(context!!, data.data!!)
                     viewHelper.run {
                         btnUnggahFoto.gone()
@@ -118,7 +120,7 @@ class UploadFoodFragment : BaseFragment() {
                     checkNotNull(context)
                     val bitmap = imageHelper.decodeSampledBitmapFromFile(
                         imageHelper.createImageFileFromPhoto(context!!) {
-                            selectedUriForFirebase = it
+                            foodVm.setFoodUri(it)
                         }
                     )
                     viewHelper.run {
@@ -132,4 +134,59 @@ class UploadFoodFragment : BaseFragment() {
         }
     }
 
+    private fun consumeViewModelData() {
+        foodVm.run {
+            observingEditText<String>(viewLifecycleOwner, etFoodName) {
+                remoteFoodUpload.foodName = it
+                setFood(remoteFoodUpload)
+            }
+            observingEditText<String>(viewLifecycleOwner, etFoodArea) {
+                remoteFoodUpload.foodArea = it
+                setFood(remoteFoodUpload)
+            }
+
+            observingEditText<String>(viewLifecycleOwner, etFoodIngredient1) {
+                remoteFoodUpload.foodIngredient = it
+                setFood(remoteFoodUpload)
+            }
+            observingEditText<String>(viewLifecycleOwner, etFoodInstruction) {
+                remoteFoodUpload.foodInstruction = it
+                setFood(remoteFoodUpload)
+            }
+        }
+    }
+
+    private fun observeViewModelData() {
+        foodVm.foodData.observe(viewLifecycleOwner, Observer { result ->
+            foodVm.foodImageUri.observe(viewLifecycleOwner, Observer { imageResult ->
+                selectedUriForFirebase = imageResult
+
+                if (!result.foodName.isNullOrEmpty() && !result.foodArea.isNullOrEmpty()
+                    && !result.foodIngredient.isNullOrEmpty() && !result.foodInstruction.isNullOrEmpty()
+                    && imageResult != null
+                ) {
+                    viewHelper.run {
+                        binding.btnUnggah.visible()
+                    }
+                }
+            })
+
+
+            btnUnggah.setOnClickListener {
+                setDialogShow(false)
+                foodVm.uploadFirebaseData(result, selectedUriForFirebase)
+                    .observe(viewLifecycleOwner, Observer { result ->
+                        when (result) {
+                            is FirebaseResult.SuccessPush -> {
+                                setDialogShow(true)
+                            }
+                            is FirebaseResult.ErrorPush -> {
+                                setDialogShow(true)
+                            }
+                        }
+                    })
+            }
+
+        })
+    }
 }

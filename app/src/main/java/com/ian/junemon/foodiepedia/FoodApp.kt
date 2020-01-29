@@ -8,9 +8,6 @@ import com.ian.junemon.foodiepedia.dagger.ActivityComponent
 import com.ian.junemon.foodiepedia.dagger.AppComponent
 import com.ian.junemon.foodiepedia.dagger.DaggerActivityComponent
 import com.ian.junemon.foodiepedia.dagger.DaggerAppComponent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -43,11 +40,11 @@ class FoodApp : Application() {
         return DaggerAppComponent.factory().coreComponent(coreComponent)
     }
 
-    private fun initializeCoreComponent():CoreComponent{
+    private fun initializeCoreComponent(): CoreComponent {
         return DaggerCoreComponent.factory().injectApplication(this)
     }
 
-    private fun initializeActivityComponent():ActivityComponent{
+    private fun initializeActivityComponent(): ActivityComponent {
         return DaggerActivityComponent.factory().appComponent(appComponent)
     }
 }

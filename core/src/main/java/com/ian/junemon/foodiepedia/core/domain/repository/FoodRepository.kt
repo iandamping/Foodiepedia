@@ -6,7 +6,6 @@ import com.junemon.model.FirebaseResult
 import com.junemon.model.Results
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
-import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by Ian Damping on 27,January,2020
@@ -16,5 +15,5 @@ import kotlinx.coroutines.flow.Flow
 interface FoodRepository {
     fun getCache(): LiveData<Results<List<FoodCacheDomain>>>
 
-    fun uploadFirebaseData(data: FoodRemoteDomain, imageUri: Uri): Flow<FirebaseResult<Nothing>>
+    fun uploadFirebaseData(data: FoodRemoteDomain, imageUri: Uri): LiveData<FirebaseResult<Nothing>>
 }

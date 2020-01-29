@@ -11,7 +11,6 @@ import com.ian.junemon.foodiepedia.core.data.di.IoDispatcher
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
 import com.junemon.model.domain.UserProfileDataModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
@@ -24,7 +23,7 @@ class ProfileRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val cacheDataSource: ProfileCacheDataSource,
     private val remoteDataSource: ProfileRemoteDataSource
-):ProfileRepository {
+) : ProfileRepository {
     override fun inflateLogin(): LiveData<UserProfileDataModel> {
         return liveData(ioDispatcher) {
             val disposable =

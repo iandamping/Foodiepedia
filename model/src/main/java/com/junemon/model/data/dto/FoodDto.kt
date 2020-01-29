@@ -10,8 +10,8 @@ import com.junemon.model.domain.FoodRemoteDomain
  * Indonesia.
  */
 
-fun FoodEntity.mapToRemoteDomain():FoodRemoteDomain = FoodRemoteDomain(foodName, foodCategory, foodArea,foodImage,foodContributor, foodInstruction, foodIngredient1, foodIngredient2, foodIngredient3, foodIngredient4, foodIngredient5, foodIngredient6, foodIngredient7, foodIngredient8, foodIngredient9, foodIngredient10, foodIngredient11, foodIngredient12, foodIngredient13, foodIngredient14, foodIngredient15, foodIngredient16, foodIngredient17, foodIngredient18, foodIngredient19, foodIngredient20)
-fun FoodRemoteDomain.mapToCacheDomain():FoodCacheDomain = FoodCacheDomain(null,foodName, foodCategory, foodArea, foodImage,foodContributor,foodInstruction, foodIngredient1, foodIngredient2, foodIngredient3, foodIngredient4, foodIngredient5, foodIngredient6, foodIngredient7, foodIngredient8, foodIngredient9, foodIngredient10, foodIngredient11, foodIngredient12, foodIngredient13, foodIngredient14, foodIngredient15, foodIngredient16, foodIngredient17, foodIngredient18, foodIngredient19, foodIngredient20)
+fun FoodEntity.mapToRemoteDomain():FoodRemoteDomain = FoodRemoteDomain(foodName, foodCategory, foodArea, foodImage, foodContributor, foodInstruction, foodIngredient)
+fun FoodRemoteDomain.mapToCacheDomain():FoodCacheDomain = FoodCacheDomain(null,foodName, foodCategory, foodArea, foodImage, foodContributor, foodInstruction, foodIngredient)
 
 fun List<FoodRemoteDomain>.mapRemoteToCacheDomain(): List<FoodCacheDomain> =
     map { it.mapToCacheDomain() }
