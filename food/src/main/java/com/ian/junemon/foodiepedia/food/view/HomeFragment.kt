@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToDatabase
@@ -16,6 +17,7 @@ import com.ian.junemon.foodiepedia.food.databinding.FragmentHomeBinding
 import com.ian.junemon.foodiepedia.food.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.food.util.FoodConstant.foodPresentationRvCallback
 import com.ian.junemon.foodiepedia.food.vm.FoodViewModel
+import com.ian.junemon.foodiepedia.food.vm.ProfileViewModel
 import com.junemon.model.Results
 import com.junemon.model.data.dto.mapToCachePresentation
 import kotlinx.android.synthetic.main.item_home.view.*
@@ -29,6 +31,8 @@ import javax.inject.Inject
 class HomeFragment : BaseFragment() {
     @Inject
     lateinit var foodVm: FoodViewModel
+    @Inject
+    lateinit var profileVm: ProfileViewModel
     @Inject
     lateinit var recyclerHelper: RecyclerHelper
     @Inject
@@ -52,6 +56,7 @@ class HomeFragment : BaseFragment() {
             lifecycleOwner = viewLifecycleOwner
             initView()
         }
+        consumeProfileData()
         return binding.root
     }
 
@@ -103,6 +108,20 @@ class HomeFragment : BaseFragment() {
             fabHome.setOnClickListener { it.findNavController().navigate( HomeFragmentDirections.actionHomeFragmentToUploadFragment()) }
             ivPhotoProfile.setOnClickListener { it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment()) }
         }
+    }
+
+    private fun consumeProfileData() {
+        profileVm.getUser().observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                loadImageHelper.run {
+                    binding.ivPhotoProfile.loadWithGlide(it.photoUser)
+                }
+            } else{
+                loadImageHelper.run {
+                    binding.ivPhotoProfile.loadWithGlide(ContextCompat.getDrawable(context!!,R.drawable.ic_person_gray_24dp)!!)
+                }
+            }
+        })
     }
 
     override fun onDestroyView() {
