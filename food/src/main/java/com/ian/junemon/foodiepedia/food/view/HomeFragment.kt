@@ -12,6 +12,7 @@ import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToDatabase
 import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHelper
+import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.food.R
 import com.ian.junemon.foodiepedia.food.databinding.FragmentHomeBinding
 import com.ian.junemon.foodiepedia.food.di.sharedFoodComponent
@@ -37,6 +38,8 @@ class HomeFragment : BaseFragment() {
     lateinit var recyclerHelper: RecyclerHelper
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
+    @Inject
+    lateinit var viewHlper:ViewHelper
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -116,9 +119,15 @@ class HomeFragment : BaseFragment() {
                 loadImageHelper.run {
                     binding.ivPhotoProfile.loadWithGlide(it.photoUser)
                 }
+                viewHlper.run {
+                    binding.fabHome.visible()
+                }
             } else{
                 loadImageHelper.run {
                     binding.ivPhotoProfile.loadWithGlide(ContextCompat.getDrawable(context!!,R.drawable.ic_person_gray_24dp)!!)
+                }
+                viewHlper.run {
+                    binding.fabHome.gone()
                 }
             }
         })

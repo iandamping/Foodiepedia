@@ -59,6 +59,10 @@ class FoodRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>> {
+        return cacheDataSource.getCategirizeCache(category).asLiveData()
+    }
+
     override fun uploadFirebaseData(
         data: FoodRemoteDomain,
         imageUri: Uri

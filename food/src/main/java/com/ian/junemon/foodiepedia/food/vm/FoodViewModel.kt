@@ -49,6 +49,7 @@ class FoodViewModel @Inject constructor(private val repository:FoodUseCase):View
     fun setFoodUri(uri:Uri){
         _foodImageUri.value = uri
     }
+    fun getCategorizeCache(category:String):LiveData<List<FoodCacheDomain>> = repository.getCategorizeCache(category)
 
     fun getCache(): LiveData<Results<List<FoodCacheDomain>>> = repository.getCache()
 
