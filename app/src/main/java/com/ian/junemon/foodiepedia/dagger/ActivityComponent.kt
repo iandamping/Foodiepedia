@@ -5,6 +5,7 @@ import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
 import com.ian.junemon.foodiepedia.core.presentation.di.PresentationModule
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ImageUtilHelper
+import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.IntentUtilHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.PermissionHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHelper
@@ -35,6 +36,8 @@ interface ActivityComponent {
     val providePermissionHelper: PermissionHelper
 
     val provideImageUtilHelper: ImageUtilHelper
+
+    val provideIntentUtilHelper: IntentUtilHelper
 
     val provideFoodRepository: FoodRepository
 

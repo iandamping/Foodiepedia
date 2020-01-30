@@ -17,7 +17,7 @@ interface FoodRepository {
 
     fun getCache(): LiveData<Results<List<FoodCacheDomain>>>
 
-    fun getCategorizeCache(category:String):LiveData<List<FoodCacheDomain>>
+    fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>>
 
     fun uploadFirebaseData(data: FoodRemoteDomain, imageUri: Uri): LiveData<FirebaseResult<Nothing>>
 }

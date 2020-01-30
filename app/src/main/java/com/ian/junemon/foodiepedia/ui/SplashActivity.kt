@@ -3,6 +3,8 @@ package com.ian.junemon.foodiepedia.ui
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.ian.junemon.foodiepedia.R
@@ -28,6 +30,11 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         activityComponent().inject(this)
         super.onCreate(savedInstanceState)
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
         binding = ActivitySplashBinding.inflate(layoutInflater)
         binding.run {
             lifecycleOwner = this@SplashActivity

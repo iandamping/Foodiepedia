@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToDatabase
 import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
@@ -41,6 +42,7 @@ class HomeFragment : BaseFragment() {
     @Inject
     lateinit var viewHlper:ViewHelper
 
+    private val gson by lazy { Gson() }
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -84,6 +86,9 @@ class HomeFragment : BaseFragment() {
                                                 loadImageHelper.run { ivFoodImage.loadWithGlide(it?.foodImage) }
                                                 tvFoodContributor.text = it?.foodContributor
                                             }
+                                        },
+                                        itemClick = {
+                                            binding.root.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(gson.toJson(this)))
                                         })
 
                                 }
@@ -101,6 +106,9 @@ class HomeFragment : BaseFragment() {
                                             loadImageHelper.run { ivFoodImage.loadWithGlide(it?.foodImage) }
                                             tvFoodContributor.text = it?.foodContributor
                                         }
+                                    },
+                                    itemClick = {
+                                        binding.root.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(gson.toJson(this)))
                                     })
 
                             }
