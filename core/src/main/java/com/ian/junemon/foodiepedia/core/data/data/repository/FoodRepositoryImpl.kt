@@ -13,7 +13,6 @@ import com.junemon.model.FirebaseResult
 import com.junemon.model.Results
 import com.junemon.model.WorkerResult
 import com.junemon.model.data.dto.mapRemoteToCacheDomain
-import com.junemon.model.data.dto.mapToRemoteDomain
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
 import kotlinx.coroutines.CoroutineDispatcher
@@ -54,12 +53,10 @@ class FoodRepositoryImpl @Inject constructor(
                             cacheDataSource.setCache(data.data.mapRemoteToCacheDomain())
                             offer(WorkerResult.SuccessWork)
                         }
-
                     }
                 }
             }
         }
-
     }
 
     override fun getCache(): LiveData<Results<List<FoodCacheDomain>>> {

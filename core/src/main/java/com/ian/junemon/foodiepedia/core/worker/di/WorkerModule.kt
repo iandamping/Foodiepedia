@@ -1,9 +1,7 @@
 package com.ian.junemon.foodiepedia.core.worker.di
 
-import androidx.work.WorkerFactory
 import com.ian.junemon.foodiepedia.core.worker.DataFetcherWorker
 import com.ian.junemon.foodiepedia.core.worker.creator.FetcherWorkerFactory
-import com.ian.junemon.foodiepedia.core.worker.creator.FetcherWorkerFactoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -20,5 +18,4 @@ abstract class WorkerModule {
     @IntoMap
     @WorkerKey(DataFetcherWorker::class)
     abstract fun bindDataFetcherWorker(factory: DataFetcherWorker.Factory): FetcherWorkerFactory
-
 }

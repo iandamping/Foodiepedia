@@ -2,7 +2,6 @@ package com.ian.junemon.foodiepedia.core.worker.di
 
 import androidx.work.CoroutineWorker
 import dagger.MapKey
-import dagger.Module
 import kotlin.reflect.KClass
 
 /**

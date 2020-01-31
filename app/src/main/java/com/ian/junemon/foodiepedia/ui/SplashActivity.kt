@@ -15,9 +15,7 @@ import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.activityComponent
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.worker.DataFetcherWorker
-import com.ian.junemon.foodiepedia.core.worker.setupReccuringWork
 import com.ian.junemon.foodiepedia.databinding.ActivitySplashBinding
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -69,18 +67,16 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
-    private fun workerManagerState(context: Context){
+    private fun workerManagerState(context: Context) {
         WorkManager.getInstance(context).getWorkInfosByTagLiveData(DataFetcherWorker.WORK_NAME).observe(this,
             Observer { workInfo ->
                 if (workInfo != null && workInfo.isNotEmpty()) {
                     workInfo.forEach {
-                        if (it.state == WorkInfo.State.SUCCEEDED){
+                        if (it.state == WorkInfo.State.SUCCEEDED) {
                             mDelayHandler.postDelayed(mRunnable, 3000L)
-
                         }
                     }
                 }
-
             })
     }
 }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.ian.junemon.foodiepedia.food.view.HomeFragment"
+        android:name="com.ian.junemon.foodiepedia.feature.view.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
 
@@ -62,17 +62,17 @@
 
     <fragment
         android:id="@+id/uploadFoodFragment"
-        android:name="com.ian.junemon.foodiepedia.food.view.UploadFoodFragment"
+        android:name="com.ian.junemon.foodiepedia.feature.view.UploadFoodFragment"
         android:label="UploadFragment" />
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.ian.junemon.foodiepedia.food.view.ProfileFragment"
+        android:name="com.ian.junemon.foodiepedia.feature.view.ProfileFragment"
         android:label="ProfileFragment" />
 
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.ian.junemon.foodiepedia.food.view.DetailFragment"
+        android:name="com.ian.junemon.foodiepedia.feature.view.DetailFragment"
         android:label="DetailFragment" >
 
         <argument

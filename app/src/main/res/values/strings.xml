@@ -25,4 +25,12 @@
     <string name="are_you_sure_want_to_delete_this">Are you sure want to delete this ?</string>
     <string name="title_food">Food Feature</string>
 
+
+    <string-array name="food_category">
+        <item>Breakfast</item>
+        <item>Lunch</item>
+        <item>Dinner</item>
+    </string-array>
+
+
 </resources>

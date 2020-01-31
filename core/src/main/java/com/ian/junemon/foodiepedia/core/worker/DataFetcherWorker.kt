@@ -17,7 +17,7 @@ import javax.inject.Provider
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class DataFetcherWorker (
+class DataFetcherWorker(
     appContext: Context,
     params: WorkerParameters,
     private val foodRepository: FoodRepository

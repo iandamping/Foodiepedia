@@ -51,7 +51,7 @@ android {
             enableSplit = true
         }
     }
-    dynamicFeatures = [":food"]
+    dynamicFeatures = []
 
 
 }
