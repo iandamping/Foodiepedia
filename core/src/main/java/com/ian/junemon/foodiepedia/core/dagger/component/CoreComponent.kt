@@ -37,7 +37,7 @@ interface CoreComponent {
 
     val provideProfileRepository: ProfileRepository
 
-    val provideworkerFactoryImpl: FetcherWorkerFactoryImpl
+    /*val provideworkerFactoryImpl: FetcherWorkerFactoryImpl*/
 
     @Component.Factory
     interface Factory {

@@ -7,6 +7,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerFactory
 import com.ian.junemon.foodiepedia.core.dagger.component.CoreComponent
 import com.ian.junemon.foodiepedia.core.dagger.component.DaggerCoreComponent
+import com.ian.junemon.foodiepedia.core.worker.creator.FetcherWorkerFactoryImpl
 import com.ian.junemon.foodiepedia.core.worker.setupReccuringWork
 import com.ian.junemon.foodiepedia.dagger.ActivityComponent
 import com.ian.junemon.foodiepedia.dagger.AppComponent
@@ -23,14 +24,12 @@ Github = https://github.com/iandamping
 
 class FoodApp : Application(), Configuration.Provider {
 
-    @Inject
-    lateinit var workerFactory: WorkerFactory
 
-    val appComponent: AppComponent by lazy {
+    private val appComponent: AppComponent by lazy {
         initializeAppComponent()
     }
 
-    val coreComponent: CoreComponent by lazy {
+    private val coreComponent: CoreComponent by lazy {
         initializeCoreComponent()
     }
 
@@ -43,7 +42,6 @@ class FoodApp : Application(), Configuration.Provider {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
-        WorkManager.initialize(this,Configuration.Builder().setWorkerFactory(appComponent.provideworkerFactoryImpl).build())
     }
 
     private fun initializeAppComponent(): AppComponent {

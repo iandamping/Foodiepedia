@@ -18,7 +18,7 @@ class FetcherWorkerFactoryImpl @Inject constructor(
         val foundEntry =
             workerFactories.entries.find { Class.forName(workerClassName).isAssignableFrom(it.key) }
         val factoryProvider = foundEntry?.value
-            ?: throw IllegalArgumentException("unknown worker class name: $workerClassName")
+            ?: throw IllegalArgumentException("unknown worker class name: $workerClassName") as Throwable
         return factoryProvider.get().create(appContext, workerParameters)
     }
 }

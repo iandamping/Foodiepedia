@@ -17,6 +17,7 @@ import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHe
 import com.ian.junemon.foodiepedia.core.worker.DataFetcherWorker
 import com.ian.junemon.foodiepedia.core.worker.setupReccuringWork
 import com.ian.junemon.foodiepedia.databinding.ActivitySplashBinding
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -35,7 +36,6 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         activityComponent().inject(this)
-        setupReccuringWork(this)
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(
@@ -49,8 +49,8 @@ class SplashActivity : AppCompatActivity() {
         }
         val view = binding.root
         setContentView(view)
-        workerManagerState(this)
-        // mDelayHandler.postDelayed(mRunnable, 3000L)
+        /*workerManagerState(this)*/
+        mDelayHandler.postDelayed(mRunnable, 3000L)
     }
 
     private val mRunnable: Runnable = Runnable {

@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
-import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
 import com.ian.junemon.foodiepedia.core.worker.creator.FetcherWorkerFactory
 import com.junemon.model.WorkerResult
 import kotlinx.coroutines.CompletableDeferred
@@ -24,10 +23,11 @@ class DataFetcherWorker (
     private val foodRepository: FoodRepository
 ) : CoroutineWorker(appContext, params) {
     companion object {
-        const val WORK_NAME = "Data Fetcher Worker"
+        const val WORK_NAME = "DataFetcherWorker"
     }
 
     override suspend fun doWork(): Result {
+        Timber.d("Called ?")
         val prefetchStatus = foodRepository.foodPrefetch()
         val completeAbleResult by lazy { CompletableDeferred<Result>() }
         prefetchStatus.collect { result ->
@@ -48,6 +48,7 @@ class DataFetcherWorker (
     class Factory @Inject constructor(
         private val foo: Provider<FoodRepository>
     ) : FetcherWorkerFactory {
+
         override fun create(appContext: Context, params: WorkerParameters): CoroutineWorker {
             return DataFetcherWorker(
                 appContext,
