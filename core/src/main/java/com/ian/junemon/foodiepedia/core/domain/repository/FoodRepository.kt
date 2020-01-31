@@ -4,8 +4,10 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import com.junemon.model.FirebaseResult
 import com.junemon.model.Results
+import com.junemon.model.WorkerResult
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by Ian Damping on 27,January,2020
@@ -13,7 +15,7 @@ import com.junemon.model.domain.FoodRemoteDomain
  * Indonesia.
  */
 interface FoodRepository {
-    // fun getFirebaseCache(): LiveData<Results<List<FoodCacheDomain>>>
+    suspend fun foodPrefetch(): Flow<WorkerResult<Nothing>>
 
     fun getCache(): LiveData<Results<List<FoodCacheDomain>>>
 

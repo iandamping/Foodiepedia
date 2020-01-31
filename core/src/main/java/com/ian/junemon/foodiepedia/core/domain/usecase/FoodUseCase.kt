@@ -16,6 +16,8 @@ import javax.inject.Inject
  */
 class FoodUseCase @Inject constructor(private val repo: FoodRepository) {
 
+    suspend fun foodPrefetch() = repo.foodPrefetch()
+
     fun getCache(): LiveData<Results<List<FoodCacheDomain>>> = repo.getCache()
 
     fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>> = repo.getCategorizeCache(category)

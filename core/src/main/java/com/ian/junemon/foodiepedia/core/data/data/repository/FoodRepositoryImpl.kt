@@ -11,10 +11,15 @@ import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
 import com.junemon.model.DataHelper
 import com.junemon.model.FirebaseResult
 import com.junemon.model.Results
+import com.junemon.model.WorkerResult
 import com.junemon.model.data.dto.mapRemoteToCacheDomain
+import com.junemon.model.data.dto.mapToRemoteDomain
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -29,6 +34,34 @@ class FoodRepositoryImpl @Inject constructor(
     private val remoteDataSource: FoodRemoteDataSource,
     private val cacheDataSource: FoodCacheDataSource
 ) : FoodRepository {
+
+    @ExperimentalCoroutinesApi
+    override suspend fun foodPrefetch(): Flow<WorkerResult<Nothing>> {
+        return callbackFlow {
+            val responseStatus = remoteDataSource.getFirebaseData()
+            responseStatus.collect { data ->
+                when (data) {
+                    is DataHelper.RemoteSourceError -> {
+                        if (!this@callbackFlow.channel.isClosedForSend) {
+                            offer(WorkerResult.ErrorWork(data.exception))
+                        }
+                    }
+                    is DataHelper.RemoteSourceValue -> {
+                        if (!this@callbackFlow.channel.isClosedForSend) {
+                            check(data.data.isNotEmpty()) {
+                                " data is empty "
+                            }
+                            cacheDataSource.setCache(data.data.mapRemoteToCacheDomain())
+                            offer(WorkerResult.SuccessWork)
+                        }
+
+                    }
+                }
+            }
+        }
+
+    }
+
     override fun getCache(): LiveData<Results<List<FoodCacheDomain>>> {
         return liveData(ioDispatcher) {
             val disposables = emitSource(cacheDataSource.getCache().map {

@@ -1,5 +1,6 @@
 package com.ian.junemon.foodiepedia.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -7,9 +8,14 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.activityComponent
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
+import com.ian.junemon.foodiepedia.core.worker.DataFetcherWorker
+import com.ian.junemon.foodiepedia.core.worker.setupReccuringWork
 import com.ian.junemon.foodiepedia.databinding.ActivitySplashBinding
 import javax.inject.Inject
 
@@ -29,6 +35,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         activityComponent().inject(this)
+        setupReccuringWork(this)
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(
@@ -42,7 +49,8 @@ class SplashActivity : AppCompatActivity() {
         }
         val view = binding.root
         setContentView(view)
-        mDelayHandler.postDelayed(mRunnable, 3000L)
+        workerManagerState(this)
+        // mDelayHandler.postDelayed(mRunnable, 3000L)
     }
 
     private val mRunnable: Runnable = Runnable {
@@ -59,5 +67,20 @@ class SplashActivity : AppCompatActivity() {
                 ivLoadSplash2.loadWithGlide(ContextCompat.getDrawable(this@SplashActivity, R.drawable.splash_logo)!!)
             }
         }
+    }
+
+    private fun workerManagerState(context: Context){
+        WorkManager.getInstance(context).getWorkInfosByTagLiveData(DataFetcherWorker.WORK_NAME).observe(this,
+            Observer { workInfo ->
+                if (workInfo != null && workInfo.isNotEmpty()) {
+                    workInfo.forEach {
+                        if (it.state == WorkInfo.State.SUCCEEDED){
+                            mDelayHandler.postDelayed(mRunnable, 3000L)
+
+                        }
+                    }
+                }
+
+            })
     }
 }

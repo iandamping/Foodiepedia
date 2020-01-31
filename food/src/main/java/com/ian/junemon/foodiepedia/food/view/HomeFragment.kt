@@ -59,7 +59,7 @@ class HomeFragment : BaseFragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
-            initView()
+            // initView()
         }
         consumeProfileData()
         return binding.root

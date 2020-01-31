@@ -2,13 +2,18 @@ package com.ian.junemon.foodiepedia
 
 import android.app.Activity
 import android.app.Application
+import androidx.work.Configuration
+import androidx.work.WorkManager
+import androidx.work.WorkerFactory
 import com.ian.junemon.foodiepedia.core.dagger.component.CoreComponent
 import com.ian.junemon.foodiepedia.core.dagger.component.DaggerCoreComponent
+import com.ian.junemon.foodiepedia.core.worker.setupReccuringWork
 import com.ian.junemon.foodiepedia.dagger.ActivityComponent
 import com.ian.junemon.foodiepedia.dagger.AppComponent
 import com.ian.junemon.foodiepedia.dagger.DaggerActivityComponent
 import com.ian.junemon.foodiepedia.dagger.DaggerAppComponent
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  *
@@ -16,7 +21,11 @@ Created by Ian Damping on 06/05/2019.
 Github = https://github.com/iandamping
  */
 
-class FoodApp : Application() {
+class FoodApp : Application(), Configuration.Provider {
+
+    @Inject
+    lateinit var workerFactory: WorkerFactory
+
     val appComponent: AppComponent by lazy {
         initializeAppComponent()
     }
@@ -34,6 +43,7 @@ class FoodApp : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+        WorkManager.initialize(this,Configuration.Builder().setWorkerFactory(appComponent.provideworkerFactoryImpl).build())
     }
 
     private fun initializeAppComponent(): AppComponent {
@@ -47,6 +57,11 @@ class FoodApp : Application() {
     private fun initializeActivityComponent(): ActivityComponent {
         return DaggerActivityComponent.factory().appComponent(appComponent)
     }
+
+    override fun getWorkManagerConfiguration() =
+        Configuration.Builder()
+            .setMinimumLoggingLevel(android.util.Log.DEBUG)
+            .build()
 }
 
 fun Activity.activityComponent() = (application as FoodApp).activityComponent

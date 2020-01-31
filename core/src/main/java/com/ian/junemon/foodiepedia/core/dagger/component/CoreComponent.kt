@@ -1,6 +1,7 @@
 package com.ian.junemon.foodiepedia.core.dagger.component
 
 import android.app.Application
+import androidx.work.WorkerFactory
 import com.google.firebase.storage.StorageReference
 import com.ian.junemon.foodiepedia.core.cache.di.DatabaseHelperModule
 import com.ian.junemon.foodiepedia.core.cache.di.DatabaseModule
@@ -11,6 +12,8 @@ import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
 import com.ian.junemon.foodiepedia.core.remote.di.RemoteHelperModule
 import com.ian.junemon.foodiepedia.core.remote.di.RemoteModule
+import com.ian.junemon.foodiepedia.core.worker.creator.FetcherWorkerFactoryImpl
+import com.ian.junemon.foodiepedia.core.worker.di.WorkerModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -23,7 +26,7 @@ import javax.inject.Singleton
 
 @Component(
     modules = [DatabaseModule::class, DatabaseHelperModule::class, DataModule::class, DomainModule::class,
-        RemoteModule::class, RemoteHelperModule::class, CoroutineModule::class]
+        RemoteModule::class, RemoteHelperModule::class, WorkerModule::class,CoroutineModule::class]
 )
 @Singleton
 interface CoreComponent {
@@ -33,6 +36,8 @@ interface CoreComponent {
     val provideFoodRepository: FoodRepository
 
     val provideProfileRepository: ProfileRepository
+
+    val provideworkerFactoryImpl: FetcherWorkerFactoryImpl
 
     @Component.Factory
     interface Factory {
