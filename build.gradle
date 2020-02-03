@@ -29,6 +29,13 @@ buildscript {
         anko_version = '0.10.5'
         navigationVer = '2.2.0'
         shimmerVer = '0.5.0'
+        mockitoVersion = '2.25.0'
+        robolectricVersion = '4.3-beta-1'
+        espressoVersion = '3.2.0-beta01'
+        dexMakerVersion = '2.12.1'
+        truthVersion = '0.44'
+        archTestingVersion = '2.0.0'
+        hamcrestVersion = '1.3'
     }
 
 
