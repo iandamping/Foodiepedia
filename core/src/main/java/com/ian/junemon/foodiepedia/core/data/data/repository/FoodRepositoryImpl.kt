@@ -50,7 +50,7 @@ class FoodRepositoryImpl @Inject constructor(
                             check(data.data.isNotEmpty()) {
                                 " data is empty "
                             }
-                            cacheDataSource.setCache(data.data.mapRemoteToCacheDomain())
+                            cacheDataSource.setCache(*data.data.mapRemoteToCacheDomain().toTypedArray())
                             offer(WorkerResult.SuccessWork)
                         }
                     }
@@ -81,7 +81,7 @@ class FoodRepositoryImpl @Inject constructor(
                         // Stop the previous emission to avoid dispatching the updated user
                         // as `loading`.
                         disposables.dispose()
-                        cacheDataSource.setCache(data.data.mapRemoteToCacheDomain())
+                        cacheDataSource.setCache(*data.data.mapRemoteToCacheDomain().toTypedArray())
                         emitSource(cacheDataSource.getCache().map { Results.Success(it) }.asLiveData())
                     }
                 }

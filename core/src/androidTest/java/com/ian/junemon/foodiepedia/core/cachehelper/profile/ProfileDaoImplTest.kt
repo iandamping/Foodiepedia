@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.core.dao.profile
+package com.ian.junemon.foodiepedia.core.cachehelper.profile
 
 import android.content.Context
 import androidx.room.Room
