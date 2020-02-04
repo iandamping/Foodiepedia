@@ -6,7 +6,7 @@ import com.ian.junemon.foodiepedia.core.cache.util.interfaces.ProfileDaoHelper
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class DaoUserProfileHelperImpl @Inject constructor(private val userDao: ProfileDao) : ProfileDaoHelper {
+class ProfileDaoHelperImpl @Inject constructor(private val userDao: ProfileDao) : ProfileDaoHelper {
     override fun loadAll(): Flow<UserProfile> {
         return userDao.loadAll()
     }

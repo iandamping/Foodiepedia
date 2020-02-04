@@ -36,6 +36,14 @@ buildscript {
         truthVersion = '0.44'
         archTestingVersion = '2.0.0'
         hamcrestVersion = '1.3'
+        androidXTestCoreVersion = '1.2.0-beta01'
+        androidXTestExtKotlinRunnerVersion = '1.1.1-beta01'
+        androidXTestRulesVersion = '1.2.0-beta01'
+        androidXAnnotations = '1.0.1'
+        androidXLegacySupport = '1.0.0'
+        archTestingVersion = '2.0.0'
+        fragmentVersion = '1.1.0-alpha07'
+        junitVersion = '4.12'
     }
 
 
