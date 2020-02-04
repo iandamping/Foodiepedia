@@ -69,7 +69,7 @@ class ProfileRemoteHelperImpl @Inject constructor(
     }
 
     override suspend fun initSignIn(): Intent {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             // this is mutable because FirebaseUI requires it to be mutable
             val providers = mutableListOf(
                 AuthUI.IdpConfig.GoogleBuilder().setSignInOptions(
