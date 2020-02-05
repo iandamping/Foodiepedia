@@ -7,8 +7,6 @@ import com.junemon.model.FirebaseResult
 import com.junemon.model.domain.FoodRemoteDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import java.lang.Exception
-import java.lang.NullPointerException
 
 /**
  * Created by Ian Damping on 05,February,2020
@@ -21,7 +19,7 @@ class FakeFoodRemoteDataSource(
 
     override suspend fun getFirebaseData(): Flow<DataHelper<List<FoodRemoteDomain>>> {
         return if (listOfFakeFood.isNullOrEmpty()) {
-            flowOf(DataHelper.RemoteSourceError(NullPointerException("failed")))
+            flowOf(DataHelper.RemoteSourceError(NullPointerException()))
         } else {
             flowOf(DataHelper.RemoteSourceValue(listOfFakeFood!!))
         }
