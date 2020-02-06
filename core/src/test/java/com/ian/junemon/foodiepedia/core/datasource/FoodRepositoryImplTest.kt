@@ -3,7 +3,9 @@ package com.ian.junemon.foodiepedia.core.datasource
 import com.google.common.truth.Truth.assertThat
 import com.ian.junemon.foodiepedia.core.data.data.repository.FoodRepositoryImpl
 import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
+import com.ian.junemon.foodiepedia.core.getOrAwaitValue
 import com.junemon.model.DataHelper
+import com.junemon.model.Results
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +14,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -106,12 +109,13 @@ class FoodRepositoryImplTest {
         val responseStatus = remoteDataSource.getFirebaseData()
         val job = launch(Dispatchers.IO) {
             responseStatus.collect { data ->
-                when (data) {
+                assertThat(data).isInstanceOf(DataHelper.RemoteSourceError::class.java)
+                /*when (data) {
                     is DataHelper.RemoteSourceError -> {
                         //data should match because we throwing nullPointerException
                         assertThat<NullPointerException>(data.exception as NullPointerException, CoreMatchers.notNullValue())
                     }
-                }
+                }*/
             }
         }
         job.cancel()
@@ -148,4 +152,29 @@ class FoodRepositoryImplTest {
         }
         job.cancel()
     }
+
+   /* @Test
+    @ExperimentalCoroutinesApi
+    fun repositoryFoodGetCache() = runBlockingTest {
+        // Trigger the repository to load data that loads from remote
+        val cacheData = foodRepository.getCache().getOrAwaitValue()
+
+        when(cacheData){
+            is Results.Success ->{
+                assertThat(cacheData.data).hasSize(3)
+                assertThat(cacheData.data[0]).isEqualTo(fakeCacheData1)
+                assertThat(cacheData.data[1]).isEqualTo(fakeCacheData2)
+                assertThat(cacheData.data[2]).isEqualTo(fakeCacheData3)
+            }
+        }
+    }
+
+    @Test
+    @ExperimentalCoroutinesApi
+    fun repositoryFoodGetCategorizeCache() = runBlockingTest {
+        // Trigger the repository to load data that loads from remote
+        val cacheData = foodRepository.getCategorizeCache("cache2").getOrAwaitValue()
+        assertThat(cacheData[0]).isEqualTo(fakeCacheData2)
+
+    }*/
 }
