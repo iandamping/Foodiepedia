@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.core.datasource
+package com.ian.junemon.foodiepedia.core.data.datasource.cache
 
 import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodCacheDataSource
 import com.junemon.model.domain.FoodCacheDomain
@@ -10,17 +10,21 @@ import kotlinx.coroutines.flow.flowOf
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class FakeFoodCacheDataSource(var listOfFakeFood: MutableList<FoodCacheDomain>) : FoodCacheDataSource {
+class FakeFoodCacheDataSourceImpl(var listOfFakeFood: MutableList<FoodCacheDomain>) :
+    FoodCacheDataSource {
+
+    var localListOfFakeFood: MutableList<FoodCacheDomain>? = null
 
     override fun getCache(): Flow<List<FoodCacheDomain>> {
-        return flowOf(listOfFakeFood)
+        return flowOf(localListOfFakeFood ?: listOfFakeFood)
     }
 
     override fun getCategirizeCache(foodCategory: String): Flow<List<FoodCacheDomain>> {
-       return flowOf(listOfFakeFood.filter { it.foodCategory == foodCategory })
+        return flowOf(localListOfFakeFood?.filter { it.foodCategory == foodCategory }
+            ?: listOfFakeFood.filter { it.foodCategory == foodCategory })
     }
 
     override suspend fun setCache(vararg data: FoodCacheDomain) {
-        listOfFakeFood.add(data[0])
+        localListOfFakeFood = listOfFakeFood
     }
 }

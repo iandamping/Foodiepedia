@@ -1,11 +1,10 @@
-package com.ian.junemon.foodiepedia.core.datasource.food
+package com.ian.junemon.foodiepedia.core.data.remote
 
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
-import androidx.test.filters.SmallTest
 import com.ian.junemon.foodiepedia.core.cache.db.FoodDao
 import com.ian.junemon.foodiepedia.core.cache.db.FoodDatabase
 import com.ian.junemon.foodiepedia.core.cache.model.Food

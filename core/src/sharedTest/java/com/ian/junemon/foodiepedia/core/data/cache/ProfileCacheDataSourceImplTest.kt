@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.core.datasource.profile
+package com.ian.junemon.foodiepedia.core.data.cache
 
 import android.content.Context
 import androidx.room.Room

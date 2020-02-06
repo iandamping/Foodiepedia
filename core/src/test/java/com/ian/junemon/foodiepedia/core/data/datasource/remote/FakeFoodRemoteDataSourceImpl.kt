@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.core.datasource
+package com.ian.junemon.foodiepedia.core.data.datasource.remote
 
 import android.net.Uri
 import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodRemoteDataSource
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flowOf
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class FakeFoodRemoteDataSource(
+class FakeFoodRemoteDataSourceImpl(
     var listOfFakeFood: List<FoodRemoteDomain>?
 ) : FoodRemoteDataSource {
 

@@ -43,6 +43,18 @@ android {
         }
     }
 
+    android {
+        sourceSets {
+            String sharedTestDir = 'src/sharedTest/java'
+            test {
+                java.srcDir sharedTestDir
+            }
+            androidTest {
+                java.srcDir sharedTestDir
+            }
+        }
+    }
+
     buildTypes.each {
         it.buildConfigField 'String', 'firebaseStorageUrl', firebaseStorageUrl
         it.buildConfigField 'String', 'foodNode', foodNode
