@@ -10,16 +10,16 @@ import kotlinx.coroutines.flow.flowOf
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class FakeProfileCacheDataSourceImpl(var fakeProfile: UserProfileDataModel) :
+class FakeProfileCacheDataSourceImpl :
     ProfileCacheDataSource {
 
-    var localFakeProfileData: UserProfileDataModel? = null
+    lateinit var localFakeProfileData: UserProfileDataModel
 
     override suspend fun setCache(data: UserProfileDataModel) {
         localFakeProfileData = data
     }
 
     override fun getCache(): Flow<UserProfileDataModel> {
-        return flowOf(localFakeProfileData ?: fakeProfile)
+        return flowOf(localFakeProfileData)
     }
 }

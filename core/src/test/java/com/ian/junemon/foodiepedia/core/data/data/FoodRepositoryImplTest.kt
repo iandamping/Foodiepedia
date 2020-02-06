@@ -6,6 +6,8 @@ import com.ian.junemon.foodiepedia.core.data.datasource.cache.FakeFoodCacheDataS
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.FakeFoodRemoteDataSourceImpl
 import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
 import com.junemon.model.DataHelper
+import com.junemon.model.data.dto.mapRemoteToCacheDomain
+import com.junemon.model.data.dto.mapToCacheDomain
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
 import kotlinx.coroutines.Dispatchers
@@ -24,12 +26,6 @@ import org.junit.Test
  */
 class FoodRepositoryImplTest {
 
-    private val fakeCacheData1 =
-        FoodCacheDomain(0, "cache", "cache", "cache", "cache", "cache", "cache", "cache")
-    private val fakeCacheData2 =
-        FoodCacheDomain(1, "cache2", "cache2", "cache2", "cache2", "cache2", "cache2", "cache2")
-    private val fakeCacheData3 =
-        FoodCacheDomain(2, "cache3", "cache3", "cache3", "cache3", "cache3", "cache3", "cache3")
     private val fakeRemoteData1 = FoodRemoteDomain().apply {
         foodName = "remote"
         foodCategory = "remote"
@@ -58,7 +54,6 @@ class FoodRepositoryImplTest {
         foodIngredient = "remote3"
     }
 
-    private val listOfFakeCache = listOf(fakeCacheData1, fakeCacheData2, fakeCacheData3)
     private val listOfFakeRemote = listOf(fakeRemoteData1, fakeRemoteData2, fakeRemoteData3)
     private lateinit var cacheDataSource: FakeFoodCacheDataSourceImpl
     private lateinit var remoteDataSource: FakeFoodRemoteDataSourceImpl
@@ -66,15 +61,8 @@ class FoodRepositoryImplTest {
 
     @Before
     fun createRepository() {
-        cacheDataSource =
-            FakeFoodCacheDataSourceImpl(
-                listOfFakeCache.toMutableList()
-            )
-        // remoteDataSource = FakeFoodRemoteDataSource(listOfFakeRemote.toMutableList(), fakeUri)
-        remoteDataSource =
-            FakeFoodRemoteDataSourceImpl(
-                listOfFakeRemote.toMutableList()
-            )
+        cacheDataSource = FakeFoodCacheDataSourceImpl()
+        remoteDataSource = FakeFoodRemoteDataSourceImpl(listOfFakeRemote.toMutableList())
         // Get a reference to the class under test
         foodRepository = FoodRepositoryImpl(
             Dispatchers.Unconfined,
@@ -88,7 +76,7 @@ class FoodRepositoryImplTest {
         // Trigger the repository to load data that loads from remote
         val responseStatus = remoteDataSource.getFirebaseData()
 
-        val job = launch(Dispatchers.IO) {
+        val job = launch {
             responseStatus.take(1).collect { data ->
                 when (data) {
                     is DataHelper.RemoteSourceValue -> {
@@ -113,15 +101,9 @@ class FoodRepositoryImplTest {
                 null
             )
         val responseStatus = remoteDataSource.getFirebaseData()
-        val job = launch(Dispatchers.IO) {
+        val job = launch {
             responseStatus.collect { data ->
                 assertThat(data).isInstanceOf(DataHelper.RemoteSourceError::class.java)
-                /*when (data) {
-                    is DataHelper.RemoteSourceError -> {
-                        //data should match because we throwing nullPointerException
-                        assertThat<NullPointerException>(data.exception as NullPointerException, CoreMatchers.notNullValue())
-                    }
-                }*/
             }
         }
         job.cancel()
@@ -130,32 +112,63 @@ class FoodRepositoryImplTest {
     @Test
     @ExperimentalCoroutinesApi
     fun repositoryFoodGetCache() = runBlocking {
-        // Trigger the repository to load data that loads from remote
+        val remoteData = remoteDataSource.getFirebaseData()
         val cacheData = cacheDataSource.getCache()
-
-        val job = launch(Dispatchers.IO) {
-            cacheData.take(1).collect { data ->
-                assertThat(data).hasSize(3)
-                assertThat(data[0]).isEqualTo(fakeCacheData1)
-                assertThat(data[1]).isEqualTo(fakeCacheData2)
-                assertThat(data[2]).isEqualTo(fakeCacheData3)
+        val jobs = launch {
+            // Trigger the repository to save data from remote
+            remoteData.take(1).collect { data ->
+                when (data) {
+                    is DataHelper.RemoteSourceValue -> {
+                        //data should match because we dont do anything
+                        assertThat(data.data).hasSize(3)
+                        assertThat(data.data[0]).isEqualTo(fakeRemoteData1)
+                        assertThat(data.data[1]).isEqualTo(fakeRemoteData2)
+                        assertThat(data.data[2]).isEqualTo(fakeRemoteData3)
+                        cacheDataSource.setCache(*data.data.mapRemoteToCacheDomain().toTypedArray())
+                    }
+                }
 
             }
+            // Trigger the repository to load data that loads from remote
+            cacheData.take(1).collect { data ->
+                assertThat(data).hasSize(1)
+                assertThat(data[0].foodArea).isEqualTo(fakeRemoteData1.foodArea)
+                assertThat(data[0].foodCategory).isEqualTo(fakeRemoteData1.foodCategory)
+                assertThat(data[0].foodContributor).isEqualTo(fakeRemoteData1.foodContributor)
+                assertThat(data[0].foodImage).isEqualTo(fakeRemoteData1.foodImage)
+            }
         }
-        job.cancel()
+
+        jobs.cancel()
     }
 
     @Test
     @ExperimentalCoroutinesApi
     fun repositoryFoodGetCategorizeCache() = runBlocking {
         // Trigger the repository to load data that loads from remote
-        val cacheData = cacheDataSource.getCategirizeCache("cache2")
+        val remoteData = remoteDataSource.getFirebaseData()
 
-        val job = launch(Dispatchers.IO) {
-            cacheData.take(1).collect { data ->
-                assertThat(data[0]).isEqualTo(fakeCacheData2)
+        val job = launch {
+            remoteData.take(1).collect { data ->
+                when (data) {
+                    is DataHelper.RemoteSourceValue -> {
+                        //data should match because we dont do anything
+                        assertThat(data.data).hasSize(3)
+                        assertThat(data.data[0]).isEqualTo(fakeRemoteData1)
+                        assertThat(data.data[1]).isEqualTo(fakeRemoteData2)
+                        assertThat(data.data[2]).isEqualTo(fakeRemoteData3)
+                        cacheDataSource.setCache(data.data.toTypedArray()[1].mapToCacheDomain())
+                    }
+                }
             }
         }
+
+        val job2 = launch{
+            cacheDataSource.getCategirizeCache("remote2").take(1).collect { data ->
+                assertThat(data[0]).isEqualTo(fakeRemoteData2)
+            }
+        }
+        job2.cancel()
         job.cancel()
     }
 

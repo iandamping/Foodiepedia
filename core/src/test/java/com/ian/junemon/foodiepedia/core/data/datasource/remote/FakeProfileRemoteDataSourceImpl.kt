@@ -4,6 +4,7 @@ import android.content.Intent
 import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileRemoteDataSource
 import com.junemon.model.domain.UserProfileDataModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 /**
  * Created by Ian Damping on 06,February,2020
@@ -13,14 +14,14 @@ import kotlinx.coroutines.flow.Flow
 class FakeProfileRemoteDataSourceImpl(var fakeProfile: UserProfileDataModel):ProfileRemoteDataSource {
 
     override suspend fun get(): Flow<UserProfileDataModel> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+       return flowOf(fakeProfile)
     }
 
     override suspend fun initSignIn(): Intent {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+       return Intent()
     }
 
     override suspend fun initLogout() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 }

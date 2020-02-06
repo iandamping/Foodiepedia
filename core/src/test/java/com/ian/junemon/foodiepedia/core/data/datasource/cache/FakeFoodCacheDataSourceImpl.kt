@@ -10,21 +10,20 @@ import kotlinx.coroutines.flow.flowOf
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class FakeFoodCacheDataSourceImpl(var listOfFakeFood: MutableList<FoodCacheDomain>) :
+class FakeFoodCacheDataSourceImpl :
     FoodCacheDataSource {
 
-    var localListOfFakeFood: MutableList<FoodCacheDomain>? = null
+    private var localListOfFakeFood: MutableList<FoodCacheDomain> = mutableListOf()
 
     override fun getCache(): Flow<List<FoodCacheDomain>> {
-        return flowOf(localListOfFakeFood ?: listOfFakeFood)
+        return flowOf(localListOfFakeFood)
     }
 
     override fun getCategirizeCache(foodCategory: String): Flow<List<FoodCacheDomain>> {
-        return flowOf(localListOfFakeFood?.filter { it.foodCategory == foodCategory }
-            ?: listOfFakeFood.filter { it.foodCategory == foodCategory })
+        return flowOf(localListOfFakeFood.filter { it.foodCategory == foodCategory })
     }
 
     override suspend fun setCache(vararg data: FoodCacheDomain) {
-        localListOfFakeFood = listOfFakeFood
+        localListOfFakeFood.add(data[0])
     }
 }
