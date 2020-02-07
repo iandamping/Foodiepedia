@@ -16,9 +16,9 @@ import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHel
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentHomeBinding
 import com.ian.junemon.foodiepedia.feature.util.FoodConstant.foodPresentationRvCallback
+import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
-import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
 import com.junemon.model.Results
 import com.junemon.model.data.dto.mapToCachePresentation
 import kotlinx.android.synthetic.main.item_home.view.*
