@@ -129,7 +129,7 @@ class FoodRepositoryImplTest {
                 }
 
             }
-            // Trigger the repository to load data that loads from remote
+            // Trigger the repository to load data that loads from cache
             cacheData.take(1).collect { data ->
                 assertThat(data).hasSize(1)
                 assertThat(data[0].foodArea).isEqualTo(fakeRemoteData1.foodArea)
@@ -172,28 +172,4 @@ class FoodRepositoryImplTest {
         job.cancel()
     }
 
-    /* @Test
-     @ExperimentalCoroutinesApi
-     fun repositoryFoodGetCache() = runBlockingTest {
-         // Trigger the repository to load data that loads from remote
-         val cacheData = foodRepository.getCache().getOrAwaitValue()
-
-         when(cacheData){
-             is Results.Success ->{
-                 assertThat(cacheData.data).hasSize(3)
-                 assertThat(cacheData.data[0]).isEqualTo(fakeCacheData1)
-                 assertThat(cacheData.data[1]).isEqualTo(fakeCacheData2)
-                 assertThat(cacheData.data[2]).isEqualTo(fakeCacheData3)
-             }
-         }
-     }
-
-     @Test
-     @ExperimentalCoroutinesApi
-     fun repositoryFoodGetCategorizeCache() = runBlockingTest {
-         // Trigger the repository to load data that loads from remote
-         val cacheData = foodRepository.getCategorizeCache("cache2").getOrAwaitValue()
-         assertThat(cacheData[0]).isEqualTo(fakeCacheData2)
-
-     }*/
 }

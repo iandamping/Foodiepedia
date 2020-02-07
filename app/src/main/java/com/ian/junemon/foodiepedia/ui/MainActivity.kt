@@ -25,9 +25,6 @@ class MainActivity : AppCompatActivity() {
         mainActivityComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        binding.run {
-            lifecycleOwner = this@MainActivity
-        }
         val view = binding.root
         setContentView(view)
     }

@@ -42,7 +42,6 @@ class SplashActivity : AppCompatActivity() {
         )
         binding = ActivitySplashBinding.inflate(layoutInflater)
         binding.run {
-            lifecycleOwner = this@SplashActivity
             initView()
         }
         val view = binding.root
