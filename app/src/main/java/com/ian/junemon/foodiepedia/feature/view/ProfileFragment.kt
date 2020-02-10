@@ -7,8 +7,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentProfileBinding
@@ -40,7 +43,7 @@ class ProfileFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == requestSignIn) {
-               inflateLogin()
+                inflateLogin()
             }
         }
     }
@@ -61,6 +64,17 @@ class ProfileFragment : BaseFragment() {
 
     private fun FragmentProfileBinding.initView() {
         apply {
+            btnBack.setOnClickListener {
+                findNavController().navigateUp()
+            }
+            loadImageHelper.run {
+                ivFoodProfile.loadWithGlide(
+                    ContextCompat.getDrawable(
+                        ivFoodProfile.context,
+                        R.drawable.foodiepedia
+                    )!!
+                )
+            }
         }
     }
 

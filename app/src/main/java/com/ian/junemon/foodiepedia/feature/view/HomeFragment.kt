@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
@@ -15,12 +15,14 @@ import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHe
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentHomeBinding
-import com.ian.junemon.foodiepedia.feature.util.FoodConstant.foodPresentationRvCallback
 import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
+import com.ian.junemon.foodiepedia.feature.util.EventObserver
+import com.ian.junemon.foodiepedia.feature.util.FoodConstant.foodPresentationRvCallback
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.junemon.model.Results
 import com.junemon.model.data.dto.mapToCachePresentation
+import com.junemon.model.presentation.FoodCachePresentation
 import kotlinx.android.synthetic.main.item_home.view.*
 import javax.inject.Inject
 
@@ -56,12 +58,17 @@ class HomeFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        binding.apply {
-            lifecycleOwner = viewLifecycleOwner
-            initView()
-        }
         consumeProfileData()
         return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        binding.apply {
+            initView()
+        }
+        setupNavigation()
+
     }
 
     private fun FragmentHomeBinding.initView() {
@@ -71,50 +78,68 @@ class HomeFragment : BaseFragment() {
                     is Results.Loading -> {
                     }
                     is Results.Error -> {
-                            recyclerHelper.run {
-                                recyclerviewCatching {
-                                    checkNotNull(result.cache)
-                                    rvHome.setUpVerticalGridAdapter(items = result.cache?.mapToCachePresentation(),
-                                        diffUtil = foodPresentationRvCallback,
-                                        layoutResId = R.layout.item_home,
-                                        gridSize = 2,
-                                        bindHolder = {
-                                            with(this) {
-                                                loadImageHelper.run { ivFoodImage.loadWithGlide(it?.foodImage) }
-                                                tvFoodContributor.text = it?.foodContributor
-                                            }
-                                        },
-                                        itemClick = {
-                                            binding.root.findNavController().navigate(
-                                                HomeFragmentDirections.actionHomeFragmentToDetailFragment(gson.toJson(this)))
-                                        })
-                                }
-                            }
+                        setupRecyclerView(result.cache?.mapToCachePresentation())
                     }
                     is Results.Success -> {
-                        recyclerHelper.run {
-                            recyclerviewCatching {
-                                rvHome.setUpVerticalGridAdapter(items = result.data.mapToCachePresentation(),
-                                    diffUtil = foodPresentationRvCallback,
-                                    layoutResId = R.layout.item_home,
-                                    gridSize = 2,
-                                    bindHolder = {
-                                        with(this) {
-                                            loadImageHelper.run { ivFoodImage.loadWithGlide(it?.foodImage) }
-                                            tvFoodContributor.text = it?.foodContributor
-                                        }
-                                    },
-                                    itemClick = {
-                                        binding.root.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(gson.toJson(this)))
-                                    })
-                            }
-                        }
+                        setupRecyclerView(result.data.mapToCachePresentation())
                     }
                 }
             })
-            fabHome.setOnClickListener { it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToUploadFragment()) }
-            ivPhotoProfile.setOnClickListener { it.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment()) }
+            fabHome.setOnClickListener { foodVm.moveToUploadFragment() }
+            ivPhotoProfile.setOnClickListener { foodVm.moveToProfileFragment() }
         }
+    }
+
+    private fun FragmentHomeBinding.setupRecyclerView(data: List<FoodCachePresentation>?) {
+        apply {
+            recyclerHelper.run {
+                recyclerviewCatching {
+                    checkNotNull(data)
+                    rvHome.setUpVerticalGridAdapter(items = data,
+                        diffUtil = foodPresentationRvCallback,
+                        layoutResId = R.layout.item_home,
+                        gridSize = 2,
+                        bindHolder = {
+                            with(this) {
+                                loadImageHelper.run { ivFoodImage.loadWithGlide(it?.foodImage) }
+                                tvFoodContributor.text = it?.foodContributor
+                            }
+                        },
+                        itemClick = {
+                            foodVm.moveToDetailFragment(gson.toJson(this))
+                        })
+                }
+            }
+        }
+    }
+
+    private fun setupNavigation() {
+        foodVm.moveToDetailFragmentEvent.observe(this, EventObserver {
+            navigateToDetailFoodFragment(it)
+        })
+
+        foodVm.moveToProfileFragmentEvent.observe(this, EventObserver {
+            navigateToProfileFragment()
+        })
+
+        foodVm.moveToUploadFragmentEvent.observe(this, EventObserver {
+            navigateToUploadFoodFragment()
+        })
+    }
+
+    private fun navigateToDetailFoodFragment(foodValue: String) {
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(foodValue)
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToUploadFoodFragment() {
+        val action = HomeFragmentDirections.actionHomeFragmentToUploadFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToProfileFragment() {
+        val action = HomeFragmentDirections.actionHomeFragmentToProfileFragment()
+        findNavController().navigate(action)
     }
 
     private fun consumeProfileData() {
@@ -128,7 +153,12 @@ class HomeFragment : BaseFragment() {
                 }
             } else {
                 loadImageHelper.run {
-                    binding.ivPhotoProfile.loadWithGlide(ContextCompat.getDrawable(context!!, R.drawable.ic_person_gray_24dp)!!)
+                    binding.ivPhotoProfile.loadWithGlide(
+                        ContextCompat.getDrawable(
+                            context!!,
+                            R.drawable.ic_person_gray_24dp
+                        )!!
+                    )
                 }
                 viewHlper.run {
                     binding.fabHome.gone()

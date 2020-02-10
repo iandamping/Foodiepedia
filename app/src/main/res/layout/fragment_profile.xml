@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
@@ -7,19 +8,132 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/ivPhotoProfile"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            tools:src="@tools:sample/backgrounds/scenic" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
 
-        <TextView
-            android:id="@+id/tvProfileName"
-            android:layout_width="wrap_content"
+
+            <ImageView
+                android:id="@+id/ivFoodProfile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/spacing_medium"
+                android:orientation="vertical">
+
+
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/ivPhotoProfile"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_gravity="center"
+                    app:civ_border_color="@android:color/transparent"
+                    tools:src="@tools:sample/backgrounds/scenic" />
+
+                <TextView
+                    android:id="@+id/tvProfileName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/letter_large"
+                    android:textStyle="bold"
+                    tools:text="testing" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/btmsheet_curve" />
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_margin="20dp"
+                android:background="@drawable/circle_yellow_drawable"
+                android:src="@drawable/ic_arrow_back_black_24dp" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            tools:text="testing" />
+            android:layout_margin="@dimen/spacing_large">
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/ic_background_transparant_blue"
+                android:src="@drawable/bookmark_blue_24dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Food Saved"
+                android:textColor="@color/textColor"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/back_gray_24dp" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_large">
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/ic_background_transparant_red"
+                android:src="@drawable/restaurant_red_24dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Food Posted"
+                android:textColor="@color/textColor"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/back_gray_24dp" />
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 </layout>

@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.RequestSelectGalleryImage
@@ -152,20 +153,20 @@ class UploadFoodFragment : BaseFragment() {
 
     private fun consumeViewModelData() {
         foodVm.run {
-            observingEditText<String>(viewLifecycleOwner, etFoodName) {
+            observingEditText(viewLifecycleOwner, etFoodName) {
                 remoteFoodUpload.foodName = it
                 setFood(remoteFoodUpload)
             }
-            observingEditText<String>(viewLifecycleOwner, etFoodArea) {
+            observingEditText(viewLifecycleOwner, etFoodArea) {
                 remoteFoodUpload.foodArea = it
                 setFood(remoteFoodUpload)
             }
 
-            observingEditText<String>(viewLifecycleOwner, etFoodIngredient1) {
+            observingEditText(viewLifecycleOwner, etFoodIngredient1) {
                 remoteFoodUpload.foodIngredient = it
                 setFood(remoteFoodUpload)
             }
-            observingEditText<String>(viewLifecycleOwner, etFoodInstruction) {
+            observingEditText(viewLifecycleOwner, etFoodInstruction) {
                 remoteFoodUpload.foodInstruction = it
                 setFood(remoteFoodUpload)
             }
@@ -203,7 +204,7 @@ class UploadFoodFragment : BaseFragment() {
                         when (result) {
                             is FirebaseResult.SuccessPush -> {
                                 setDialogShow(true)
-                                binding.root.findNavController().navigateUp()
+                                findNavController().navigateUp()
                             }
                             is FirebaseResult.ErrorPush -> {
                                 setDialogShow(true)
