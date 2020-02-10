@@ -41,6 +41,17 @@ android {
             }
         }
     }
+    android {
+        sourceSets {
+            String sharedTestDir = 'src/sharedTest/java'
+            test {
+                java.srcDir sharedTestDir
+            }
+            androidTest {
+                java.srcDir sharedTestDir
+            }
+        }
+    }
 
     kotlinOptions {
         jvmTarget = "1.8"
@@ -92,6 +103,7 @@ dependencies {
     implementation "androidx.activity:activity-ktx:1.0.0"
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 
