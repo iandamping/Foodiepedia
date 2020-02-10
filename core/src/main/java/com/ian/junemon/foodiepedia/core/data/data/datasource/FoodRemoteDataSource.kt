@@ -5,6 +5,7 @@ import com.junemon.model.DataHelper
 import com.junemon.model.FirebaseResult
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
+import com.junemon.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -26,7 +27,13 @@ interface FoodCacheDataSource {
 
     fun getCache(): Flow<List<FoodCacheDomain>>
 
+    fun getSavedDetailCache(): Flow<List<SavedFoodCacheDomain>>
+
     fun getCategirizeCache(foodCategory: String): Flow<List<FoodCacheDomain>>
 
     suspend fun setCache(vararg data: FoodCacheDomain)
+
+    suspend fun setCacheDetailFood(vararg data: SavedFoodCacheDomain)
+
+    suspend fun deleteSelectedId(selectedId: Int)
 }

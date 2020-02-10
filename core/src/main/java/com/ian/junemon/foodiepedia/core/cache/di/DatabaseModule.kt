@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.ian.junemon.foodiepedia.core.cache.db.FoodDao
 import com.ian.junemon.foodiepedia.core.cache.db.FoodDatabase
 import com.ian.junemon.foodiepedia.core.cache.db.ProfileDao
+import com.ian.junemon.foodiepedia.core.cache.db.SavedFoodDao
 import dagger.Module
 import dagger.Provides
 
@@ -35,5 +36,11 @@ object DatabaseModule {
     @JvmStatic
     fun provideProfileDao(db: FoodDatabase): ProfileDao {
         return db.profileDao()
+    }
+
+    @Provides
+    @JvmStatic
+    fun provideSavedFoodDao(db: FoodDatabase): SavedFoodDao {
+        return db.savedFoodDao()
     }
 }

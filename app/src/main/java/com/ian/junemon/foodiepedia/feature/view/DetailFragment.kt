@@ -6,8 +6,8 @@ import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
@@ -15,8 +15,10 @@ import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.IntentUtilHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentDetailBinding
-import com.junemon.model.presentation.FoodCachePresentation
 import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
+import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
+import com.junemon.model.data.dto.mapToDetailDatabasePresentation
+import com.junemon.model.presentation.FoodCachePresentation
 import javax.inject.Inject
 
 /**
@@ -26,10 +28,13 @@ import javax.inject.Inject
  */
 class DetailFragment : BaseFragment() {
     @Inject
+    lateinit var foodVm: FoodViewModel
+    @Inject
     lateinit var loadImageHelper: LoadImageHelper
     @Inject
     lateinit var intentHelper: IntentUtilHelper
-
+    private var idForDeleteItem: Int? = null
+    private var isFavorite: Boolean = false
     private val gson by lazy { Gson() }
     private val passedData by lazy {
         gson.fromJson(
@@ -55,11 +60,16 @@ class DetailFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             initView()
+            consumeBookmarkData()
         }
-        return binding.root
     }
 
     private fun FragmentDetailBinding.initView() {
@@ -70,8 +80,17 @@ class DetailFragment : BaseFragment() {
                     ivFoodDetail.loadWithGlide(passedData.foodImage)
                 }
             }
+
+            btnBookmark.setOnClickListener {
+                if (isFavorite) {
+                    if (idForDeleteItem != null) foodVm.deleteSelectedId(idForDeleteItem!!)
+                } else {
+                    foodVm.setCacheDetailFood(passedData.mapToDetailDatabasePresentation())
+                }
+            }
+
             btnBack.setOnClickListener {
-               findNavController().navigateUp()
+                findNavController().navigateUp()
             }
             btnShare.setOnClickListener {
                 intentHelper.run {
@@ -106,5 +125,28 @@ class DetailFragment : BaseFragment() {
                 }
             })
         }
+    }
+
+    private fun FragmentDetailBinding.consumeBookmarkData(){
+        foodVm.getSavedDetailCache().observe(this@DetailFragment, Observer { result ->
+            this.apply {
+                if (!result.isNullOrEmpty()) {
+                    result.forEach {
+                        if (it.foodName == passedData.foodName) {
+                            idForDeleteItem = it.localFoodID
+                            isFavorite = true
+                            bookmarkedState = isFavorite
+                        } else {
+                            isFavorite = false
+                            bookmarkedState = isFavorite
+                        }
+                    }
+                } else {
+                    isFavorite = false
+                    bookmarkedState = isFavorite
+                }
+            }
+
+        })
     }
 }

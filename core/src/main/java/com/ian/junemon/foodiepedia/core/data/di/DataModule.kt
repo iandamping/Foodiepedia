@@ -27,7 +27,7 @@ abstract class DataModule {
     abstract fun bindFoodRemoteDataSource(remoteDataSource: FoodRemoteDataSourceImpl): FoodRemoteDataSource
 
     @Binds
-    abstract fun bindFoodCacheDataSource(remoteDataSource: FoodCacheDataSourceImpl): FoodCacheDataSource
+    abstract fun bindFoodCacheDataSource(cacheDataSource: FoodCacheDataSourceImpl): FoodCacheDataSource
 
     @Binds
     abstract fun bindProfileRemoteDataSource(remoteDataSource: ProfileRemoteDataSourceImpl): ProfileRemoteDataSource

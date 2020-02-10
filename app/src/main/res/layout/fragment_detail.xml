@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="bookmarkedState"
+            type="Boolean" />
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -53,15 +60,27 @@
                         android:src="@drawable/ic_arrow_back_black_24dp" />
 
                     <ImageButton
-                        android:id="@+id/btnShare"
+                        android:id="@+id/btnBookmark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
                         android:layout_margin="20dp"
                         android:background="@drawable/circle_gray_drawable"
-                        android:src="@drawable/ic_share_white_24dp"
-                        android:contentDescription="share" />
+                        android:contentDescription="bookMark"
+                        app:initBookmark="@{bookmarkedState}" />
+
+                    <ImageButton
+                        android:id="@+id/btnShare"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/circle_gray_drawable"
+                        android:contentDescription="share"
+                        android:src="@drawable/ic_share_white_24dp" />
+
 
                 </RelativeLayout>
 
@@ -87,21 +106,21 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_margin="@dimen/spacing_large"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_large"
+                    android:text="About"
                     android:textColor="@color/textColor"
                     android:textSize="@dimen/letter_large"
-                    android:textStyle="bold"
-                    android:text="About" />
+                    android:textStyle="bold" />
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_margin="@dimen/spacing_medium"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false">
+                    android:layout_margin="@dimen/spacing_medium"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -112,23 +131,23 @@
 
                         <TextView
                             android:id="@+id/tvFoodName"
-                            android:layout_margin="@dimen/spacing_medium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/spacing_medium"
                             android:textColor="@color/gray_food_2"
                             android:textSize="@dimen/letter_medium"
                             android:textStyle="bold"
-                            tools:text="Oncom"/>
+                            tools:text="Oncom" />
 
                         <TextView
                             android:id="@+id/tvFoodCategory"
-                            android:layout_margin="@dimen/spacing_medium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/spacing_medium"
                             android:textColor="@color/gray_food_2"
                             android:textSize="@dimen/letter_medium"
                             android:textStyle="bold"
-                            tools:text="Breakfast"/>
+                            tools:text="Breakfast" />
 
 
                     </LinearLayout>
@@ -142,23 +161,23 @@
 
                         <TextView
                             android:id="@+id/tvFoodContributor"
-                            android:layout_margin="@dimen/spacing_medium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/spacing_medium"
                             android:textColor="@color/gray_food_2"
                             android:textSize="@dimen/letter_medium"
                             android:textStyle="bold"
-                            tools:text="Ian Damping"/>
+                            tools:text="Ian Damping" />
 
                         <TextView
                             android:id="@+id/tvFoodArea"
-                            android:layout_margin="@dimen/spacing_medium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/spacing_medium"
                             android:textColor="@color/gray_food_2"
                             android:textSize="@dimen/letter_medium"
                             android:textStyle="bold"
-                            tools:text="Indonesia"/>
+                            tools:text="Indonesia" />
 
                     </LinearLayout>
 
@@ -166,7 +185,6 @@
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

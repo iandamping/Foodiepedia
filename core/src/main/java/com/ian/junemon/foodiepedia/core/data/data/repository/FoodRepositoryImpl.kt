@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
+import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToDatabase
 import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodCacheDataSource
 import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodRemoteDataSource
 import com.ian.junemon.foodiepedia.core.data.di.IoDispatcher
@@ -15,6 +16,7 @@ import com.junemon.model.WorkerResult
 import com.junemon.model.data.dto.mapRemoteToCacheDomain
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
+import com.junemon.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -89,6 +91,10 @@ class FoodRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getSavedDetailCache(): LiveData<List<SavedFoodCacheDomain>> {
+        return cacheDataSource.getSavedDetailCache().asLiveData()
+    }
+
     override fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>> {
         return cacheDataSource.getCategirizeCache(category).asLiveData()
     }
@@ -105,5 +111,13 @@ class FoodRepositoryImpl @Inject constructor(
                 is FirebaseResult.ErrorPush -> emit(FirebaseResult.ErrorPush(pushStatus.exception))
             }
         }
+    }
+
+    override suspend fun setCacheDetailFood(vararg data: SavedFoodCacheDomain) {
+        cacheDataSource.setCacheDetailFood(*data)
+    }
+
+    override suspend fun deleteSelectedId(selectedId: Int) {
+        cacheDataSource.deleteSelectedId(selectedId)
     }
 }

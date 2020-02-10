@@ -7,6 +7,7 @@ import com.junemon.model.Results
 import com.junemon.model.WorkerResult
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
+import com.junemon.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -19,7 +20,13 @@ interface FoodRepository {
 
     fun getCache(): LiveData<Results<List<FoodCacheDomain>>>
 
+    fun getSavedDetailCache(): LiveData<List<SavedFoodCacheDomain>>
+
     fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>>
 
     fun uploadFirebaseData(data: FoodRemoteDomain, imageUri: Uri): LiveData<FirebaseResult<Nothing>>
+
+    suspend fun setCacheDetailFood(vararg data: SavedFoodCacheDomain)
+
+    suspend fun deleteSelectedId(selectedId: Int)
 }

@@ -6,12 +6,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
 import com.ian.junemon.foodiepedia.feature.util.Event
 import com.junemon.model.FirebaseResult
 import com.junemon.model.Results
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
+import com.junemon.model.domain.SavedFoodCacheDomain
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -68,6 +71,20 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : V
 
     fun setFoodUri(uri: Uri) {
         _foodImageUri.value = uri
+    }
+
+    fun setCacheDetailFood(data:SavedFoodCacheDomain){
+        viewModelScope.launch {
+            repository.setCacheDetailFood(data)
+        }
+    }
+
+    fun getSavedDetailCache() = repository.getSavedDetailCache()
+
+    fun deleteSelectedId(selectedId: Int){
+        viewModelScope.launch {
+            repository.deleteSelectedId(selectedId)
+        }
     }
 
     fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>> =

@@ -7,6 +7,7 @@ import com.junemon.model.FirebaseResult
 import com.junemon.model.Results
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
+import com.junemon.model.domain.SavedFoodCacheDomain
 import javax.inject.Inject
 
 /**
@@ -17,6 +18,12 @@ import javax.inject.Inject
 class FoodUseCase @Inject constructor(private val repo: FoodRepository) {
 
     suspend fun foodPrefetch() = repo.foodPrefetch()
+
+    suspend fun setCacheDetailFood(vararg data: SavedFoodCacheDomain) = repo.setCacheDetailFood(*data)
+
+    fun getSavedDetailCache() = repo.getSavedDetailCache()
+
+    suspend fun deleteSelectedId(selectedId: Int) = repo.deleteSelectedId(selectedId)
 
     fun getCache(): LiveData<Results<List<FoodCacheDomain>>> = repo.getCache()
 
