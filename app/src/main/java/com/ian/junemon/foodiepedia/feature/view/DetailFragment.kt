@@ -19,7 +19,6 @@ import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.junemon.model.data.dto.mapToDetailDatabasePresentation
 import com.junemon.model.presentation.FoodCachePresentation
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -128,27 +127,25 @@ class DetailFragment : BaseFragment() {
         }
     }
 
-    private fun FragmentDetailBinding.consumeBookmarkData(){
+    private fun FragmentDetailBinding.consumeBookmarkData() {
         foodVm.getSavedDetailCache().observe(this@DetailFragment, Observer { result ->
-            this.apply {
-                if (!result.isNullOrEmpty()) {
-                    val data =  result.filter { it.foodName == passedData.foodName }
-                    if (data.isNotEmpty()){
-                        data.forEach {
-                            if (it.foodName == passedData.foodName) {
-                                idForDeleteItem = it.localFoodID
-                                isFavorite = true
-                                bookmarkedState = isFavorite
-                            }
+            if (!result.isNullOrEmpty()) {
+                val data = result.filter { it.foodName == passedData.foodName }
+                if (data.isNotEmpty()) {
+                    data.forEach {
+                        if (it.foodName == passedData.foodName) {
+                            idForDeleteItem = it.localFoodID
+                            isFavorite = true
+                            bookmarkedState = isFavorite
                         }
-                    }else{
-                        isFavorite = false
-                        bookmarkedState = isFavorite
                     }
                 } else {
                     isFavorite = false
                     bookmarkedState = isFavorite
                 }
+            } else {
+                isFavorite = false
+                bookmarkedState = isFavorite
             }
 
         })
