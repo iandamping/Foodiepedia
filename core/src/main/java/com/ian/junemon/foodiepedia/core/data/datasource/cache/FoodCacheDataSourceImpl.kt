@@ -17,8 +17,10 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class FoodCacheDataSourceImpl @Inject constructor(private val foodDao: FoodDaoHelper,
-    private val savedFoodDao:SavedFoodDaoHelper) : FoodCacheDataSource {
+class FoodCacheDataSourceImpl @Inject constructor(
+    private val foodDao: FoodDaoHelper,
+    private val savedFoodDao: SavedFoodDaoHelper
+) : FoodCacheDataSource {
     override fun getCache(): Flow<List<FoodCacheDomain>> {
         return foodDao.loadFood().map { it.mapToCacheDomain() }
     }

@@ -14,6 +14,7 @@ import androidx.work.WorkManager
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.activityComponent
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
+import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.PermissionHelper
 import com.ian.junemon.foodiepedia.core.worker.DataFetcherWorker
 import com.ian.junemon.foodiepedia.databinding.ActivitySplashBinding
 import javax.inject.Inject
@@ -26,7 +27,8 @@ import javax.inject.Inject
 class SplashActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySplashBinding
-
+    @Inject
+    lateinit var permissionHelper: PermissionHelper
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
 
@@ -44,10 +46,13 @@ class SplashActivity : AppCompatActivity() {
         binding.run {
             initView()
         }
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
+        permissionHelper.getAllPermission(this) {
+            if (it) {
+                mDelayHandler.postDelayed(mRunnable, 3000L)
+            }
+        }
         /*workerManagerState(this)*/
-        mDelayHandler.postDelayed(mRunnable, 3000L)
     }
 
     private val mRunnable: Runnable = Runnable {

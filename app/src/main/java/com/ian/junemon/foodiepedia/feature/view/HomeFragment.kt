@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.R
+import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
 import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHelper
@@ -20,6 +21,7 @@ import com.ian.junemon.foodiepedia.feature.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.util.FoodConstant.foodPresentationRvCallback
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
+import com.ian.junemon.foodiepedia.util.Constant.filterKey
 import com.junemon.model.Results
 import com.junemon.model.data.dto.mapToCachePresentation
 import com.junemon.model.presentation.FoodCachePresentation
@@ -42,7 +44,11 @@ class HomeFragment : BaseFragment() {
     lateinit var loadImageHelper: LoadImageHelper
     @Inject
     lateinit var viewHlper: ViewHelper
+    @Inject
+    lateinit var prefHelper: PreferenceHelper
 
+    private val localeStatus by lazy { prefHelper.getStringInSharedPreference(filterKey) }
+    private val bottomFilter by lazy { BottomFilterFragment() }
     private val gson by lazy { Gson() }
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -68,7 +74,6 @@ class HomeFragment : BaseFragment() {
             initView()
         }
         setupNavigation()
-
     }
 
     private fun FragmentHomeBinding.initView() {
@@ -85,6 +90,7 @@ class HomeFragment : BaseFragment() {
                     }
                 }
             })
+            ivFilter.setOnClickListener { bottomFilter.show(childFragmentManager, bottomFilter.tag) }
             fabHome.setOnClickListener { foodVm.moveToUploadFragment() }
             ivPhotoProfile.setOnClickListener { foodVm.moveToProfileFragment() }
         }

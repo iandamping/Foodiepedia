@@ -11,7 +11,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SavedFoodDaoHelperImpl @Inject constructor(private val savedFood:SavedFoodDao):
+class SavedFoodDaoHelperImpl @Inject constructor(private val savedFood: SavedFoodDao) :
     SavedFoodDaoHelper {
     override fun loadFood(): Flow<List<SavedFood>> {
         return savedFood.loadFood()

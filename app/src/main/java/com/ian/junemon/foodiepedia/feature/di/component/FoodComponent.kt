@@ -3,6 +3,7 @@ package com.ian.junemon.foodiepedia.feature.di.component
 import com.ian.junemon.foodiepedia.core.dagger.scope.FeatureScope
 import com.ian.junemon.foodiepedia.dagger.ActivityComponent
 import com.ian.junemon.foodiepedia.feature.di.module.FoodModule
+import com.ian.junemon.foodiepedia.feature.view.BottomFilterFragment
 import com.ian.junemon.foodiepedia.feature.view.DetailFragment
 import com.ian.junemon.foodiepedia.feature.view.HomeFragment
 import com.ian.junemon.foodiepedia.feature.view.ProfileFragment
@@ -25,6 +26,8 @@ interface FoodComponent {
     fun inject(fragment: HomeFragment)
 
     fun inject(fragment: ProfileFragment)
+
+    fun inject(fragment: BottomFilterFragment)
 
     @Component.Factory
     interface Factory {

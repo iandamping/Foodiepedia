@@ -6,6 +6,7 @@ import com.ian.junemon.foodiepedia.core.cache.db.FoodDao
 import com.ian.junemon.foodiepedia.core.cache.db.FoodDatabase
 import com.ian.junemon.foodiepedia.core.cache.db.ProfileDao
 import com.ian.junemon.foodiepedia.core.cache.db.SavedFoodDao
+import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
 import dagger.Module
 import dagger.Provides
 
@@ -42,5 +43,11 @@ object DatabaseModule {
     @JvmStatic
     fun provideSavedFoodDao(db: FoodDatabase): SavedFoodDao {
         return db.savedFoodDao()
+    }
+
+    @Provides
+    @JvmStatic
+    fun providePreferenceHelper(app: Application): PreferenceHelper {
+        return PreferenceHelper(app)
     }
 }

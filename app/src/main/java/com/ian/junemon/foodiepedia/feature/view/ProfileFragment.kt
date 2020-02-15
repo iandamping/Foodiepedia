@@ -54,12 +54,17 @@ class ProfileFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
+
+        consumeProfileData()
+        return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             initView()
         }
-        consumeProfileData()
-        return binding.root
     }
 
     private fun FragmentProfileBinding.initView() {
@@ -110,5 +115,10 @@ class ProfileFragment : BaseFragment() {
                 requestSignIn
             )
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

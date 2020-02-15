@@ -20,7 +20,10 @@ object Constant {
     const val getFilterData = "filter.php"
     const val intentDetailKey = "detailfood"
     const val delayMillis = 3000L
-    const val prefHelperInit = " init preference helper"
+    const val filterKey = "filter key"
+    const val filterValueBreakfast = "Breakfast"
+    const val filterValueDinner = "Dinner"
+    const val filterValueLunch = "Lunch"
     const val saveUserProfile = " save user profile"
     const val RequestSignIn = 2341
     const val switchBackToMain = " switching back"

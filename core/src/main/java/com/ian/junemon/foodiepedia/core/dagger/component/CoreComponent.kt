@@ -4,6 +4,7 @@ import android.app.Application
 import com.google.firebase.storage.StorageReference
 import com.ian.junemon.foodiepedia.core.cache.di.DatabaseHelperModule
 import com.ian.junemon.foodiepedia.core.cache.di.DatabaseModule
+import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
 import com.ian.junemon.foodiepedia.core.data.di.CoroutineModule
 import com.ian.junemon.foodiepedia.core.data.di.DataModule
 import com.ian.junemon.foodiepedia.core.domain.di.DomainModule
@@ -34,6 +35,8 @@ interface CoreComponent {
     val provideFoodRepository: FoodRepository
 
     val provideProfileRepository: ProfileRepository
+
+    val providePreferenceHelper: PreferenceHelper
 
     /*val provideworkerFactoryImpl: FetcherWorkerFactoryImpl*/
 

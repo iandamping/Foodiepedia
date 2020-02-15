@@ -1,6 +1,7 @@
 package com.ian.junemon.foodiepedia.dagger
 
 import com.google.firebase.storage.StorageReference
+import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
 import com.ian.junemon.foodiepedia.core.dagger.component.CoreComponent
 import com.ian.junemon.foodiepedia.core.dagger.scope.ApplicationScope
 import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
@@ -16,6 +17,8 @@ interface AppComponent {
     val provideFoodRepository: FoodRepository
 
     val provideProfileRepository: ProfileRepository
+
+    val providePreferenceHelper: PreferenceHelper
 
     /*val provideworkerFactoryImpl: FetcherWorkerFactoryImpl*/
 

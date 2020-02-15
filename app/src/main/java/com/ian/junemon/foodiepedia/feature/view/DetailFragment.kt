@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
@@ -106,6 +107,8 @@ class DetailFragment : BaseFragment() {
             tvFoodCategory.text = passedData.foodCategory
             tvFoodContributor.text = passedData.foodContributor
             tvFoodArea.text = passedData.foodArea
+            tvFoodIngredient.text = passedData.foodIngredient
+            tvFoodIstruction.text = passedData.foodInstruction
 
             appbarDetailLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, i ->
                 var isShow = true
@@ -147,7 +150,11 @@ class DetailFragment : BaseFragment() {
                 isFavorite = false
                 bookmarkedState = isFavorite
             }
-
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

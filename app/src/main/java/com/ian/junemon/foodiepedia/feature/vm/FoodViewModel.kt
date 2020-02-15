@@ -61,7 +61,7 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : V
         _moveToProfileFragmentEvent.value = Event(Unit)
     }
 
-    fun moveToUploadFragment(){
+    fun moveToUploadFragment() {
         _moveToUploadFragmentEvent.value = Event(Unit)
     }
 
@@ -73,7 +73,7 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : V
         _foodImageUri.value = uri
     }
 
-    fun setCacheDetailFood(data:SavedFoodCacheDomain){
+    fun setCacheDetailFood(data: SavedFoodCacheDomain) {
         viewModelScope.launch {
             repository.setCacheDetailFood(data)
         }
@@ -81,7 +81,7 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : V
 
     fun getSavedDetailCache() = repository.getSavedDetailCache()
 
-    fun deleteSelectedId(selectedId: Int){
+    fun deleteSelectedId(selectedId: Int) {
         viewModelScope.launch {
             repository.deleteSelectedId(selectedId)
         }

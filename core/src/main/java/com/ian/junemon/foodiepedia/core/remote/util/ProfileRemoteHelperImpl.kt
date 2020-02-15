@@ -7,7 +7,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.ian.junemon.foodiepedia.core.data.di.IoDispatcher
 import com.junemon.model.domain.UserProfileDataModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
