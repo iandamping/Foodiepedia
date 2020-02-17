@@ -1,6 +1,7 @@
 package com.ian.junemon.foodiepedia.feature.view
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentBottomFilterBinding
 import com.ian.junemon.foodiepedia.feature.di.component.DaggerFoodComponent
+import com.ian.junemon.foodiepedia.feature.util.CanceledListener
 import com.ian.junemon.foodiepedia.ui.MainActivity
 import com.ian.junemon.foodiepedia.util.Constant.filterKey
 import com.ian.junemon.foodiepedia.util.Constant.filterValueBreakfast
@@ -24,14 +26,12 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class BottomFilterFragment : BottomSheetDialogFragment() {
+class BottomFilterFragment(private val canceledState: CanceledListener) : BottomSheetDialogFragment() {
 
     @Inject
     lateinit var prefHelper: PreferenceHelper
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
-
-    private val localeStatus by lazy { prefHelper.getStringInSharedPreference(filterKey) }
 
     private var _binding: FragmentBottomFilterBinding? = null
     private val binding get() = _binding!!
@@ -58,7 +58,9 @@ class BottomFilterFragment : BottomSheetDialogFragment() {
     }
 
     private fun FragmentBottomFilterBinding.initView() {
-        apply {
+        run {
+            val localeStatus by lazy { prefHelper.getStringInSharedPreference(filterKey) }
+
             loadImageHelper.run {
                 ivLunch.setImageDrawable(
                     ContextCompat.getDrawable(
@@ -97,6 +99,7 @@ class BottomFilterFragment : BottomSheetDialogFragment() {
             ivCloseDialog.setOnClickListener {
                 dismiss()
             }
+
             when (localeStatus) {
                 filterValueBreakfast -> {
                     loadImageHelper.run {
@@ -109,24 +112,43 @@ class BottomFilterFragment : BottomSheetDialogFragment() {
                     }
                 }
                 filterValueDinner -> {
-                    ivPickDinner.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            context!!,
-                            R.drawable.ic_check_circle_green_24dp
+                    loadImageHelper.run {
+                        ivPickDinner.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                context!!,
+                                R.drawable.ic_check_circle_green_24dp
+                            )
                         )
-                    )
+                    }
                 }
 
                 filterValueLunch -> {
-                    ivPickLunch.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            context!!,
-                            R.drawable.ic_check_circle_green_24dp
+                    loadImageHelper.run {
+                        ivPickLunch.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                context!!,
+                                R.drawable.ic_check_circle_green_24dp
+                            )
                         )
-                    )
+                    }
+                }
+                else -> {
+                    loadImageHelper.run {
+                        ivPickBreakfast.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                context!!,
+                                R.drawable.ic_check_circle_green_24dp
+                            )
+                        )
+                    }
                 }
             }
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        canceledState.onDissmis()
     }
 
     override fun onDestroyView() {

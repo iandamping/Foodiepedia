@@ -87,6 +87,12 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : V
         }
     }
 
+    fun foodPrefetch() {
+        viewModelScope.launch {
+            repository.foodPrefetch()
+        }
+    }
+
     fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>> =
         repository.getCategorizeCache(category)
 

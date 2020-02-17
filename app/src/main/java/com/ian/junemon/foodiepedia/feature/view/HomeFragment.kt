@@ -17,12 +17,13 @@ import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHel
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentHomeBinding
 import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
+import com.ian.junemon.foodiepedia.feature.util.CanceledListener
 import com.ian.junemon.foodiepedia.feature.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.util.FoodConstant.foodPresentationRvCallback
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.ian.junemon.foodiepedia.util.Constant.filterKey
-import com.junemon.model.Results
+import com.ian.junemon.foodiepedia.util.Constant.filterValueBreakfast
 import com.junemon.model.data.dto.mapToCachePresentation
 import com.junemon.model.presentation.FoodCachePresentation
 import kotlinx.android.synthetic.main.item_home.view.*
@@ -33,7 +34,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class HomeFragment : BaseFragment() {
+class HomeFragment : BaseFragment(), CanceledListener {
     @Inject
     lateinit var foodVm: FoodViewModel
     @Inject
@@ -48,7 +49,7 @@ class HomeFragment : BaseFragment() {
     lateinit var prefHelper: PreferenceHelper
 
     private val localeStatus by lazy { prefHelper.getStringInSharedPreference(filterKey) }
-    private val bottomFilter by lazy { BottomFilterFragment() }
+    private val bottomFilter by lazy { BottomFilterFragment(this) }
     private val gson by lazy { Gson() }
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -70,6 +71,7 @@ class HomeFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        consumeFoodPrefetch()
         binding.apply {
             initView()
         }
@@ -78,19 +80,28 @@ class HomeFragment : BaseFragment() {
 
     private fun FragmentHomeBinding.initView() {
         apply {
-            foodVm.getCache().observe(viewLifecycleOwner, Observer { result ->
-                when (result) {
-                    is Results.Loading -> {
-                    }
-                    is Results.Error -> {
-                        setupRecyclerView(result.cache?.mapToCachePresentation())
-                    }
-                    is Results.Success -> {
-                        setupRecyclerView(result.data.mapToCachePresentation())
-                    }
-                }
-            })
-            ivFilter.setOnClickListener { bottomFilter.show(childFragmentManager, bottomFilter.tag) }
+            if (localeStatus == "") {
+                tvHomeFilter.text = filterValueBreakfast
+                foodVm.getCategorizeCache(filterValueBreakfast)
+                    .observe(this@HomeFragment.viewLifecycleOwner,
+                        Observer { result ->
+                            setupRecyclerView(result?.mapToCachePresentation())
+                        })
+            } else {
+                tvHomeFilter.text = localeStatus
+                foodVm.getCategorizeCache(localeStatus!!)
+                    .observe(this@HomeFragment.viewLifecycleOwner,
+                        Observer { result ->
+                            setupRecyclerView(result?.mapToCachePresentation())
+                        })
+            }
+
+            ivFilter.setOnClickListener {
+                bottomFilter.show(
+                    childFragmentManager,
+                    bottomFilter.tag
+                )
+            }
             fabHome.setOnClickListener { foodVm.moveToUploadFragment() }
             ivPhotoProfile.setOnClickListener { foodVm.moveToProfileFragment() }
         }
@@ -173,8 +184,24 @@ class HomeFragment : BaseFragment() {
         })
     }
 
+    private fun consumeFoodPrefetch() {
+        foodVm.foodPrefetch()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDissmis() {
+        val afterFilter by lazy { prefHelper.getStringInSharedPreference(filterKey) }
+        if (afterFilter != "") {
+            binding.tvHomeFilter.text = afterFilter
+            foodVm.getCategorizeCache(afterFilter!!)
+                .observe(this@HomeFragment.viewLifecycleOwner,
+                    Observer { result ->
+                        binding.setupRecyclerView(result?.mapToCachePresentation())
+                    })
+        }
     }
 }
