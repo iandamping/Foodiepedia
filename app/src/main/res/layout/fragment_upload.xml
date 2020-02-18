@@ -30,6 +30,16 @@
                     android:visibility="gone" />
 
                 <ImageButton
+                    android:id="@+id/btnBack"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/circle_black_drawable"
+                    android:src="@drawable/ic_arrow_back_yellow_24dp" />
+
+
+                <ImageButton
                     android:id="@+id/btnUnggahFoto"
                     android:layout_width="24dp"
                     android:layout_height="24dp"

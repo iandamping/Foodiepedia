@@ -16,6 +16,7 @@ import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentProfileBinding
 import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
+import com.ian.junemon.foodiepedia.feature.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.util.FoodConstant.requestSignIn
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import javax.inject.Inject
@@ -65,12 +66,13 @@ class ProfileFragment : BaseFragment() {
             lifecycleOwner = viewLifecycleOwner
             initView()
         }
+        setupNavigation()
     }
 
     private fun FragmentProfileBinding.initView() {
         apply {
             btnBack.setOnClickListener {
-                findNavController().navigateUp()
+               profileVm.moveProfileToHomeFragment()
             }
             loadImageHelper.run {
                 ivFoodProfile.loadWithGlide(
@@ -115,6 +117,17 @@ class ProfileFragment : BaseFragment() {
                 requestSignIn
             )
         }
+    }
+
+    private fun setupNavigation() {
+        profileVm.moveProfileToHomeFragmentEvent.observe(this, EventObserver {
+            navigateToHomeFragment()
+        })
+    }
+
+    private fun navigateToHomeFragment() {
+        val action = ProfileFragmentDirections.actionProfileFragmentToHomeFragment()
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {

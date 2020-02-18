@@ -17,6 +17,7 @@ import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.IntentUtilH
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentDetailBinding
 import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
+import com.ian.junemon.foodiepedia.feature.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.junemon.model.data.dto.mapToDetailDatabasePresentation
 import com.junemon.model.presentation.FoodCachePresentation
@@ -71,10 +72,11 @@ class DetailFragment : BaseFragment() {
             initView()
             consumeBookmarkData()
         }
+        setupNavigation()
     }
 
     private fun FragmentDetailBinding.initView() {
-        apply {
+        run {
             ilegallStateCatching {
                 checkNotNull(passedData)
                 loadImageHelper.run {
@@ -91,7 +93,7 @@ class DetailFragment : BaseFragment() {
             }
 
             btnBack.setOnClickListener {
-                findNavController().navigateUp()
+                foodVm.moveDetailToHomeFragment()
             }
             btnShare.setOnClickListener {
                 intentHelper.run {
@@ -151,6 +153,17 @@ class DetailFragment : BaseFragment() {
                 bookmarkedState = isFavorite
             }
         })
+    }
+
+    private fun setupNavigation() {
+        foodVm.moveDetailToHomeFragmentEvent.observe(this, EventObserver {
+            navigateToHomeFragment()
+        })
+    }
+
+    private fun navigateToHomeFragment() {
+        val action = DetailFragmentDirections.actionDetailFragmentToHomeFragment()
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {

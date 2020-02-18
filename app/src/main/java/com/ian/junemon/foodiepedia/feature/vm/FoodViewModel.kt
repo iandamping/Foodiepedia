@@ -38,6 +38,12 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : V
     private val _moveToProfileFragmentEvent = MutableLiveData<Event<Unit>>()
     val moveToProfileFragmentEvent: LiveData<Event<Unit>> = _moveToProfileFragmentEvent
 
+    private val _moveDetailToHomeFragmentEvent = MutableLiveData<Event<Unit>>()
+    val moveDetailToHomeFragmentEvent: LiveData<Event<Unit>> = _moveDetailToHomeFragmentEvent
+
+    private val _moveUploadToHomeFragmentEvent = MutableLiveData<Event<Unit>>()
+    val moveUploadToHomeFragmentEvent: LiveData<Event<Unit>> = _moveUploadToHomeFragmentEvent
+
     val etFoodName: MutableLiveData<String> = MutableLiveData()
     val etFoodArea: MutableLiveData<String> = MutableLiveData()
     val etFoodIngredient1: MutableLiveData<String> = MutableLiveData()
@@ -63,6 +69,14 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : V
 
     fun moveToUploadFragment() {
         _moveToUploadFragmentEvent.value = Event(Unit)
+    }
+
+    fun moveDetailToHomeFragment() {
+        _moveDetailToHomeFragmentEvent.value = Event(Unit)
+    }
+
+    fun moveUploadToHomeFragment() {
+        _moveUploadToHomeFragmentEvent.value = Event(Unit)
     }
 
     fun setFood(data: FoodRemoteDomain) {

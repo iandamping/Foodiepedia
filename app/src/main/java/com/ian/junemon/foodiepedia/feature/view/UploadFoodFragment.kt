@@ -25,6 +25,7 @@ import com.junemon.model.FirebaseResult
 import com.junemon.model.domain.FoodRemoteDomain
 import kotlinx.android.synthetic.main.fragment_upload.*
 import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
+import com.ian.junemon.foodiepedia.feature.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import javax.inject.Inject
@@ -65,6 +66,11 @@ class UploadFoodFragment : BaseFragment() {
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setupNavigation()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -84,7 +90,7 @@ class UploadFoodFragment : BaseFragment() {
     }
 
     private fun FragmentUploadBinding.initView() {
-        apply {
+        run {
             val allFoodCategory: Array<String> =
                 context?.resources?.getStringArray(R.array.food_category)!!
             val arrayTypeFoodSpinnerAdapter: ArrayAdapter<String>? =
@@ -94,6 +100,10 @@ class UploadFoodFragment : BaseFragment() {
 
             btnUnggahFoto.setOnClickListener {
                 openGalleryAndCamera(isPermisisonGranted)
+            }
+
+            btnBack.setOnClickListener {
+                foodVm.moveUploadToHomeFragment()
             }
         }
     }
@@ -214,6 +224,17 @@ class UploadFoodFragment : BaseFragment() {
                     })
             }
         })
+    }
+
+    private fun setupNavigation() {
+        foodVm.moveUploadToHomeFragmentEvent.observe(this, EventObserver {
+            navigateToHomeFragment()
+        })
+    }
+
+    private fun navigateToHomeFragment() {
+        val action = UploadFoodFragmentDirections.actionUploadFoodFragmentToHomeFragment()
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {
