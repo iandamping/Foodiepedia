@@ -127,7 +127,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
@@ -157,7 +157,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
@@ -187,29 +187,6 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_medium"
-                    android:layout_marginEnd="@dimen/spacing_large"
-                    android:layout_marginStart="@dimen/spacing_large"
-                    android:text="Ingredient"
-                    android:textColor="@color/yellow_food"
-                    android:textSize="@dimen/letter_xlarge"
-                    android:textStyle="bold" />
-
-                <com.ian.junemon.foodiepedia.core.presentation.util.classes.JustifyTextView
-                    android:id="@+id/tvFoodIngredient"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_large"
-                    android:layout_marginTop="@dimen/spacing_medium"
-                    android:layout_marginEnd="@dimen/spacing_large"
-                    android:layout_marginBottom="@dimen/spacing_medium"
-                    android:textColor="@color/gray_food_2"
-                    android:textSize="@dimen/letter_medium"
-                    android:textStyle="bold"
-                    tools:text="Oncom" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -217,13 +194,13 @@
                     android:layout_marginTop="@dimen/spacing_medium"
                     android:layout_marginEnd="@dimen/spacing_large"
                     android:layout_marginStart="@dimen/spacing_large"
-                    android:text="Instruction"
+                    android:text="Description"
                     android:textColor="@color/yellow_food"
                     android:textSize="@dimen/letter_xlarge"
                     android:textStyle="bold" />
 
                 <com.ian.junemon.foodiepedia.core.presentation.util.classes.JustifyTextView
-                    android:id="@+id/tvFoodIstruction"
+                    android:id="@+id/tvFoodDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_large"

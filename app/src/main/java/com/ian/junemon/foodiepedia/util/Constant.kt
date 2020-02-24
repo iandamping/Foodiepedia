@@ -24,6 +24,8 @@ object Constant {
     const val filterValueBreakfast = "Breakfast"
     const val filterValueDinner = "Dinner"
     const val filterValueLunch = "Lunch"
+    const val filterValueSupper = "Supper"
+    const val filterValueBrunch = "Brunch"
     const val saveUserProfile = " save user profile"
     const val RequestSignIn = 2341
     const val switchBackToMain = " switching back"

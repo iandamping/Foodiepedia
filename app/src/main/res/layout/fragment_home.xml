@@ -74,6 +74,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="Breakfast"
+                    android:layout_margin="@dimen/spacing_medium"
+                    android:layout_gravity="center"
                     android:textColor="@color/textColor"
                     android:textSize="35sp"
                     android:textStyle="bold" />

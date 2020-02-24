@@ -13,9 +13,9 @@ import com.junemon.model.presentation.SavedFoodCachePresentation
  * Indonesia.
  */
 
-fun FoodEntity.mapToRemoteDomain():FoodRemoteDomain = FoodRemoteDomain(foodName, foodCategory, foodArea, foodImage, foodContributor, foodInstruction, foodIngredient)
-fun FoodRemoteDomain.mapToCacheDomain():FoodCacheDomain = FoodCacheDomain(null,foodName, foodCategory, foodArea, foodImage, foodContributor, foodInstruction, foodIngredient)
-fun FoodCachePresentation.mapToDetailDatabasePresentation() = SavedFoodCacheDomain(null,foodId, foodName, foodCategory, foodArea, foodImage, foodContributor, foodInstruction, foodIngredient)
+fun FoodEntity.mapToRemoteDomain():FoodRemoteDomain = FoodRemoteDomain(foodName, foodCategory, foodArea, foodImage, foodContributor, foodDescription)
+fun FoodRemoteDomain.mapToCacheDomain():FoodCacheDomain = FoodCacheDomain(null,foodName, foodCategory, foodArea, foodImage, foodContributor, foodDescription)
+fun FoodCachePresentation.mapToDetailDatabasePresentation() = SavedFoodCacheDomain(null,foodId, foodName, foodCategory, foodArea, foodImage, foodContributor,foodDescription)
 fun FoodCacheDomain.mapToCachePresentation(): FoodCachePresentation =
     FoodCachePresentation(
         foodId,
@@ -24,8 +24,7 @@ fun FoodCacheDomain.mapToCachePresentation(): FoodCachePresentation =
         foodArea,
         foodImage,
         foodContributor,
-        foodInstruction,
-        foodIngredient
+        foodDescription
     )
 
 fun List<FoodRemoteDomain>.mapRemoteToCacheDomain(): List<FoodCacheDomain> =

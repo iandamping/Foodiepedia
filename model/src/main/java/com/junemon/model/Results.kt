@@ -20,4 +20,5 @@ sealed class FirebaseResult<out R> {
 sealed class WorkerResult<out R> {
     object SuccessWork : WorkerResult<Nothing>()
     data class ErrorWork(val exception:Exception) : WorkerResult<Nothing>()
+    object EmptyData : WorkerResult<Nothing>()
 }

@@ -109,8 +109,7 @@ class DetailFragment : BaseFragment() {
             tvFoodCategory.text = passedData.foodCategory
             tvFoodContributor.text = passedData.foodContributor
             tvFoodArea.text = passedData.foodArea
-            tvFoodIngredient.text = passedData.foodIngredient
-            tvFoodIstruction.text = passedData.foodInstruction
+            tvFoodDescription.text = passedData.foodDescription
 
             appbarDetailLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, i ->
                 var isShow = true

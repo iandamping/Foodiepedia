@@ -6,11 +6,9 @@ data class FoodRemoteDomain(
     var foodArea: String?,
     var foodImage: String?,
     var foodContributor: String?,
-    var foodInstruction: String?,
-    var foodIngredient: String?
+    var foodDescription: String?
 ) {
     constructor() : this(
-        null,
         null,
         null,
         null,

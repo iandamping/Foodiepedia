@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.ian.junemon.foodiepedia.R
@@ -172,12 +171,8 @@ class UploadFoodFragment : BaseFragment() {
                 setFood(remoteFoodUpload)
             }
 
-            observingEditText(viewLifecycleOwner, etFoodIngredient1) {
-                remoteFoodUpload.foodIngredient = it
-                setFood(remoteFoodUpload)
-            }
-            observingEditText(viewLifecycleOwner, etFoodInstruction) {
-                remoteFoodUpload.foodInstruction = it
+            observingEditText(viewLifecycleOwner, etFoodDescription) {
+                remoteFoodUpload.foodDescription = it
                 setFood(remoteFoodUpload)
             }
         }
@@ -197,8 +192,7 @@ class UploadFoodFragment : BaseFragment() {
                 selectedUriForFirebase = imageResult
 
                 if (!result.foodName.isNullOrEmpty() && !result.foodArea.isNullOrEmpty() &&
-                    !result.foodIngredient.isNullOrEmpty() && !result.foodInstruction.isNullOrEmpty() &&
-                    imageResult != null
+                    !result.foodDescription.isNullOrEmpty() && imageResult != null
                 ) {
                     viewHelper.run {
                         binding.btnUnggah.visible()

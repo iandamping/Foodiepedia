@@ -130,7 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_medium"
-                    android:text="Food From"
+                    android:text="Can be found in"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
@@ -147,7 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_medium"
-                    android:text="Food Ingredient"
+                    android:text="Food Description : "
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
@@ -156,24 +156,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@={foodViewModel.etFoodIngredient1}"
-                    android:background="@drawable/et_background"
-                    android:padding="15dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_medium"
-                    android:text="Food Instruction"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@={foodViewModel.etFoodInstruction}"
+                    android:text="@={foodViewModel.etFoodDescription}"
                     android:background="@drawable/et_background"
                     android:padding="15dp" />
 

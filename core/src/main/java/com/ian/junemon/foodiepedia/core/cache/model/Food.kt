@@ -18,6 +18,5 @@ data class Food(
     @ColumnInfo(name = "food_area") val foodArea: String?,
     @ColumnInfo(name = "food_image") val foodImage: String?,
     @ColumnInfo(name = "food_contributor") val foodContributor: String?,
-    @ColumnInfo(name = "food_instruction") val foodInstruction: String?,
-    @ColumnInfo(name = "food_ingredients") val foodIngredient: String?
+    @ColumnInfo(name = "food_description") val foodDescription: String?
 )

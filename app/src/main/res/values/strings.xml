@@ -28,7 +28,9 @@
 
     <string-array name="food_category">
         <item>Breakfast</item>
+        <item>Brunch</item>
         <item>Lunch</item>
+        <item>Supper</item>
         <item>Dinner</item>
     </string-array>
 

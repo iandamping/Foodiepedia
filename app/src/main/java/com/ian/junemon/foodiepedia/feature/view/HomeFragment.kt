@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
@@ -24,9 +26,11 @@ import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.ian.junemon.foodiepedia.util.Constant.filterKey
 import com.ian.junemon.foodiepedia.util.Constant.filterValueBreakfast
+import com.junemon.model.WorkerResult
 import com.junemon.model.data.dto.mapToCachePresentation
 import com.junemon.model.presentation.FoodCachePresentation
 import kotlinx.android.synthetic.main.item_home.view.*
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 /**
@@ -48,7 +52,6 @@ class HomeFragment : BaseFragment(), CanceledListener {
     @Inject
     lateinit var prefHelper: PreferenceHelper
 
-    private val localeStatus by lazy { prefHelper.getStringInSharedPreference(filterKey) }
     private val bottomFilter by lazy { BottomFilterFragment(this) }
     private val gson by lazy { Gson() }
     private var _binding: FragmentHomeBinding? = null
@@ -71,39 +74,42 @@ class HomeFragment : BaseFragment(), CanceledListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        binding.initView()
         consumeFoodPrefetch()
-        binding.apply {
-            initView()
-        }
         setupNavigation()
     }
 
     private fun FragmentHomeBinding.initView() {
-        apply {
-            if (localeStatus == "") {
-                tvHomeFilter.text = filterValueBreakfast
-                foodVm.getCategorizeCache(filterValueBreakfast)
-                    .observe(this@HomeFragment.viewLifecycleOwner,
-                        Observer { result ->
-                            setupRecyclerView(result?.mapToCachePresentation())
-                        })
-            } else {
-                tvHomeFilter.text = localeStatus
-                foodVm.getCategorizeCache(localeStatus!!)
-                    .observe(this@HomeFragment.viewLifecycleOwner,
-                        Observer { result ->
-                            setupRecyclerView(result?.mapToCachePresentation())
-                        })
-            }
+        ivFilter.setOnClickListener {
+            bottomFilter.show(
+                childFragmentManager,
+                bottomFilter.tag
+            )
+        }
+        fabHome.setOnClickListener {
+            foodVm.moveToUploadFragment()
+        }
+        ivPhotoProfile.setOnClickListener {
+            foodVm.moveToProfileFragment()
+        }
+    }
 
-            ivFilter.setOnClickListener {
-                bottomFilter.show(
-                    childFragmentManager,
-                    bottomFilter.tag
-                )
-            }
-            fabHome.setOnClickListener { foodVm.moveToUploadFragment() }
-            ivPhotoProfile.setOnClickListener { foodVm.moveToProfileFragment() }
+    private fun FragmentHomeBinding.filterValue() {
+        val localeStatus by lazy { prefHelper.getStringInSharedPreference(filterKey) }
+        if (localeStatus == "") {
+            tvHomeFilter.text = filterValueBreakfast
+            foodVm.getCategorizeCache(filterValueBreakfast)
+                .observe(this@HomeFragment.viewLifecycleOwner,
+                    Observer { result ->
+                        setupRecyclerView(result?.mapToCachePresentation())
+                    })
+        } else {
+            tvHomeFilter.text = localeStatus
+            foodVm.getCategorizeCache(localeStatus!!)
+                .observe(this@HomeFragment.viewLifecycleOwner,
+                    Observer { result ->
+                        setupRecyclerView(result?.mapToCachePresentation())
+                    })
         }
     }
 
@@ -185,7 +191,22 @@ class HomeFragment : BaseFragment(), CanceledListener {
     }
 
     private fun consumeFoodPrefetch() {
-        foodVm.foodPrefetch()
+        lifecycleScope.launchWhenStarted {
+            foodVm.foodPrefetch().collect {
+                when (it) {
+                    is WorkerResult.SuccessWork -> {
+                        binding.filterValue()
+                    }
+                    is WorkerResult.ErrorWork -> {
+                        Snackbar.make(binding.root, it.exception.message!!, Snackbar.LENGTH_SHORT)
+                            .show()
+                    }
+                    is WorkerResult.EmptyData -> {
+                        Snackbar.make(binding.root, "data is empty", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

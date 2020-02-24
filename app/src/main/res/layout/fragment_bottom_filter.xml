@@ -159,6 +159,74 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/lnPickBrunch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/ivBrunch"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="@dimen/spacing_medium"
+                        tools:src="@drawable/ic_filter_4"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_small" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="3"
+                        android:text="Brunch"
+                        android:textColor="@color/textColor"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/ivPickBrunch"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_check_circle_gray_24dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lnPickSupper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/ivSupper"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="@dimen/spacing_medium"
+                        tools:src="@drawable/ic_filter_5"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_small" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="3"
+                        android:text="Supper"
+                        android:textColor="@color/textColor"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/ivPickSupper"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_check_circle_gray_24dp" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
 

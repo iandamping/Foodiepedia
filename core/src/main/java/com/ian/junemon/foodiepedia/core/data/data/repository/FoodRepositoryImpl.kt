@@ -18,6 +18,8 @@ import com.junemon.model.domain.FoodRemoteDomain
 import com.junemon.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collect
@@ -48,15 +50,18 @@ class FoodRepositoryImpl @Inject constructor(
                     }
                     is DataHelper.RemoteSourceValue -> {
                         if (!this@callbackFlow.channel.isClosedForSend) {
-                            check(data.data.isNotEmpty()) {
-                                " data is empty "
+                            if (data.data.isNotEmpty()) {
+                                cacheDataSource.setCache(*data.data.mapRemoteToCacheDomain().toTypedArray())
+                                offer(WorkerResult.SuccessWork)
+                            } else {
+                                offer(WorkerResult.EmptyData)
+                                close()
                             }
-                            cacheDataSource.setCache(*data.data.mapRemoteToCacheDomain().toTypedArray())
-                            offer(WorkerResult.SuccessWork)
                         }
                     }
                 }
             }
+            awaitClose { cancel() }
         }
     }
 

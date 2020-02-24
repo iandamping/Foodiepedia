@@ -19,11 +19,10 @@ fun FoodCacheDomain.mapToDatabase(): Food =
         foodArea,
         foodImage,
         foodContributor,
-        foodInstruction,
-        foodIngredient
+        foodDescription
     )
 
-fun SavedFood.mapToDetailDatabase(): SavedFoodCacheDomain = SavedFoodCacheDomain(localFoodID, foodId, foodName, foodCategory, foodArea, foodImage, foodContributor, foodInstruction, foodIngredient)
+fun SavedFood.mapToDetailDatabase(): SavedFoodCacheDomain = SavedFoodCacheDomain(localFoodID, foodId, foodName, foodCategory, foodArea, foodImage, foodContributor, foodDescription)
 
 fun SavedFoodCacheDomain.mapToDatabase(): SavedFood =
     SavedFood(
@@ -34,8 +33,7 @@ fun SavedFoodCacheDomain.mapToDatabase(): SavedFood =
         foodArea,
         foodImage,
         foodContributor,
-        foodInstruction,
-        foodIngredient
+        foodDescription
     )
 
 fun List<FoodCacheDomain>.mapToDatabase(): List<Food> = map { it.mapToDatabase() }
@@ -49,8 +47,7 @@ fun Food.mapToCacheDomain(): FoodCacheDomain = FoodCacheDomain(
     foodArea,
     foodImage,
     foodContributor,
-    foodInstruction,
-    foodIngredient
+    foodDescription
 )
 
 fun List<Food>.mapToCacheDomain(): List<FoodCacheDomain> = map { it.mapToCacheDomain() }

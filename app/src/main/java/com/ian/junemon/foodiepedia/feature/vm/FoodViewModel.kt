@@ -46,8 +46,7 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : V
 
     val etFoodName: MutableLiveData<String> = MutableLiveData()
     val etFoodArea: MutableLiveData<String> = MutableLiveData()
-    val etFoodIngredient1: MutableLiveData<String> = MutableLiveData()
-    val etFoodInstruction: MutableLiveData<String> = MutableLiveData()
+    val etFoodDescription: MutableLiveData<String> = MutableLiveData()
 
     inline fun observingEditText(
         lifecycleOwner: LifecycleOwner,
@@ -101,11 +100,7 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : V
         }
     }
 
-    fun foodPrefetch() {
-        viewModelScope.launch {
-            repository.foodPrefetch()
-        }
-    }
+    suspend fun foodPrefetch() = repository.foodPrefetch()
 
     fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>> =
         repository.getCategorizeCache(category)

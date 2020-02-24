@@ -17,8 +17,10 @@ import com.ian.junemon.foodiepedia.feature.util.CanceledListener
 import com.ian.junemon.foodiepedia.ui.MainActivity
 import com.ian.junemon.foodiepedia.util.Constant.filterKey
 import com.ian.junemon.foodiepedia.util.Constant.filterValueBreakfast
+import com.ian.junemon.foodiepedia.util.Constant.filterValueBrunch
 import com.ian.junemon.foodiepedia.util.Constant.filterValueDinner
 import com.ian.junemon.foodiepedia.util.Constant.filterValueLunch
+import com.ian.junemon.foodiepedia.util.Constant.filterValueSupper
 import javax.inject.Inject
 
 /**
@@ -62,6 +64,20 @@ class BottomFilterFragment(private val canceledState: CanceledListener) : Bottom
             val localeStatus by lazy { prefHelper.getStringInSharedPreference(filterKey) }
 
             loadImageHelper.run {
+                ivBrunch.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context!!,
+                        R.drawable.ic_filter_4
+                    )
+                )
+
+                ivSupper.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context!!,
+                        R.drawable.ic_filter_5
+                    )
+                )
+
                 ivLunch.setImageDrawable(
                     ContextCompat.getDrawable(
                         context!!,
@@ -93,6 +109,16 @@ class BottomFilterFragment(private val canceledState: CanceledListener) : Bottom
 
             lnPickDinner.setOnClickListener {
                 prefHelper.saveStringInSharedPreference(filterKey, filterValueDinner)
+                dismiss()
+            }
+
+            lnPickBrunch.setOnClickListener {
+                prefHelper.saveStringInSharedPreference(filterKey, filterValueBrunch)
+                dismiss()
+            }
+
+            lnPickSupper.setOnClickListener {
+                prefHelper.saveStringInSharedPreference(filterKey, filterValueSupper)
                 dismiss()
             }
 
@@ -132,6 +158,29 @@ class BottomFilterFragment(private val canceledState: CanceledListener) : Bottom
                         )
                     }
                 }
+
+                filterValueBrunch -> {
+                    loadImageHelper.run {
+                        ivPickBrunch.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                context!!,
+                                R.drawable.ic_check_circle_green_24dp
+                            )
+                        )
+                    }
+                }
+
+                filterValueSupper -> {
+                    loadImageHelper.run {
+                        ivPickSupper.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                context!!,
+                                R.drawable.ic_check_circle_green_24dp
+                            )
+                        )
+                    }
+                }
+
                 else -> {
                     loadImageHelper.run {
                         ivPickBreakfast.setImageDrawable(

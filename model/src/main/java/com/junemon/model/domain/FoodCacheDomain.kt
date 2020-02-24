@@ -12,6 +12,5 @@ data class FoodCacheDomain(
     val foodArea: String?,
     val foodImage: String?,
     val foodContributor: String?,
-    val foodInstruction: String?,
-    val foodIngredient: String?
+    val foodDescription: String?
 )

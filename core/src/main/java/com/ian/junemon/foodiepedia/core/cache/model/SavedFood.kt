@@ -19,6 +19,5 @@ data class SavedFood(
     @ColumnInfo(name = "saved_food_area") val foodArea: String?,
     @ColumnInfo(name = "saved_food_image") val foodImage: String?,
     @ColumnInfo(name = "saved_food_contributor") val foodContributor: String?,
-    @ColumnInfo(name = "saved_food_instruction") val foodInstruction: String?,
-    @ColumnInfo(name = "saved_food_ingredients") val foodIngredient: String?
+    @ColumnInfo(name = "saved_food_description") val foodDescription: String?
 )
