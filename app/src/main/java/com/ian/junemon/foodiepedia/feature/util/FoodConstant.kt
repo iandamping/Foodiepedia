@@ -17,17 +17,26 @@ object FoodConstant {
             return oldItem.foodId == newItem.foodId
         }
 
-        override fun areContentsTheSame(oldItem: FoodCacheDomain, newItem: FoodCacheDomain): Boolean {
+        override fun areContentsTheSame(
+            oldItem: FoodCacheDomain,
+            newItem: FoodCacheDomain
+        ): Boolean {
             return oldItem == newItem
         }
     }
 
     val foodPresentationRvCallback = object : DiffUtil.ItemCallback<FoodCachePresentation?>() {
-        override fun areItemsTheSame(oldItem: FoodCachePresentation, newItem: FoodCachePresentation): Boolean {
+        override fun areItemsTheSame(
+            oldItem: FoodCachePresentation,
+            newItem: FoodCachePresentation
+        ): Boolean {
             return oldItem.foodId == newItem.foodId
         }
 
-        override fun areContentsTheSame(oldItem: FoodCachePresentation, newItem: FoodCachePresentation): Boolean {
+        override fun areContentsTheSame(
+            oldItem: FoodCachePresentation,
+            newItem: FoodCachePresentation
+        ): Boolean {
             return oldItem == newItem
         }
     }

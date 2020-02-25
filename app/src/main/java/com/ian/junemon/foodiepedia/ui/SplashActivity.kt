@@ -12,11 +12,11 @@ import androidx.lifecycle.Observer
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.ian.junemon.foodiepedia.R
-import com.ian.junemon.foodiepedia.activityComponent
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.PermissionHelper
 import com.ian.junemon.foodiepedia.core.worker.DataFetcherWorker
 import com.ian.junemon.foodiepedia.databinding.ActivitySplashBinding
+import com.ian.junemon.foodiepedia.feature.di.activityComponent
 import javax.inject.Inject
 
 /**
@@ -65,22 +65,33 @@ class SplashActivity : AppCompatActivity() {
     private fun ActivitySplashBinding.initView() {
         apply {
             loadImageHelper.run {
-                ivLoadSplash.loadWithGlide(ContextCompat.getDrawable(this@SplashActivity, R.drawable.splash)!!)
-                ivLoadSplash2.loadWithGlide(ContextCompat.getDrawable(this@SplashActivity, R.drawable.splash_logo)!!)
+                ivLoadSplash.loadWithGlide(
+                    ContextCompat.getDrawable(
+                        this@SplashActivity,
+                        R.drawable.splash
+                    )!!
+                )
+                ivLoadSplash2.loadWithGlide(
+                    ContextCompat.getDrawable(
+                        this@SplashActivity,
+                        R.drawable.splash_logo
+                    )!!
+                )
             }
         }
     }
 
     private fun workerManagerState(context: Context) {
-        WorkManager.getInstance(context).getWorkInfosByTagLiveData(DataFetcherWorker.WORK_NAME).observe(this,
-            Observer { workInfo ->
-                if (workInfo != null && workInfo.isNotEmpty()) {
-                    workInfo.forEach {
-                        if (it.state == WorkInfo.State.SUCCEEDED) {
-                            mDelayHandler.postDelayed(mRunnable, 3000L)
+        WorkManager.getInstance(context).getWorkInfosByTagLiveData(DataFetcherWorker.WORK_NAME)
+            .observe(this,
+                Observer { workInfo ->
+                    if (workInfo != null && workInfo.isNotEmpty()) {
+                        workInfo.forEach {
+                            if (it.state == WorkInfo.State.SUCCEEDED) {
+                                mDelayHandler.postDelayed(mRunnable, 3000L)
+                            }
                         }
                     }
-                }
-            })
+                })
     }
 }

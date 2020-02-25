@@ -45,3 +45,8 @@ interface CoreComponent {
         fun injectApplication(@BindsInstance application: Application): CoreComponent
     }
 }
+
+interface CoreComponentProvider {
+
+    fun provideCoreComponent(): CoreComponent
+}

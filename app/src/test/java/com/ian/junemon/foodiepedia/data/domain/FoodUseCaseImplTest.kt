@@ -16,6 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -76,12 +77,12 @@ class FoodUseCaseImplTest {
 
     @Test
     @ExperimentalCoroutinesApi
-    fun foodPrefetch() = runBlocking {
+    fun foodPrefetch() = mainCoroutineRule.runBlockingTest {
         // Trigger the repository to load data that loads from remote
 
         val responseStatus = foodRepository.foodPrefetch()
 
-        val job = launch {
+        launch {
             responseStatus.collect { data ->
                 when (data) {
                     is WorkerResult.SuccessWork -> {
@@ -99,7 +100,7 @@ class FoodUseCaseImplTest {
 
             }
         }
-        job.cancel()
+
     }
 
     @Test

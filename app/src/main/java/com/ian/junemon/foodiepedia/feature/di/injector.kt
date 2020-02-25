@@ -1,9 +1,11 @@
 package com.ian.junemon.foodiepedia.feature.di
 
-import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
-import com.ian.junemon.foodiepedia.feature.di.component.DaggerFoodComponent
+import android.app.Activity
+import androidx.fragment.app.Fragment
+import com.ian.junemon.foodiepedia.FoodApp
 import com.ian.junemon.foodiepedia.feature.di.component.FoodComponent
-import com.ian.junemon.foodiepedia.ui.MainActivity
 
-fun BaseFragment.sharedFoodComponent(): FoodComponent =
-    DaggerFoodComponent.factory().create((this.activity as MainActivity).mainActivityComponent)
+fun Activity.activityComponent() = (application as FoodApp).provideActivityComponent()
+
+fun Fragment.sharedFoodComponent(): FoodComponent =
+    (this.activity?.application as FoodApp).provideFoodComponent()

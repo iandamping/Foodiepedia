@@ -14,7 +14,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class ProfileViewModel@Inject constructor(private val repository: ProfileUseCase) : ViewModel() {
+class ProfileViewModel @Inject constructor(private val repository: ProfileUseCase) : ViewModel() {
 
     private val _moveProfileToHomeFragmentEvent = MutableLiveData<Event<Unit>>()
     val moveProfileToHomeFragmentEvent: LiveData<Event<Unit>> = _moveProfileToHomeFragmentEvent

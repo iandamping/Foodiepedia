@@ -12,9 +12,8 @@ import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentBottomFilterBinding
-import com.ian.junemon.foodiepedia.feature.di.component.DaggerFoodComponent
+import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.feature.util.CanceledListener
-import com.ian.junemon.foodiepedia.ui.MainActivity
 import com.ian.junemon.foodiepedia.util.Constant.filterKey
 import com.ian.junemon.foodiepedia.util.Constant.filterValueBreakfast
 import com.ian.junemon.foodiepedia.util.Constant.filterValueBrunch
@@ -28,7 +27,8 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class BottomFilterFragment(private val canceledState: CanceledListener) : BottomSheetDialogFragment() {
+class BottomFilterFragment(private val canceledState: CanceledListener) :
+    BottomSheetDialogFragment() {
 
     @Inject
     lateinit var prefHelper: PreferenceHelper
@@ -39,8 +39,7 @@ class BottomFilterFragment(private val canceledState: CanceledListener) : Bottom
     private val binding get() = _binding!!
 
     override fun onAttach(context: Context) {
-        DaggerFoodComponent.factory().create((this.activity as MainActivity).mainActivityComponent)
-            .inject(this)
+        sharedFoodComponent().inject(this)
         super.onAttach(context)
     }
 

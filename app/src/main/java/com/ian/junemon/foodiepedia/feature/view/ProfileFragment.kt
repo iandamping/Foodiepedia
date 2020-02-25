@@ -72,7 +72,7 @@ class ProfileFragment : BaseFragment() {
     private fun FragmentProfileBinding.initView() {
         apply {
             btnBack.setOnClickListener {
-               profileVm.moveProfileToHomeFragment()
+                profileVm.moveProfileToHomeFragment()
             }
             loadImageHelper.run {
                 ivFoodProfile.loadWithGlide(

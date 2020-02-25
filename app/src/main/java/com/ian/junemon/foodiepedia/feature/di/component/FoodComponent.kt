@@ -34,3 +34,8 @@ interface FoodComponent {
         fun create(activityComponent: ActivityComponent): FoodComponent
     }
 }
+
+interface FoodComponentProvider {
+
+    fun provideFoodComponent(): FoodComponent
+}

@@ -51,3 +51,8 @@ interface ActivityComponent {
         fun appComponent(appComponent: AppComponent): ActivityComponent
     }
 }
+
+interface ActivityComponentProvider {
+
+    fun provideActivityComponent(): ActivityComponent
+}

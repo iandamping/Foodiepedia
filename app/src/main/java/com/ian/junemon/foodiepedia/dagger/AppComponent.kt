@@ -27,3 +27,8 @@ interface AppComponent {
         fun coreComponent(coreComponent: CoreComponent): AppComponent
     }
 }
+
+interface AppComponentProvider {
+
+    fun provideAppComponent(): AppComponent
+}
