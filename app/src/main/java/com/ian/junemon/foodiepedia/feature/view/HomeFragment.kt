@@ -137,15 +137,15 @@ class HomeFragment : BaseFragment(), CanceledListener {
     }
 
     private fun setupNavigation() {
-        foodVm.moveToDetailFragmentEvent.observe(this, EventObserver {
+        foodVm.moveToDetailFragmentEvent.observe(viewLifecycleOwner, EventObserver {
             navigateToDetailFoodFragment(it)
         })
 
-        foodVm.moveToProfileFragmentEvent.observe(this, EventObserver {
+        foodVm.moveToProfileFragmentEvent.observe(viewLifecycleOwner, EventObserver {
             navigateToProfileFragment()
         })
 
-        foodVm.moveToUploadFragmentEvent.observe(this, EventObserver {
+        foodVm.moveToUploadFragmentEvent.observe(viewLifecycleOwner, EventObserver {
             navigateToUploadFoodFragment()
         })
     }

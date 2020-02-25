@@ -120,7 +120,7 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun setupNavigation() {
-        profileVm.moveProfileToHomeFragmentEvent.observe(this, EventObserver {
+        profileVm.moveProfileToHomeFragmentEvent.observe(viewLifecycleOwner, EventObserver {
             navigateToHomeFragment()
         })
     }

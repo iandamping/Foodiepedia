@@ -221,7 +221,7 @@ class UploadFoodFragment : BaseFragment() {
     }
 
     private fun setupNavigation() {
-        foodVm.moveUploadToHomeFragmentEvent.observe(this, EventObserver {
+        foodVm.moveUploadToHomeFragmentEvent.observe(viewLifecycleOwner, EventObserver {
             navigateToHomeFragment()
         })
     }

@@ -132,7 +132,7 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun FragmentDetailBinding.consumeBookmarkData() {
-        foodVm.getSavedDetailCache().observe(this@DetailFragment, Observer { result ->
+        foodVm.getSavedDetailCache().observe(viewLifecycleOwner, Observer { result ->
             if (!result.isNullOrEmpty()) {
                 val data = result.filter { it.foodName == passedData.foodName }
                 if (data.isNotEmpty()) {
@@ -155,7 +155,7 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun setupNavigation() {
-        foodVm.moveDetailToHomeFragmentEvent.observe(this, EventObserver {
+        foodVm.moveDetailToHomeFragmentEvent.observe(viewLifecycleOwner, EventObserver {
             navigateToHomeFragment()
         })
     }
