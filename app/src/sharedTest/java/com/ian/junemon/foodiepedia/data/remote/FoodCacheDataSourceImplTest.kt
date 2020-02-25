@@ -7,10 +7,13 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.ian.junemon.foodiepedia.core.cache.db.FoodDao
 import com.ian.junemon.foodiepedia.core.cache.db.FoodDatabase
+import com.ian.junemon.foodiepedia.core.cache.db.SavedFoodDao
 import com.ian.junemon.foodiepedia.core.cache.model.Food
 import com.ian.junemon.foodiepedia.core.cache.util.classes.FoodDaoHelperImpl
+import com.ian.junemon.foodiepedia.core.cache.util.classes.SavedFoodDaoHelperImpl
 import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToCacheDomain
 import com.ian.junemon.foodiepedia.core.cache.util.interfaces.FoodDaoHelper
+import com.ian.junemon.foodiepedia.core.cache.util.interfaces.SavedFoodDaoHelper
 import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodCacheDataSource
 import com.ian.junemon.foodiepedia.core.data.datasource.cache.FoodCacheDataSourceImpl
 import kotlinx.coroutines.Dispatchers
@@ -39,6 +42,8 @@ class FoodCacheDataSourceImplTest {
 
     private lateinit var db: FoodDatabase
     private lateinit var foodDao: FoodDao
+    private lateinit var saveFoodDao: SavedFoodDao
+    private lateinit var saveFoodHelper: SavedFoodDaoHelper
     private lateinit var foodDaoHelper: FoodDaoHelper
     private lateinit var cacheDataSource: FoodCacheDataSource
 
@@ -49,11 +54,13 @@ class FoodCacheDataSourceImplTest {
             context, FoodDatabase::class.java
         ).build()
         foodDao = db.foodDao()
+        saveFoodDao = db.savedFoodDao()
         foodDaoHelper =
             FoodDaoHelperImpl(
                 foodDao
             )
-        cacheDataSource = FoodCacheDataSourceImpl(foodDaoHelper)
+        saveFoodHelper = SavedFoodDaoHelperImpl(saveFoodDao)
+        cacheDataSource = FoodCacheDataSourceImpl(foodDaoHelper,saveFoodHelper)
     }
 
     @After
@@ -66,7 +73,7 @@ class FoodCacheDataSourceImplTest {
     @Throws(Exception::class)
     fun insertFoodandGetAllData() = runBlocking {
         //GIVEN - Insert a food
-        val food = Food(0, "test", "test", "test", "test", "test", "test", "test")
+        val food = Food(0, "test", "test", "test", "test", "test", "test")
         cacheDataSource.setCache(food.mapToCacheDomain())
 
         //WHEN - Get the food from the database
@@ -85,7 +92,7 @@ class FoodCacheDataSourceImplTest {
     @Throws(Exception::class)
     fun insertFoodandGetCategorizeData() = runBlocking {
         //GIVEN - Insert a food
-        val food = Food(0, "test", "test1", "test", "test", "test", "test", "test")
+        val food = Food(0, "test", "test1", "test", "test", "test", "test")
         cacheDataSource.setCache(food.mapToCacheDomain())
 
         //WHEN - Get the food from the database

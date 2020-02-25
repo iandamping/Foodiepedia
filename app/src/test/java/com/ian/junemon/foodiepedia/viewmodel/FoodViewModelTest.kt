@@ -12,7 +12,9 @@ import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.junemon.model.Results
 import com.junemon.model.data.dto.mapToCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
+import com.junemon.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -32,9 +34,19 @@ class FoodViewModelTest {
         foodArea = "remote"
         foodImage = "remote"
         foodContributor = "remote"
-        foodInstruction = "remote"
-        foodIngredient = "remote"
+        foodDescription = "remote"
     }
+
+    private val fakeSavedFoodData = SavedFoodCacheDomain(
+        foodName = "remote",
+        foodCategory = "remote",
+        foodArea = "remote",
+        foodImage = "remote",
+        foodContributor = "remote",
+        foodDescription = "remote",
+        localFoodID = 0,
+        foodId = 0
+    )
 
     private val listOfFakeRemote = listOf(fakeRemoteData1)
     private lateinit var cacheDataSource: FakeFoodCacheDataSourceImpl
@@ -90,5 +102,15 @@ class FoodViewModelTest {
         val cacheData = fakeFoodViewModel.getCategorizeCache("remote").getOrAwaitValue()
         Truth.assertThat(cacheData).hasSize(1)
         Truth.assertThat(cacheData[0]).isEqualTo(fakeRemoteData1.mapToCacheDomain())
+    }
+
+    @Test
+    fun getSavedFood()  = runBlocking {
+        foodRepository.setCacheDetailFood(fakeSavedFoodData)
+
+        val cacheData = foodRepository.getSavedDetailCache().getOrAwaitValue()
+        Truth.assertThat(cacheData).hasSize(1)
+        Truth.assertThat(cacheData[0].foodArea).isEqualTo(fakeSavedFoodData.foodArea)
+
     }
 }

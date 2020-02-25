@@ -11,6 +11,7 @@ import com.junemon.model.Results
 import com.junemon.model.WorkerResult
 import com.junemon.model.data.dto.mapToCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
+import com.junemon.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -32,15 +33,24 @@ class FoodUseCaseImplTest {
         foodArea = "remote"
         foodImage = "remote"
         foodContributor = "remote"
-        foodInstruction = "remote"
-        foodIngredient = "remote"
+        foodDescription = "remote"
     }
+
+    private val fakeSavedFoodData = SavedFoodCacheDomain(
+        foodName = "remote",
+        foodCategory = "remote",
+        foodArea = "remote",
+        foodImage = "remote",
+        foodContributor = "remote",
+        foodDescription = "remote",
+        localFoodID = 0,
+        foodId = 0
+    )
 
     private val listOfFakeRemote = listOf(fakeRemoteData1)
     private lateinit var cacheDataSource: FakeFoodCacheDataSourceImpl
     private lateinit var remoteDataSource: FakeFoodRemoteDataSourceImpl
     private lateinit var foodRepository: FakeFoodRepository
-
 
     @ExperimentalCoroutinesApi
     @get:Rule
@@ -81,6 +91,10 @@ class FoodUseCaseImplTest {
                     is WorkerResult.ErrorWork -> {
                         Truth.assertThat(data).isInstanceOf(WorkerResult.ErrorWork::class.java)
                     }
+
+                    is WorkerResult.EmptyData -> {
+                        Truth.assertThat(data).isInstanceOf(WorkerResult.EmptyData::class.java)
+                    }
                 }
 
             }
@@ -105,10 +119,19 @@ class FoodUseCaseImplTest {
     }
 
     @Test
-    fun getCategorizeCache(){
+    fun getCategorizeCache() {
         val cacheData = foodRepository.getCategorizeCache("remote").getOrAwaitValue()
         Truth.assertThat(cacheData).hasSize(1)
         Truth.assertThat(cacheData[0]).isEqualTo(fakeRemoteData1.mapToCacheDomain())
     }
 
+    @Test
+    fun getSavedFood()  = runBlocking {
+        foodRepository.setCacheDetailFood(fakeSavedFoodData)
+
+        val cacheData = foodRepository.getSavedDetailCache().getOrAwaitValue()
+        Truth.assertThat(cacheData).hasSize(1)
+        Truth.assertThat(cacheData[0].foodArea).isEqualTo(fakeSavedFoodData.foodArea)
+
+    }
 }

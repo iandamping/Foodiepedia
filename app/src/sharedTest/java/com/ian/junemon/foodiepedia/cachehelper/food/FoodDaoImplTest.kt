@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.ian.junemon.foodiepedia.core.cache.db.FoodDao
 import com.ian.junemon.foodiepedia.core.cache.db.FoodDatabase
+import com.ian.junemon.foodiepedia.core.cache.db.SavedFoodDao
 import com.ian.junemon.foodiepedia.core.cache.model.Food
 import com.ian.junemon.foodiepedia.core.cache.util.classes.FoodDaoHelperImpl
 import com.ian.junemon.foodiepedia.core.cache.util.interfaces.FoodDaoHelper
@@ -67,7 +68,7 @@ class FoodDaoImplTest {
     @Throws(Exception::class)
     fun insertFoodandGetAllData() = runBlocking {
         //GIVEN - Insert a food
-        val food = Food(0, "test", "test", "test", "test", "test", "test", "test")
+        val food = Food(0, "test", "test", "test", "test", "test", "test")
         foodDaoHelper.insertFood(food)
 
         //WHEN - Get the food from the database
@@ -86,7 +87,7 @@ class FoodDaoImplTest {
     @Throws(Exception::class)
     fun insertFoodandGetCategorizeData() = runBlocking {
         //GIVEN - Insert a food
-        val food = Food(0, "test", "test1", "test", "test", "test", "test", "test")
+        val food = Food(0, "test", "test1", "test", "test", "test", "test")
         foodDaoHelper.insertFood(food)
 
         //WHEN - Get the food from the database
@@ -105,7 +106,7 @@ class FoodDaoImplTest {
     @Throws(Exception::class)
     fun insertFoodAndDeleteFood() = runBlocking {
         // Given a task inserted
-        val food = Food(0, "test", "test", "test", "test", "test", "test", "test")
+        val food = Food(0, "test", "test", "test", "test", "test", "test")
         foodDaoHelper.insertFood(food)
 
         // When deleting all tasks

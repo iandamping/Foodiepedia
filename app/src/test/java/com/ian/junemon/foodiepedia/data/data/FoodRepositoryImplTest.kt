@@ -31,8 +31,7 @@ class FoodRepositoryImplTest {
         foodArea = "remote"
         foodImage = "remote"
         foodContributor = "remote"
-        foodInstruction = "remote"
-        foodIngredient = "remote"
+        foodDescription = "remote"
     }
     private val fakeRemoteData2 = FoodRemoteDomain().apply {
         foodName = "remote2"
@@ -40,8 +39,7 @@ class FoodRepositoryImplTest {
         foodArea = "remote2"
         foodImage = "remote2"
         foodContributor = "remote2"
-        foodInstruction = "remote2"
-        foodIngredient = "remote2"
+        foodDescription = "remote"
     }
     private val fakeRemoteData3 = FoodRemoteDomain().apply {
         foodName = "remote3"
@@ -49,8 +47,7 @@ class FoodRepositoryImplTest {
         foodArea = "remote3"
         foodImage = "remote3"
         foodContributor = "remote3"
-        foodInstruction = "remote3"
-        foodIngredient = "remote3"
+        foodDescription = "remote"
     }
 
     private val listOfFakeRemote = listOf(fakeRemoteData1, fakeRemoteData2, fakeRemoteData3)

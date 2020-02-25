@@ -14,6 +14,7 @@ import com.junemon.model.WorkerResult
 import com.junemon.model.data.dto.mapRemoteToCacheDomain
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
+import com.junemon.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -74,6 +75,10 @@ class FakeFoodRepository(
         }
     }
 
+    override fun getSavedDetailCache(): LiveData<List<SavedFoodCacheDomain>> {
+           return cacheDataSource.getSavedDetailCache().asLiveData()
+    }
+
     override fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>> {
         return liveData {
             val responseStatus = remoteDataSource.getFirebaseData()
@@ -99,5 +104,12 @@ class FakeFoodRepository(
 
             is FirebaseResult.ErrorPush -> emit(FirebaseResult.ErrorPush(pushStatus.exception))
         }
+    }
+
+    override suspend fun setCacheDetailFood(vararg data: SavedFoodCacheDomain) {
+        cacheDataSource.setCacheDetailFood(*data)
+    }
+
+    override suspend fun deleteSelectedId(selectedId: Int) {
     }
 }
