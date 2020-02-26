@@ -22,18 +22,21 @@ class LoadImageImpl @Inject constructor() :
 
     override fun ImageView.loadWithGlideSmall(url: String?) {
         Glide.with(this.context).load(url).apply(options.override(150, 150))
-            .placeholder(R.drawable.no_data).thumbnail(0.25f)
+            .placeholder(R.drawable.empty_image).thumbnail(0.25f)
+            .error(R.drawable.no_data)
             .into(this)
     }
 
     override fun ImageView.loadWithGlideCustomSize(url: String?, width: Int, height: Int) {
         Glide.with(this.context).load(url).apply(options.override(width, height))
-            .placeholder(R.drawable.no_data).thumbnail(0.25f)
+            .error(R.drawable.no_data)
+            .placeholder(R.drawable.empty_image).thumbnail(0.25f)
             .into(this)
     }
 
     override fun ImageView.loadWithGlide(url: String?) {
-        Glide.with(this.context).load(url).apply(options).placeholder(R.drawable.no_data)
+        Glide.with(this.context).load(url).apply(options).placeholder(R.drawable.empty_image)
+            .error(R.drawable.no_data)
             .thumbnail(0.25f).into(this)
     }
 

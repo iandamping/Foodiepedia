@@ -7,6 +7,7 @@ import com.ian.junemon.foodiepedia.feature.view.BottomFilterFragment
 import com.ian.junemon.foodiepedia.feature.view.DetailFragment
 import com.ian.junemon.foodiepedia.feature.view.HomeFragment
 import com.ian.junemon.foodiepedia.feature.view.ProfileFragment
+import com.ian.junemon.foodiepedia.feature.view.SearchFragment
 import com.ian.junemon.foodiepedia.feature.view.UploadFoodFragment
 import dagger.Component
 
@@ -26,6 +27,8 @@ interface FoodComponent {
     fun inject(fragment: HomeFragment)
 
     fun inject(fragment: ProfileFragment)
+
+    fun inject(fragment: SearchFragment)
 
     fun inject(fragment: BottomFilterFragment)
 

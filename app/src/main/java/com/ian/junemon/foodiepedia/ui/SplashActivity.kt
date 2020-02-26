@@ -63,21 +63,19 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun ActivitySplashBinding.initView() {
-        apply {
-            loadImageHelper.run {
-                ivLoadSplash.loadWithGlide(
-                    ContextCompat.getDrawable(
-                        this@SplashActivity,
-                        R.drawable.splash
-                    )!!
-                )
-                ivLoadSplash2.loadWithGlide(
-                    ContextCompat.getDrawable(
-                        this@SplashActivity,
-                        R.drawable.splash_logo
-                    )!!
-                )
-            }
+        loadImageHelper.run {
+            ivLoadSplash.loadWithGlide(
+                ContextCompat.getDrawable(
+                    this@SplashActivity,
+                    R.drawable.splash
+                )!!
+            )
+            ivLoadSplash2.loadWithGlide(
+                ContextCompat.getDrawable(
+                    this@SplashActivity,
+                    R.drawable.splash_logo
+                )!!
+            )
         }
     }
 

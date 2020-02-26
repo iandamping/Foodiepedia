@@ -23,7 +23,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_margin="@dimen/spacing_medium"
-                    android:text="Pick Your Food"
+                    android:text="Pick Your Meals of the Day"
                     android:textColor="@color/textColor" />
 
                 <ImageView

@@ -14,6 +14,7 @@ import com.junemon.model.Results
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
 import com.junemon.model.domain.SavedFoodCacheDomain
+import com.junemon.model.presentation.FoodCachePresentation
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +24,9 @@ import javax.inject.Inject
  * Indonesia.
  */
 class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : ViewModel() {
+    private val _searchItem: MutableLiveData<MutableList<FoodCachePresentation>> = MutableLiveData()
+    val searchItem: LiveData<MutableList<FoodCachePresentation>> = _searchItem
+
     private val _foodData: MutableLiveData<FoodRemoteDomain> = MutableLiveData()
     val foodData: LiveData<FoodRemoteDomain> = _foodData
 
@@ -37,6 +41,9 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : V
 
     private val _moveToProfileFragmentEvent = MutableLiveData<Event<Unit>>()
     val moveToProfileFragmentEvent: LiveData<Event<Unit>> = _moveToProfileFragmentEvent
+
+    private val _moveToSearchFragmentEvent = MutableLiveData<Event<Unit>>()
+    val moveToSearchFragmentEvent: LiveData<Event<Unit>> = _moveToSearchFragmentEvent
 
     private val _moveDetailToHomeFragmentEvent = MutableLiveData<Event<Unit>>()
     val moveDetailToHomeFragmentEvent: LiveData<Event<Unit>> = _moveDetailToHomeFragmentEvent
@@ -70,6 +77,10 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : V
         _moveToUploadFragmentEvent.value = Event(Unit)
     }
 
+    fun moveToSearchFragmentEvent() {
+        _moveToSearchFragmentEvent.value = Event(Unit)
+    }
+
     fun moveDetailToHomeFragment() {
         _moveDetailToHomeFragmentEvent.value = Event(Unit)
     }
@@ -84,6 +95,10 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : V
 
     fun setFoodUri(uri: Uri) {
         _foodImageUri.value = uri
+    }
+
+    fun setSearchItem(data: MutableList<FoodCachePresentation>) {
+        this._searchItem.value = data
     }
 
     fun setCacheDetailFood(data: SavedFoodCacheDomain) {

@@ -92,6 +92,9 @@ class HomeFragment : BaseFragment(), CanceledListener {
         ivPhotoProfile.setOnClickListener {
             foodVm.moveToProfileFragment()
         }
+        rlSearch.setOnClickListener {
+            foodVm.moveToSearchFragmentEvent()
+        }
     }
 
     private fun FragmentHomeBinding.filterValue() {
@@ -148,6 +151,10 @@ class HomeFragment : BaseFragment(), CanceledListener {
         foodVm.moveToUploadFragmentEvent.observe(viewLifecycleOwner, EventObserver {
             navigateToUploadFoodFragment()
         })
+
+        foodVm.moveToSearchFragmentEvent.observe(viewLifecycleOwner, EventObserver {
+            navigateToSearchFragment()
+        })
     }
 
     private fun navigateToDetailFoodFragment(foodValue: String) {
@@ -162,6 +169,11 @@ class HomeFragment : BaseFragment(), CanceledListener {
 
     private fun navigateToProfileFragment() {
         val action = HomeFragmentDirections.actionHomeFragmentToProfileFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToSearchFragment() {
+        val action = HomeFragmentDirections.actionHomeFragmentToSearchFragment()
         findNavController().navigate(action)
     }
 
