@@ -102,6 +102,8 @@ dependencies {
     api "androidx.work:work-runtime-ktx:$work_version"
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    //custom linearlayout
+    implementation 'com.github.DingMouRen:LayoutManagerGroup:1e6f4f96eb'
 
 
     // Dependencies for local unit tests

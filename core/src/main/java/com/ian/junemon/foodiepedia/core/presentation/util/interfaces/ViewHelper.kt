@@ -2,6 +2,7 @@ package com.ian.junemon.foodiepedia.core.presentation.util.interfaces
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 
 /**
  * Created by Ian Damping on 07,January,2020
@@ -9,6 +10,10 @@ import android.view.ViewGroup
  * Indonesia.
  */
 interface ViewHelper {
+
+    fun FragmentActivity.fullScreenAnimation()
+
+    fun FragmentActivity.animationOnly()
 
     fun View.visible()
 

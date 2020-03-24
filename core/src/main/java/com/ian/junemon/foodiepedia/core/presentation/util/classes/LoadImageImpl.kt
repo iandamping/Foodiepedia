@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class LoadImageImpl @Inject constructor() :
     LoadImageHelper {
-    private val options by lazy { RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE) }
+    private val options by lazy { RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) }
 
     override fun ImageView.loadWithGlideSmall(url: String?) {
         Glide.with(this.context).load(url).apply(options.override(150, 150))

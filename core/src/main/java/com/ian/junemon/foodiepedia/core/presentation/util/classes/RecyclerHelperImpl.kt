@@ -16,11 +16,34 @@ class RecyclerHelperImpl @Inject constructor() :
         bindHolder: View.(T) -> Unit,
         itemClick: T.() -> Unit,
         manager: RecyclerView.LayoutManager
-    ): BaseKotlinListAdapter<T>? {
+    ): BaseKotlinListAdapter<T> {
         requireNotNull(items) {
             " your list data is null"
         }
 
+        return BaseKotlinListAdapter(
+            layout = layoutResId,
+            bindHolder = { bindHolder(it) },
+            diffUtil = diffUtil,
+            itemClicks = { itemClick() }).apply {
+            layoutManager = manager
+            adapter = this
+            submitList(items)
+            notifyDataSetChanged()
+        }
+    }
+
+    override fun <T> RecyclerView.setUpSkidAdapter(
+        items: List<T>?,
+        diffUtil: DiffUtil.ItemCallback<T>,
+        layoutResId: Int,
+        bindHolder: View.(T) -> Unit,
+        itemClick: T.() -> Unit,
+        manager: RecyclerView.LayoutManager
+    ): BaseKotlinListAdapter<T> {
+        requireNotNull(items) {
+            " your list data is null"
+        }
         return BaseKotlinListAdapter(
             layout = layoutResId,
             bindHolder = { bindHolder(it) },
@@ -41,7 +64,7 @@ class RecyclerHelperImpl @Inject constructor() :
         bindHolder: View.(T) -> Unit,
         itemClick: T.() -> Unit,
         manager: RecyclerView.LayoutManager
-    ): BaseKotlinListAdapter<T>? {
+    ): BaseKotlinListAdapter<T> {
 
         requireNotNull(items) {
             " your list data is null"
