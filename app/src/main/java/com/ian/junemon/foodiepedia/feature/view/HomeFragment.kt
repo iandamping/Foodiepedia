@@ -134,6 +134,19 @@ class HomeFragment : BaseFragment(), CanceledListener {
         })
     }
 
+    private fun FragmentHomeBinding.enableShimmer(){
+        if (!shimmerSlider.isShimmerStarted && !shimmerSlider.isShimmerVisible) {
+            shimmerSlider.startShimmer()
+        }
+    }
+    private fun FragmentHomeBinding.disableShimmer(){
+        if (shimmerSlider.isShimmerStarted && shimmerSlider.isShimmerVisible) {
+            shimmerSlider.stopShimmer()
+            shimmerSlider.hideShimmer()
+            shimmerSlider.visibility = View.GONE
+        }
+    }
+
     private fun FragmentHomeBinding.setupRecyclerView(data: List<FoodCachePresentation>?) {
         rvHome.onFlingListener = null
             recyclerHelper.run {
@@ -224,21 +237,21 @@ class HomeFragment : BaseFragment(), CanceledListener {
     }
 
     private fun consumeFoodPrefetch() {
-        setDialogShow(false)
         lifecycleScope.launchWhenStarted {
+            binding.enableShimmer()
             foodVm.foodPrefetch().collect {
                 when (it) {
                     is WorkerResult.SuccessWork -> {
-                        setDialogShow(true)
+                        binding.disableShimmer()
                         iniDataView()
                     }
                     is WorkerResult.ErrorWork -> {
-                        setDialogShow(true)
+                        binding.disableShimmer()
                         Snackbar.make(binding.root, it.exception.message!!, Snackbar.LENGTH_SHORT)
                             .show()
                     }
                     is WorkerResult.EmptyData -> {
-                        setDialogShow(true)
+                        binding.disableShimmer()
                         Snackbar.make(binding.root, "data is empty", Snackbar.LENGTH_SHORT).show()
                     }
                 }

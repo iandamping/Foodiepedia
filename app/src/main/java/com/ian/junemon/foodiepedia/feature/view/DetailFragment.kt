@@ -75,7 +75,6 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun FragmentDetailBinding.initView() {
-        run {
             ilegallStateCatching {
                 checkNotNull(passedData)
                 loadImageHelper.run {
@@ -127,7 +126,6 @@ class DetailFragment : BaseFragment() {
                     // isShow = false
                 }
             })
-        }
     }
 
     private fun FragmentDetailBinding.consumeBookmarkData() {
@@ -160,8 +158,7 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun navigateToHomeFragment() {
-        val action = DetailFragmentDirections.actionDetailFragmentToHomeFragment()
-        findNavController().navigate(action)
+        findNavController().navigateUp()
     }
 
     override fun onDestroyView() {
