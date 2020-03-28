@@ -16,11 +16,12 @@ import javax.inject.Inject
  */
 class ProfileViewModel @Inject constructor(private val repository: ProfileUseCase) : ViewModel() {
 
-    private val _moveProfileToHomeFragmentEvent = MutableLiveData<Event<Unit>>()
-    val moveProfileToHomeFragmentEvent: LiveData<Event<Unit>> = _moveProfileToHomeFragmentEvent
+    private val _moveToUploadFragmentEvent = MutableLiveData<Event<Unit>>()
+    val moveToUploadFragmentEvent: LiveData<Event<Unit>> = _moveToUploadFragmentEvent
 
-    fun moveProfileToHomeFragment() {
-        _moveProfileToHomeFragmentEvent.value = Event(Unit)
+
+    fun moveToUploadFragment() {
+        _moveToUploadFragmentEvent.value = Event(Unit)
     }
 
     fun inflateLogin(): LiveData<UserProfileDataModel> = repository.inflateLogin()

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -47,6 +48,12 @@ class UploadFoodFragment : BaseFragment() {
     @Inject
     lateinit var profileVm: ProfileViewModel
 
+    private val animationSlideUp by lazy { AnimationUtils.loadAnimation(requireContext(),
+        R.anim.slide_in_up) }
+
+    private val animationSlidDown by lazy { AnimationUtils.loadAnimation(requireContext(),
+        R.anim.slide_in_down) }
+
     private val remoteFoodUpload: FoodRemoteDomain = FoodRemoteDomain()
     private var selectedUriForFirebase by Delegates.notNull<Uri>()
     private var isPermisisonGranted by Delegates.notNull<Boolean>()
@@ -57,17 +64,18 @@ class UploadFoodFragment : BaseFragment() {
     override fun onAttach(context: Context) {
         sharedFoodComponent().inject(this)
         super.onAttach(context)
-        ilegallArgumenCatching {
-            checkNotNull(activity)
-            permissionHelper.getAllPermission(activity!!) {
-                isPermisisonGranted = it
-            }
+        setBaseDialog()
+        permissionHelper.getAllPermission(requireActivity()){
+            isPermisisonGranted = it
+
         }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setupNavigation()
+        consumeViewModelData()
+        consumeProfileData()
+        observeViewModelData()
     }
 
     override fun onCreateView(
@@ -75,25 +83,27 @@ class UploadFoodFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setBaseDialog()
         _binding = FragmentUploadBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             initView()
             foodViewModel = foodVm
+            rlUploadImage.animation = animationSlidDown
+            llInsertData.animation = animationSlideUp
         }
-        consumeViewModelData()
-        consumeProfileData()
-        observeViewModelData()
-        return binding.root
+
     }
 
     private fun FragmentUploadBinding.initView() {
-        run {
             val allFoodCategory: Array<String> =
-                context?.resources?.getStringArray(R.array.food_category)!!
+                requireContext().resources.getStringArray(R.array.food_category)
             val arrayTypeFoodSpinnerAdapter: ArrayAdapter<String>? =
-                ArrayAdapter(context!!, android.R.layout.simple_spinner_item, allFoodCategory)
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, allFoodCategory)
             arrayTypeFoodSpinnerAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spPlaceType.adapter = arrayTypeFoodSpinnerAdapter
 
@@ -102,9 +112,9 @@ class UploadFoodFragment : BaseFragment() {
             }
 
             btnBack.setOnClickListener {
-                foodVm.moveUploadToHomeFragment()
+               findNavController().navigateUp()
+
             }
-        }
     }
 
     private fun openGalleryAndCamera(status: Boolean) {
@@ -130,10 +140,10 @@ class UploadFoodFragment : BaseFragment() {
                 universalCatching {
                     requireNotNull(data)
                     requireNotNull(data.data)
-                    checkNotNull(context)
+
                     foodVm.setFoodUri(data.data!!)
 
-                    val bitmap = imageHelper.getBitmapFromGallery(context!!, data.data!!)
+                    val bitmap = imageHelper.getBitmapFromGallery(requireContext(), data.data!!)
                     viewHelper.run {
                         btnUnggahFoto.gone()
                         tvInfoUpload.gone()
@@ -143,9 +153,9 @@ class UploadFoodFragment : BaseFragment() {
                 }
             } else {
                 ilegallStateCatching {
-                    checkNotNull(context)
+
                     val bitmap = imageHelper.decodeSampledBitmapFromFile(
-                        imageHelper.createImageFileFromPhoto(context!!) {
+                        imageHelper.createImageFileFromPhoto(requireContext()) {
                             foodVm.setFoodUri(it)
                         }
                     )
@@ -180,9 +190,7 @@ class UploadFoodFragment : BaseFragment() {
 
     private fun consumeProfileData() {
         profileVm.getUser().observe(viewLifecycleOwner, Observer {
-            if (it != null) {
                 remoteFoodUpload.foodContributor = it.nameUser
-            }
         })
     }
 
@@ -200,7 +208,7 @@ class UploadFoodFragment : BaseFragment() {
                 }
             })
 
-            btnUnggah.setOnClickListener {
+            binding.btnUnggah.setOnClickListener {
                 setDialogShow(false)
                 remoteFoodUpload.foodCategory = binding.spPlaceType.selectedItem.toString()
                 foodVm.uploadFirebaseData(result, selectedUriForFirebase)
@@ -224,16 +232,6 @@ class UploadFoodFragment : BaseFragment() {
         })
     }
 
-    private fun setupNavigation() {
-        foodVm.moveUploadToHomeFragmentEvent.observe(viewLifecycleOwner, EventObserver {
-            navigateToHomeFragment()
-        })
-    }
-
-    private fun navigateToHomeFragment() {
-        val action = UploadFoodFragmentDirections.actionUploadFoodFragmentToHomeFragment()
-        findNavController().navigate(action)
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

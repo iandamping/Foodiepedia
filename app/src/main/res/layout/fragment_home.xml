@@ -68,6 +68,7 @@
                 android:id="@+id/shimmerSlider"
                 android:layout_above="@id/rela_bottom"
                 android:layout_below="@id/linear_title"
+                android:layout_marginBottom="@dimen/spacing_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

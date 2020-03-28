@@ -178,9 +178,6 @@ class HomeFragment : BaseFragment(), CanceledListener {
             navigateToProfileFragment()
         })
 
-        foodVm.moveToUploadFragmentEvent.observe(viewLifecycleOwner, EventObserver {
-            navigateToUploadFoodFragment()
-        })
 
         foodVm.moveToSearchFragmentEvent.observe(viewLifecycleOwner, EventObserver {
             navigateToSearchFragment()
@@ -189,11 +186,6 @@ class HomeFragment : BaseFragment(), CanceledListener {
 
     private fun navigateToDetailFoodFragment(foodValue: String) {
         val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(foodValue)
-        findNavController().navigate(action)
-    }
-
-    private fun navigateToUploadFoodFragment() {
-        val action = HomeFragmentDirections.actionHomeFragmentToUploadFragment()
         findNavController().navigate(action)
     }
 

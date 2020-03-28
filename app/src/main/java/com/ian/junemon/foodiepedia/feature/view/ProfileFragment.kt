@@ -29,6 +29,7 @@ import javax.inject.Inject
 class ProfileFragment : BaseFragment() {
     @Inject
     lateinit var profileVm: ProfileViewModel
+
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
 
@@ -38,6 +39,13 @@ class ProfileFragment : BaseFragment() {
     override fun onAttach(context: Context) {
         sharedFoodComponent().inject(this)
         super.onAttach(context)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            initView()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -62,26 +70,25 @@ class ProfileFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        binding.apply {
-            lifecycleOwner = viewLifecycleOwner
-            initView()
-        }
+
         setupNavigation()
     }
 
     private fun FragmentProfileBinding.initView() {
-        apply {
-            btnBack.setOnClickListener {
-                profileVm.moveProfileToHomeFragment()
-            }
-            loadImageHelper.run {
-                ivFoodProfile.loadWithGlide(
-                    ContextCompat.getDrawable(
-                        ivFoodProfile.context,
-                        R.drawable.foodiepedia
-                    )!!
-                )
-            }
+        fabUpload.setOnClickListener {
+            profileVm.moveToUploadFragment()
+        }
+
+        btnBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+        loadImageHelper.run {
+            ivFoodProfile.loadWithGlide(
+                ContextCompat.getDrawable(
+                    ivFoodProfile.context,
+                    R.drawable.foodiepedia
+                )!!
+            )
         }
     }
 
@@ -120,13 +127,13 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun setupNavigation() {
-        profileVm.moveProfileToHomeFragmentEvent.observe(viewLifecycleOwner, EventObserver {
-            navigateToHomeFragment()
+        profileVm.moveToUploadFragmentEvent.observe(viewLifecycleOwner, EventObserver {
+            navigateToUploadFragment()
         })
     }
 
-    private fun navigateToHomeFragment() {
-        val action = ProfileFragmentDirections.actionProfileFragmentToHomeFragment()
+    private fun navigateToUploadFragment() {
+        val action = ProfileFragmentDirections.actionProfileFragmentToUploadFoodFragment()
         findNavController().navigate(action)
     }
 

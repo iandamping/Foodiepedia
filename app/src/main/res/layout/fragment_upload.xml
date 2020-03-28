@@ -18,6 +18,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/rlUploadImage"
                 android:layout_width="match_parent"
                 android:layout_height="225dp"
                 android:background="@color/yellow_food">
@@ -89,6 +90,7 @@
             </androidx.viewpager.widget.ViewPager>-->
 
             <LinearLayout
+                android:id="@+id/llInsertData"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
