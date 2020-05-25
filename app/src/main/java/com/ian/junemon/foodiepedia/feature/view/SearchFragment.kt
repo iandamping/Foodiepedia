@@ -32,7 +32,8 @@ import javax.inject.Inject
  * Indonesia.
  */
 class SearchFragment : BaseFragment() {
-    private val gson by lazy { Gson() }
+    @Inject
+    lateinit var gson :Gson
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
     @Inject
@@ -60,12 +61,16 @@ class SearchFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.run {
             initView()
             initData()
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         setupNavigation()
     }
 

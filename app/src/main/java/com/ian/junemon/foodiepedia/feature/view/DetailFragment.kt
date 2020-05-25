@@ -34,9 +34,11 @@ class DetailFragment : BaseFragment() {
     lateinit var loadImageHelper: LoadImageHelper
     @Inject
     lateinit var intentHelper: IntentUtilHelper
+    @Inject
+    lateinit var gson :Gson
+
     private var idForDeleteItem: Int? = null
     private var isFavorite: Boolean = false
-    private val gson by lazy { Gson() }
     private val passedData by lazy {
         gson.fromJson(
             DetailFragmentArgs.fromBundle(arguments!!).detailValue,

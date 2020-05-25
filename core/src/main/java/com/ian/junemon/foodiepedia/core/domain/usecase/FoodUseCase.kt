@@ -30,4 +30,8 @@ class FoodUseCase @Inject constructor(private val repo: FoodRepository) {
     fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>> = repo.getCategorizeCache(category)
 
     fun uploadFirebaseData(data: FoodRemoteDomain, imageUri: Uri): LiveData<FirebaseResult<Nothing>> = repo.uploadFirebaseData(data, imageUri)
+
+    fun loadSharedPreferenceFilter():String = repo.loadSharedPreferenceFilter()
+
+    fun setSharedPreferenceFilter(data:String) = repo.setSharedPreferenceFilter(data)
 }

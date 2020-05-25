@@ -36,8 +36,6 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : V
     private val _moveToDetailFragmentEvent = MutableLiveData<Event<String>>()
     val moveToDetailFragmentEvent: LiveData<Event<String>> = _moveToDetailFragmentEvent
 
-
-
     private val _moveToProfileFragmentEvent = MutableLiveData<Event<Unit>>()
     val moveToProfileFragmentEvent: LiveData<Event<Unit>> = _moveToProfileFragmentEvent
 
@@ -75,8 +73,6 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : V
     fun moveToProfileFragment() {
         _moveToProfileFragmentEvent.value = Event(Unit)
     }
-
-
 
     fun moveToSearchFragmentEvent() {
         _moveToSearchFragmentEvent.value = Event(Unit)
@@ -123,4 +119,8 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : V
         data: FoodRemoteDomain,
         imageUri: Uri
     ): LiveData<FirebaseResult<Nothing>> = repository.uploadFirebaseData(data, imageUri)
+
+    fun loadSharedPreferenceFilter():String = repository.loadSharedPreferenceFilter()
+
+    fun setSharedPreferenceFilter(data:String) = repository.setSharedPreferenceFilter(data)
 }

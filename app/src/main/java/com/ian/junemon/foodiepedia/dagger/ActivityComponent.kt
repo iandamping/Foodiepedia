@@ -45,8 +45,6 @@ interface ActivityComponent {
 
     val provideProfileRepository: ProfileRepository
 
-    val providePreferenceHelper: PreferenceHelper
-
     val provideContext: Context
 
     @Component.Factory

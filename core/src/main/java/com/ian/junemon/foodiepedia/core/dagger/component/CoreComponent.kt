@@ -38,8 +38,6 @@ interface CoreComponent {
 
     val provideProfileRepository: ProfileRepository
 
-    val providePreferenceHelper: PreferenceHelper
-
     val provideContext:Context
 
     /*val provideworkerFactoryImpl: FetcherWorkerFactoryImpl*/

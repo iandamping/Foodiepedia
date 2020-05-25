@@ -36,4 +36,8 @@ interface FoodCacheDataSource {
     suspend fun setCacheDetailFood(vararg data: SavedFoodCacheDomain)
 
     suspend fun deleteSelectedId(selectedId: Int)
+
+    fun loadSharedPreferenceFilter():String
+
+    fun setSharedPreferenceFilter(data:String)
 }

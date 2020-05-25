@@ -1,6 +1,7 @@
 package com.ian.junemon.foodiepedia.feature.di.component
 
 import com.ian.junemon.foodiepedia.core.dagger.scope.FeatureScope
+import com.ian.junemon.foodiepedia.feature.di.module.FoodHelperModule
 import com.ian.junemon.foodiepedia.dagger.ActivityComponent
 import com.ian.junemon.foodiepedia.feature.di.module.FoodModule
 import com.ian.junemon.foodiepedia.feature.view.BottomFilterFragment
@@ -16,7 +17,7 @@ import dagger.Component
  * Github https://github.com/iandamping
  * Indonesia.
  */
-@Component(modules = [FoodModule::class], dependencies = [ActivityComponent::class])
+@Component(modules = [FoodModule::class, FoodHelperModule::class], dependencies = [ActivityComponent::class])
 @FeatureScope
 interface FoodComponent {
 

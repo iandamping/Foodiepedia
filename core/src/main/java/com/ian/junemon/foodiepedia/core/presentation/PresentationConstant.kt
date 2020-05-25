@@ -13,6 +13,12 @@ import android.view.ViewGroup
 object PresentationConstant {
     const val RequestSelectGalleryImage = 102
     const val RequestOpenCamera = 234
+    const val filterKey = "filter key"
+    const val filterValueBreakfast = "Breakfast"
+    const val filterValueDinner = "Dinner"
+    const val filterValueLunch = "Lunch"
+    const val filterValueSupper = "Supper"
+    const val filterValueBrunch = "Brunch"
 
    /* val placeRvCallback = object : DiffUtil.ItemCallback<PlaceCachePresentation?>() {
         override fun areItemsTheSame(oldItem: PlaceCachePresentation, newItem: PlaceCachePresentation): Boolean {

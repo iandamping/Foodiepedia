@@ -9,17 +9,16 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ian.junemon.foodiepedia.R
-import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
+import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueBreakfast
+import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueBrunch
+import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueDinner
+import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueLunch
+import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueSupper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentBottomFilterBinding
 import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.feature.util.CanceledListener
-import com.ian.junemon.foodiepedia.util.Constant.filterKey
-import com.ian.junemon.foodiepedia.util.Constant.filterValueBreakfast
-import com.ian.junemon.foodiepedia.util.Constant.filterValueBrunch
-import com.ian.junemon.foodiepedia.util.Constant.filterValueDinner
-import com.ian.junemon.foodiepedia.util.Constant.filterValueLunch
-import com.ian.junemon.foodiepedia.util.Constant.filterValueSupper
+import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import javax.inject.Inject
 
 /**
@@ -29,9 +28,9 @@ import javax.inject.Inject
  */
 class BottomFilterFragment(private val canceledState: CanceledListener) :
     BottomSheetDialogFragment() {
-
     @Inject
-    lateinit var prefHelper: PreferenceHelper
+    lateinit var foodVm: FoodViewModel
+
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
 
@@ -59,136 +58,134 @@ class BottomFilterFragment(private val canceledState: CanceledListener) :
     }
 
     private fun FragmentBottomFilterBinding.initView() {
-        run {
-            val localeStatus by lazy { prefHelper.getStringInSharedPreference(filterKey) }
+        val localeStatus by lazy { foodVm.loadSharedPreferenceFilter() }
 
-            loadImageHelper.run {
-                ivBrunch.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context!!,
-                        R.drawable.ic_filter_4
-                    )
+        loadImageHelper.run {
+            ivBrunch.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_filter_4
                 )
+            )
 
-                ivSupper.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context!!,
-                        R.drawable.ic_filter_5
-                    )
+            ivSupper.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_filter_5
                 )
+            )
 
-                ivLunch.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context!!,
-                        R.drawable.ic_filter_2
-                    )
+            ivLunch.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_filter_2
                 )
-                ivDinner.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context!!,
-                        R.drawable.ic_filter_3
-                    )
+            )
+            ivDinner.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_filter_3
                 )
-                ivBreakfast.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context!!,
-                        R.drawable.ic_filter_1
-                    )
+            )
+            ivBreakfast.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_filter_1
                 )
-            }
-            lnPickBreakfast.setOnClickListener {
-                prefHelper.saveStringInSharedPreference(filterKey, filterValueBreakfast)
-                dismiss()
-            }
+            )
+        }
+        lnPickBreakfast.setOnClickListener {
+            foodVm.setSharedPreferenceFilter(filterValueBreakfast)
+            dismiss()
+        }
 
-            lnPickLunch.setOnClickListener {
-                prefHelper.saveStringInSharedPreference(filterKey, filterValueLunch)
-                dismiss()
-            }
+        lnPickLunch.setOnClickListener {
+            foodVm.setSharedPreferenceFilter(filterValueLunch)
+            dismiss()
+        }
 
-            lnPickDinner.setOnClickListener {
-                prefHelper.saveStringInSharedPreference(filterKey, filterValueDinner)
-                dismiss()
-            }
+        lnPickDinner.setOnClickListener {
+            foodVm.setSharedPreferenceFilter(filterValueDinner)
+            dismiss()
+        }
 
-            lnPickBrunch.setOnClickListener {
-                prefHelper.saveStringInSharedPreference(filterKey, filterValueBrunch)
-                dismiss()
-            }
+        lnPickBrunch.setOnClickListener {
+            foodVm.setSharedPreferenceFilter(filterValueBrunch)
+            dismiss()
+        }
 
-            lnPickSupper.setOnClickListener {
-                prefHelper.saveStringInSharedPreference(filterKey, filterValueSupper)
-                dismiss()
-            }
+        lnPickSupper.setOnClickListener {
+            foodVm.setSharedPreferenceFilter(filterValueSupper)
+            dismiss()
+        }
 
-            ivCloseDialog.setOnClickListener {
-                dismiss()
-            }
+        ivCloseDialog.setOnClickListener {
+            dismiss()
+        }
 
-            when (localeStatus) {
-                filterValueBreakfast -> {
-                    loadImageHelper.run {
-                        ivPickBreakfast.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                context!!,
-                                R.drawable.ic_check_circle_green_24dp
-                            )
+        when (localeStatus) {
+            filterValueBreakfast -> {
+                loadImageHelper.run {
+                    ivPickBreakfast.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_check_circle_green_24dp
                         )
-                    }
+                    )
                 }
-                filterValueDinner -> {
-                    loadImageHelper.run {
-                        ivPickDinner.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                context!!,
-                                R.drawable.ic_check_circle_green_24dp
-                            )
+            }
+            filterValueDinner -> {
+                loadImageHelper.run {
+                    ivPickDinner.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_check_circle_green_24dp
                         )
-                    }
+                    )
                 }
+            }
 
-                filterValueLunch -> {
-                    loadImageHelper.run {
-                        ivPickLunch.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                context!!,
-                                R.drawable.ic_check_circle_green_24dp
-                            )
+            filterValueLunch -> {
+                loadImageHelper.run {
+                    ivPickLunch.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_check_circle_green_24dp
                         )
-                    }
+                    )
                 }
+            }
 
-                filterValueBrunch -> {
-                    loadImageHelper.run {
-                        ivPickBrunch.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                context!!,
-                                R.drawable.ic_check_circle_green_24dp
-                            )
+            filterValueBrunch -> {
+                loadImageHelper.run {
+                    ivPickBrunch.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_check_circle_green_24dp
                         )
-                    }
+                    )
                 }
+            }
 
-                filterValueSupper -> {
-                    loadImageHelper.run {
-                        ivPickSupper.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                context!!,
-                                R.drawable.ic_check_circle_green_24dp
-                            )
+            filterValueSupper -> {
+                loadImageHelper.run {
+                    ivPickSupper.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_check_circle_green_24dp
                         )
-                    }
+                    )
                 }
+            }
 
-                else -> {
-                    loadImageHelper.run {
-                        ivPickBreakfast.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                context!!,
-                                R.drawable.ic_check_circle_green_24dp
-                            )
+            else -> {
+                loadImageHelper.run {
+                    ivPickBreakfast.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_check_circle_green_24dp
                         )
-                    }
+                    )
                 }
             }
         }

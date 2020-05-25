@@ -116,4 +116,12 @@ class FoodRepositoryImpl @Inject constructor(
     override suspend fun deleteSelectedId(selectedId: Int) {
         cacheDataSource.deleteSelectedId(selectedId)
     }
+
+    override fun loadSharedPreferenceFilter(): String {
+        return cacheDataSource.loadSharedPreferenceFilter()
+    }
+
+    override fun setSharedPreferenceFilter(data: String) {
+        cacheDataSource.setSharedPreferenceFilter(data)
+    }
 }

@@ -90,7 +90,7 @@ class ProfileFragment : BaseFragment() {
         loadImageHelper.run {
             ivFoodProfile.loadWithGlide(
                 ContextCompat.getDrawable(
-                    ivFoodProfile.context,
+                   requireContext(),
                     R.drawable.foodiepedia
                 )!!
             )

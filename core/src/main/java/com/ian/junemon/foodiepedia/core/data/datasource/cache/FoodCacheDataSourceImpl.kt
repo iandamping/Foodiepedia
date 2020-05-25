@@ -1,11 +1,13 @@
 package com.ian.junemon.foodiepedia.core.data.datasource.cache
 
+import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
 import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToCacheDomain
 import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToDatabase
 import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToDetailDatabase
 import com.ian.junemon.foodiepedia.core.cache.util.interfaces.FoodDaoHelper
 import com.ian.junemon.foodiepedia.core.cache.util.interfaces.SavedFoodDaoHelper
 import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodCacheDataSource
+import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterKey
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +21,8 @@ import javax.inject.Inject
  */
 class FoodCacheDataSourceImpl @Inject constructor(
     private val foodDao: FoodDaoHelper,
-    private val savedFoodDao: SavedFoodDaoHelper
+    private val savedFoodDao: SavedFoodDaoHelper,
+    private val prefHelper: PreferenceHelper
 ) : FoodCacheDataSource {
     override fun getCache(): Flow<List<FoodCacheDomain>> {
         return foodDao.loadFood().map { it.mapToCacheDomain() }
@@ -43,5 +46,13 @@ class FoodCacheDataSourceImpl @Inject constructor(
 
     override suspend fun deleteSelectedId(selectedId: Int) {
         savedFoodDao.deleteSelectedId(selectedId)
+    }
+
+    override fun loadSharedPreferenceFilter(): String {
+        return prefHelper.getStringInSharedPreference(filterKey) ?: ""
+    }
+
+    override fun setSharedPreferenceFilter(data: String) {
+        prefHelper.saveStringInSharedPreference(filterKey, data)
     }
 }

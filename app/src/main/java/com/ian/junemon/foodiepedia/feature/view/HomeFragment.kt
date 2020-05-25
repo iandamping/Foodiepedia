@@ -14,6 +14,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
+import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterKey
+import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueBreakfast
 import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHelper
@@ -26,12 +28,9 @@ import com.ian.junemon.foodiepedia.feature.util.FoodConstant.foodPresentationRvC
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.ian.junemon.foodiepedia.ui.MainActivity
-import com.ian.junemon.foodiepedia.util.Constant.filterKey
-import com.ian.junemon.foodiepedia.util.Constant.filterValueBreakfast
 import com.junemon.model.WorkerResult
 import com.junemon.model.data.dto.mapToCachePresentation
 import com.junemon.model.presentation.FoodCachePresentation
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.item_custom_home.view.*
 import kotlinx.android.synthetic.main.item_home.view.ivFoodImage
 import kotlinx.coroutines.flow.collect
@@ -54,10 +53,10 @@ class HomeFragment : BaseFragment(), CanceledListener {
     @Inject
     lateinit var viewHlper: ViewHelper
     @Inject
-    lateinit var prefHelper: PreferenceHelper
+    lateinit var gson :Gson
 
     private val bottomFilter by lazy { BottomFilterFragment(this) }
-    private val gson by lazy { Gson() }
+
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -108,7 +107,7 @@ class HomeFragment : BaseFragment(), CanceledListener {
     }
 
     private fun iniDataView() {
-        val localeStatus by lazy { prefHelper.getStringInSharedPreference(filterKey) }
+        val localeStatus by lazy { foodVm.loadSharedPreferenceFilter() }
         if (localeStatus == "") {
             binding.tvHomeFilter.text = filterValueBreakfast
             foodVm.getCategorizeCache(filterValueBreakfast)
@@ -118,7 +117,7 @@ class HomeFragment : BaseFragment(), CanceledListener {
                     })
         } else {
             binding.tvHomeFilter.text = localeStatus
-            foodVm.getCategorizeCache(localeStatus!!)
+            foodVm.getCategorizeCache(localeStatus)
                 .observe(this@HomeFragment.viewLifecycleOwner,
                     Observer { result ->
                         binding.setupRecyclerView(result?.mapToCachePresentation())
