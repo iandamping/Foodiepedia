@@ -64,19 +64,24 @@ class ProfileFragment : BaseFragment() {
     ): View? {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-        consumeProfileData()
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
+        consumeProfileData()
         setupNavigation()
     }
 
     private fun FragmentProfileBinding.initView() {
         fabUpload.setOnClickListener {
             profileVm.moveToUploadFragment()
+        }
+        rlSignIn.setOnClickListener {
+            fireSignIn()
+        }
+        rlSignOut.setOnClickListener {
+            profileVm.initLogout()
         }
 
         btnBack.setOnClickListener {
@@ -110,8 +115,11 @@ class ProfileFragment : BaseFragment() {
                     binding.ivPhotoProfile.loadWithGlide(it.photoUser)
                 }
                 binding.tvProfileName.text = it.nameUser
+                binding.rlSignOut.visibility = View.VISIBLE
+                binding.rlSignIn.visibility = View.GONE
             } else {
-                fireSignIn()
+                binding.rlSignIn.visibility = View.VISIBLE
+                binding.rlSignOut.visibility = View.GONE
             }
         })
     }
@@ -125,6 +133,7 @@ class ProfileFragment : BaseFragment() {
             )
         }
     }
+
 
     private fun setupNavigation() {
         profileVm.moveToUploadFragmentEvent.observe(viewLifecycleOwner, EventObserver {

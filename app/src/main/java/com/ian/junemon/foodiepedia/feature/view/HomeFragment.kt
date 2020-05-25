@@ -202,27 +202,18 @@ class HomeFragment : BaseFragment(), CanceledListener {
     private fun consumeProfileData() {
         profileVm.getUser().observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                viewHlper.run {
-                    rlProfile.visible()
-                    // binding.fabHome.visible()
-                }
                 loadImageHelper.run {
                     binding.ivPhotoProfile.loadWithGlide(it.photoUser)
                 }
-                // binding.tvUsernameProfile.text = it.nameUser
 
             } else {
                 loadImageHelper.run {
                     binding.ivPhotoProfile.loadWithGlide(
                         ContextCompat.getDrawable(
                             context!!,
-                            R.drawable.ic_person_gray_24dp
+                            R.drawable.ic_profiles
                         )!!
                     )
-                }
-                viewHlper.run {
-                    rlProfile.gone()
-                    // binding.fabHome.gone()
                 }
             }
         })

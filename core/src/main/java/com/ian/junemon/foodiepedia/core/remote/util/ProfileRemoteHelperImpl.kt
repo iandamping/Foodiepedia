@@ -46,7 +46,7 @@ class ProfileRemoteHelperImpl @Inject constructor(
                     unregisterListener()
                 }
             } catch (e: Exception) {
-                Timber.e("user is null ${e.message}")
+                Timber.e("Error happen because ${e.message}")
             }
         }
     }

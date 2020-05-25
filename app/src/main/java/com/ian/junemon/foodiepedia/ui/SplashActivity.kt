@@ -70,12 +70,12 @@ class SplashActivity : AppCompatActivity() {
                     R.drawable.splash
                 )!!
             )
-            ivLoadSplash2.loadWithGlide(
+            /*ivLoadSplash2.loadWithGlide(
                 ContextCompat.getDrawable(
                     this@SplashActivity,
                     R.drawable.splash_logo
                 )!!
-            )
+            )*/
         }
     }
 

@@ -26,4 +26,8 @@ class ProfileCacheDataSourceImpl @Inject constructor(private val profileDao: Pro
     override fun getCache(): Flow<UserProfileDataModel> {
         return profileDao.loadAll().mapToDomain().distinctUntilChanged()
     }
+
+    override suspend fun deleteCache() {
+        profileDao.deleteAllData()
+    }
 }

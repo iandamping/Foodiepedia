@@ -4,9 +4,11 @@ import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ian.junemon.foodiepedia.core.domain.usecase.ProfileUseCase
 import com.ian.junemon.foodiepedia.feature.util.Event
 import com.junemon.model.domain.UserProfileDataModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -30,5 +32,9 @@ class ProfileViewModel @Inject constructor(private val repository: ProfileUseCas
 
     suspend fun initSignIn(): Intent = repository.initSignIn()
 
-    suspend fun initLogout() = repository.initLogout()
+    fun initLogout(){
+        viewModelScope.launch {
+            repository.initLogout()
+        }
+    }
 }

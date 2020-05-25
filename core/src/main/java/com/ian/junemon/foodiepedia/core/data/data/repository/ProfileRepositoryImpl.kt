@@ -48,5 +48,6 @@ class ProfileRepositoryImpl @Inject constructor(
 
     override suspend fun initLogout() {
         remoteDataSource.initLogout()
+        cacheDataSource.deleteCache()
     }
 }
