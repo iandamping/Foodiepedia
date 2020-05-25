@@ -29,7 +29,7 @@ interface FoodCacheDataSource {
 
     fun getSavedDetailCache(): Flow<List<SavedFoodCacheDomain>>
 
-    fun getCategirizeCache(foodCategory: String): Flow<List<FoodCacheDomain>>
+    fun getCategorizeCache(foodCategory: String): Flow<List<FoodCacheDomain>>
 
     suspend fun setCache(vararg data: FoodCacheDomain)
 

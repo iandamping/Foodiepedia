@@ -25,7 +25,7 @@ class FakeFoodCacheDataSourceImpl :
         return flowOf(localListOfSavedFakeFood)
     }
 
-    override fun getCategirizeCache(foodCategory: String): Flow<List<FoodCacheDomain>> {
+    override fun getCategorizeCache(foodCategory: String): Flow<List<FoodCacheDomain>> {
         return flowOf(localListOfFakeFood.filter { it.foodCategory == foodCategory })
     }
 

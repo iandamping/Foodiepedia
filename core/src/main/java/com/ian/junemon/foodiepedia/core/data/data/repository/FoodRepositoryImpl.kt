@@ -13,16 +13,14 @@ import com.junemon.model.DataHelper
 import com.junemon.model.FirebaseResult
 import com.junemon.model.Results
 import com.junemon.model.WorkerResult
-import com.junemon.model.data.FoodEntity
 import com.junemon.model.data.dto.mapRemoteToCacheDomain
-import com.junemon.model.data.dto.mapToRemoteDomain
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
 import com.junemon.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -67,9 +65,7 @@ class FoodRepositoryImpl @Inject constructor(
 
     override fun getCache(): LiveData<Results<List<FoodCacheDomain>>> {
         return liveData {
-            val disposables = emitSource(cacheDataSource.getCache().map {
-                Results.Loading
-            }.asLiveData())
+            val disposables = emitSource(flowOf(Results.Loading).asLiveData())
 
                 when (val responseStatus = remoteDataSource.getFirebaseData()) {
                     is DataHelper.RemoteSourceError -> {
@@ -97,7 +93,7 @@ class FoodRepositoryImpl @Inject constructor(
     }
 
     override fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>> {
-        return cacheDataSource.getCategirizeCache(category).asLiveData()
+        return cacheDataSource.getCategorizeCache(category).asLiveData()
     }
 
     override fun uploadFirebaseData(
@@ -105,8 +101,7 @@ class FoodRepositoryImpl @Inject constructor(
         imageUri: Uri
     ): LiveData<FirebaseResult<Nothing>> {
         return liveData {
-            val pushStatus = remoteDataSource.uploadFirebaseData(data, imageUri)
-            when (pushStatus) {
+            when (val pushStatus = remoteDataSource.uploadFirebaseData(data, imageUri)) {
                 is FirebaseResult.SuccessPush -> emit(FirebaseResult.SuccessPush)
 
                 is FirebaseResult.ErrorPush -> emit(FirebaseResult.ErrorPush(pushStatus.exception))

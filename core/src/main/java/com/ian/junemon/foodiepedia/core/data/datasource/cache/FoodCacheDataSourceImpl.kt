@@ -29,7 +29,7 @@ class FoodCacheDataSourceImpl @Inject constructor(
         return savedFoodDao.loadFood().map { it.mapToDetailDatabase() }
     }
 
-    override fun getCategirizeCache(foodCategory: String): Flow<List<FoodCacheDomain>> {
+    override fun getCategorizeCache(foodCategory: String): Flow<List<FoodCacheDomain>> {
         return foodDao.loadCategorizeFood(foodCategory).map { it.mapToCacheDomain() }
     }
 

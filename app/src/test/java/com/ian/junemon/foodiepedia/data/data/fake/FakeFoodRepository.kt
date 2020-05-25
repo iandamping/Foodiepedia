@@ -87,7 +87,7 @@ class FakeFoodRepository(
                     is DataHelper.RemoteSourceValue -> {
                         // because i dont use real db, i try to save it the data first by calling this setCache func
                         cacheDataSource.setCache(*data.data.mapRemoteToCacheDomain().toTypedArray())
-                        emitSource(cacheDataSource.getCategirizeCache(category).asLiveData())
+                        emitSource(cacheDataSource.getCategorizeCache(category).asLiveData())
                     }
                 }
             }

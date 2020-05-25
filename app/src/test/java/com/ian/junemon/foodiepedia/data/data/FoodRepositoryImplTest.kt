@@ -164,7 +164,7 @@ class FoodRepositoryImplTest {
         }
 
         val job2 = launch{
-            cacheDataSource.getCategirizeCache("remote2").take(1).collect { data ->
+            cacheDataSource.getCategorizeCache("remote2").take(1).collect { data ->
                 assertThat(data[0]).isEqualTo(fakeRemoteData2)
             }
         }

@@ -1,7 +1,6 @@
 package com.ian.junemon.foodiepedia.core.remote.util
 
 import android.net.Uri
-import androidx.annotation.AnyThread
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -15,12 +14,9 @@ import com.junemon.model.data.dto.mapToRemoteDomain
 import com.junemon.model.domain.FoodRemoteDomain
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.coroutines.resume
 
 /**
  * Created by Ian Damping on 07,January,2020
@@ -32,7 +28,6 @@ class FoodRemoteHelperImpl @Inject constructor(
     private val storagePlaceReference: StorageReference,
     private val databasePlaceReference: DatabaseReference
 ) : FoodRemoteHelper {
-
 
     @ExperimentalCoroutinesApi
     override suspend fun getFirebaseData(): DataHelper<List<FoodRemoteDomain>> {
@@ -48,7 +43,11 @@ class FoodRemoteHelperImpl @Inject constructor(
                     p0.children.forEach {
                         container.add(it.getValue(FoodEntity::class.java)!!)
                     }
-                    result.complete(DataHelper.RemoteSourceValue(container.toList().mapToRemoteDomain()))
+                    result.complete(
+                        DataHelper.RemoteSourceValue(
+                            container.toList().mapToRemoteDomain()
+                        )
+                    )
                 }
             })
         }
@@ -60,26 +59,32 @@ class FoodRemoteHelperImpl @Inject constructor(
         data: FoodRemoteDomain,
         imageUri: Uri
     ): FirebaseResult<Nothing> {
+        val result: CompletableDeferred<FirebaseResult<Nothing>> = CompletableDeferred()
+        withContext(defaultDispatcher) {
+            try {
+                checkNotNull(imageUri.lastPathSegment){"last path segment from imageuri is null"}
+                val reference = storagePlaceReference.child(imageUri.lastPathSegment!!)
+                reference.putFile(imageUri).run {
+                    addOnSuccessListener {
+                        reference.downloadUrl.addOnSuccessListener {
+                            data.foodImage = it.toString()
 
-        return suspendCancellableCoroutine { cancellableContinuation ->
-            val reference = storagePlaceReference.child(imageUri.lastPathSegment!!)
-
-            reference.putFile(imageUri).apply {
-                addOnSuccessListener {
-                    reference.downloadUrl.addOnSuccessListener {
-                        data.foodImage = it.toString()
-                        databasePlaceReference.push().setValue(data)
-                            .addOnFailureListener { exceptions ->
-                                cancellableContinuation.resume(FirebaseResult.ErrorPush(exceptions))
-                            }.addOnSuccessListener {
-                                cancellableContinuation.resume(FirebaseResult.SuccessPush)
-                            }
+                            databasePlaceReference.push().setValue(data)
+                                .addOnFailureListener { exceptions ->
+                                    result.complete(FirebaseResult.ErrorPush(exceptions))
+                                }.addOnSuccessListener {
+                                    result.complete(FirebaseResult.SuccessPush)
+                                }
+                        }
+                    }
+                    addOnFailureListener {
+                        result.complete(FirebaseResult.ErrorPush(it))
                     }
                 }
-                addOnFailureListener {
-                    cancellableContinuation.resume(FirebaseResult.ErrorPush(it))
-                }
+            }catch (e:Exception){
+                result.complete(FirebaseResult.ErrorPush(e))
             }
         }
+        return result.await()
     }
 }

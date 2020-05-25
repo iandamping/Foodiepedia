@@ -98,7 +98,7 @@ class FoodCacheDataSourceImplTest {
         //WHEN - Get the food from the database
         val job = launch(Dispatchers.IO) {
             // THEN - There is only 1 task in the database with categorize test1, and contains the expected values
-            cacheDataSource.getCategirizeCache("test1").take(1).collect {
+            cacheDataSource.getCategorizeCache("test1").take(1).collect {
                 MatcherAssert.assertThat(it.size, CoreMatchers.`is`(1))
                 MatcherAssert.assertThat(it[0].foodId, CoreMatchers.`is`(food.foodId))
                 MatcherAssert.assertThat(it[0].foodName, CoreMatchers.`is`("test"))
