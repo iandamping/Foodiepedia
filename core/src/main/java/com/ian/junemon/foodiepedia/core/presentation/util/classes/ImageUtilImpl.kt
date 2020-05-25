@@ -19,9 +19,11 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.StorageReference
 import com.ian.junemon.foodiepedia.core.R
+import com.ian.junemon.foodiepedia.core.data.di.IoDispatcher
 import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.RequestOpenCamera
 import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.RequestSelectGalleryImage
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ImageUtilHelper
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,7 +42,10 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class ImageUtilImpl @Inject constructor(private val storagePlaceReference: StorageReference) :
+class ImageUtilImpl @Inject constructor(
+    private val storagePlaceReference: StorageReference,
+    private val ctx: Context
+) :
     ImageUtilHelper {
 
     private val saveCaptureImagePath = "picture" + System.currentTimeMillis() + ".jpeg"
@@ -49,12 +54,11 @@ class ImageUtilImpl @Inject constructor(private val storagePlaceReference: Stora
     private val maxHeight = 816
 
     override fun getBitmapFromAssets(
-        ctx: Context,
         fileName: String,
         widthImage: Int,
         heightImage: Int
     ): Bitmap? {
-        val assetManager: AssetManager = ctx.assets!!
+        val assetManager: AssetManager = ctx.assets
         val inputStreams: InputStream
         try {
             val options: BitmapFactory.Options = BitmapFactory.Options()
@@ -72,9 +76,10 @@ class ImageUtilImpl @Inject constructor(private val storagePlaceReference: Stora
         return null
     }
 
-    override fun getBitmapFromGallery(ctx: Context, path: Uri): Bitmap? {
+    override fun getBitmapFromGallery(path: Uri): Bitmap? {
         val filePathColum = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor: Cursor? = ctx.applicationContext?.contentResolver?.query(path, filePathColum, null, null, null)
+        val cursor: Cursor? =
+            ctx.applicationContext?.contentResolver?.query(path, filePathColum, null, null, null)
         cursor?.moveToFirst()
 
         val columnIndex: Int? = cursor?.getColumnIndex(filePathColum[0])
@@ -106,28 +111,28 @@ class ImageUtilImpl @Inject constructor(private val storagePlaceReference: Stora
         } catch (e: Throwable) {
             e.printStackTrace()
         }
-        voidCustomMediaScannerConnection(views.context, saveFilterImagePath)
+        voidCustomMediaScannerConnection(saveFilterImagePath)
     }
 
     override fun Fragment.saveImage(scope: CoroutineScope, views: View, imageUrl: String?) {
         scope.launch {
-                try {
-                    requireNotNull(imageUrl) {
-                        "picture to share is null"
-                    }
-                    withContext(Dispatchers.IO) {
-                        val bitmap = Glide.with(this@saveImage)
-                            .asBitmap()
-                            .load(imageUrl)
-                            .submit(512, 512)
-                            .get()
-                        if (bitmap != null) {
-                            saveImage(views, bitmap)
-                        }
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
+            try {
+                requireNotNull(imageUrl) {
+                    "picture to share is null"
                 }
+                withContext(Dispatchers.IO) {
+                    val bitmap = Glide.with(this@saveImage)
+                        .asBitmap()
+                        .load(imageUrl)
+                        .submit(512, 512)
+                        .get()
+                    if (bitmap != null) {
+                        saveImage(views, bitmap)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -139,9 +144,9 @@ class ImageUtilImpl @Inject constructor(private val storagePlaceReference: Stora
             requireNotNull(lastPathSegment) {
                 "Image last path is null"
             }
-            val dialogs = views.context.progressDialog(
+            val dialogs = ctx.progressDialog(
                 views.context.resources?.getString(R.string.please_wait),
-                views.context.resources?.getString(R.string.downloading_image)
+                ctx.resources.getString(R.string.downloading_image)
             )
             val spaceRef = storagePlaceReference.child(lastPathSegment)
             val pictureDirectory = Environment.getExternalStorageDirectory()
@@ -157,7 +162,7 @@ class ImageUtilImpl @Inject constructor(private val storagePlaceReference: Stora
                 dialogs.progress = progress.toInt()
             }.addOnSuccessListener {
                 if (it.task.isSuccessful) {
-                    voidCustomMediaScannerConnection(views.context, saveFilterImagePath)
+                    voidCustomMediaScannerConnection(saveFilterImagePath)
                     dialogs.dismiss()
                     openImageFromSnackbar(views, imageFile)
                 }
@@ -219,12 +224,12 @@ class ImageUtilImpl @Inject constructor(private val storagePlaceReference: Stora
                 i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 val uri =
                     FileProvider.getUriForFile(
-                        views.context,
-                        views.context.resources.getString(R.string.package_name),
+                        ctx,
+                        ctx.resources.getString(R.string.package_name),
                         imageFile
                     )
                 i.setDataAndType(uri, "image/*")
-                views.context.startActivity(i)
+                ctx.startActivity(i)
             }
         snackbar.show()
     }
@@ -249,7 +254,7 @@ class ImageUtilImpl @Inject constructor(private val storagePlaceReference: Stora
         return inSampleSize
     }
 
-    override fun bitmapToFile(ctx: Context, bitmap: Bitmap?): File {
+    override fun bitmapToFile(bitmap: Bitmap?): File {
         val f = File(ctx.cacheDir, "image_uploads")
         f.createNewFile()
         val byteArrayOutputStream = ByteArrayOutputStream()
@@ -270,9 +275,9 @@ class ImageUtilImpl @Inject constructor(private val storagePlaceReference: Stora
 
     override fun openImageFromCamera(fragment: Fragment) {
         val pictureUri: Uri = FileProvider.getUriForFile(
-            fragment.context!!,
+            ctx,
             fragment.getString(R.string.package_name),
-            createImageFileFromPhoto(fragment.context!!)
+            createImageFileFromPhoto()
         )
         val intents = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intents.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri)
@@ -280,16 +285,20 @@ class ImageUtilImpl @Inject constructor(private val storagePlaceReference: Stora
         fragment.startActivityForResult(intents, RequestOpenCamera)
     }
 
-    override fun createImageFileFromPhoto(context: Context, uri: (Uri) -> Unit): File {
-        return nonVoidCustomMediaScannerConnection(context, saveCaptureImagePath, uri)
+    override fun createImageFileFromPhoto(uri: (Uri) -> Unit): File {
+        return nonVoidCustomMediaScannerConnection(saveCaptureImagePath, uri)
     }
 
-    private fun createImageFileFromPhoto(context: Context): File {
-        return nonVoidCustomMediaScannerConnection(context, saveCaptureImagePath)
+    private fun createImageFileFromPhoto(): File {
+        return nonVoidCustomMediaScannerConnection(saveCaptureImagePath)
     }
 
-    private fun nonVoidCustomMediaScannerConnection(ctx: Context?, paths: String, uriToPassed: (Uri) -> Unit): File {
-        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+    private fun nonVoidCustomMediaScannerConnection(
+        paths: String,
+        uriToPassed: (Uri) -> Unit
+    ): File {
+        val directory =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
         val passingFile = File(directory, paths)
         MediaScannerConnection.scanFile(ctx, arrayOf(passingFile.toString()), null) { path, uri ->
             Timber.i("Scanned $path:")
@@ -299,8 +308,9 @@ class ImageUtilImpl @Inject constructor(private val storagePlaceReference: Stora
         return passingFile
     }
 
-    private fun nonVoidCustomMediaScannerConnection(ctx: Context?, paths: String): File {
-        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+    private fun nonVoidCustomMediaScannerConnection(paths: String): File {
+        val directory =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
         val passingFile = File(directory, paths)
         MediaScannerConnection.scanFile(ctx, arrayOf(passingFile.toString()), null) { path, uri ->
             Timber.i("Scanned $path:")
@@ -309,7 +319,7 @@ class ImageUtilImpl @Inject constructor(private val storagePlaceReference: Stora
         return passingFile
     }
 
-    private fun voidCustomMediaScannerConnection(ctx: Context?, paths: String) {
+    private fun voidCustomMediaScannerConnection(paths: String) {
         val directory = Environment.getExternalStorageDirectory()
         val passingFile = File(directory, paths)
         MediaScannerConnection.scanFile(ctx, arrayOf(passingFile.toString()), null) { path, uri ->

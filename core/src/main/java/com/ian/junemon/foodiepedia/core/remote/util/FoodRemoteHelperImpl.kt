@@ -1,22 +1,24 @@
 package com.ian.junemon.foodiepedia.core.remote.util
 
 import android.net.Uri
+import androidx.annotation.AnyThread
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.StorageReference
+import com.ian.junemon.foodiepedia.core.data.di.DefaultDispatcher
 import com.junemon.model.DataHelper
 import com.junemon.model.FirebaseResult
 import com.junemon.model.data.FoodEntity
 import com.junemon.model.data.dto.mapToRemoteDomain
 import com.junemon.model.domain.FoodRemoteDomain
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
@@ -26,30 +28,31 @@ import kotlin.coroutines.resume
  * Indonesia.
  */
 class FoodRemoteHelperImpl @Inject constructor(
+    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
     private val storagePlaceReference: StorageReference,
     private val databasePlaceReference: DatabaseReference
 ) : FoodRemoteHelper {
 
+
     @ExperimentalCoroutinesApi
-    override suspend fun getFirebaseData(): Flow<DataHelper<List<FoodRemoteDomain>>> {
-        val container: MutableList<FoodEntity> = mutableListOf()
-        return callbackFlow {
+    override suspend fun getFirebaseData(): DataHelper<List<FoodRemoteDomain>> {
+        val result: CompletableDeferred<DataHelper<List<FoodRemoteDomain>>> = CompletableDeferred()
+        withContext(defaultDispatcher) {
+            val container: MutableSet<FoodEntity> = mutableSetOf()
             databasePlaceReference.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
-                    close(p0.toException())
+                    result.complete(DataHelper.RemoteSourceError(p0.toException()))
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
                     p0.children.forEach {
                         container.add(it.getValue(FoodEntity::class.java)!!)
                     }
-                    if (!this@callbackFlow.channel.isClosedForSend) {
-                        offer(DataHelper.RemoteSourceValue(container.mapToRemoteDomain()))
-                    }
+                    result.complete(DataHelper.RemoteSourceValue(container.toList().mapToRemoteDomain()))
                 }
             })
-            awaitClose { cancel() }
         }
+        return result.await()
     }
 
     @ExperimentalCoroutinesApi

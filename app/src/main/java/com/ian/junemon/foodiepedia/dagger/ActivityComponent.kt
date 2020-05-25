@@ -1,5 +1,6 @@
 package com.ian.junemon.foodiepedia.dagger
 
+import android.content.Context
 import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
 import com.ian.junemon.foodiepedia.core.dagger.scope.PerActivities
 import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
@@ -45,6 +46,8 @@ interface ActivityComponent {
     val provideProfileRepository: ProfileRepository
 
     val providePreferenceHelper: PreferenceHelper
+
+    val provideContext: Context
 
     @Component.Factory
     interface Factory {

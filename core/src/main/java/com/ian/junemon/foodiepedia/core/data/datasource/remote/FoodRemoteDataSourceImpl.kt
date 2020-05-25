@@ -15,7 +15,7 @@ import javax.inject.Inject
  * Indonesia.
  */
 class FoodRemoteDataSourceImpl @Inject constructor(private val foodRemoteHelper: FoodRemoteHelper) : FoodRemoteDataSource {
-    override suspend fun getFirebaseData(): Flow<DataHelper<List<FoodRemoteDomain>>> {
+    override suspend fun getFirebaseData(): DataHelper<List<FoodRemoteDomain>> {
         return foodRemoteHelper.getFirebaseData()
     }
 

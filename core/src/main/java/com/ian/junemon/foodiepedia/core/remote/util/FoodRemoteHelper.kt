@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface FoodRemoteHelper {
 
-    suspend fun getFirebaseData(): Flow<DataHelper<List<FoodRemoteDomain>>>
+    suspend fun getFirebaseData(): DataHelper<List<FoodRemoteDomain>>
 
     suspend fun uploadFirebaseData(
         data: FoodRemoteDomain,

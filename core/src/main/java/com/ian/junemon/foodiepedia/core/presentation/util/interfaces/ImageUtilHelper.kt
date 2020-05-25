@@ -16,7 +16,6 @@ import java.io.File
 interface ImageUtilHelper {
 
     fun getBitmapFromAssets(
-        ctx: Context,
         fileName: String,
         widthImage: Int,
         heightImage: Int
@@ -26,7 +25,7 @@ interface ImageUtilHelper {
 
     fun openImageFromCamera(fragment: Fragment)
 
-    fun getBitmapFromGallery(ctx: Context, path: Uri): Bitmap?
+    fun getBitmapFromGallery(path: Uri): Bitmap?
 
     fun saveImage(views: View, bitmap: Bitmap?)
 
@@ -36,7 +35,7 @@ interface ImageUtilHelper {
 
     fun decodeSampledBitmapFromFile(imageFile: File): Bitmap
 
-    fun bitmapToFile(ctx: Context, bitmap: Bitmap?): File
+    fun bitmapToFile(bitmap: Bitmap?): File
 
-    fun createImageFileFromPhoto(context: Context, uri: (Uri) -> Unit): File
+    fun createImageFileFromPhoto(uri: (Uri) -> Unit): File
 }

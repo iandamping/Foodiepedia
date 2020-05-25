@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.ian.junemon.foodiepedia.core.R
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
@@ -21,30 +22,33 @@ class LoadImageImpl @Inject constructor() :
     private val options by lazy { RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) }
 
     override fun ImageView.loadWithGlideSmall(url: String?) {
-        Glide.with(this.context).load(url).apply(options.override(150, 150))
+        Glide.with(context).load(url).apply(options.override(150, 150))
             .placeholder(R.drawable.empty_image).thumbnail(0.25f)
             .error(R.drawable.no_data)
+            .transition(DrawableTransitionOptions.withCrossFade())
             .into(this)
     }
 
     override fun ImageView.loadWithGlideCustomSize(url: String?, width: Int, height: Int) {
-        Glide.with(this.context).load(url).apply(options.override(width, height))
+        Glide.with(context).load(url).apply(options.override(width, height))
             .error(R.drawable.no_data)
             .placeholder(R.drawable.empty_image).thumbnail(0.25f)
+            .transition(DrawableTransitionOptions.withCrossFade())
             .into(this)
     }
 
     override fun ImageView.loadWithGlide(url: String?) {
-        Glide.with(this.context).load(url).apply(options).placeholder(R.drawable.empty_image)
+        Glide.with(context).load(url).apply(options).placeholder(R.drawable.empty_image)
             .error(R.drawable.no_data)
+            .transition(DrawableTransitionOptions.withCrossFade())
             .thumbnail(0.25f).into(this)
     }
 
     override fun ImageView.loadWithGlide(drawable: Drawable) {
-        Glide.with(this.context).load(drawable).into(this)
+        Glide.with(context).load(drawable).into(this)
     }
 
     override fun ImageView.loadWithGlide(bitmap: Bitmap) {
-        Glide.with(this.context).load(drawable).into(this)
+        Glide.with(context).load(drawable).into(this)
     }
 }

@@ -1,10 +1,12 @@
 package com.ian.junemon.foodiepedia.core.dagger.component
 
 import android.app.Application
+import android.content.Context
 import com.google.firebase.storage.StorageReference
 import com.ian.junemon.foodiepedia.core.cache.di.DatabaseHelperModule
 import com.ian.junemon.foodiepedia.core.cache.di.DatabaseModule
 import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
+import com.ian.junemon.foodiepedia.core.data.di.ContextModule
 import com.ian.junemon.foodiepedia.core.data.di.CoroutineModule
 import com.ian.junemon.foodiepedia.core.data.di.DataModule
 import com.ian.junemon.foodiepedia.core.domain.di.DomainModule
@@ -25,7 +27,7 @@ import javax.inject.Singleton
 
 @Component(
     modules = [DatabaseModule::class, DatabaseHelperModule::class, DataModule::class, DomainModule::class,
-        RemoteModule::class, RemoteHelperModule::class, WorkerModule::class, CoroutineModule::class]
+        RemoteModule::class, RemoteHelperModule::class, WorkerModule::class, CoroutineModule::class,ContextModule::class]
 )
 @Singleton
 interface CoreComponent {
@@ -37,6 +39,8 @@ interface CoreComponent {
     val provideProfileRepository: ProfileRepository
 
     val providePreferenceHelper: PreferenceHelper
+
+    val provideContext:Context
 
     /*val provideworkerFactoryImpl: FetcherWorkerFactoryImpl*/
 

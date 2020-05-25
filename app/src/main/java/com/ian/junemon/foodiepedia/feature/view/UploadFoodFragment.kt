@@ -143,7 +143,7 @@ class UploadFoodFragment : BaseFragment() {
 
                     foodVm.setFoodUri(data.data!!)
 
-                    val bitmap = imageHelper.getBitmapFromGallery(requireContext(), data.data!!)
+                    val bitmap = imageHelper.getBitmapFromGallery(data.data!!)
                     viewHelper.run {
                         btnUnggahFoto.gone()
                         tvInfoUpload.gone()
@@ -155,7 +155,7 @@ class UploadFoodFragment : BaseFragment() {
                 ilegallStateCatching {
 
                     val bitmap = imageHelper.decodeSampledBitmapFromFile(
-                        imageHelper.createImageFileFromPhoto(requireContext()) {
+                        imageHelper.createImageFileFromPhoto {
                             foodVm.setFoodUri(it)
                         }
                     )
