@@ -210,7 +210,7 @@ class HomeFragment : BaseFragment(), CanceledListener {
                 loadImageHelper.run {
                     binding.ivPhotoProfile.loadWithGlide(
                         ContextCompat.getDrawable(
-                            context!!,
+                            requireContext(),
                             R.drawable.ic_profiles
                         )!!
                     )

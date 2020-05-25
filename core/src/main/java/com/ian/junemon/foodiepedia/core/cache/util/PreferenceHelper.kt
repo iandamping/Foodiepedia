@@ -2,12 +2,13 @@ package com.ian.junemon.foodiepedia.core.cache.util
 
 import android.app.Application
 import android.content.Context
+import javax.inject.Inject
 
-class PreferenceHelper(app: Application) {
+class PreferenceHelper @Inject constructor(context: Context) {
     private val prefHelperInit = " init preference helper"
 
     private val prefHelp by lazy {
-        app.getSharedPreferences(prefHelperInit, Context.MODE_PRIVATE)
+        context.getSharedPreferences(prefHelperInit, Context.MODE_PRIVATE)
     }
     private val preHelperEditor = prefHelp.edit()
 
@@ -28,4 +29,21 @@ class PreferenceHelper(app: Application) {
     fun getIntInSharedPreference(key: String?): Int? {
         return prefHelp.getInt(key, 0)
     }
+
+    fun saveBooleanInSharedPreference(key: String, value: Boolean) {
+        preHelperEditor.putBoolean(key, value).apply()
+    }
+
+    fun getBooleanInSharedPreference(key: String): Boolean {
+        return prefHelp.getBoolean(key, false)
+    }
+
+    fun deleteSharedPreference(key: String) {
+        preHelperEditor.remove(key).apply()
+    }
+
+    fun deleteAllSharedPrefrence() {
+        preHelperEditor.clear().apply()
+    }
+
 }
