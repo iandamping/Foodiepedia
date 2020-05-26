@@ -3,15 +3,16 @@ package com.ian.junemon.foodiepedia.core.data.data.repository
 import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.liveData
 import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileCacheDataSource
 import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileRemoteDataSource
-import com.ian.junemon.foodiepedia.core.data.di.IoDispatcher
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
+import com.junemon.model.DataHelper
+import com.junemon.model.ProfileResults
 import com.junemon.model.domain.UserProfileDataModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -20,25 +21,24 @@ import javax.inject.Inject
  * Indonesia.
  */
 class ProfileRepositoryImpl @Inject constructor(
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val cacheDataSource: ProfileCacheDataSource,
     private val remoteDataSource: ProfileRemoteDataSource
 ) : ProfileRepository {
-    override fun inflateLogin(): LiveData<UserProfileDataModel> {
-        return liveData(ioDispatcher) {
-            val disposable =
-                emitSource(cacheDataSource.getCache().asLiveData())
-            remoteDataSource.get().collectLatest {
-                disposable.dispose()
-                cacheDataSource.setCache(it)
-                emitSource(cacheDataSource.getCache().asLiveData())
+    override fun getUserProfile():LiveData<ProfileResults<UserProfileDataModel>> {
+        return liveData {
+            val disposables = emitSource(flowOf(ProfileResults.Loading).asLiveData())
+            remoteDataSource.getUserProfile().collect {response ->
+                when(response){
+                    is DataHelper.RemoteSourceError -> {
+                        emitSource(flowOf(ProfileResults.Error(response.exception)).asLiveData())
+                    }
+                    is DataHelper.RemoteSourceValue -> {
+                        disposables.dispose()
+                        cacheDataSource.setCache(response.data)
+                        emitSource(cacheDataSource.getCache().map { ProfileResults.Success(it) }.asLiveData())
+                    }
+                }
             }
-        }
-    }
-
-    override fun get(): LiveData<UserProfileDataModel> {
-        return liveData(ioDispatcher) {
-            emitSource(cacheDataSource.getCache().asLiveData().distinctUntilChanged())
         }
     }
 

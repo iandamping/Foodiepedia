@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flowOf
  */
 class FakeProfileRemoteDataSourceImpl(var fakeProfile: UserProfileDataModel):ProfileRemoteDataSource {
 
-    override suspend fun get(): Flow<UserProfileDataModel> {
+    override suspend fun getUserProfile(): Flow<UserProfileDataModel> {
        return flowOf(fakeProfile)
     }
 

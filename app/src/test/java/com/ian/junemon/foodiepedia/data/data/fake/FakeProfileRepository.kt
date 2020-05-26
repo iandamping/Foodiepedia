@@ -8,10 +8,8 @@ import androidx.lifecycle.liveData
 import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileCacheDataSource
 import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileRemoteDataSource
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
-import com.junemon.model.data.dto.mapRemoteToCacheDomain
 import com.junemon.model.domain.UserProfileDataModel
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 
 /**
  * Created by Ian Damping on 07,February,2020
@@ -22,9 +20,9 @@ class FakeProfileRepository(
     private val cacheDataSource: ProfileCacheDataSource,
     private val remoteDataSource: ProfileRemoteDataSource
 ):ProfileRepository {
-    override fun inflateLogin(): LiveData<UserProfileDataModel> {
+    override fun getUserProfile(): LiveData<UserProfileDataModel> {
         return liveData {
-            remoteDataSource.get().collect {
+            remoteDataSource.getUserProfile().collect {
                 // because i dont use real db, i try to save it the data first by calling this setCache func
                 cacheDataSource.setCache(it)
                 emitSource(cacheDataSource.getCache().asLiveData())
@@ -34,7 +32,7 @@ class FakeProfileRepository(
 
     override fun get(): LiveData<UserProfileDataModel> {
         return liveData {
-            val responseStatus = remoteDataSource.get()
+            val responseStatus = remoteDataSource.getUserProfile()
             responseStatus.collect {
                 // because i dont use real db, i try to save it the data first by calling this setCache func
                 cacheDataSource.setCache(it)

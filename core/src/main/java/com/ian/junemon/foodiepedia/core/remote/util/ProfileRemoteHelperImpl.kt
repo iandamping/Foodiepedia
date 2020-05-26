@@ -4,13 +4,17 @@ import android.content.Intent
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.ian.junemon.foodiepedia.core.data.di.DefaultDispatcher
 import com.ian.junemon.foodiepedia.core.data.di.IoDispatcher
+import com.junemon.model.DataHelper
 import com.junemon.model.domain.UserProfileDataModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,10 +27,11 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class ProfileRemoteHelperImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
     private val mFirebaseAuth: FirebaseAuth
 ) : ProfileRemoteHelper {
     private var isListening = false
-    private val channel = ConflatedBroadcastChannel<UserProfileDataModel>()
+    private val channel = ConflatedBroadcastChannel<DataHelper<UserProfileDataModel>>()
 
     private val listeners: FirebaseAuth.AuthStateListener by lazy {
         FirebaseAuth.AuthStateListener {
@@ -34,19 +39,23 @@ class ProfileRemoteHelperImpl @Inject constructor(
                 if (!channel.isClosedForSend) {
                     checkNotNull(mFirebaseAuth.currentUser)
                     channel.offer(
-                        UserProfileDataModel(
-                            null,
-                            mFirebaseAuth.currentUser?.uid,
-                            mFirebaseAuth.currentUser?.photoUrl.toString(),
-                            mFirebaseAuth.currentUser?.displayName,
-                            mFirebaseAuth.currentUser?.email
+                        DataHelper.RemoteSourceValue(
+                            UserProfileDataModel(
+                                null,
+                                mFirebaseAuth.currentUser?.uid,
+                                mFirebaseAuth.currentUser?.photoUrl.toString(),
+                                mFirebaseAuth.currentUser?.displayName,
+                                mFirebaseAuth.currentUser?.email
+                            )
                         )
                     )
                 } else {
                     unregisterListener()
                 }
             } catch (e: Exception) {
-                Timber.e("Error happen because ${e.message}")
+                channel.offer(
+                    DataHelper.RemoteSourceError(e)
+                )
             }
         }
     }
@@ -59,12 +68,12 @@ class ProfileRemoteHelperImpl @Inject constructor(
         mFirebaseAuth.removeAuthStateListener(listeners)
     }
 
-    override suspend fun get(): Flow<UserProfileDataModel> {
+    override suspend fun getUserProfile(): Flow<DataHelper<UserProfileDataModel>> {
         if (!isListening) {
             registerListener()
             isListening = true
         }
-        return channel.asFlow()
+        return channel.asFlow().flowOn(defaultDispatcher).conflate()
     }
 
     override suspend fun initSignIn(): Intent {

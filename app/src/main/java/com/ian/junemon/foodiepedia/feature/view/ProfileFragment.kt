@@ -19,6 +19,8 @@ import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.feature.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.util.FoodConstant.requestSignIn
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
+import com.junemon.model.ProfileResults
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -48,14 +50,15 @@ class ProfileFragment : BaseFragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == requestSignIn) {
-                inflateLogin()
+                *//** if user successfully login we observe this livedata that emit userprofile
+                 * but we dont need it anymore *//*
             }
         }
-    }
+    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -90,37 +93,35 @@ class ProfileFragment : BaseFragment() {
         loadImageHelper.run {
             ivFoodProfile.loadWithGlide(
                 ContextCompat.getDrawable(
-                   requireContext(),
+                    requireContext(),
                     R.drawable.foodiepedia
                 )!!
             )
         }
     }
 
-    private fun inflateLogin() {
-        profileVm.inflateLogin().observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                loadImageHelper.run {
-                    binding.ivPhotoProfile.loadWithGlide(it.photoUser)
-                }
-                binding.tvProfileName.text = it.nameUser
-            }
-        })
-    }
-
     private fun consumeProfileData() {
-        profileVm.getUser().observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                loadImageHelper.run {
-                    binding.ivPhotoProfile.loadWithGlide(it.photoUser)
+        profileVm.inflateLogin().observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is ProfileResults.Loading -> {
+                    Timber.e("data ${it.toString()}")
                 }
-                binding.tvProfileName.text = it.nameUser
-                binding.rlSignOut.visibility = View.VISIBLE
-                binding.rlSignIn.visibility = View.GONE
-            } else {
-                binding.rlSignIn.visibility = View.VISIBLE
-                binding.rlSignOut.visibility = View.GONE
+                is ProfileResults.Success -> {
+                    binding.llProfileData.visibility = View.VISIBLE
+                    loadImageHelper.run {
+                        binding.ivPhotoProfile.loadWithGlide(it.data.photoUser)
+                    }
+                    binding.tvProfileName.text = it.data.nameUser
+                    binding.rlSignOut.visibility = View.VISIBLE
+                    binding.rlSignIn.visibility = View.GONE
+                }
+                is ProfileResults.Error -> {
+                    binding.llProfileData.visibility = View.GONE
+                    binding.rlSignIn.visibility = View.VISIBLE
+                    binding.rlSignOut.visibility = View.GONE
+                }
             }
+
         })
     }
 
@@ -133,7 +134,6 @@ class ProfileFragment : BaseFragment() {
             )
         }
     }
-
 
     private fun setupNavigation() {
         profileVm.moveToUploadFragmentEvent.observe(viewLifecycleOwner, EventObserver {

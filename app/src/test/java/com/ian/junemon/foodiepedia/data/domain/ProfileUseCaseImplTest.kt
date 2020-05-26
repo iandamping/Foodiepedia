@@ -48,7 +48,7 @@ class ProfileUseCaseImplTest {
 
     @Test
     fun inflateLogin(){
-        val result = profileRepository.inflateLogin().getOrAwaitValue()
+        val result = profileRepository.getUserProfile().getOrAwaitValue()
         Truth.assertThat(result).isNotNull()
         Truth.assertThat(result).isEqualTo(fakeProfileData)
     }

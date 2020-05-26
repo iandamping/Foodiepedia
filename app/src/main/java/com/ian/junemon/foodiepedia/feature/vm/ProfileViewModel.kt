@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ian.junemon.foodiepedia.core.domain.usecase.ProfileUseCase
 import com.ian.junemon.foodiepedia.feature.util.Event
+import com.junemon.model.ProfileResults
 import com.junemon.model.domain.UserProfileDataModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,7 +27,7 @@ class ProfileViewModel @Inject constructor(private val repository: ProfileUseCas
         _moveToUploadFragmentEvent.value = Event(Unit)
     }
 
-    fun inflateLogin(): LiveData<UserProfileDataModel> = repository.inflateLogin()
+    fun inflateLogin(): LiveData<ProfileResults<UserProfileDataModel>> = repository.getUserProfile()
 
     fun getUser(): LiveData<UserProfileDataModel> = repository.get()
 

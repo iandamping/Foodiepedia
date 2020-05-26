@@ -62,26 +62,37 @@ class FoodRemoteHelperImpl @Inject constructor(
         val result: CompletableDeferred<FirebaseResult<Nothing>> = CompletableDeferred()
         withContext(defaultDispatcher) {
             try {
-                checkNotNull(imageUri.lastPathSegment){"last path segment from imageuri is null"}
+                checkNotNull(imageUri.lastPathSegment) { "last path segment from imageuri is null" }
                 val reference = storagePlaceReference.child(imageUri.lastPathSegment!!)
+                /**This is where we put file into firebase storage*/
                 reference.putFile(imageUri).run {
+                    /**we try to check if it success or failed to upload file in firebase storage*/
                     addOnSuccessListener {
-                        reference.downloadUrl.addOnSuccessListener {
-                            data.foodImage = it.toString()
+                        /** now we try to donwload the url for image that has been put into firebase storage*/
+                        reference.downloadUrl.run {
+                            /**we try to check if it success or failed to download url from firebase storage*/
+                            addOnSuccessListener {
+                                /** if we succed now we use that url to put it into our model,
+                                 * and upload it into our firebase database*/
+                                data.foodImage = it.toString()
+                                databasePlaceReference.push().setValue(data)
+                                    .addOnFailureListener { exceptions ->
+                                        result.complete(FirebaseResult.ErrorPush(exceptions))
+                                    }.addOnSuccessListener {
+                                        result.complete(FirebaseResult.SuccessPush)
+                                    }
+                            }
 
-                            databasePlaceReference.push().setValue(data)
-                                .addOnFailureListener { exceptions ->
-                                    result.complete(FirebaseResult.ErrorPush(exceptions))
-                                }.addOnSuccessListener {
-                                    result.complete(FirebaseResult.SuccessPush)
-                                }
+                            addOnFailureListener {
+                                result.complete(FirebaseResult.ErrorPush(it))
+                            }
                         }
                     }
                     addOnFailureListener {
                         result.complete(FirebaseResult.ErrorPush(it))
                     }
                 }
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 result.complete(FirebaseResult.ErrorPush(e))
             }
         }

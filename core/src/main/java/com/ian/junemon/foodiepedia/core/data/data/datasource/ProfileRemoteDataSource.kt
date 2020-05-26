@@ -1,6 +1,7 @@
 package com.ian.junemon.foodiepedia.core.data.data.datasource
 
 import android.content.Intent
+import com.junemon.model.DataHelper
 import com.junemon.model.domain.UserProfileDataModel
 import kotlinx.coroutines.flow.Flow
 
@@ -15,7 +16,7 @@ interface ProfileCacheDataSource {
 
 interface ProfileRemoteDataSource {
 
-    suspend fun get(): Flow<UserProfileDataModel>
+    suspend fun getUserProfile(): Flow<DataHelper<UserProfileDataModel>>
 
     suspend fun initSignIn(): Intent
 

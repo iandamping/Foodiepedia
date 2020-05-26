@@ -41,7 +41,7 @@ class DetailFragment : BaseFragment() {
     private var isFavorite: Boolean = false
     private val passedData by lazy {
         gson.fromJson(
-            DetailFragmentArgs.fromBundle(arguments!!).detailValue,
+            DetailFragmentArgs.fromBundle(requireArguments()).detailValue,
             FoodCachePresentation::class.java
         )
     }

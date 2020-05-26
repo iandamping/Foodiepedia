@@ -1,6 +1,7 @@
 package com.ian.junemon.foodiepedia.core.remote.util
 
 import android.content.Intent
+import com.junemon.model.DataHelper
 import com.junemon.model.domain.UserProfileDataModel
 import kotlinx.coroutines.flow.Flow
 
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface ProfileRemoteHelper {
 
-    suspend fun get(): Flow<UserProfileDataModel>
+    suspend fun getUserProfile(): Flow<DataHelper<UserProfileDataModel>>
 
     suspend fun initSignIn(): Intent
 

@@ -39,7 +39,7 @@ class ProfileRepositoryImplTest {
 
     @Test
     fun getUser() = runBlocking{
-        val remoteData = remoteDataSource.get()
+        val remoteData = remoteDataSource.getUserProfile()
         val job = launch {
             remoteData.collect { data ->
                 Truth.assertThat(data.nameUser).isEqualTo(fakeProfileData.nameUser)

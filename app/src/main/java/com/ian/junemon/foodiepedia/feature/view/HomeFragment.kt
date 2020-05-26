@@ -125,7 +125,7 @@ class HomeFragment : BaseFragment(), CanceledListener {
         }
 
         foodVm.eventDissmissFromInput.observe(viewLifecycleOwner,EventObserver{
-            (activity as MainActivity).run {
+            requireActivity().run {
                 val intent by lazy { Intent(this,this::class.java) }
                 startActivity(intent)
                 finish()

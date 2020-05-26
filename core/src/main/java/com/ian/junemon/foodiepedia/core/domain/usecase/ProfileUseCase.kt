@@ -3,6 +3,7 @@ package com.ian.junemon.foodiepedia.core.domain.usecase
 import android.content.Intent
 import androidx.lifecycle.LiveData
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
+import com.junemon.model.ProfileResults
 import com.junemon.model.domain.UserProfileDataModel
 import javax.inject.Inject
 
@@ -13,9 +14,7 @@ import javax.inject.Inject
  */
 class ProfileUseCase @Inject constructor(private val repo: ProfileRepository) {
 
-    fun inflateLogin(): LiveData<UserProfileDataModel> = repo.inflateLogin()
-
-    fun get(): LiveData<UserProfileDataModel> = repo.get()
+    fun getUserProfile(): LiveData<ProfileResults<UserProfileDataModel>> = repo.getUserProfile()
 
     suspend fun initSignIn(): Intent = repo.initSignIn()
 
