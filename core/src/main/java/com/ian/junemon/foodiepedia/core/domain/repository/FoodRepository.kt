@@ -18,6 +18,8 @@ import kotlinx.coroutines.flow.Flow
 interface FoodRepository {
     suspend fun foodPrefetch(): Flow<WorkerResult<Nothing>>
 
+    fun homeFoodPrefetch(): LiveData<WorkerResult<Nothing>>
+
     fun getCache(): LiveData<Results<List<FoodCacheDomain>>>
 
     fun getSavedDetailCache(): LiveData<List<SavedFoodCacheDomain>>

@@ -11,6 +11,7 @@ import com.ian.junemon.foodiepedia.core.data.di.DefaultDispatcher
 import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
 import com.junemon.model.DataHelper
 import com.junemon.model.FirebaseResult
+import com.junemon.model.ProfileResults
 import com.junemon.model.Results
 import com.junemon.model.WorkerResult
 import com.junemon.model.data.dto.mapRemoteToCacheDomain
@@ -58,6 +59,27 @@ class FoodRepositoryImpl @Inject constructor(
                     emit(WorkerResult.SuccessWork)
                 } else {
                     emit(WorkerResult.EmptyData)
+                }
+            }
+        }
+    }
+
+    override fun homeFoodPrefetch(): LiveData<WorkerResult<Nothing>> {
+        return liveData {
+            val disposables = emitSource(flowOf(WorkerResult.Loading).asLiveData())
+            when (val response = remoteDataSource.getFirebaseData()){
+                is DataHelper.RemoteSourceError -> {
+                    disposables.dispose()
+                    emit(WorkerResult.ErrorWork(response.exception))
+                }
+                is DataHelper.RemoteSourceValue -> {
+                    disposables.dispose()
+                    if (response.data.isNotEmpty()) {
+                        cacheDataSource.setCache(*response.data.applyMainSafeSort().toTypedArray())
+                        emit(WorkerResult.SuccessWork)
+                    } else {
+                        emit(WorkerResult.EmptyData)
+                    }
                 }
             }
         }

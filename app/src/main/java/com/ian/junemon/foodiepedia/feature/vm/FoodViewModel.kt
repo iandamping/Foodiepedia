@@ -11,6 +11,7 @@ import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
 import com.ian.junemon.foodiepedia.feature.util.Event
 import com.junemon.model.FirebaseResult
 import com.junemon.model.Results
+import com.junemon.model.WorkerResult
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
 import com.junemon.model.domain.SavedFoodCacheDomain
@@ -108,7 +109,7 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         }
     }
 
-    suspend fun foodPrefetch() = repository.foodPrefetch()
+    fun foodPrefetch(): LiveData<WorkerResult<Nothing>> = repository.homeFoodPrefetch()
 
     fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>> =
         repository.getCategorizeCache(category)

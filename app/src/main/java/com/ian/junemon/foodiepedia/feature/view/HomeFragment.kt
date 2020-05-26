@@ -67,6 +67,22 @@ class HomeFragment : BaseFragment(), CanceledListener {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        /**Observe loading state to show loading*/
+        foodVm.loadingState.observe(viewLifecycleOwner, Observer { show ->
+            if (show) {
+                binding.disableShimmer()
+            }else{
+                binding.enableShimmer()
+            }
+        })
+
+        /**Show a snackbar whenever the [snackbar] is updated a non-null value*/
+        foodVm.snackbar.observe(viewLifecycleOwner, Observer { text ->
+            text?.let {
+                Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+                foodVm.onSnackbarShown()
+            }
+        })
         return binding.root
     }
 
@@ -106,14 +122,14 @@ class HomeFragment : BaseFragment(), CanceledListener {
         if (localeStatus == "") {
             binding.tvHomeFilter.text = filterValueBreakfast
             foodVm.getCategorizeCache(filterValueBreakfast)
-                .observe(this@HomeFragment.viewLifecycleOwner,
+                .observe(viewLifecycleOwner,
                     Observer { result ->
                         binding.setupRecyclerView(result?.mapToCachePresentation())
                     })
         } else {
             binding.tvHomeFilter.text = localeStatus
             foodVm.getCategorizeCache(localeStatus)
-                .observe(this@HomeFragment.viewLifecycleOwner,
+                .observe(viewLifecycleOwner,
                     Observer { result ->
                         binding.setupRecyclerView(result?.mapToCachePresentation())
                     })
@@ -214,26 +230,25 @@ class HomeFragment : BaseFragment(), CanceledListener {
     }
 
     private fun consumeFoodPrefetch() {
-        lifecycleScope.launchWhenStarted {
-            binding.enableShimmer()
-            foodVm.foodPrefetch().collect {
-                when (it) {
-                    is WorkerResult.SuccessWork -> {
-                        binding.disableShimmer()
-                        iniDataView()
-                    }
-                    is WorkerResult.ErrorWork -> {
-                        binding.disableShimmer()
-                        Snackbar.make(binding.root, it.exception.message!!, Snackbar.LENGTH_SHORT)
-                            .show()
-                    }
-                    is WorkerResult.EmptyData -> {
-                        binding.disableShimmer()
-                        Snackbar.make(binding.root, "data is empty", Snackbar.LENGTH_SHORT).show()
-                    }
+        foodVm.foodPrefetch().observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is WorkerResult.Loading ->{
+                    foodVm.setupLoadingState(false)
+                }
+                is WorkerResult.SuccessWork -> {
+                    foodVm.setupLoadingState(true)
+                    iniDataView()
+                }
+                is WorkerResult.ErrorWork -> {
+                    foodVm.setupLoadingState(true)
+                    foodVm.setupSnackbarMessage(it.exception.message)
+                }
+                is WorkerResult.EmptyData -> {
+                    foodVm.setupLoadingState(true)
+                    foodVm.setupSnackbarMessage("data is empty")
                 }
             }
-        }
+        })
     }
 
     override fun onDestroyView() {
