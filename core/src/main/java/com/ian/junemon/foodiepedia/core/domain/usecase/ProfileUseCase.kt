@@ -16,6 +16,8 @@ class ProfileUseCase @Inject constructor(private val repo: ProfileRepository) {
 
     fun getUserProfile(): LiveData<ProfileResults<UserProfileDataModel>> = repo.getUserProfile()
 
+    fun getCacheUserProfile(): LiveData<UserProfileDataModel> = repo.getCacheUserProfile()
+
     suspend fun initSignIn(): Intent = repo.initSignIn()
 
     suspend fun initLogout() = repo.initLogout()

@@ -10,9 +10,12 @@ import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
 import com.junemon.model.DataHelper
 import com.junemon.model.ProfileResults
 import com.junemon.model.domain.UserProfileDataModel
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import javax.inject.Inject
 
 /**
@@ -35,9 +38,22 @@ class ProfileRepositoryImpl @Inject constructor(
                     is DataHelper.RemoteSourceValue -> {
                         disposables.dispose()
                         cacheDataSource.setCache(response.data)
-                        emitSource(cacheDataSource.getCache().map { ProfileResults.Success(it) }.asLiveData())
+                        emitSource(cacheDataSource.getCache().mapLatest {
+                            checkNotNull(it)
+                            ProfileResults.Success(it)
+                        }.catch {throwable ->
+                            emitSource(flowOf(ProfileResults.Error(Exception(throwable))).asLiveData())
+                        }.asLiveData() )
                     }
                 }
+            }
+        }
+    }
+
+    override fun getCacheUserProfile(): LiveData<UserProfileDataModel> {
+        return liveData {
+            cacheDataSource.getCache().collect {
+                emit(it)
             }
         }
     }

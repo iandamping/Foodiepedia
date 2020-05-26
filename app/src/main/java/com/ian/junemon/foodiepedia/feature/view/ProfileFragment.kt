@@ -1,8 +1,6 @@
 package com.ian.junemon.foodiepedia.feature.view
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +18,6 @@ import com.ian.junemon.foodiepedia.feature.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.util.FoodConstant.requestSignIn
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.junemon.model.ProfileResults
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -41,6 +38,7 @@ class ProfileFragment : BaseFragment() {
     override fun onAttach(context: Context) {
         sharedFoodComponent().inject(this)
         super.onAttach(context)
+        setBaseDialog()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,23 +48,16 @@ class ProfileFragment : BaseFragment() {
         }
     }
 
-   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == requestSignIn) {
-                *//** if user successfully login we observe this livedata that emit userprofile
-                 * but we dont need it anymore *//*
-            }
-        }
-    }*/
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-
+       /**Observe loading state to show loading*/
+        profileVm.loadingState.observe(viewLifecycleOwner, Observer { show ->
+            setDialogShow(show)
+        })
         return binding.root
     }
 
@@ -101,12 +92,13 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun consumeProfileData() {
-        profileVm.inflateLogin().observe(viewLifecycleOwner, Observer {
+        profileVm.getUserProfile().observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ProfileResults.Loading -> {
-                    Timber.e("data ${it.toString()}")
+                    profileVm.setupLoadingState(false)
                 }
                 is ProfileResults.Success -> {
+                    profileVm.setupLoadingState(true)
                     binding.llProfileData.visibility = View.VISIBLE
                     loadImageHelper.run {
                         binding.ivPhotoProfile.loadWithGlide(it.data.photoUser)
@@ -116,6 +108,7 @@ class ProfileFragment : BaseFragment() {
                     binding.rlSignIn.visibility = View.GONE
                 }
                 is ProfileResults.Error -> {
+                    profileVm.setupLoadingState(true)
                     binding.llProfileData.visibility = View.GONE
                     binding.rlSignIn.visibility = View.VISIBLE
                     binding.rlSignOut.visibility = View.GONE

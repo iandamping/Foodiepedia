@@ -17,19 +17,18 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class ProfileViewModel @Inject constructor(private val repository: ProfileUseCase) : ViewModel() {
+class ProfileViewModel @Inject constructor(private val repository: ProfileUseCase) : BaseViewModel() {
 
     private val _moveToUploadFragmentEvent = MutableLiveData<Event<Unit>>()
     val moveToUploadFragmentEvent: LiveData<Event<Unit>> = _moveToUploadFragmentEvent
-
 
     fun moveToUploadFragment() {
         _moveToUploadFragmentEvent.value = Event(Unit)
     }
 
-    fun inflateLogin(): LiveData<ProfileResults<UserProfileDataModel>> = repository.getUserProfile()
+    fun getUserProfile(): LiveData<ProfileResults<UserProfileDataModel>> = repository.getUserProfile()
 
-    fun getUser(): LiveData<UserProfileDataModel> = repository.get()
+    fun getCacheUserProfile(): LiveData<UserProfileDataModel> = repository.getCacheUserProfile()
 
     suspend fun initSignIn(): Intent = repository.initSignIn()
 

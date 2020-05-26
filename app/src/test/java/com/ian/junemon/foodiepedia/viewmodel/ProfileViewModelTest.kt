@@ -54,14 +54,14 @@ class ProfileViewModelTest {
 
     @Test
     fun inflateLogin(){
-        val result = profileViewModel.inflateLogin().getOrAwaitValue()
+        val result = profileViewModel.getUserProfile().getOrAwaitValue()
         Truth.assertThat(result).isNotNull()
         Truth.assertThat(result).isEqualTo(fakeProfileData)
     }
 
     @Test
     fun get(){
-        val result = profileViewModel.getUser().getOrAwaitValue()
+        val result = profileViewModel.getUserProfile().getOrAwaitValue()
         Truth.assertThat(result).isNotNull()
         Truth.assertThat(result).isEqualTo(fakeProfileData)
     }

@@ -13,8 +13,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.R
-import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
-import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterKey
 import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueBreakfast
 import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
@@ -27,7 +25,6 @@ import com.ian.junemon.foodiepedia.feature.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.util.FoodConstant.foodPresentationRvCallback
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
-import com.ian.junemon.foodiepedia.ui.MainActivity
 import com.junemon.model.WorkerResult
 import com.junemon.model.data.dto.mapToCachePresentation
 import com.junemon.model.presentation.FoodCachePresentation
@@ -50,8 +47,6 @@ class HomeFragment : BaseFragment(), CanceledListener {
     lateinit var recyclerHelper: RecyclerHelper
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
-    @Inject
-    lateinit var viewHlper: ViewHelper
     @Inject
     lateinit var gson :Gson
 
@@ -199,7 +194,7 @@ class HomeFragment : BaseFragment(), CanceledListener {
     }
 
     private fun consumeProfileData() {
-        profileVm.getUser().observe(viewLifecycleOwner, Observer {
+        profileVm.getCacheUserProfile().observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 loadImageHelper.run {
                     binding.ivPhotoProfile.loadWithGlide(it.photoUser)

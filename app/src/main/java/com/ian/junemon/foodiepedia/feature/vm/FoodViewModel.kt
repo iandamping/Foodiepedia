@@ -23,7 +23,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : ViewModel() {
+class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : BaseViewModel() {
     private val _searchItem: MutableLiveData<MutableList<FoodCachePresentation>> = MutableLiveData()
     val searchItem: LiveData<MutableList<FoodCachePresentation>> = _searchItem
 

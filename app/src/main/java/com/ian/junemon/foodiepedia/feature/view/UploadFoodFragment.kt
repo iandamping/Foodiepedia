@@ -22,7 +22,6 @@ import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.PermissionH
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentUploadBinding
 import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
-import com.ian.junemon.foodiepedia.feature.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.junemon.model.FirebaseResult
@@ -189,7 +188,7 @@ class UploadFoodFragment : BaseFragment() {
     }
 
     private fun consumeProfileData() {
-        profileVm.getUser().observe(viewLifecycleOwner, Observer {
+        profileVm.getCacheUserProfile().observe(viewLifecycleOwner, Observer {
                 remoteFoodUpload.foodContributor = it.nameUser
         })
     }
