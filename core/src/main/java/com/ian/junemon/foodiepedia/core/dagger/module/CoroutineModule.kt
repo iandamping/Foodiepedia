@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.core.data.di
+package com.ian.junemon.foodiepedia.core.dagger.module
 
 import dagger.Module
 import dagger.Provides

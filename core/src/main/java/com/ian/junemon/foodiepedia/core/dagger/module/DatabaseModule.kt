@@ -1,6 +1,6 @@
-package com.ian.junemon.foodiepedia.core.cache.di
+package com.ian.junemon.foodiepedia.core.dagger.module
 
-import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.ian.junemon.foodiepedia.core.cache.db.dao.FoodDao
 import com.ian.junemon.foodiepedia.core.cache.db.FoodDatabase
@@ -20,7 +20,7 @@ object DatabaseModule {
 
     @Provides
     @JvmStatic
-    fun provideDb(app: Application): FoodDatabase {
+    fun provideDb(app: Context): FoodDatabase {
         return Room
             .databaseBuilder(app, FoodDatabase::class.java, "foodiepedia.db")
             .fallbackToDestructiveMigration()
@@ -47,7 +47,7 @@ object DatabaseModule {
 
     @Provides
     @JvmStatic
-    fun providePreferenceHelper(app: Application): PreferenceHelper {
+    fun providePreferenceHelper(app: Context): PreferenceHelper {
         return PreferenceHelper(app)
     }
 }

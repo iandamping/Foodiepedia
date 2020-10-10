@@ -1,25 +1,26 @@
 package com.ian.junemon.foodiepedia.feature.view
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.R
+import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentSearchBinding
-import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.feature.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.util.FoodConstant
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
+import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.junemon.model.Results
 import com.junemon.model.data.dto.mapToCachePresentation
 import com.junemon.model.presentation.FoodCachePresentation
@@ -41,37 +42,40 @@ class SearchFragment : BaseFragment() {
     @Inject
     lateinit var recyclerViewHelper: RecyclerHelper
     @Inject
-    lateinit var foodVm: FoodViewModel
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var foodVm: FoodViewModel
+
 
     private var data: List<FoodCachePresentation> = mutableListOf()
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    override fun onAttach(context: Context) {
-        sharedFoodComponent().inject(this)
-        super.onAttach(context)
-    }
 
-    override fun onCreateView(
+    override fun createView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        foodVm = viewModelProvider(viewModelFactory)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun viewCreated(view: View, savedInstanceState: Bundle?) {
         binding.run {
             initView()
             initData()
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun destroyView() {
+        _binding = null
+
+    }
+
+    override fun activityCreated() {
         setupNavigation()
+
     }
 
     private fun FragmentSearchBinding.initView() {
@@ -162,8 +166,5 @@ class SearchFragment : BaseFragment() {
         findNavController().navigate(action)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
 }

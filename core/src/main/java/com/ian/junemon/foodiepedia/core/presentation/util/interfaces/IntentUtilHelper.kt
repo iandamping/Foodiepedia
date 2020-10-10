@@ -1,6 +1,7 @@
 package com.ian.junemon.foodiepedia.core.presentation.util.interfaces
 
 import android.app.Activity
+import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import kotlinx.coroutines.CoroutineScope
@@ -16,5 +17,5 @@ interface IntentUtilHelper {
 
     fun intentShareText(activity: FragmentActivity, text: String)
 
-    fun Fragment.intentShareImageAndText(scope: CoroutineScope, tittle: String?, message: String?, imageUrl: String?)
+    suspend fun intentShareImageAndText(tittle: String?, message: String?, imageUrl: String?,intent:(Intent)->Unit)
 }

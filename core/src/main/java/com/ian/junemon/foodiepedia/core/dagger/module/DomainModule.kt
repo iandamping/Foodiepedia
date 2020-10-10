@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.core.domain.di
+package com.ian.junemon.foodiepedia.core.dagger.module
 
 import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository

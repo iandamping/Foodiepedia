@@ -6,17 +6,17 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.Window
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
+import androidx.lifecycle.lifecycleScope
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.PermissionHelper
-import com.ian.junemon.foodiepedia.core.worker.DataFetcherWorker
+import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.databinding.ActivitySplashBinding
-import com.ian.junemon.foodiepedia.feature.di.activityComponent
+import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -24,43 +24,28 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SplashActivity : AppCompatActivity() {
-
+class SplashActivity : DaggerAppCompatActivity() {
     private lateinit var binding: ActivitySplashBinding
     @Inject
-    lateinit var permissionHelper: PermissionHelper
+    lateinit var viewHelper: ViewHelper
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
 
-    private val mDelayHandler: Handler by lazy { Handler() }
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        activityComponent().inject(this)
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
+        viewHelper.run { fullScreenAnimation() }
         binding = ActivitySplashBinding.inflate(layoutInflater)
         binding.run {
             initView()
         }
         setContentView(binding.root)
-        permissionHelper.getAllPermission(this) {
-            if (it) {
-                mDelayHandler.postDelayed(mRunnable, 3000L)
-            }
-        }
-        /*workerManagerState(this)*/
-    }
 
-    private val mRunnable: Runnable = Runnable {
-        if (!isFinishing) {
+        runDelayed {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
     }
+
 
     private fun ActivitySplashBinding.initView() {
         loadImageHelper.run {
@@ -70,26 +55,13 @@ class SplashActivity : AppCompatActivity() {
                     R.drawable.splash
                 )!!
             )
-            /*ivLoadSplash2.loadWithGlide(
-                ContextCompat.getDrawable(
-                    this@SplashActivity,
-                    R.drawable.splash_logo
-                )!!
-            )*/
         }
     }
 
-    private fun workerManagerState(context: Context) {
-        WorkManager.getInstance(context).getWorkInfosByTagLiveData(DataFetcherWorker.WORK_NAME)
-            .observe(this,
-                Observer { workInfo ->
-                    if (workInfo != null && workInfo.isNotEmpty()) {
-                        workInfo.forEach {
-                            if (it.state == WorkInfo.State.SUCCEEDED) {
-                                mDelayHandler.postDelayed(mRunnable, 3000L)
-                            }
-                        }
-                    }
-                })
+    private fun runDelayed(call: () -> Unit) {
+        lifecycleScope.launch {
+            delay(500L)
+            call.invoke()
+        }
     }
 }

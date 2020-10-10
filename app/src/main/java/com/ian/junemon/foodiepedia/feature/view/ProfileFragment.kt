@@ -1,23 +1,25 @@
 package com.ian.junemon.foodiepedia.feature.view
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ian.junemon.foodiepedia.R
+import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentProfileBinding
-import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.feature.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.util.FoodConstant.requestSignIn
+import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.junemon.model.ProfileResults
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -26,46 +28,46 @@ import javax.inject.Inject
  * Indonesia.
  */
 class ProfileFragment : BaseFragment() {
-    @Inject
-    lateinit var profileVm: ProfileViewModel
+    private val REQUEST_SIGN_IN_PERMISSIONS = 15
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var profileVm: ProfileViewModel
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    override fun onAttach(context: Context) {
-        sharedFoodComponent().inject(this)
-        super.onAttach(context)
-        setBaseDialog()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.apply {
-            initView()
-        }
-    }
-
-    override fun onCreateView(
+    override fun createView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-       /**Observe loading state to show loading*/
-        profileVm.loadingState.observe(viewLifecycleOwner, Observer { show ->
+        profileVm = viewModelProvider(viewModelFactory)
+        /**Observe loading state to show loading*/
+        profileVm.loadingState.observe(viewLifecycleOwner, { show ->
             setDialogShow(show)
         })
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun viewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.initView()
+
+    }
+
+    override fun destroyView() {
+        _binding = null
+
+    }
+
+    override fun activityCreated() {
         consumeProfileData()
         setupNavigation()
     }
+
 
     private fun FragmentProfileBinding.initView() {
         fabUpload.setOnClickListener {
@@ -75,7 +77,7 @@ class ProfileFragment : BaseFragment() {
             fireSignIn()
         }
         rlSignOut.setOnClickListener {
-            profileVm.initLogout()
+            fireSignOut()
         }
 
         btnBack.setOnClickListener {
@@ -92,7 +94,7 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun consumeProfileData() {
-        profileVm.getUserProfile().observe(viewLifecycleOwner, Observer {
+        profileVm.getUserProfile().observe(viewLifecycleOwner, {
             when (it) {
                 is ProfileResults.Loading -> {
                     profileVm.setupLoadingState(false)
@@ -101,9 +103,9 @@ class ProfileFragment : BaseFragment() {
                     profileVm.setupLoadingState(true)
                     binding.llProfileData.visibility = View.VISIBLE
                     loadImageHelper.run {
-                        binding.ivPhotoProfile.loadWithGlide(it.data.photoUser)
+                        binding.ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
                     }
-                    binding.tvProfileName.text = it.data.nameUser
+                    binding.tvProfileName.text = it.data.getDisplayName()
                     binding.rlSignOut.visibility = View.VISIBLE
                     binding.rlSignIn.visibility = View.GONE
                 }
@@ -118,16 +120,6 @@ class ProfileFragment : BaseFragment() {
         })
     }
 
-    private fun fireSignIn() {
-        lifecycleScope.launchWhenStarted {
-            val signInIntent = profileVm.initSignIn()
-            this@ProfileFragment.startActivityForResult(
-                signInIntent,
-                requestSignIn
-            )
-        }
-    }
-
     private fun setupNavigation() {
         profileVm.moveToUploadFragmentEvent.observe(viewLifecycleOwner, EventObserver {
             navigateToUploadFragment()
@@ -139,8 +131,16 @@ class ProfileFragment : BaseFragment() {
         findNavController().navigate(action)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun fireSignIn() {
+        lifecycleScope.launch {
+            val signInIntent = profileVm.initSignIn()
+            startActivityForResult(signInIntent, REQUEST_SIGN_IN_PERMISSIONS)
+        }
+    }
+
+    private fun fireSignOut() {
+        lifecycleScope.launch {
+            profileVm.initLogout()
+        }
     }
 }

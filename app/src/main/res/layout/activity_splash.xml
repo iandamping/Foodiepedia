@@ -1,35 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/ivLoadSplash"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:cropToPadding="false"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/splash" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginRight="50dp"
+        android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/ivLoadSplash"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:cropToPadding="false"
-            android:scaleType="centerCrop"
-            tools:src="@drawable/splash" />
-
-        <LinearLayout
+            android:id="@+id/ivLoadSplash2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="70dp"
-            android:layout_marginRight="50dp"
-            android:orientation="vertical">
+            android:cropToPadding="false"
+            android:src="@drawable/splash_logo" />
+    </LinearLayout>
 
-            <ImageView
-                android:id="@+id/ivLoadSplash2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cropToPadding="false"
-                android:src="@drawable/splash_logo" />
-        </LinearLayout>
-
-    </RelativeLayout>
-</layout>
+</RelativeLayout>
 

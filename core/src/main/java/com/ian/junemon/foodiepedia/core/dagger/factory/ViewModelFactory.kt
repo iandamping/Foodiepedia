@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ian.junemon.foodiepedia.core.presentation.di.factory
+package com.ian.junemon.foodiepedia.core.dagger.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

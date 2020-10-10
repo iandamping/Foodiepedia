@@ -7,19 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
+import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.IntentUtilHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentDetailBinding
-import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.feature.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.junemon.model.data.dto.mapToDetailDatabasePresentation
 import com.junemon.model.presentation.FoodCachePresentation
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -29,7 +31,8 @@ import javax.inject.Inject
  */
 class DetailFragment : BaseFragment() {
     @Inject
-    lateinit var foodVm: FoodViewModel
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var foodVm: FoodViewModel
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
     @Inject
@@ -49,32 +52,34 @@ class DetailFragment : BaseFragment() {
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding!!
 
-    override fun onAttach(context: Context) {
-        sharedFoodComponent().inject(this)
-        super.onAttach(context)
-        // dont use this, but i had to
-        val builder = StrictMode.VmPolicy.Builder()
-        StrictMode.setVmPolicy(builder.build())
-    }
 
-    override fun onCreateView(
+    override fun createView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        foodVm = viewModelProvider(viewModelFactory)
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun viewCreated(view: View, savedInstanceState: Bundle?) {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             initView()
             consumeBookmarkData()
         }
+    }
+
+    override fun destroyView() {
+        _binding = null
+
+    }
+
+    override fun activityCreated() {
         setupNavigation()
     }
+
 
     private fun FragmentDetailBinding.initView() {
             ilegallStateCatching {
@@ -96,13 +101,14 @@ class DetailFragment : BaseFragment() {
                 foodVm.moveDetailToHomeFragment()
             }
             btnShare.setOnClickListener {
-                intentHelper.run {
-                    this@DetailFragment.intentShareImageAndText(
-                        scope = lifecycleScope,
-                        tittle = passedData.foodName,
+                lifecycleOwner?.lifecycleScope?.launch {
+                    setDialogShow(false)
+                    intentHelper.intentShareImageAndText( tittle = passedData.foodName,
                         imageUrl = passedData.foodImage,
-                        message = passedData.foodCategory
-                    )
+                        message = passedData.foodCategory){
+                        setDialogShow(true)
+                        sharedImageIntent(it)
+                    }
                 }
             }
             tvFoodName.text = passedData.foodName
@@ -163,8 +169,4 @@ class DetailFragment : BaseFragment() {
         findNavController().navigateUp()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

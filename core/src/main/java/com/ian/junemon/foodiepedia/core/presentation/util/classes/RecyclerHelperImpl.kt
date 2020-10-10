@@ -10,15 +10,18 @@ import javax.inject.Inject
 class RecyclerHelperImpl @Inject constructor() :
     RecyclerHelper {
     override fun <T> RecyclerView.setUpVerticalListAdapter(
-        items: List<T>?,
+        items: List<T>,
         diffUtil: DiffUtil.ItemCallback<T>,
         layoutResId: Int,
         bindHolder: View.(T) -> Unit,
         itemClick: T.() -> Unit,
         manager: RecyclerView.LayoutManager
     ): BaseKotlinListAdapter<T> {
-        requireNotNull(items) {
-            " your list data is null"
+
+        val mutableData:MutableSet<T> = mutableSetOf()
+        mutableData.clear()
+        items.forEach {
+            mutableData.add(it)
         }
 
         return BaseKotlinListAdapter(
@@ -28,21 +31,23 @@ class RecyclerHelperImpl @Inject constructor() :
             itemClicks = { itemClick() }).apply {
             layoutManager = manager
             adapter = this
-            submitList(items)
+            submitList(mutableData.toList())
             notifyDataSetChanged()
         }
     }
 
     override fun <T> RecyclerView.setUpSkidAdapter(
-        items: List<T>?,
+        items: List<T>,
         diffUtil: DiffUtil.ItemCallback<T>,
         layoutResId: Int,
         bindHolder: View.(T) -> Unit,
         itemClick: T.() -> Unit,
         manager: RecyclerView.LayoutManager
     ): BaseKotlinListAdapter<T> {
-        requireNotNull(items) {
-            " your list data is null"
+        val mutableData:MutableSet<T> = mutableSetOf()
+        mutableData.clear()
+        items.forEach {
+            mutableData.add(it)
         }
         return BaseKotlinListAdapter(
             layout = layoutResId,
@@ -51,13 +56,13 @@ class RecyclerHelperImpl @Inject constructor() :
             itemClicks = { itemClick() }).apply {
             layoutManager = manager
             adapter = this
-            submitList(items)
+            submitList(mutableData.toList())
             notifyDataSetChanged()
         }
     }
 
     override fun <T> RecyclerView.setUpVerticalGridAdapter(
-        items: List<T>?,
+        items: List<T>,
         diffUtil: DiffUtil.ItemCallback<T>,
         layoutResId: Int,
         gridSize: Int,
@@ -66,8 +71,10 @@ class RecyclerHelperImpl @Inject constructor() :
         manager: RecyclerView.LayoutManager
     ): BaseKotlinListAdapter<T> {
 
-        requireNotNull(items) {
-            " your list data is null"
+        val mutableData:MutableSet<T> = mutableSetOf()
+        mutableData.clear()
+        items.forEach {
+            mutableData.add(it)
         }
 
         return BaseKotlinListAdapter(
@@ -77,26 +84,28 @@ class RecyclerHelperImpl @Inject constructor() :
             itemClicks = { itemClick() }).apply {
             layoutManager = manager
             adapter = this
-            submitList(items)
+            submitList(mutableData.toList())
             notifyDataSetChanged()
         }
     }
 
     override fun <T> RecyclerView.setUpHorizontalListAdapter(
-        items: List<T>?,
+        items: List<T>,
         diffUtil: DiffUtil.ItemCallback<T>,
         layoutResId: Int,
         bindHolder: View.(T) -> Unit,
         itemClick: T.() -> Unit,
         manager: RecyclerView.LayoutManager
-    ): BaseKotlinListAdapter<T>? {
+    ): BaseKotlinListAdapter<T> {
         if (this.onFlingListener == null) {
             RecyclerHorizontalSnapHelper()
                 .attachToRecyclerView(this)
         }
 
-        requireNotNull(items) {
-            " your list data is null"
+        val mutableData:MutableSet<T> = mutableSetOf()
+        mutableData.clear()
+        items.forEach {
+            mutableData.add(it)
         }
         return BaseKotlinListAdapter(
             layout = layoutResId,
@@ -105,7 +114,7 @@ class RecyclerHelperImpl @Inject constructor() :
             itemClicks = { itemClick() }).apply {
             layoutManager = manager
             adapter = this
-            submitList(items)
+            submitList(mutableData.toList())
             notifyDataSetChanged()
         }
     }

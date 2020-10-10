@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.core.remote.di
+package com.ian.junemon.foodiepedia.core.dagger.module
 
 import com.ian.junemon.foodiepedia.core.remote.util.FoodRemoteHelper
 import com.ian.junemon.foodiepedia.core.remote.util.FoodRemoteHelperImpl

@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ian.junemon.foodiepedia.R
+import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueBreakfast
 import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueBrunch
 import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueDinner
@@ -16,9 +18,9 @@ import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filter
 import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueSupper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentBottomFilterBinding
-import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.feature.util.CanceledListener
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
+import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 /**
@@ -26,10 +28,10 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class BottomFilterFragment(private val canceledState: CanceledListener) :
-    BottomSheetDialogFragment() {
+class BottomFilterFragment(private val canceledState: CanceledListener) : BottomSheetDialogFragment() {
     @Inject
-    lateinit var foodVm: FoodViewModel
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var foodVm: FoodViewModel
 
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
@@ -38,8 +40,8 @@ class BottomFilterFragment(private val canceledState: CanceledListener) :
     private val binding get() = _binding!!
 
     override fun onAttach(context: Context) {
-        sharedFoodComponent().inject(this)
         super.onAttach(context)
+        AndroidSupportInjection.inject(this)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -54,6 +56,7 @@ class BottomFilterFragment(private val canceledState: CanceledListener) :
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentBottomFilterBinding.inflate(inflater, container, false)
+        foodVm = viewModelProvider(viewModelFactory)
         return binding.root
     }
 

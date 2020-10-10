@@ -7,11 +7,10 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodCacheDataSource
 import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodRemoteDataSource
-import com.ian.junemon.foodiepedia.core.data.di.DefaultDispatcher
+import com.ian.junemon.foodiepedia.core.dagger.module.DefaultDispatcher
 import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
 import com.junemon.model.DataHelper
 import com.junemon.model.FirebaseResult
-import com.junemon.model.ProfileResults
 import com.junemon.model.Results
 import com.junemon.model.WorkerResult
 import com.junemon.model.data.dto.mapRemoteToCacheDomain

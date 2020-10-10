@@ -7,16 +7,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import androidx.core.app.ShareCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.bumptech.glide.Glide
-import com.ian.junemon.foodiepedia.core.R
+import com.bumptech.glide.RequestManager
+import com.ian.junemon.foodiepedia.core.dagger.module.IoDispatcher
+import com.ian.junemon.foodiepedia.core.dagger.module.MainDispatcher
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.IntentUtilHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import org.jetbrains.anko.indeterminateProgressDialog
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -27,57 +24,49 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class IntentUtilImpl @Inject constructor() : IntentUtilHelper {
+class IntentUtilImpl @Inject constructor(
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
+    private val requestManager: RequestManager,
+) : IntentUtilHelper {
 
-    override fun Fragment.intentShareImageAndText(
-        scope: CoroutineScope,
-        tittle: String?,
-        message: String?,
-        imageUrl: String?
+    override suspend fun intentShareImageAndText(
+        tittle: String?, message: String?, imageUrl: String?, intent: (Intent) -> Unit
     ) {
-        scope.launch {
-            val dialogs = this@intentShareImageAndText.context?.indeterminateProgressDialog(
-                this@intentShareImageAndText.context?.resources?.getString(R.string.please_wait),
-                this@intentShareImageAndText.context?.resources?.getString(R.string.processing_image)
-            )
-            try {
-                requireNotNull(tittle) {
-                    "tittle to share is null"
-                }
-                requireNotNull(message) {
-                    "message to share is null"
-                }
-                requireNotNull(imageUrl) {
-                    "picture to share is null"
-                }
-                dialogs?.show()
-                withContext(Dispatchers.IO) {
-                    val bitmap = Glide.with(this@intentShareImageAndText)
-                        .asBitmap()
-                        .load(imageUrl)
-                        .submit(512, 512)
-                        .get()
-                    if (getLocalBitmapUri(bitmap) != null) {
-                        dialogs?.dismiss()
-                        withContext(Dispatchers.Main) {
-                            val sharingIntent = Intent(Intent.ACTION_SEND)
-                            sharingIntent.type = "image/*"
-                            sharingIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(bitmap))
-                            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, tittle)
-                            sharingIntent.putExtra(Intent.EXTRA_TEXT, message)
-                            sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                            this@intentShareImageAndText.startActivity(
-                                Intent.createChooser(
-                                    sharingIntent,
-                                    "Share Image"
-                                )
-                            )
-                        }
+        try {
+            requireNotNull(tittle) {
+                "tittle to share is null"
+            }
+            requireNotNull(message) {
+                "message to share is null"
+            }
+            requireNotNull(imageUrl) {
+                "picture to share is null"
+            }
+
+            withContext(ioDispatcher) {
+                val bitmap = requestManager
+                    .asBitmap()
+                    .load(imageUrl)
+                    .submit(512, 512)
+                    .get()
+                if (getLocalBitmapUri(bitmap) != null) {
+                    withContext(mainDispatcher) {
+                        val sharingIntent = Intent(Intent.ACTION_SEND)
+                        sharingIntent.type = "image/*"
+                        sharingIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(bitmap))
+                        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, tittle)
+                        sharingIntent.putExtra(Intent.EXTRA_TEXT, message)
+                        sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        intent.invoke(sharingIntent)
                     }
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
+
+
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

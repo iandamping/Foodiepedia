@@ -13,7 +13,7 @@ class BaseKotlinListAdapter<T>(
     private val bindHolder: View.(T) -> Unit,
     diffUtil: DiffUtil.ItemCallback<T>,
     private val itemClicks: T.() -> Unit
-) : BaseListAdapter<T>(layout, diffUtil, itemClicks) {
+) : BaseListAdapter<T>(layout, diffUtil) {
 
     override fun onBindViewHolder(holder: MyListWithSliderViewHolder, position: Int) {
         val data = getItem(position)
@@ -21,3 +21,4 @@ class BaseKotlinListAdapter<T>(
         holder.itemView.setOnClickListener { itemClicks(data) }
     }
 }
+

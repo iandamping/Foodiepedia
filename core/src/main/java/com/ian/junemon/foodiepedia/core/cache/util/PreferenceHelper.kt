@@ -1,6 +1,5 @@
 package com.ian.junemon.foodiepedia.core.cache.util
 
-import android.app.Application
 import android.content.Context
 import javax.inject.Inject
 

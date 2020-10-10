@@ -1,6 +1,5 @@
 package com.ian.junemon.foodiepedia.feature.view
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,23 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.R
+import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueBreakfast
 import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentHomeBinding
-import com.ian.junemon.foodiepedia.feature.di.sharedFoodComponent
 import com.ian.junemon.foodiepedia.feature.util.CanceledListener
 import com.ian.junemon.foodiepedia.feature.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.util.FoodConstant.foodPresentationRvCallback
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
+import com.junemon.model.ProfileResults
 import com.junemon.model.WorkerResult
 import com.junemon.model.data.dto.mapToCachePresentation
 import com.junemon.model.presentation.FoodCachePresentation
@@ -40,38 +39,38 @@ import javax.inject.Inject
  */
 class HomeFragment : BaseFragment(), CanceledListener {
     @Inject
-    lateinit var foodVm: FoodViewModel
-    @Inject
-    lateinit var profileVm: ProfileViewModel
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var foodVm: FoodViewModel
+    private lateinit var profileVm: ProfileViewModel
+
     @Inject
     lateinit var recyclerHelper: RecyclerHelper
+
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
+
     @Inject
-    lateinit var gson :Gson
+    lateinit var gson: Gson
 
     private val bottomFilter by lazy { BottomFilterFragment(this) }
 
     private var _binding: FragmentHomeBinding? = null
+
     private val binding get() = _binding!!
 
-    override fun onAttach(context: Context) {
-        sharedFoodComponent().inject(this)
-        super.onAttach(context)
-        setBaseDialog()
-    }
-
-    override fun onCreateView(
+    override fun createView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        foodVm = viewModelProvider(viewModelFactory)
+        profileVm = viewModelProvider(viewModelFactory)
         /**Observe loading state to show loading*/
-        foodVm.loadingState.observe(viewLifecycleOwner, Observer { show ->
+        foodVm.loadingState.observe(viewLifecycleOwner, { show ->
             if (show) {
                 binding.disableShimmer()
-            }else{
+            } else {
                 binding.enableShimmer()
             }
         })
@@ -86,18 +85,19 @@ class HomeFragment : BaseFragment(), CanceledListener {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun viewCreated(view: View, savedInstanceState: Bundle?) {
         binding.initView()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun destroyView() {
+        _binding = null
+    }
+
+    override fun activityCreated() {
         consumeFoodPrefetch()
         consumeProfileData()
         setupNavigation()
     }
-
 
     private fun FragmentHomeBinding.initView() {
         ivFilter.setOnClickListener {
@@ -135,21 +135,22 @@ class HomeFragment : BaseFragment(), CanceledListener {
                     })
         }
 
-        foodVm.eventDissmissFromInput.observe(viewLifecycleOwner,EventObserver{
+        foodVm.eventDissmissFromInput.observe(viewLifecycleOwner, EventObserver {
             requireActivity().run {
-                val intent by lazy { Intent(this,this::class.java) }
+                val intent by lazy { Intent(this, this::class.java) }
                 startActivity(intent)
                 finish()
             }
         })
     }
 
-    private fun FragmentHomeBinding.enableShimmer(){
+    private fun FragmentHomeBinding.enableShimmer() {
         if (!shimmerSlider.isShimmerStarted && !shimmerSlider.isShimmerVisible) {
             shimmerSlider.startShimmer()
         }
     }
-    private fun FragmentHomeBinding.disableShimmer(){
+
+    private fun FragmentHomeBinding.disableShimmer() {
         if (shimmerSlider.isShimmerStarted && shimmerSlider.isShimmerVisible) {
             shimmerSlider.stopShimmer()
             shimmerSlider.hideShimmer()
@@ -159,24 +160,24 @@ class HomeFragment : BaseFragment(), CanceledListener {
 
     private fun FragmentHomeBinding.setupRecyclerView(data: List<FoodCachePresentation>?) {
         rvHome.onFlingListener = null
-            recyclerHelper.run {
-                recyclerviewCatching {
-                    checkNotNull(data)
-                    rvHome.setUpSkidAdapter(items = data,
-                        diffUtil = foodPresentationRvCallback,
-                        layoutResId = R.layout.item_custom_home,
-                        bindHolder = {
-                            with(this) {
-                                loadImageHelper.run { ivFoodImage.loadWithGlide(it?.foodImage) }
-                                tv_title.text = it?.foodName
-                                tv_description.text = it?.foodDescription
-                            }
-                        },
-                        itemClick = {
-                            foodVm.moveToDetailFragment(gson.toJson(this))
-                        })
-                }
+        recyclerHelper.run {
+            recyclerviewCatching {
+                checkNotNull(data)
+                rvHome.setUpSkidAdapter(items = data,
+                    diffUtil = foodPresentationRvCallback,
+                    layoutResId = R.layout.item_custom_home,
+                    bindHolder = {
+                        with(this) {
+                            loadImageHelper.run { ivFoodImage.loadWithGlide(it?.foodImage) }
+                            tv_title.text = it?.foodName
+                            tv_description.text = it?.foodDescription
+                        }
+                    },
+                    itemClick = {
+                        foodVm.moveToDetailFragment(gson.toJson(this))
+                    })
             }
+        }
     }
 
     private fun setupNavigation() {
@@ -210,29 +211,32 @@ class HomeFragment : BaseFragment(), CanceledListener {
     }
 
     private fun consumeProfileData() {
-        profileVm.getCacheUserProfile().observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                loadImageHelper.run {
-                    binding.ivPhotoProfile.loadWithGlide(it.photoUser)
+        profileVm.getUserProfile().observe(viewLifecycleOwner, {
+            when (it) {
+                is ProfileResults.Success -> {
+                    loadImageHelper.run {
+                        binding.ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
+                    }
+                }
+                else ->{
+                    loadImageHelper.run {
+                        binding.ivPhotoProfile.loadWithGlide(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.ic_profiles
+                            )!!
+                        )
+                    }
                 }
 
-            } else {
-                loadImageHelper.run {
-                    binding.ivPhotoProfile.loadWithGlide(
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_profiles
-                        )!!
-                    )
-                }
             }
         })
     }
 
     private fun consumeFoodPrefetch() {
-        foodVm.foodPrefetch().observe(viewLifecycleOwner, Observer {
+        foodVm.foodPrefetch().observe(viewLifecycleOwner, {
             when (it) {
-                is WorkerResult.Loading ->{
+                is WorkerResult.Loading -> {
                     foodVm.setupLoadingState(false)
                 }
                 is WorkerResult.SuccessWork -> {
@@ -249,11 +253,6 @@ class HomeFragment : BaseFragment(), CanceledListener {
                 }
             }
         })
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun onDissmis() {

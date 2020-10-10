@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.core.data.di
+package com.ian.junemon.foodiepedia.core.dagger.module
 
 import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodCacheDataSource
 import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodRemoteDataSource

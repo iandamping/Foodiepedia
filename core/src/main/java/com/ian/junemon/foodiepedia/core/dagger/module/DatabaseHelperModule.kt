@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.core.cache.di
+package com.ian.junemon.foodiepedia.core.dagger.module
 
 import com.ian.junemon.foodiepedia.core.cache.util.classes.ProfileDaoHelperImpl
 import com.ian.junemon.foodiepedia.core.cache.util.classes.FoodDaoHelperImpl

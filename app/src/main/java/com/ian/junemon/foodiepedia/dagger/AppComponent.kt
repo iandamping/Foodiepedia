@@ -1,35 +1,41 @@
 package com.ian.junemon.foodiepedia.dagger
 
-import android.content.Context
-import com.google.firebase.storage.StorageReference
-import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
-import com.ian.junemon.foodiepedia.core.dagger.component.CoreComponent
-import com.ian.junemon.foodiepedia.core.dagger.scope.ApplicationScope
-import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
-import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
+import com.ian.junemon.foodiepedia.FoodApp
+import com.ian.junemon.foodiepedia.core.dagger.module.DatabaseHelperModule
+import com.ian.junemon.foodiepedia.core.dagger.module.DatabaseModule
+import com.ian.junemon.foodiepedia.core.dagger.module.GlideModule
+import com.ian.junemon.foodiepedia.core.dagger.module.CoroutineModule
+import com.ian.junemon.foodiepedia.core.dagger.module.DataModule
+import com.ian.junemon.foodiepedia.core.dagger.module.DomainModule
+import com.ian.junemon.foodiepedia.core.dagger.module.PresentationModule
+import com.ian.junemon.foodiepedia.core.dagger.factory.ViewModelModule
+import com.ian.junemon.foodiepedia.core.dagger.module.RemoteHelperModule
+import com.ian.junemon.foodiepedia.core.dagger.module.RemoteModule
+import com.ian.junemon.foodiepedia.dagger.module.ActivityBindingModule
+import com.ian.junemon.foodiepedia.dagger.module.AppModule
 import dagger.Component
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
+import javax.inject.Singleton
 
-@ApplicationScope
-@Component(dependencies = [CoreComponent::class])
-interface AppComponent {
+@Singleton
+@Component(
+    modules = [AndroidSupportInjectionModule::class,
+        AppModule::class,
+        ActivityBindingModule::class,
+        ViewModelModule::class,
+        DatabaseModule::class,
+        CoroutineModule::class,
+        DataModule::class,
+        DomainModule::class,
+        RemoteModule::class,
+        DatabaseHelperModule::class,
+        RemoteHelperModule::class,
+        PresentationModule::class,
+        GlideModule::class]
+)
+interface AppComponent : AndroidInjector<FoodApp> {
 
-    val provideStorageReference: StorageReference
-
-    val provideFoodRepository: FoodRepository
-
-    val provideProfileRepository: ProfileRepository
-
-    val provideContext: Context
-
-    /*val provideworkerFactoryImpl: FetcherWorkerFactoryImpl*/
-
-    @Component.Factory
-    interface Factory {
-        fun coreComponent(coreComponent: CoreComponent): AppComponent
-    }
-}
-
-interface AppComponentProvider {
-
-    fun provideAppComponent(): AppComponent
+    @Component.Builder
+    abstract class Builder : AndroidInjector.Builder<FoodApp>()
 }

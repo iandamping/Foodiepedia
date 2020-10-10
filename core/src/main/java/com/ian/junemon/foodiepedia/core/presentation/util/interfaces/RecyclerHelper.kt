@@ -11,7 +11,7 @@ import com.ian.junemon.foodiepedia.core.presentation.base.adapter.BaseKotlinList
 interface RecyclerHelper {
 
     fun <T> RecyclerView.setUpVerticalListAdapter(
-        items: List<T>?,
+        items: List<T>,
         diffUtil: DiffUtil.ItemCallback<T>,
         layoutResId: Int,
         bindHolder: View.(T) -> Unit,
@@ -20,7 +20,7 @@ interface RecyclerHelper {
     ): BaseKotlinListAdapter<T>
 
     fun <T> RecyclerView.setUpSkidAdapter(
-        items: List<T>?,
+        items: List<T>,
         diffUtil: DiffUtil.ItemCallback<T>,
         layoutResId: Int,
         bindHolder: View.(T) -> Unit,
@@ -29,7 +29,7 @@ interface RecyclerHelper {
     ): BaseKotlinListAdapter<T>
 
     fun <T> RecyclerView.setUpVerticalGridAdapter(
-        items: List<T>?,
+        items: List<T>,
         diffUtil: DiffUtil.ItemCallback<T>,
         layoutResId: Int,
         gridSize: Int,
@@ -39,7 +39,7 @@ interface RecyclerHelper {
     ): BaseKotlinListAdapter<T>
 
     fun <T> RecyclerView.setUpHorizontalListAdapter(
-        items: List<T>?,
+        items: List<T>,
         diffUtil: DiffUtil.ItemCallback<T>,
         layoutResId: Int,
         bindHolder: View.(T) -> Unit,

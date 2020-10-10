@@ -1,7 +1,5 @@
-package com.ian.junemon.foodiepedia.core.presentation.di
+package com.ian.junemon.foodiepedia.core.dagger.module
 
-import androidx.lifecycle.ViewModelProvider
-import com.ian.junemon.foodiepedia.core.presentation.di.factory.ViewModelFactory
 import com.ian.junemon.foodiepedia.core.presentation.util.classes.ImageUtilImpl
 import com.ian.junemon.foodiepedia.core.presentation.util.classes.IntentUtilImpl
 import com.ian.junemon.foodiepedia.core.presentation.util.classes.LoadImageImpl
@@ -42,7 +40,4 @@ abstract class PresentationModule {
 
     @Binds
     abstract fun bindsViewHelper(viewHelper: ViewHelperImpl): ViewHelper
-
-    @Binds
-    abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 }

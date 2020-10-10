@@ -1,11 +1,14 @@
 package com.ian.junemon.foodiepedia.core.remote.util
 
+import android.content.Context
 import android.content.Intent
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.ian.junemon.foodiepedia.core.data.di.DefaultDispatcher
-import com.ian.junemon.foodiepedia.core.data.di.IoDispatcher
+import com.ian.junemon.foodiepedia.core.dagger.module.DefaultDispatcher
+import com.ian.junemon.foodiepedia.core.dagger.module.IoDispatcher
+import com.ian.junemon.foodiepedia.core.remote.firebaseuser.AuthenticatedUserInfo
+import com.ian.junemon.foodiepedia.core.remote.firebaseuser.FirebaseUserInfo
 import com.junemon.model.DataHelper
 import com.junemon.model.domain.UserProfileDataModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,8 +18,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -27,53 +31,29 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class ProfileRemoteHelperImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
+    private val context: Context,
     private val mFirebaseAuth: FirebaseAuth
 ) : ProfileRemoteHelper {
     private var isListening = false
-    private val channel = ConflatedBroadcastChannel<DataHelper<UserProfileDataModel>>()
 
-    private val listeners: FirebaseAuth.AuthStateListener by lazy {
-        FirebaseAuth.AuthStateListener {
-            try {
-                if (!channel.isClosedForSend) {
-                    checkNotNull(mFirebaseAuth.currentUser)
-                    channel.offer(
-                        DataHelper.RemoteSourceValue(
-                            UserProfileDataModel(
-                                null,
-                                mFirebaseAuth.currentUser?.uid,
-                                mFirebaseAuth.currentUser?.photoUrl.toString(),
-                                mFirebaseAuth.currentUser?.displayName,
-                                mFirebaseAuth.currentUser?.email
-                            )
-                        )
-                    )
-                } else {
-                    unregisterListener()
-                }
-            } catch (e: Exception) {
-                channel.offer(
-                    DataHelper.RemoteSourceError(e)
-                )
-            }
+    // Channel that keeps track of User Authentication
+    private val channel = ConflatedBroadcastChannel<DataHelper<AuthenticatedUserInfo>>()
+
+    private val listener: ((FirebaseAuth) -> Unit) = { auth ->
+
+        if (!channel.isClosedForSend) {
+            channel.offer(DataHelper.RemoteSourceValue(FirebaseUserInfo(auth.currentUser)))
+        } else {
+            unregisterListener()
         }
     }
 
-    private fun registerListener() {
-        mFirebaseAuth.addAuthStateListener(listeners)
-    }
-
-    private fun unregisterListener() {
-        mFirebaseAuth.removeAuthStateListener(listeners)
-    }
-
-    override suspend fun getUserProfile(): Flow<DataHelper<UserProfileDataModel>> {
+    override fun getUserProfile(): Flow<DataHelper<AuthenticatedUserInfo>> {
         if (!isListening) {
-            registerListener()
+            mFirebaseAuth.addAuthStateListener(listener)
             isListening = true
         }
-        return channel.asFlow().flowOn(defaultDispatcher).conflate()
+        return channel.asFlow()
     }
 
     override suspend fun initSignIn(): Intent {
@@ -94,7 +74,15 @@ class ProfileRemoteHelperImpl @Inject constructor(
         }
     }
 
-    override suspend fun initLogout() {
-        mFirebaseAuth.signOut()
+    override suspend fun initLogout(onComplete: () -> Unit) {
+        withContext(ioDispatcher) {
+            AuthUI.getInstance()
+                .signOut(context)
+                .addOnCompleteListener { onComplete() }
+        }
+    }
+
+    private fun unregisterListener() {
+        mFirebaseAuth.removeAuthStateListener(listener)
     }
 }

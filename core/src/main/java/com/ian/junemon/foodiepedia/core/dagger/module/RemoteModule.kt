@@ -1,10 +1,11 @@
-package com.ian.junemon.foodiepedia.core.remote.di
+package com.ian.junemon.foodiepedia.core.dagger.module
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.core.BuildConfig.firebaseStorageUrl
 import com.ian.junemon.foodiepedia.core.BuildConfig.foodNode
 import dagger.Module
@@ -17,6 +18,12 @@ import dagger.Provides
  */
 @Module
 object RemoteModule {
+
+    @Provides
+    @JvmStatic
+    fun provideGson(): Gson {
+        return Gson()
+    }
 
     @Provides
     @JvmStatic
