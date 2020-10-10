@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.core.cache.db
+package com.ian.junemon.foodiepedia.core.cache.db.dao
 
 import androidx.room.Dao
 import androidx.room.Insert

@@ -1,6 +1,6 @@
 package com.ian.junemon.foodiepedia.core.cache.util.classes
 
-import com.ian.junemon.foodiepedia.core.cache.db.FoodDao
+import com.ian.junemon.foodiepedia.core.cache.db.dao.FoodDao
 import com.ian.junemon.foodiepedia.core.cache.model.Food
 import com.ian.junemon.foodiepedia.core.cache.util.interfaces.FoodDaoHelper
 import kotlinx.coroutines.flow.Flow

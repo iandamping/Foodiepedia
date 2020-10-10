@@ -2,6 +2,9 @@ package com.ian.junemon.foodiepedia.core.cache.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.ian.junemon.foodiepedia.core.cache.db.dao.FoodDao
+import com.ian.junemon.foodiepedia.core.cache.db.dao.ProfileDao
+import com.ian.junemon.foodiepedia.core.cache.db.dao.SavedFoodDao
 import com.ian.junemon.foodiepedia.core.cache.model.Food
 import com.ian.junemon.foodiepedia.core.cache.model.SavedFood
 import com.ian.junemon.foodiepedia.core.cache.model.UserProfile

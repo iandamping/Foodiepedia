@@ -2,10 +2,10 @@ package com.ian.junemon.foodiepedia.core.cache.di
 
 import android.app.Application
 import androidx.room.Room
-import com.ian.junemon.foodiepedia.core.cache.db.FoodDao
+import com.ian.junemon.foodiepedia.core.cache.db.dao.FoodDao
 import com.ian.junemon.foodiepedia.core.cache.db.FoodDatabase
-import com.ian.junemon.foodiepedia.core.cache.db.ProfileDao
-import com.ian.junemon.foodiepedia.core.cache.db.SavedFoodDao
+import com.ian.junemon.foodiepedia.core.cache.db.dao.ProfileDao
+import com.ian.junemon.foodiepedia.core.cache.db.dao.SavedFoodDao
 import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
 import dagger.Module
 import dagger.Provides
