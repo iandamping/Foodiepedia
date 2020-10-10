@@ -45,7 +45,6 @@ class SearchFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var foodVm: FoodViewModel
 
-
     private var data: List<FoodCachePresentation> = mutableListOf()
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -64,7 +63,6 @@ class SearchFragment : BaseFragment() {
     override fun viewCreated(view: View, savedInstanceState: Bundle?) {
         binding.run {
             initView()
-            initData()
         }
     }
 
@@ -74,8 +72,13 @@ class SearchFragment : BaseFragment() {
     }
 
     override fun activityCreated() {
+        initData()
         setupNavigation()
 
+        foodVm.getCache().observe(viewLifecycleOwner, { result ->
+            data = result.map { it.mapToCachePresentation() }
+            foodVm.setSearchItem(data = data.toMutableList())
+        })
     }
 
     private fun FragmentSearchBinding.initView() {
@@ -120,14 +123,10 @@ class SearchFragment : BaseFragment() {
         }
     }
 
-    private fun FragmentSearchBinding.initData() {
-        foodVm.getCache().observe(viewLifecycleOwner, Observer { result ->
-            data = result.map { it.mapToCachePresentation() }
-        })
-
-        foodVm.searchItem.observe(viewLifecycleOwner, Observer {
+    private fun initData() {
+        foodVm.searchItem.observe(viewLifecycleOwner, {
             recyclerViewHelper.run {
-                rvSearchPlace.setUpVerticalGridAdapter(
+                binding.rvSearchPlace.setUpVerticalGridAdapter(
                     items = it,
                     gridSize = 2,
                     diffUtil = FoodConstant.foodPresentationRvCallback,
