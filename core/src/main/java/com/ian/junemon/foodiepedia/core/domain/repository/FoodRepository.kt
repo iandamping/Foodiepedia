@@ -16,15 +16,12 @@ import kotlinx.coroutines.flow.Flow
  * Indonesia.
  */
 interface FoodRepository {
-    suspend fun foodPrefetch(): Flow<WorkerResult<Nothing>>
 
-    fun homeFoodPrefetch(): LiveData<WorkerResult<Nothing>>
+    fun homeFoodPrefetch(): LiveData<Results<List<FoodCacheDomain>>>
 
-    fun getCache(): LiveData<Results<List<FoodCacheDomain>>>
+    fun getCache(): LiveData<List<FoodCacheDomain>>
 
     fun getSavedDetailCache(): LiveData<List<SavedFoodCacheDomain>>
-
-    fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>>
 
     fun uploadFirebaseData(data: FoodRemoteDomain, imageUri: Uri): LiveData<FirebaseResult<Nothing>>
 

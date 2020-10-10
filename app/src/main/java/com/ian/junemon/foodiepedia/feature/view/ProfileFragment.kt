@@ -96,24 +96,30 @@ class ProfileFragment : BaseFragment() {
     private fun consumeProfileData() {
         profileVm.getUserProfile().observe(viewLifecycleOwner, {
             when (it) {
-                is ProfileResults.Loading -> {
-                    profileVm.setupLoadingState(false)
-                }
                 is ProfileResults.Success -> {
-                    profileVm.setupLoadingState(true)
-                    binding.llProfileData.visibility = View.VISIBLE
-                    loadImageHelper.run {
-                        binding.ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
+                    if (it.data.getPhotoUrl()!=null){
+                        binding.llProfileData.visibility = View.VISIBLE
+                        loadImageHelper.run {
+                            binding.ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
+                        }
+                        binding.tvProfileName.text = it.data.getDisplayName()
+                        binding.rlSignOut.visibility = View.VISIBLE
+                        binding.rlSignIn.visibility = View.GONE
+                    }else{
+                        binding.rlSignOut.visibility = View.GONE
+                        binding.rlSignIn.visibility = View.VISIBLE
                     }
-                    binding.tvProfileName.text = it.data.getDisplayName()
-                    binding.rlSignOut.visibility = View.VISIBLE
-                    binding.rlSignIn.visibility = View.GONE
+
                 }
                 is ProfileResults.Error -> {
-                    profileVm.setupLoadingState(true)
-                    binding.llProfileData.visibility = View.GONE
-                    binding.rlSignIn.visibility = View.VISIBLE
-                    binding.rlSignOut.visibility = View.GONE
+                    loadImageHelper.run {
+                        binding.ivPhotoProfile.loadWithGlide(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.ic_profiles
+                            )!!
+                        )
+                    }
                 }
             }
 

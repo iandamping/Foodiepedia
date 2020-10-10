@@ -15,6 +15,10 @@ import com.junemon.model.domain.FoodRemoteDomain
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -28,6 +32,8 @@ class FoodRemoteHelperImpl @Inject constructor(
     private val storagePlaceReference: StorageReference,
     private val databasePlaceReference: DatabaseReference
 ) : FoodRemoteHelper {
+
+    private val channel = ConflatedBroadcastChannel<DataHelper<List<FoodRemoteDomain>>>()
 
     @ExperimentalCoroutinesApi
     override suspend fun getFirebaseData(): DataHelper<List<FoodRemoteDomain>> {
@@ -52,6 +58,39 @@ class FoodRemoteHelperImpl @Inject constructor(
             })
         }
         return result.await()
+    }
+
+    override suspend fun getFirebaseDatas(): Flow<DataHelper<List<FoodRemoteDomain>>> {
+        val container: MutableSet<FoodEntity> = mutableSetOf()
+        databasePlaceReference.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                if (!channel.isClosedForSend) {
+                    channel.offer(DataHelper.RemoteSourceError(p0.toException()))
+                }
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                container.clear()
+                p0.children.map {
+                    it.getValue(FoodEntity::class.java)
+                }.forEach {
+                    if(it !=null){
+                        container.add(it)
+                    }else{
+                        if (!channel.isClosedForSend) {
+                            channel.offer(DataHelper.RemoteSourceError(Exception("Null")))
+                        }
+                    }
+                }
+
+                if (!channel.isClosedForSend) {
+                    channel.offer(DataHelper.RemoteSourceValue(
+                        container.toList().mapToRemoteDomain()
+                    ))
+                }
+            }
+        })
+        return channel.asFlow().onStart { emit(DataHelper.RemoteSourceLoading) }
     }
 
     @ExperimentalCoroutinesApi

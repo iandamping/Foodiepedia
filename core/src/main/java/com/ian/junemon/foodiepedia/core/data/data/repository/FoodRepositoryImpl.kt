@@ -19,6 +19,8 @@ import com.junemon.model.domain.FoodRemoteDomain
 import com.junemon.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -46,75 +48,38 @@ class FoodRepositoryImpl @Inject constructor(
         return this.mapRemoteToCacheDomain()
     }
 
-    @ExperimentalCoroutinesApi
-    override suspend fun foodPrefetch() = flow<WorkerResult<Nothing>> {
-        when (val response = remoteDataSource.getFirebaseData()) {
-            is DataHelper.RemoteSourceError -> {
-                emit(WorkerResult.ErrorWork(response.exception))
-            }
-            is DataHelper.RemoteSourceValue -> {
-                if (response.data.isNotEmpty()) {
-                    cacheDataSource.setCache(*response.data.applyMainSafeSort().toTypedArray())
-                    emit(WorkerResult.SuccessWork)
-                } else {
-                    emit(WorkerResult.EmptyData)
-                }
-            }
-        }
-    }
 
-    override fun homeFoodPrefetch(): LiveData<WorkerResult<Nothing>> {
-        return liveData {
-            val disposables = emitSource(flowOf(WorkerResult.Loading).asLiveData())
-            when (val response = remoteDataSource.getFirebaseData()){
-                is DataHelper.RemoteSourceError -> {
-                    disposables.dispose()
-                    emit(WorkerResult.ErrorWork(response.exception))
-                }
-                is DataHelper.RemoteSourceValue -> {
-                    disposables.dispose()
-                    if (response.data.isNotEmpty()) {
-                        cacheDataSource.setCache(*response.data.applyMainSafeSort().toTypedArray())
-                        emit(WorkerResult.SuccessWork)
-                    } else {
-                        emit(WorkerResult.EmptyData)
-                    }
-                }
-            }
-        }
-    }
-
-    override fun getCache(): LiveData<Results<List<FoodCacheDomain>>> {
-        return liveData {
-            val disposables = emitSource(flowOf(Results.Loading).asLiveData())
-
-                when (val responseStatus = remoteDataSource.getFirebaseData()) {
+    override fun homeFoodPrefetch(): LiveData<Results<List<FoodCacheDomain>>> {
+        return flow {
+            emitAll(remoteDataSource.getFirebaseDatas().flatMapLatest { firebaseResult ->
+                when (firebaseResult) {
                     is DataHelper.RemoteSourceError -> {
-                        emitSource(cacheDataSource.getCache().map {
-                            Results.Error(exception = responseStatus.exception, cache = it)
-                        }.asLiveData())
+                        flowOf(Results.Error(exception = firebaseResult.exception))
                     }
+
                     is DataHelper.RemoteSourceValue -> {
-                        check(responseStatus.data.isNotEmpty()) {
-                            " data is empty "
+                        with(cacheDataSource){
+                            cacheDataSource.setCache(*firebaseResult.data.applyMainSafeSort().toTypedArray())
+                            cacheDataSource.getCache().map { Results.Success(it) }
                         }
-                        // Stop the previous emission to avoid dispatching the updated user
-                        // as `loading`.
-                        disposables.dispose()
-                        cacheDataSource.setCache(*responseStatus.data.applyMainSafeSort().toTypedArray())
-                        emitSource(cacheDataSource.getCache().map { Results.Success(it) }
-                            .asLiveData())
+
+                    }
+                    else -> {
+                        cacheDataSource.getCache().map {
+                            Results.Loading(cache = it)
+                        }
                     }
                 }
-        }
+            })
+        }.asLiveData()
+    }
+
+    override fun getCache():LiveData<List<FoodCacheDomain>> {
+        return cacheDataSource.getCache().asLiveData()
     }
 
     override fun getSavedDetailCache(): LiveData<List<SavedFoodCacheDomain>> {
         return cacheDataSource.getSavedDetailCache().asLiveData()
-    }
-
-    override fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>> {
-        return cacheDataSource.getCategorizeCache(category).asLiveData()
     }
 
     override fun uploadFirebaseData(

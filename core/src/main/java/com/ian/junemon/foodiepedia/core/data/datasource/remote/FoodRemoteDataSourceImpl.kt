@@ -19,6 +19,10 @@ class FoodRemoteDataSourceImpl @Inject constructor(private val foodRemoteHelper:
         return foodRemoteHelper.getFirebaseData()
     }
 
+    override suspend fun getFirebaseDatas(): Flow<DataHelper<List<FoodRemoteDomain>>> {
+        return foodRemoteHelper.getFirebaseDatas()
+    }
+
     override suspend fun uploadFirebaseData(
         data: FoodRemoteDomain,
         imageUri: Uri

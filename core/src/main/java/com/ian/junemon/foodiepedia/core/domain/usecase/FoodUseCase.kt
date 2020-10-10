@@ -18,9 +18,7 @@ import javax.inject.Inject
  */
 class FoodUseCase @Inject constructor(private val repo: FoodRepository) {
 
-    suspend fun foodPrefetch() = repo.foodPrefetch()
-
-    fun homeFoodPrefetch(): LiveData<WorkerResult<Nothing>> = repo.homeFoodPrefetch()
+    fun homeFoodPrefetch():  LiveData<Results<List<FoodCacheDomain>>> = repo.homeFoodPrefetch()
 
     suspend fun setCacheDetailFood(vararg data: SavedFoodCacheDomain) = repo.setCacheDetailFood(*data)
 
@@ -28,9 +26,7 @@ class FoodUseCase @Inject constructor(private val repo: FoodRepository) {
 
     suspend fun deleteSelectedId(selectedId: Int) = repo.deleteSelectedId(selectedId)
 
-    fun getCache(): LiveData<Results<List<FoodCacheDomain>>> = repo.getCache()
-
-    fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>> = repo.getCategorizeCache(category)
+    fun getCache(): LiveData<List<FoodCacheDomain>> = repo.getCache()
 
     fun uploadFirebaseData(data: FoodRemoteDomain, imageUri: Uri): LiveData<FirebaseResult<Nothing>> = repo.uploadFirebaseData(data, imageUri)
 

@@ -122,17 +122,7 @@ class SearchFragment : BaseFragment() {
 
     private fun FragmentSearchBinding.initData() {
         foodVm.getCache().observe(viewLifecycleOwner, Observer { result ->
-            when (result) {
-                is Results.Success -> {
-                    data = result.data.map { it.mapToCachePresentation() }
-                }
-                is Results.Error -> {
-                    val cache by lazy { result.cache?.map { it.mapToCachePresentation() } }
-                    if (cache != null) {
-                        data = cache!!
-                    }
-                }
-            }
+            data = result.map { it.mapToCachePresentation() }
         })
 
         foodVm.searchItem.observe(viewLifecycleOwner, Observer {

@@ -15,6 +15,8 @@ interface FoodRemoteHelper {
 
     suspend fun getFirebaseData(): DataHelper<List<FoodRemoteDomain>>
 
+    suspend fun getFirebaseDatas(): Flow<DataHelper<List<FoodRemoteDomain>>>
+
     suspend fun uploadFirebaseData(
         data: FoodRemoteDomain,
         imageUri: Uri

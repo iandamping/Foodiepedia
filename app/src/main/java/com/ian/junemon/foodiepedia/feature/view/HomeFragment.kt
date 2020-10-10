@@ -24,12 +24,12 @@ import com.ian.junemon.foodiepedia.feature.util.FoodConstant.foodPresentationRvC
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.junemon.model.ProfileResults
-import com.junemon.model.WorkerResult
+import com.junemon.model.Results
 import com.junemon.model.data.dto.mapToCachePresentation
+import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.presentation.FoodCachePresentation
 import kotlinx.android.synthetic.main.item_custom_home.view.*
 import kotlinx.android.synthetic.main.item_home.view.ivFoodImage
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 /**
@@ -117,22 +117,16 @@ class HomeFragment : BaseFragment(), CanceledListener {
         }
     }
 
-    private fun iniDataView() {
+    private fun iniDataView(data:List<FoodCacheDomain>) {
         val localeStatus by lazy { foodVm.loadSharedPreferenceFilter() }
-        if (localeStatus == "") {
-            binding.tvHomeFilter.text = filterValueBreakfast
-            foodVm.getCategorizeCache(filterValueBreakfast)
-                .observe(viewLifecycleOwner,
-                    Observer { result ->
-                        binding.setupRecyclerView(result?.mapToCachePresentation())
-                    })
-        } else {
+        if (localeStatus!=""){
             binding.tvHomeFilter.text = localeStatus
-            foodVm.getCategorizeCache(localeStatus)
-                .observe(viewLifecycleOwner,
-                    Observer { result ->
-                        binding.setupRecyclerView(result?.mapToCachePresentation())
-                    })
+            val userPickData = data.filter { it.foodCategory == localeStatus }
+            binding.setupRecyclerView(userPickData.mapToCachePresentation())
+        }else{
+            binding.tvHomeFilter.text = filterValueBreakfast
+            val defaultBreakfastData = data.filter { it.foodCategory == filterValueBreakfast }
+            binding.setupRecyclerView(defaultBreakfastData.mapToCachePresentation())
         }
 
         foodVm.eventDissmissFromInput.observe(viewLifecycleOwner, EventObserver {
@@ -236,20 +230,21 @@ class HomeFragment : BaseFragment(), CanceledListener {
     private fun consumeFoodPrefetch() {
         foodVm.foodPrefetch().observe(viewLifecycleOwner, {
             when (it) {
-                is WorkerResult.Loading -> {
-                    foodVm.setupLoadingState(false)
+                is Results.Loading -> {
+                    if (!it.cache.isNullOrEmpty()){
+                        foodVm.setupLoadingState(true)
+                        iniDataView(it.cache!!)
+                    }else{
+                        foodVm.setupLoadingState(false)
+                    }
                 }
-                is WorkerResult.SuccessWork -> {
+                is Results.Success -> {
                     foodVm.setupLoadingState(true)
-                    iniDataView()
+                    iniDataView(it.data)
                 }
-                is WorkerResult.ErrorWork -> {
+                is Results.Error -> {
                     foodVm.setupLoadingState(true)
                     foodVm.setupSnackbarMessage(it.exception.message)
-                }
-                is WorkerResult.EmptyData -> {
-                    foodVm.setupLoadingState(true)
-                    foodVm.setupSnackbarMessage("data is empty")
                 }
             }
         })

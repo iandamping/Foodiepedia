@@ -109,12 +109,10 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         }
     }
 
-    fun foodPrefetch(): LiveData<WorkerResult<Nothing>> = repository.homeFoodPrefetch()
+    fun foodPrefetch(): LiveData<Results<List<FoodCacheDomain>>> = repository.homeFoodPrefetch()
 
-    fun getCategorizeCache(category: String): LiveData<List<FoodCacheDomain>> =
-        repository.getCategorizeCache(category)
 
-    fun getCache(): LiveData<Results<List<FoodCacheDomain>>> = repository.getCache()
+    fun getCache(): LiveData<List<FoodCacheDomain>> = repository.getCache()
 
     fun uploadFirebaseData(
         data: FoodRemoteDomain,
