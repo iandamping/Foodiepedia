@@ -20,6 +20,7 @@ import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.junemon.model.ProfileResults
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -97,17 +98,22 @@ class ProfileFragment : BaseFragment() {
         profileVm.getUserProfile().observe(viewLifecycleOwner, {
             when (it) {
                 is ProfileResults.Success -> {
-                    if (it.data.getPhotoUrl()!=null){
-                        binding.llProfileData.visibility = View.VISIBLE
-                        loadImageHelper.run {
-                            binding.ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
+                    if (it.data.getPhotoUrl().isNullOrEmpty() || it.data.getPhotoUrl() == "null"){
+                        with(binding){
+                            rlSignOut.visibility = View.GONE
+                            rlSignIn.visibility = View.VISIBLE
                         }
-                        binding.tvProfileName.text = it.data.getDisplayName()
-                        binding.rlSignOut.visibility = View.VISIBLE
-                        binding.rlSignIn.visibility = View.GONE
                     }else{
-                        binding.rlSignOut.visibility = View.GONE
-                        binding.rlSignIn.visibility = View.VISIBLE
+                        with(binding){
+                            loadImageHelper.run {
+                                ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
+                            }
+                            llProfileData.visibility = View.VISIBLE
+                            tvProfileName.text = it.data.getDisplayName()
+                            rlSignOut.visibility = View.VISIBLE
+                            rlSignIn.visibility = View.GONE
+                        }
+
                     }
 
                 }
@@ -134,7 +140,7 @@ class ProfileFragment : BaseFragment() {
 
     private fun navigateToUploadFragment() {
         val action = ProfileFragmentDirections.actionProfileFragmentToUploadFoodFragment()
-        findNavController().navigate(action)
+        navigate(action)
     }
 
     private fun fireSignIn() {
@@ -146,7 +152,13 @@ class ProfileFragment : BaseFragment() {
 
     private fun fireSignOut() {
         lifecycleScope.launch {
-            profileVm.initLogout()
+            profileVm.initLogout{
+                with(binding){
+                    llProfileData.visibility = View.GONE
+                    rlSignOut.visibility = View.GONE
+                    rlSignIn.visibility = View.VISIBLE
+                }
+            }
         }
     }
 }

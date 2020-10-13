@@ -32,11 +32,9 @@ class ProfileViewModel @Inject constructor(private val repository: ProfileUseCas
 
     suspend fun initSignIn(): Intent = repository.initSignIn()
 
-    fun initLogout() {
+    fun initLogout(successLogout :()-> Unit) {
         viewModelScope.launch {
-            repository.initLogout {
-                Timber.e("success logout")
-            }
+            repository.initLogout(successLogout)
         }
     }
 }

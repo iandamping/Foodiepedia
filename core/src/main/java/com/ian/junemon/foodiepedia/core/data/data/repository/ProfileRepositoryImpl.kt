@@ -28,20 +28,19 @@ import javax.inject.Inject
  * Indonesia.
  */
 class ProfileRepositoryImpl @Inject constructor(
-    private val cacheDataSource: ProfileCacheDataSource,
     private val remoteDataSource: ProfileRemoteDataSource
 ) : ProfileRepository {
 
 
     override fun getUserProfile():LiveData<ProfileResults<AuthenticatedUserInfo>> {
         return flow {
-            emitAll(remoteDataSource.getUserProfile().map { userResult ->
+            remoteDataSource.getUserProfile().collect { userResult ->
                 if (userResult is DataHelper.RemoteSourceValue){
-                    ProfileResults.Success(userResult.data)
+                    emit(ProfileResults.Success(userResult.data))
                 } else{
-                    ProfileResults.Error(Exception("FirebaseAuth error"))
+                   emit(ProfileResults.Error(Exception("FirebaseAuth error")))
                 }
-            })
+            }
         }.asLiveData()
     }
 
@@ -50,7 +49,7 @@ class ProfileRepositoryImpl @Inject constructor(
         return remoteDataSource.initSignIn()
     }
 
-    override   suspend fun initLogout(onComplete: () -> Unit) {
+    override suspend fun initLogout(onComplete: () -> Unit) {
         remoteDataSource.initLogout(onComplete)
     }
 }

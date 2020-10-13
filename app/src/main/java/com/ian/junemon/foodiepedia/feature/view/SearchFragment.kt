@@ -150,7 +150,7 @@ class SearchFragment : BaseFragment() {
 
     private fun navigateToDetailFoodFragment(foodValue: String) {
         val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(foodValue)
-        findNavController().navigate(action)
+        navigate(action)
     }
 
 

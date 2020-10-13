@@ -46,12 +46,6 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
     private val _moveDetailToHomeFragmentEvent = MutableLiveData<Event<Unit>>()
     val moveDetailToHomeFragmentEvent: LiveData<Event<Unit>> = _moveDetailToHomeFragmentEvent
 
-    private val _eventDissmissFromInput = MutableLiveData<Event<Unit>>()
-    val eventDissmissFromInput: LiveData<Event<Unit>> = _eventDissmissFromInput
-
-    private val _eventDissmissFromFilter = MutableLiveData<Event<Unit>>()
-    val eventDissmissFromFilter: LiveData<Event<Unit>> = _eventDissmissFromFilter
-
     val etFoodName: MutableLiveData<String> = MutableLiveData()
     val etFoodArea: MutableLiveData<String> = MutableLiveData()
     val etFoodDescription: MutableLiveData<String> = MutableLiveData()
@@ -64,14 +58,6 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         liveData.observe(lifecycleOwner, {
             data.invoke(it)
         })
-    }
-
-    fun eventDissmissFromFilter(){
-        _eventDissmissFromFilter.value = Event(Unit)
-    }
-
-    fun eventDissmissFromInput() {
-        _eventDissmissFromInput.value = Event(Unit)
     }
 
     fun registerSharedPrefStringListener() = repository.registerSharedPrefStringListener()
