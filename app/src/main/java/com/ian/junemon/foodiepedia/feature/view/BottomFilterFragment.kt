@@ -18,7 +18,6 @@ import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filter
 import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueSupper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentBottomFilterBinding
-import com.ian.junemon.foodiepedia.feature.util.CanceledListener
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
@@ -28,7 +27,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class BottomFilterFragment(private val canceledState: CanceledListener) : BottomSheetDialogFragment() {
+class BottomFilterFragment : BottomSheetDialogFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var foodVm: FoodViewModel
@@ -46,8 +45,8 @@ class BottomFilterFragment(private val canceledState: CanceledListener) : Bottom
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        foodVm.registerSharedPrefStringListener()
         dialog?.window?.attributes?.windowAnimations = R.style.DialogAnimation
-        binding.initView()
     }
 
     override fun onCreateView(
@@ -60,9 +59,12 @@ class BottomFilterFragment(private val canceledState: CanceledListener) : Bottom
         return binding.root
     }
 
-    private fun FragmentBottomFilterBinding.initView() {
-        val localeStatus by lazy { foodVm.loadSharedPreferenceFilter() }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.initView()
+    }
 
+    private fun FragmentBottomFilterBinding.initView() {
         loadImageHelper.run {
             ivBrunch.setImageDrawable(
                 ContextCompat.getDrawable(
@@ -126,81 +128,85 @@ class BottomFilterFragment(private val canceledState: CanceledListener) : Bottom
             dismiss()
         }
 
-        when (localeStatus) {
-            filterValueBreakfast -> {
-                loadImageHelper.run {
-                    ivPickBreakfast.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_check_circle_green_24dp
+        foodVm.loadSharedPreferenceFilter().observe(viewLifecycleOwner, { localeStatus ->
+            when (localeStatus) {
+                filterValueBreakfast -> {
+                    loadImageHelper.run {
+                        ivPickBreakfast.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.ic_check_circle_green_24dp
+                            )
                         )
-                    )
+                    }
                 }
-            }
-            filterValueDinner -> {
-                loadImageHelper.run {
-                    ivPickDinner.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_check_circle_green_24dp
+                filterValueDinner -> {
+                    loadImageHelper.run {
+                        ivPickDinner.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.ic_check_circle_green_24dp
+                            )
                         )
-                    )
+                    }
+                }
+
+                filterValueLunch -> {
+                    loadImageHelper.run {
+                        ivPickLunch.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.ic_check_circle_green_24dp
+                            )
+                        )
+                    }
+                }
+
+                filterValueBrunch -> {
+                    loadImageHelper.run {
+                        ivPickBrunch.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.ic_check_circle_green_24dp
+                            )
+                        )
+                    }
+                }
+
+                filterValueSupper -> {
+                    loadImageHelper.run {
+                        ivPickSupper.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.ic_check_circle_green_24dp
+                            )
+                        )
+                    }
+                }
+
+                else -> {
+                    loadImageHelper.run {
+                        ivPickBreakfast.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.ic_check_circle_green_24dp
+                            )
+                        )
+                    }
                 }
             }
 
-            filterValueLunch -> {
-                loadImageHelper.run {
-                    ivPickLunch.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_check_circle_green_24dp
-                        )
-                    )
-                }
-            }
-
-            filterValueBrunch -> {
-                loadImageHelper.run {
-                    ivPickBrunch.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_check_circle_green_24dp
-                        )
-                    )
-                }
-            }
-
-            filterValueSupper -> {
-                loadImageHelper.run {
-                    ivPickSupper.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_check_circle_green_24dp
-                        )
-                    )
-                }
-            }
-
-            else -> {
-                loadImageHelper.run {
-                    ivPickBreakfast.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_check_circle_green_24dp
-                        )
-                    )
-                }
-            }
-        }
+        })
     }
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        canceledState.onDissmis()
+        // foodVm.eventDissmissFromFilter()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        foodVm.unregisterSharedPrefStringListener()
         _binding = null
     }
 }

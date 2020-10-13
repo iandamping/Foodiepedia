@@ -49,6 +49,9 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
     private val _eventDissmissFromInput = MutableLiveData<Event<Unit>>()
     val eventDissmissFromInput: LiveData<Event<Unit>> = _eventDissmissFromInput
 
+    private val _eventDissmissFromFilter = MutableLiveData<Event<Unit>>()
+    val eventDissmissFromFilter: LiveData<Event<Unit>> = _eventDissmissFromFilter
+
     val etFoodName: MutableLiveData<String> = MutableLiveData()
     val etFoodArea: MutableLiveData<String> = MutableLiveData()
     val etFoodDescription: MutableLiveData<String> = MutableLiveData()
@@ -58,14 +61,22 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         liveData: LiveData<String>,
         crossinline data: (String) -> Unit
     ) {
-        liveData.observe(lifecycleOwner, Observer {
+        liveData.observe(lifecycleOwner, {
             data.invoke(it)
         })
+    }
+
+    fun eventDissmissFromFilter(){
+        _eventDissmissFromFilter.value = Event(Unit)
     }
 
     fun eventDissmissFromInput() {
         _eventDissmissFromInput.value = Event(Unit)
     }
+
+    fun registerSharedPrefStringListener() = repository.registerSharedPrefStringListener()
+
+    fun unregisterSharedPrefStringListener() = repository.unregisterSharedPrefStringListener()
 
     fun moveToDetailFragment(foodValue: String) {
         _moveToDetailFragmentEvent.value = Event(foodValue)
@@ -119,7 +130,7 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         imageUri: Uri
     ): LiveData<FirebaseResult<Nothing>> = repository.uploadFirebaseData(data, imageUri)
 
-    fun loadSharedPreferenceFilter():String = repository.loadSharedPreferenceFilter()
+    fun loadSharedPreferenceFilter():LiveData<String?> = repository.loadSharedPreferenceFilter()
 
     fun setSharedPreferenceFilter(data:String) = repository.setSharedPreferenceFilter(data)
 }

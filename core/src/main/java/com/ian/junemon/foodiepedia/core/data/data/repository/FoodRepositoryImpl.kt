@@ -19,6 +19,7 @@ import com.junemon.model.domain.FoodRemoteDomain
 import com.junemon.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
@@ -103,7 +104,15 @@ class FoodRepositoryImpl @Inject constructor(
         cacheDataSource.deleteSelectedId(selectedId)
     }
 
-    override fun loadSharedPreferenceFilter(): String {
+    override fun registerSharedPrefStringListener() {
+        cacheDataSource.registerSharedPrefStringListener()
+    }
+
+    override fun unregisterSharedPrefStringListener() {
+        cacheDataSource.unregisterSharedPrefStringListener()
+    }
+
+    override fun loadSharedPreferenceFilter(): Flow<String?>{
         return cacheDataSource.loadSharedPreferenceFilter()
     }
 

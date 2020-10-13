@@ -61,9 +61,7 @@ class SearchFragment : BaseFragment() {
     }
 
     override fun viewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.run {
-            initView()
-        }
+        binding.initView()
     }
 
     override fun destroyView() {

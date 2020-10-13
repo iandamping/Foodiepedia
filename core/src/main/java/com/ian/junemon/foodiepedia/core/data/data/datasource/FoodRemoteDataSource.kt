@@ -39,7 +39,11 @@ interface FoodCacheDataSource {
 
     suspend fun deleteSelectedId(selectedId: Int)
 
-    fun loadSharedPreferenceFilter():String
+    fun registerSharedPrefStringListener()
+
+    fun unregisterSharedPrefStringListener()
+
+    fun loadSharedPreferenceFilter():Flow<String?>
 
     fun setSharedPreferenceFilter(data:String)
 }

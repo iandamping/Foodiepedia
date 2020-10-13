@@ -18,11 +18,7 @@ class RecyclerHelperImpl @Inject constructor() :
         manager: RecyclerView.LayoutManager
     ): BaseKotlinListAdapter<T> {
 
-        val mutableData:MutableSet<T> = mutableSetOf()
-        mutableData.clear()
-        items.forEach {
-            mutableData.add(it)
-        }
+
 
         return BaseKotlinListAdapter(
             layout = layoutResId,
@@ -31,7 +27,7 @@ class RecyclerHelperImpl @Inject constructor() :
             itemClicks = { itemClick() }).apply {
             layoutManager = manager
             adapter = this
-            submitList(mutableData.toList())
+            submitList(items)
             notifyDataSetChanged()
         }
     }
@@ -44,11 +40,7 @@ class RecyclerHelperImpl @Inject constructor() :
         itemClick: T.() -> Unit,
         manager: RecyclerView.LayoutManager
     ): BaseKotlinListAdapter<T> {
-        val mutableData:MutableSet<T> = mutableSetOf()
-        mutableData.clear()
-        items.forEach {
-            mutableData.add(it)
-        }
+
         return BaseKotlinListAdapter(
             layout = layoutResId,
             bindHolder = { bindHolder(it) },
@@ -56,7 +48,7 @@ class RecyclerHelperImpl @Inject constructor() :
             itemClicks = { itemClick() }).apply {
             layoutManager = manager
             adapter = this
-            submitList(mutableData.toList())
+            submitList(items)
             notifyDataSetChanged()
         }
     }
@@ -71,11 +63,7 @@ class RecyclerHelperImpl @Inject constructor() :
         manager: RecyclerView.LayoutManager
     ): BaseKotlinListAdapter<T> {
 
-        val mutableData:MutableSet<T> = mutableSetOf()
-        mutableData.clear()
-        items.forEach {
-            mutableData.add(it)
-        }
+
 
         return BaseKotlinListAdapter(
             layout = layoutResId,
@@ -84,7 +72,7 @@ class RecyclerHelperImpl @Inject constructor() :
             itemClicks = { itemClick() }).apply {
             layoutManager = manager
             adapter = this
-            submitList(mutableData.toList())
+            submitList(items)
             notifyDataSetChanged()
         }
     }
@@ -102,11 +90,6 @@ class RecyclerHelperImpl @Inject constructor() :
                 .attachToRecyclerView(this)
         }
 
-        val mutableData:MutableSet<T> = mutableSetOf()
-        mutableData.clear()
-        items.forEach {
-            mutableData.add(it)
-        }
         return BaseKotlinListAdapter(
             layout = layoutResId,
             bindHolder = { bindHolder(it) },
@@ -114,7 +97,7 @@ class RecyclerHelperImpl @Inject constructor() :
             itemClicks = { itemClick() }).apply {
             layoutManager = manager
             adapter = this
-            submitList(mutableData.toList())
+            submitList(items)
             notifyDataSetChanged()
         }
     }

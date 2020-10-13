@@ -33,6 +33,9 @@
             app:exitAnim="@anim/push_down_out"
             app:popEnterAnim="@anim/push_up_in"
             app:popExitAnim="@anim/push_down_out" />
+        <action
+            android:id="@+id/action_homeFragment_to_bottomFilterFragment"
+            app:destination="@id/bottomFilterFragment" />
         <!--<action
             android:id="@+id/action_homeFragment_to_detailFragment"
             app:destination="@id/detailFragment"
@@ -93,5 +96,9 @@
             android:id="@+id/action_searchFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/bottomFilterFragment"
+        android:name="com.ian.junemon.foodiepedia.feature.view.BottomFilterFragment"
+        android:label="BottomFilterFragment" />
 
 </navigation>

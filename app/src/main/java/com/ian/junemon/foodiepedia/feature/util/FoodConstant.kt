@@ -21,7 +21,7 @@ object FoodConstant {
             oldItem: FoodCacheDomain,
             newItem: FoodCacheDomain
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.foodId == newItem.foodId
         }
     }
 
@@ -37,7 +37,7 @@ object FoodConstant {
             oldItem: FoodCachePresentation,
             newItem: FoodCachePresentation
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.foodId == newItem.foodId
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.ian.junemon.foodiepedia.feature.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.R
@@ -18,7 +16,6 @@ import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentHomeBinding
-import com.ian.junemon.foodiepedia.feature.util.CanceledListener
 import com.ian.junemon.foodiepedia.feature.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.util.FoodConstant.foodPresentationRvCallback
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
@@ -37,7 +34,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class HomeFragment : BaseFragment(), CanceledListener {
+class HomeFragment : BaseFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var foodVm: FoodViewModel
@@ -51,8 +48,6 @@ class HomeFragment : BaseFragment(), CanceledListener {
 
     @Inject
     lateinit var gson: Gson
-
-    private val bottomFilter by lazy { BottomFilterFragment(this) }
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -90,10 +85,12 @@ class HomeFragment : BaseFragment(), CanceledListener {
     }
 
     override fun destroyView() {
+        foodVm.unregisterSharedPrefStringListener()
         _binding = null
     }
 
     override fun activityCreated() {
+        foodVm.registerSharedPrefStringListener()
         consumeFoodPrefetch()
         consumeProfileData()
         setupNavigation()
@@ -101,10 +98,9 @@ class HomeFragment : BaseFragment(), CanceledListener {
 
     private fun FragmentHomeBinding.initView() {
         ivFilter.setOnClickListener {
-            bottomFilter.show(
-                childFragmentManager,
-                bottomFilter.tag
-            )
+            val bottomFilterDirections =
+                HomeFragmentDirections.actionHomeFragmentToBottomFilterFragment()
+            navigate(bottomFilterDirections)
         }
         /*fabHome.setOnClickListener {
             foodVm.moveToUploadFragment()
@@ -117,25 +113,26 @@ class HomeFragment : BaseFragment(), CanceledListener {
         }
     }
 
-    private fun iniDataView(data:List<FoodCacheDomain>) {
-        val localeStatus by lazy { foodVm.loadSharedPreferenceFilter() }
-        if (localeStatus!=""){
-            binding.tvHomeFilter.text = localeStatus
-            val userPickData = data.filter { it.foodCategory == localeStatus }
-            binding.setupRecyclerView(userPickData.mapToCachePresentation())
-        }else{
-            binding.tvHomeFilter.text = filterValueBreakfast
-            val defaultBreakfastData = data.filter { it.foodCategory == filterValueBreakfast }
-            binding.setupRecyclerView(defaultBreakfastData.mapToCachePresentation())
-        }
-
-        foodVm.eventDissmissFromInput.observe(viewLifecycleOwner, EventObserver {
-            requireActivity().run {
-                val intent by lazy { Intent(this, this::class.java) }
-                startActivity(intent)
-                finish()
+    private fun iniDataView(data: List<FoodCacheDomain>) {
+        foodVm.loadSharedPreferenceFilter().observe(viewLifecycleOwner, { localeStatus ->
+            if (localeStatus != null && localeStatus != "") {
+                binding.tvHomeFilter.text = localeStatus
+                val userPickData = data.filter { it.foodCategory == localeStatus }
+                binding.setupRecyclerView(userPickData.mapToCachePresentation())
+            } else {
+                binding.tvHomeFilter.text = filterValueBreakfast
+                val defaultBreakfastData = data.filter { it.foodCategory == filterValueBreakfast }
+                binding.setupRecyclerView(defaultBreakfastData.mapToCachePresentation())
             }
         })
+
+        // foodVm.eventDissmissFromFilter.observe(viewLifecycleOwner, EventObserver {
+        //     requireActivity().run {
+        //         val intent by lazy { Intent(this, this::class.java) }
+        //         startActivity(intent)
+        //         finish()
+        //     }
+        // })
     }
 
     private fun FragmentHomeBinding.enableShimmer() {
@@ -191,17 +188,17 @@ class HomeFragment : BaseFragment(), CanceledListener {
 
     private fun navigateToDetailFoodFragment(foodValue: String) {
         val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(foodValue)
-        findNavController().navigate(action)
+        navigate(action)
     }
 
     private fun navigateToProfileFragment() {
         val action = HomeFragmentDirections.actionHomeFragmentToProfileFragment()
-        findNavController().navigate(action)
+        navigate(action)
     }
 
     private fun navigateToSearchFragment() {
         val action = HomeFragmentDirections.actionHomeFragmentToSearchFragment()
-        findNavController().navigate(action)
+        navigate(action)
     }
 
     private fun consumeProfileData() {
@@ -212,7 +209,7 @@ class HomeFragment : BaseFragment(), CanceledListener {
                         binding.ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
                     }
                 }
-                else ->{
+                else -> {
                     loadImageHelper.run {
                         binding.ivPhotoProfile.loadWithGlide(
                             ContextCompat.getDrawable(
@@ -231,10 +228,10 @@ class HomeFragment : BaseFragment(), CanceledListener {
         foodVm.foodPrefetch().observe(viewLifecycleOwner, {
             when (it) {
                 is Results.Loading -> {
-                    if (!it.cache.isNullOrEmpty()){
+                    if (!it.cache.isNullOrEmpty()) {
                         foodVm.setupLoadingState(true)
                         iniDataView(it.cache!!)
-                    }else{
+                    } else {
                         foodVm.setupLoadingState(false)
                     }
                 }
@@ -248,9 +245,5 @@ class HomeFragment : BaseFragment(), CanceledListener {
                 }
             }
         })
-    }
-
-    override fun onDissmis() {
-        foodVm.eventDissmissFromInput()
     }
 }

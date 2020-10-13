@@ -35,9 +35,7 @@ class SplashActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewHelper.run { fullScreenAnimation() }
         binding = ActivitySplashBinding.inflate(layoutInflater)
-        binding.run {
-            initView()
-        }
+        binding.initView()
         setContentView(binding.root)
 
         runDelayed {

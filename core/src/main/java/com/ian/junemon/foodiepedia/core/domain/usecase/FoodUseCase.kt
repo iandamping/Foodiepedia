@@ -2,6 +2,7 @@ package com.ian.junemon.foodiepedia.core.domain.usecase
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
 import com.junemon.model.FirebaseResult
 import com.junemon.model.Results
@@ -9,6 +10,7 @@ import com.junemon.model.WorkerResult
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
 import com.junemon.model.domain.SavedFoodCacheDomain
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -30,7 +32,11 @@ class FoodUseCase @Inject constructor(private val repo: FoodRepository) {
 
     fun uploadFirebaseData(data: FoodRemoteDomain, imageUri: Uri): LiveData<FirebaseResult<Nothing>> = repo.uploadFirebaseData(data, imageUri)
 
-    fun loadSharedPreferenceFilter():String = repo.loadSharedPreferenceFilter()
+    fun registerSharedPrefStringListener() = repo.registerSharedPrefStringListener()
+
+    fun unregisterSharedPrefStringListener() = repo.unregisterSharedPrefStringListener()
+
+    fun loadSharedPreferenceFilter(): LiveData<String?> = repo.loadSharedPreferenceFilter().asLiveData()
 
     fun setSharedPreferenceFilter(data:String) = repo.setSharedPreferenceFilter(data)
 }

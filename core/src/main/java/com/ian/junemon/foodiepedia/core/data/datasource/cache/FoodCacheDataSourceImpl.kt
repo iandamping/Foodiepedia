@@ -1,6 +1,7 @@
 package com.ian.junemon.foodiepedia.core.data.datasource.cache
 
-import com.ian.junemon.foodiepedia.core.cache.util.PreferenceHelper
+import com.ian.junemon.foodiepedia.core.cache.preference.PreferenceHelper
+import com.ian.junemon.foodiepedia.core.cache.preference.listener.StringPrefValueListener
 import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToCacheDomain
 import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToDatabase
 import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToDetailDatabase
@@ -11,6 +12,8 @@ import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filter
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -22,7 +25,8 @@ import javax.inject.Inject
 class FoodCacheDataSourceImpl @Inject constructor(
     private val foodDao: FoodDaoHelper,
     private val savedFoodDao: SavedFoodDaoHelper,
-    private val prefHelper: PreferenceHelper
+    private val prefHelper: PreferenceHelper,
+    private val stringPrefValueListener: StringPrefValueListener
 ) : FoodCacheDataSource {
     override fun getCache(): Flow<List<FoodCacheDomain>> {
         return foodDao.loadFood().map { it.mapToCacheDomain() }
@@ -48,8 +52,25 @@ class FoodCacheDataSourceImpl @Inject constructor(
         savedFoodDao.deleteSelectedId(selectedId)
     }
 
-    override fun loadSharedPreferenceFilter(): String {
-        return prefHelper.getStringInSharedPreference(filterKey) ?: ""
+    override fun registerSharedPrefStringListener() {
+        prefHelper.registerListener(stringPrefValueListener)
+
+    }
+
+    override fun unregisterSharedPrefStringListener() {
+      prefHelper.unregisterListener(stringPrefValueListener)
+    }
+
+    private fun combineString(data1: String, data2: String?): String {
+        return data2 ?: data1
+    }
+
+    override fun loadSharedPreferenceFilter():Flow<String?> {
+        stringPrefValueListener.setListenKey(filterKey)
+        return flowOf(prefHelper.getStringInSharedPreference(filterKey))
+            .combine(stringPrefValueListener.stringPreferenceValue) { a, b ->
+                combineString(a, b)
+            }
     }
 
     override fun setSharedPreferenceFilter(data: String) {
