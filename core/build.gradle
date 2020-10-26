@@ -91,7 +91,6 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
     api "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_version"
-    implementation "com.google.code.gson:gson:$gson_version"
     api  "com.google.firebase:firebase-core:$firebaseCoreVer"
     api "com.google.firebase:firebase-storage:$firebaseStorageVer"
     api "com.google.firebase:firebase-database:$firebaseDatabaseVer"

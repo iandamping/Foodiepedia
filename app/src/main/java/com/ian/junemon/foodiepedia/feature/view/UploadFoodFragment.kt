@@ -17,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
-import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
+import com.ian.junemon.foodiepedia.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ImageUtilHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.PermissionHelper

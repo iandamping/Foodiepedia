@@ -1,8 +1,6 @@
 package com.ian.junemon.foodiepedia.feature.view
 
-import android.content.Context
 import android.os.Bundle
-import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +11,11 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
-import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
+import com.ian.junemon.foodiepedia.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.IntentUtilHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentDetailBinding
-import com.ian.junemon.foodiepedia.feature.util.EventObserver
+import com.ian.junemon.foodiepedia.core.presentation.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.junemon.model.data.dto.mapToDetailDatabasePresentation
 import com.junemon.model.presentation.FoodCachePresentation

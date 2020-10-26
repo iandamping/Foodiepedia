@@ -61,11 +61,13 @@
 
     <fragment
         android:id="@+id/uploadFoodFragment"
+        tools:layout="@layout/fragment_upload"
         android:name="com.ian.junemon.foodiepedia.feature.view.UploadFoodFragment"
         android:label="UploadFragment" />
 
     <fragment
         android:id="@+id/profileFragment"
+        tools:layout="@layout/fragment_profile"
         android:name="com.ian.junemon.foodiepedia.feature.view.ProfileFragment"
         android:label="ProfileFragment" >
         <action
@@ -79,6 +81,7 @@
 
     <fragment
         android:id="@+id/detailFragment"
+        tools:layout="@layout/fragment_detail"
         android:name="com.ian.junemon.foodiepedia.feature.view.DetailFragment"
         android:label="DetailFragment" >
 
@@ -89,6 +92,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
+        tools:layout="@layout/fragment_search"
         android:name="com.ian.junemon.foodiepedia.feature.view.SearchFragment"
         android:label="SearchFragment" >
 
@@ -98,6 +102,7 @@
     </fragment>
     <dialog
         android:id="@+id/bottomFilterFragment"
+        tools:layout="@layout/fragment_bottom_filter"
         android:name="com.ian.junemon.foodiepedia.feature.view.BottomFilterFragment"
         android:label="BottomFilterFragment" />
 

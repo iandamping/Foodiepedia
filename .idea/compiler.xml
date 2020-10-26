@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.7">
+      <module name="food_api_mvvm.app" target="1.8" />
+      <module name="food_api_mvvm.core" target="1.8" />
+      <module name="food_api_mvvm.uploader" target="1.8" />
       <module name="model" target="1.7" />
     </bytecodeTargetLevel>
   </component>

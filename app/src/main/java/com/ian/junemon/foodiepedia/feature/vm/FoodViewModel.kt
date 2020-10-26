@@ -4,14 +4,11 @@ import android.net.Uri
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
-import com.ian.junemon.foodiepedia.feature.util.Event
+import com.ian.junemon.foodiepedia.core.presentation.util.Event
 import com.junemon.model.FirebaseResult
 import com.junemon.model.Results
-import com.junemon.model.WorkerResult
 import com.junemon.model.domain.FoodCacheDomain
 import com.junemon.model.domain.FoodRemoteDomain
 import com.junemon.model.domain.SavedFoodCacheDomain

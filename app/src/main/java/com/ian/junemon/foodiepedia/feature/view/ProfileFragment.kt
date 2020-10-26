@@ -5,22 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
-import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
+import com.ian.junemon.foodiepedia.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentProfileBinding
-import com.ian.junemon.foodiepedia.feature.util.EventObserver
-import com.ian.junemon.foodiepedia.feature.util.FoodConstant.requestSignIn
-import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
+import com.ian.junemon.foodiepedia.core.presentation.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.junemon.model.ProfileResults
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 /**

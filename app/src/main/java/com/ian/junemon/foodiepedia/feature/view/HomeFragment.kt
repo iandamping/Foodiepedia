@@ -12,11 +12,11 @@ import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueBreakfast
-import com.ian.junemon.foodiepedia.core.presentation.base.BaseFragment
+import com.ian.junemon.foodiepedia.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentHomeBinding
-import com.ian.junemon.foodiepedia.feature.util.EventObserver
+import com.ian.junemon.foodiepedia.core.presentation.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.util.FoodConstant.foodPresentationRvCallback
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
