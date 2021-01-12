@@ -4,9 +4,9 @@ import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
 import com.ian.junemon.foodiepedia.core.domain.usecase.ProfileUseCase
 import com.ian.junemon.foodiepedia.core.presentation.util.Event
-import com.ian.junemon.foodiepedia.core.remote.firebaseuser.AuthenticatedUserInfo
 import com.junemon.model.ProfileResults
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,7 +31,7 @@ class ProfileViewModel @Inject constructor(private val repository: ProfileUseCas
 
     suspend fun initSignIn(): Intent = repository.initSignIn()
 
-    fun initLogout(successLogout :()-> Unit) {
+    fun initLogout(successLogout: () -> Unit) {
         viewModelScope.launch {
             repository.initLogout(successLogout)
         }

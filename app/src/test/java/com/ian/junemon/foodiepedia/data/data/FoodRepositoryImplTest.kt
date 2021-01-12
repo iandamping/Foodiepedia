@@ -1,14 +1,14 @@
 package com.ian.junemon.foodiepedia.data.data
 
 import com.google.common.truth.Truth.assertThat
-import com.ian.junemon.foodiepedia.core.data.data.repository.FoodRepositoryImpl
+import com.ian.junemon.foodiepedia.core.data.repository.FoodRepositoryImpl
 import com.ian.junemon.foodiepedia.data.datasource.cache.FakeFoodCacheDataSourceImpl
 import com.ian.junemon.foodiepedia.data.datasource.remote.FakeFoodRemoteDataSourceImpl
 import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
-import com.junemon.model.DataHelper
-import com.junemon.model.data.dto.mapRemoteToCacheDomain
-import com.junemon.model.data.dto.mapToCacheDomain
-import com.junemon.model.domain.FoodRemoteDomain
+import com.junemon.model.DataSourceHelper
+import com.ian.junemon.foodiepedia.core.data.model.data.dto.mapRemoteToCacheDomain
+import com.ian.junemon.foodiepedia.core.data.model.data.dto.mapToCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -79,7 +79,7 @@ class FoodRepositoryImplTest {
         val job = launch {
             responseStatus.take(1).collect { data ->
                 when (data) {
-                    is DataHelper.RemoteSourceValue -> {
+                    is DataSourceHelper.DataSourceValue -> {
                         //data should match because we dont do anything
                         assertThat(data.data).hasSize(3)
                         assertThat(data.data[0]).isEqualTo(fakeRemoteData1)
@@ -103,7 +103,7 @@ class FoodRepositoryImplTest {
         val responseStatus = remoteDataSource.getFirebaseData()
         val job = launch {
             responseStatus.collect { data ->
-                assertThat(data).isInstanceOf(DataHelper.RemoteSourceError::class.java)
+                assertThat(data).isInstanceOf(DataSourceHelper.DataSourceError::class.java)
             }
         }
         job.cancel()
@@ -118,7 +118,7 @@ class FoodRepositoryImplTest {
             // Trigger the repository to save data from remote
             remoteData.take(1).collect { data ->
                 when (data) {
-                    is DataHelper.RemoteSourceValue -> {
+                    is DataSourceHelper.DataSourceValue -> {
                         //data should match because we dont do anything
                         assertThat(data.data).hasSize(3)
                         assertThat(data.data[0]).isEqualTo(fakeRemoteData1)
@@ -151,7 +151,7 @@ class FoodRepositoryImplTest {
         val job = launch {
             remoteData.take(1).collect { data ->
                 when (data) {
-                    is DataHelper.RemoteSourceValue -> {
+                    is DataSourceHelper.DataSourceValue -> {
                         //data should match because we dont do anything
                         assertThat(data.data).hasSize(3)
                         assertThat(data.data[0]).isEqualTo(fakeRemoteData1)

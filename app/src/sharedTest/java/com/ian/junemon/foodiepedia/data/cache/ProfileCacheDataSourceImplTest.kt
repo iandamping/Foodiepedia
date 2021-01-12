@@ -5,9 +5,9 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
-import com.ian.junemon.foodiepedia.core.cache.db.FoodDatabase
-import com.ian.junemon.foodiepedia.core.cache.db.dao.ProfileDao
-import com.ian.junemon.foodiepedia.core.cache.model.UserProfile
+import com.ian.junemon.foodiepedia.core.data.datasource.cache.db.FoodDatabase
+import com.ian.junemon.foodiepedia.core.data.datasource.cache.db.dao.ProfileDao
+import com.ian.junemon.foodiepedia.core.data.datasource.cache.model.UserProfile
 import com.ian.junemon.foodiepedia.core.cache.util.classes.ProfileDaoHelperImpl
 import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToDomain
 import com.ian.junemon.foodiepedia.core.cache.util.interfaces.ProfileDaoHelper

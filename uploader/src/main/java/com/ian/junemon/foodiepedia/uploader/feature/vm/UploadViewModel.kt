@@ -4,13 +4,9 @@ import android.net.Uri
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
 import com.junemon.model.FirebaseResult
-import com.junemon.model.domain.FoodRemoteDomain
-import com.junemon.model.domain.SavedFoodCacheDomain
-import com.junemon.model.presentation.FoodCachePresentation
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -51,5 +47,4 @@ class UploadViewModel @Inject constructor(private val repository: FoodUseCase) :
         data: FoodRemoteDomain,
         imageUri: Uri
     ): LiveData<FirebaseResult<Nothing>> = repository.uploadFirebaseData(data, imageUri)
-
 }

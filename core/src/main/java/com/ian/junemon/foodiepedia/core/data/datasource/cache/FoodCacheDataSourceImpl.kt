@@ -1,19 +1,17 @@
 package com.ian.junemon.foodiepedia.core.data.datasource.cache
 
-import com.ian.junemon.foodiepedia.core.cache.preference.PreferenceHelper
-import com.ian.junemon.foodiepedia.core.cache.preference.listener.StringPrefValueListener
-import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToCacheDomain
-import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToDatabase
-import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToDetailDatabase
-import com.ian.junemon.foodiepedia.core.cache.util.interfaces.FoodDaoHelper
-import com.ian.junemon.foodiepedia.core.cache.util.interfaces.SavedFoodDaoHelper
-import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodCacheDataSource
-import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterKey
-import com.junemon.model.domain.FoodCacheDomain
-import com.junemon.model.domain.SavedFoodCacheDomain
+import com.ian.junemon.foodiepedia.core.data.datasource.cache.datastore.DataStoreHelper
+import com.ian.junemon.foodiepedia.core.data.datasource.cache.db.dao.FoodDao
+import com.ian.junemon.foodiepedia.core.data.datasource.cache.db.dao.SavedFoodDao
+import com.ian.junemon.foodiepedia.core.util.DataConstant
+import com.ian.junemon.foodiepedia.core.util.DataConstant.ERROR_EMPTY_DATA
+import com.ian.junemon.foodiepedia.core.util.mapToCacheDomain
+import com.ian.junemon.foodiepedia.core.util.mapToDatabase
+import com.ian.junemon.foodiepedia.core.util.mapToDetailDatabase
+import com.junemon.model.DataSourceHelper
+import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -23,25 +21,38 @@ import javax.inject.Inject
  * Indonesia.
  */
 class FoodCacheDataSourceImpl @Inject constructor(
-    private val foodDao: FoodDaoHelper,
-    private val savedFoodDao: SavedFoodDaoHelper,
-    private val prefHelper: PreferenceHelper,
-    private val stringPrefValueListener: StringPrefValueListener
+    private val foodDao: FoodDao,
+    private val savedFoodDao: SavedFoodDao,
+    private val dataHelper: DataStoreHelper
 ) : FoodCacheDataSource {
     override fun getCache(): Flow<List<FoodCacheDomain>> {
-        return foodDao.loadFood().map { it.mapToCacheDomain() }
+        return foodDao.loadFood().map {it.mapToCacheDomain() }
     }
 
-    override fun getSavedDetailCache(): Flow<List<SavedFoodCacheDomain>> {
-        return savedFoodDao.loadFood().map { it.mapToDetailDatabase() }
+    override fun getSavedDetailCache(): Flow<DataSourceHelper<List<SavedFoodCacheDomain>>> {
+        return savedFoodDao.loadFood().map {
+            if (it.isNullOrEmpty()) {
+                DataSourceHelper.DataSourceError(Exception(ERROR_EMPTY_DATA))
+            } else {
+                DataSourceHelper.DataSourceValue(it.mapToDetailDatabase())
+            }
+        }
     }
 
-    override fun getCategorizeCache(foodCategory: String): Flow<List<FoodCacheDomain>> {
-        return foodDao.loadCategorizeFood(foodCategory).map { it.mapToCacheDomain() }
+    override fun getCategorizeCache(foodCategory: String): Flow<DataSourceHelper<List<FoodCacheDomain>>> {
+        return foodDao.loadFoodByCategory(foodCategory).map {
+            if (it.isNullOrEmpty()) {
+                DataSourceHelper.DataSourceError(Exception(ERROR_EMPTY_DATA))
+            } else {
+                DataSourceHelper.DataSourceValue(it.mapToCacheDomain())
+            }
+        }
     }
 
     override suspend fun setCache(vararg data: FoodCacheDomain) {
-        foodDao.insertFood(*data.map { it.mapToDatabase() }.toTypedArray())
+        foodDao.deleteAllFood().let {
+            foodDao.saveFood(*data.map { it.mapToDatabase() }.toTypedArray())
+        }
     }
 
     override suspend fun setCacheDetailFood(vararg data: SavedFoodCacheDomain) {
@@ -52,28 +63,11 @@ class FoodCacheDataSourceImpl @Inject constructor(
         savedFoodDao.deleteSelectedId(selectedId)
     }
 
-    override fun registerSharedPrefStringListener() {
-        prefHelper.registerListener(stringPrefValueListener)
-
+    override fun loadSharedPreferenceFilter(): Flow<String> {
+        return dataHelper.getStringInDataStore(DataConstant.FILTER_KEY)
     }
 
-    override fun unregisterSharedPrefStringListener() {
-      prefHelper.unregisterListener(stringPrefValueListener)
-    }
-
-    private fun combineString(data1: String, data2: String?): String {
-        return data2 ?: data1
-    }
-
-    override fun loadSharedPreferenceFilter():Flow<String?> {
-        stringPrefValueListener.setListenKey(filterKey)
-        return flowOf(prefHelper.getStringInSharedPreference(filterKey))
-            .combine(stringPrefValueListener.stringPreferenceValue) { a, b ->
-                combineString(a, b)
-            }
-    }
-
-    override fun setSharedPreferenceFilter(data: String) {
-        prefHelper.saveStringInSharedPreference(filterKey, data)
+    override suspend fun setSharedPreferenceFilter(data: String) {
+        dataHelper.saveStringInDataStore(DataConstant.FILTER_KEY,data)
     }
 }

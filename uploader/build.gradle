@@ -6,6 +6,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
+apply from: '../shared_dependencies.gradle'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -49,6 +50,4 @@ dependencies {
     implementation "me.relex:circleindicator:1.2.2@aar"
     implementation "com.facebook.shimmer:shimmer:$shimmerVer"
     implementation 'com.mikhaellopez:circularimageview:4.1.0'
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt 'com.google.dagger:dagger-android-processor:2.28.3'
 }

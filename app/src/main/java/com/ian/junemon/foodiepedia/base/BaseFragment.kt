@@ -129,10 +129,6 @@ abstract class BaseFragment : DaggerFragment() {
 
     abstract fun activityCreated()
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        activityCreated()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -145,6 +141,7 @@ abstract class BaseFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewCreated(view, savedInstanceState)
+        activityCreated()
     }
 
     override fun onDestroyView() {

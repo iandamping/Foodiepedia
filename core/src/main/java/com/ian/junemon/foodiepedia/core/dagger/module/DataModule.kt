@@ -1,14 +1,14 @@
 package com.ian.junemon.foodiepedia.core.dagger.module
 
-import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodCacheDataSource
-import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodRemoteDataSource
-import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileCacheDataSource
-import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileRemoteDataSource
-import com.ian.junemon.foodiepedia.core.data.data.repository.FoodRepositoryImpl
-import com.ian.junemon.foodiepedia.core.data.data.repository.ProfileRepositoryImpl
+import com.ian.junemon.foodiepedia.core.data.datasource.cache.FoodCacheDataSource
+import com.ian.junemon.foodiepedia.core.data.repository.FoodRepositoryImpl
+import com.ian.junemon.foodiepedia.core.data.repository.ProfileRepositoryImpl
 import com.ian.junemon.foodiepedia.core.data.datasource.cache.FoodCacheDataSourceImpl
+import com.ian.junemon.foodiepedia.core.data.datasource.cache.ProfileCacheDataSource
 import com.ian.junemon.foodiepedia.core.data.datasource.cache.ProfileCacheDataSourceImpl
+import com.ian.junemon.foodiepedia.core.data.datasource.remote.FoodRemoteDataSource
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.FoodRemoteDataSourceImpl
+import com.ian.junemon.foodiepedia.core.data.datasource.remote.ProfileRemoteDataSource
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.ProfileRemoteDataSourceImpl
 import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository

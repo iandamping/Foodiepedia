@@ -7,19 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.R
-import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.base.BaseFragment
+import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
+import com.ian.junemon.foodiepedia.core.data.model.data.dto.mapToCachePresentation
+import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.presentation.util.EventObserver
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentSearchBinding
-import com.ian.junemon.foodiepedia.core.presentation.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.util.FoodConstant
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
-import com.junemon.model.data.dto.mapToCachePresentation
-import com.junemon.model.presentation.FoodCachePresentation
+import com.junemon.model.Results
 import kotlinx.android.synthetic.main.item_home.view.*
 import javax.inject.Inject
 
@@ -30,13 +32,17 @@ import javax.inject.Inject
  */
 class SearchFragment : BaseFragment() {
     @Inject
-    lateinit var gson :Gson
+    lateinit var gson: Gson
+
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
+
     @Inject
     lateinit var viewHelper: ViewHelper
+
     @Inject
     lateinit var recyclerViewHelper: RecyclerHelper
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var foodVm: FoodViewModel
@@ -44,7 +50,6 @@ class SearchFragment : BaseFragment() {
     private var data: List<FoodCachePresentation> = mutableListOf()
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-
 
     override fun createView(
         inflater: LayoutInflater,
@@ -62,16 +67,36 @@ class SearchFragment : BaseFragment() {
 
     override fun destroyView() {
         _binding = null
-
     }
 
     override fun activityCreated() {
         initData()
         setupNavigation()
 
-        foodVm.getCache().observe(viewLifecycleOwner, { result ->
-            data = result.map { it.mapToCachePresentation() }
-            foodVm.setSearchItem(data = data.toMutableList())
+        /**Show a snackbar whenever the [snackbar] is updated a non-null value*/
+        foodVm.snackbar.observe(viewLifecycleOwner, { text ->
+            text?.let {
+                Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+                foodVm.onSnackbarShown()
+            }
+        })
+
+        getCache()
+    }
+
+    private fun getCache() {
+        foodVm.getCache().observe(viewLifecycleOwner, {
+            when (it) {
+                is Results.Success -> {
+                    data = it.data.map { it.mapToCachePresentation() }
+                    foodVm.setSearchItem(data = data.toMutableList())
+                }
+                is Results.Error -> {
+                    foodVm.setupLoadingState(true)
+                    foodVm.setupSnackbarMessage(it.exception.message)
+                }
+            }
+
         })
     }
 
@@ -148,6 +173,4 @@ class SearchFragment : BaseFragment() {
         val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(foodValue)
         navigate(action)
     }
-
-
 }

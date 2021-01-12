@@ -3,13 +3,13 @@ package com.ian.junemon.foodiepedia.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
 import com.ian.junemon.foodiepedia.MainCoroutineRule
-import com.ian.junemon.foodiepedia.core.domain.usecase.ProfileUseCase
+import com.ian.junemon.foodiepedia.core.domain.usecase.ProfileUseCaseImpl
 import com.ian.junemon.foodiepedia.data.data.fake.FakeProfileRepository
 import com.ian.junemon.foodiepedia.data.datasource.cache.FakeProfileCacheDataSourceImpl
 import com.ian.junemon.foodiepedia.data.datasource.remote.FakeProfileRemoteDataSourceImpl
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.ian.junemon.foodiepedia.getOrAwaitValue
-import com.junemon.model.domain.UserProfileDataModel
+import com.ian.junemon.foodiepedia.core.domain.model.domain.UserProfileDataModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
@@ -26,7 +26,7 @@ class ProfileViewModelTest {
     private lateinit var cacheDataSource: FakeProfileCacheDataSourceImpl
     private lateinit var remoteDataSource: FakeProfileRemoteDataSourceImpl
     private lateinit var profileRepository: FakeProfileRepository
-    private lateinit var profileUseCase:ProfileUseCase
+    private lateinit var profileUseCase:ProfileUseCaseImpl
     private lateinit var profileViewModel:ProfileViewModel
     @ExperimentalCoroutinesApi
     @get:Rule
@@ -48,7 +48,7 @@ class ProfileViewModelTest {
                 cacheDataSource,
                 remoteDataSource
             )
-        profileUseCase = ProfileUseCase(profileRepository)
+        profileUseCase = ProfileUseCaseImpl(profileRepository)
         profileViewModel = ProfileViewModel(profileUseCase)
     }
 

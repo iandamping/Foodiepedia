@@ -1,13 +1,11 @@
 package com.ian.junemon.foodiepedia.core.data.datasource.cache
 
-import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToDatabase
-import com.ian.junemon.foodiepedia.core.cache.util.dto.mapToDomain
-import com.ian.junemon.foodiepedia.core.cache.util.interfaces.ProfileDaoHelper
-import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileCacheDataSource
-import com.junemon.model.domain.UserProfileDataModel
+import com.ian.junemon.foodiepedia.core.data.datasource.cache.db.dao.ProfileDao
+import com.ian.junemon.foodiepedia.core.util.mapToDatabase
+import com.ian.junemon.foodiepedia.core.util.mapToDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.UserProfileDataModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
 /**
@@ -16,15 +14,17 @@ import javax.inject.Inject
  * Indonesia.
  */
 @ExperimentalCoroutinesApi
-class ProfileCacheDataSourceImpl @Inject constructor(private val profileDao: ProfileDaoHelper) :
+class ProfileCacheDataSourceImpl @Inject constructor(private val profileDao: ProfileDao) :
     ProfileCacheDataSource {
 
     override suspend fun setCache(data: UserProfileDataModel) {
-        profileDao.insertAll(data.mapToDatabase())
+        profileDao.deleteAllData().let {
+            profileDao.insertAllUser(data.mapToDatabase())
+        }
     }
 
     override fun getCache(): Flow<UserProfileDataModel> {
-        return profileDao.loadAll().mapToDomain().distinctUntilChanged()
+        return profileDao.loadAll().mapToDomain()
     }
 
     override suspend fun deleteCache() {

@@ -29,6 +29,7 @@ class LoadImageImpl @Inject constructor(  @MainDispatcher private val mainDispat
     private val requestManager: RequestManager,
     private val requestOptions: RequestOptions) :
     LoadImageHelper {
+
     private val options by lazy { RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) }
 
     override fun ImageView.loadWithGlideSmall(url: String?) {

@@ -2,22 +2,19 @@ package com.ian.junemon.foodiepedia.core.domain.usecase
 
 import android.content.Intent
 import androidx.lifecycle.LiveData
-import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
-import com.ian.junemon.foodiepedia.core.remote.firebaseuser.AuthenticatedUserInfo
+import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
 import com.junemon.model.ProfileResults
-import com.junemon.model.domain.UserProfileDataModel
-import javax.inject.Inject
 
 /**
- * Created by Ian Damping on 27,January,2020
+ * Created by Ian Damping on 03,January,2021
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class ProfileUseCase @Inject constructor(private val repo: ProfileRepository) {
+interface ProfileUseCase {
 
-    fun getUserProfile(): LiveData<ProfileResults<AuthenticatedUserInfo>> = repo.getUserProfile()
+    fun getUserProfile(): LiveData<ProfileResults<AuthenticatedUserInfo>>
 
-    suspend fun initSignIn(): Intent = repo.initSignIn()
+    suspend fun initSignIn(): Intent
 
-    suspend fun initLogout(onComplete: () -> Unit) = repo.initLogout(onComplete)
+    suspend fun initLogout(onComplete: () -> Unit)
 }

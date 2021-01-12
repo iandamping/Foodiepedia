@@ -2,6 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+
+apply from: '../shared_dependencies.gradle'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -77,79 +79,5 @@ android {
 dependencies {
     implementation project(':model')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    api 'androidx.appcompat:appcompat:1.2.0'
-    api 'androidx.core:core-ktx:1.3.2'
-    api 'com.google.android.material:material:1.3.0-alpha03'
-    api "com.jakewharton.timber:timber:$timberVersion"
-    api 'com.airbnb.android:lottie:3.2.2'
-    implementation "org.jetbrains.anko:anko:$anko_version"
-    implementation "org.jetbrains.anko:anko-design:$anko_version"
-    api "com.github.bumptech.glide:glide:$glideVer"
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    kapt "com.github.bumptech.glide:compiler:$glideVer"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
-    api "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_version"
-    api  "com.google.firebase:firebase-core:$firebaseCoreVer"
-    api "com.google.firebase:firebase-storage:$firebaseStorageVer"
-    api "com.google.firebase:firebase-database:$firebaseDatabaseVer"
-    api "com.google.firebase:firebase-auth:$firebaseAuthVer"
-    api "com.firebaseui:firebase-ui-auth:$firebaseAuthUiVer"
-    implementation "androidx.room:room-runtime:$room_version"
-    api "androidx.room:room-ktx:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    api "com.google.dagger:dagger:$dagger_version"
-    api 'com.google.dagger:dagger-android:2.28.3'
-    api 'com.google.dagger:dagger-android-support:2.28.3'
-    kapt 'com.google.dagger:dagger-android-processor:2.28.3'
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    //custom linearlayout
-    implementation 'com.github.DingMouRen:LayoutManagerGroup:1e6f4f96eb'
-    api "com.google.code.gson:gson:$gson_version"
-    api "androidx.fragment:fragment-ktx:$fragment_version"
-    api "androidx.activity:activity-ktx:$activity_version"
-    api "androidx.navigation:navigation-fragment-ktx:$navigationVer"
-    api "androidx.navigation:navigation-ui-ktx:$navigationVer"
 
-    // Dependencies for local unit tests
-    testApi 'junit:junit:4.12'
-    testApi "org.mockito:mockito-core:$mockitoVersion"
-    testApi "org.hamcrest:hamcrest-all:$hamcrestVersion"
-    testApi "androidx.arch.core:core-testing:$archTestingVersion"
-    testApi "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
-    testApi "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutine_version"
-    testApi "org.robolectric:robolectric:$robolectricVersion"
-    testApi "androidx.test.espresso:espresso-core:$espressoVersion"
-    testApi "androidx.test.espresso:espresso-contrib:$espressoVersion"
-    testApi "androidx.test.espresso:espresso-intents:$espressoVersion"
-    testApi "com.google.truth:truth:$truthVersion"
-
-    // Dependencies for Android unit tests
-    androidTestApi "junit:junit:$junitVersion"
-    androidTestApi "org.mockito:mockito-core:$mockitoVersion"
-    androidTestApi "com.linkedin.dexmaker:dexmaker-mockito:$dexMakerVersion"
-    androidTestApi "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutine_version"
-
-    // AndroidX Test - JVM testing
-    testApi "androidx.test:core-ktx:$androidXTestCoreVersion"
-    testApi "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
-    testApi "androidx.test:rules:$androidXTestRulesVersion"
-    // Once https://issuetracker.google.com/127986458 is fixed this can be testImplementation
-    api "androidx.fragment:fragment-testing:$fragmentVersion"
-    api "androidx.test:core:$androidXTestCoreVersion"
-    api "androidx.fragment:fragment:$fragmentVersion"
-
-    // AndroidX Test - Instrumented testing
-    androidTestApi "androidx.test:core-ktx:$androidXTestCoreVersion"
-    androidTestApi "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
-    androidTestApi "androidx.test:rules:$androidXTestRulesVersion"
-    androidTestApi "androidx.room:room-testing:$room_version"
-    androidTestApi "androidx.arch.core:core-testing:$archTestingVersion"
-    androidTestApi "androidx.test.espresso:espresso-core:$espressoVersion"
-    androidTestApi "androidx.test.espresso:espresso-contrib:$espressoVersion"
-    androidTestApi "androidx.test.espresso:espresso-intents:$espressoVersion"
-    androidTestApi "androidx.test.espresso.idling:idling-concurrent:$espressoVersion"
-    androidTestApi "org.robolectric:annotations:$robolectricVersion"
-    api "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
 }

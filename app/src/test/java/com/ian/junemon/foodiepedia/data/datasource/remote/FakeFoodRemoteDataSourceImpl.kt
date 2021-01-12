@@ -2,9 +2,9 @@ package com.ian.junemon.foodiepedia.data.datasource.remote
 
 import android.net.Uri
 import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodRemoteDataSource
-import com.junemon.model.DataHelper
+import com.junemon.model.DataSourceHelper
 import com.junemon.model.FirebaseResult
-import com.junemon.model.domain.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -17,11 +17,11 @@ class FakeFoodRemoteDataSourceImpl(
     var listOfFakeFood: List<FoodRemoteDomain>?
 ) : FoodRemoteDataSource {
 
-    override suspend fun getFirebaseData(): Flow<DataHelper<List<FoodRemoteDomain>>> {
+    override suspend fun getFirebaseData(): Flow<DataSourceHelper<List<FoodRemoteDomain>>> {
         return if (listOfFakeFood.isNullOrEmpty()) {
-            flowOf(DataHelper.RemoteSourceError(NullPointerException()))
+            flowOf(DataSourceHelper.DataSourceError(NullPointerException()))
         } else {
-            flowOf(DataHelper.RemoteSourceValue(listOfFakeFood!!))
+            flowOf(DataSourceHelper.DataSourceValue(listOfFakeFood!!))
         }
     }
 

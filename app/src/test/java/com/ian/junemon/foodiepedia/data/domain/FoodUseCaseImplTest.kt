@@ -9,9 +9,9 @@ import com.ian.junemon.foodiepedia.data.datasource.remote.FakeFoodRemoteDataSour
 import com.ian.junemon.foodiepedia.getOrAwaitValue
 import com.junemon.model.Results
 import com.junemon.model.WorkerResult
-import com.junemon.model.data.dto.mapToCacheDomain
-import com.junemon.model.domain.FoodRemoteDomain
-import com.junemon.model.domain.SavedFoodCacheDomain
+import com.ian.junemon.foodiepedia.core.data.model.data.dto.mapToCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

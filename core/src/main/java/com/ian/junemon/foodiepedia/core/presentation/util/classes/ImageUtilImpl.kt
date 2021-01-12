@@ -19,9 +19,9 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.StorageReference
 import com.ian.junemon.foodiepedia.core.R
-import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.RequestOpenCamera
-import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.RequestSelectGalleryImage
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ImageUtilHelper
+import com.ian.junemon.foodiepedia.core.util.DataConstant.RequestOpenCamera
+import com.ian.junemon.foodiepedia.core.util.DataConstant.RequestSelectGalleryImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

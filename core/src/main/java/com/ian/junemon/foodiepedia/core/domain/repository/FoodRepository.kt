@@ -2,12 +2,12 @@ package com.ian.junemon.foodiepedia.core.domain.repository
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
+import com.junemon.model.DataSourceHelper
 import com.junemon.model.FirebaseResult
 import com.junemon.model.Results
-import com.junemon.model.WorkerResult
-import com.junemon.model.domain.FoodCacheDomain
-import com.junemon.model.domain.FoodRemoteDomain
-import com.junemon.model.domain.SavedFoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -17,11 +17,11 @@ import kotlinx.coroutines.flow.Flow
  */
 interface FoodRepository {
 
-    fun homeFoodPrefetch(): LiveData<Results<List<FoodCacheDomain>>>
+    fun getCache(): Flow<Results<List<FoodCacheDomain>>>
 
-    fun getCache(): LiveData<List<FoodCacheDomain>>
+    fun getCategorizeCache(foodCategory: String): Flow<Results<List<FoodCacheDomain>>>
 
-    fun getSavedDetailCache(): LiveData<List<SavedFoodCacheDomain>>
+    fun getSavedDetailCache(): Flow<Results<List<SavedFoodCacheDomain>>>
 
     fun uploadFirebaseData(data: FoodRemoteDomain, imageUri: Uri): LiveData<FirebaseResult<Nothing>>
 
@@ -29,11 +29,7 @@ interface FoodRepository {
 
     suspend fun deleteSelectedId(selectedId: Int)
 
-    fun registerSharedPrefStringListener()
+    fun loadSharedPreferenceFilter():Flow<String>
 
-    fun unregisterSharedPrefStringListener()
-
-    fun loadSharedPreferenceFilter():Flow<String?>
-
-    fun setSharedPreferenceFilter(data:String)
+    suspend fun setSharedPreferenceFilter(data:String)
 }

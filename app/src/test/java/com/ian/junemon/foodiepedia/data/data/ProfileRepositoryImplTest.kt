@@ -1,11 +1,11 @@
 package com.ian.junemon.foodiepedia.data.data
 
 import com.google.common.truth.Truth
-import com.ian.junemon.foodiepedia.core.data.data.repository.ProfileRepositoryImpl
+import com.ian.junemon.foodiepedia.core.data.repository.ProfileRepositoryImpl
 import com.ian.junemon.foodiepedia.data.datasource.cache.FakeProfileCacheDataSourceImpl
 import com.ian.junemon.foodiepedia.data.datasource.remote.FakeProfileRemoteDataSourceImpl
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
-import com.junemon.model.domain.UserProfileDataModel
+import com.ian.junemon.foodiepedia.core.domain.model.domain.UserProfileDataModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

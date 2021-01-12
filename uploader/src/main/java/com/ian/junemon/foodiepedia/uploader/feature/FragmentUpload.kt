@@ -27,7 +27,7 @@ import com.ian.junemon.foodiepedia.uploader.feature.vm.ProfileViewModel
 import com.ian.junemon.foodiepedia.uploader.feature.vm.UploadViewModel
 import com.junemon.model.FirebaseResult
 import com.junemon.model.ProfileResults
-import com.junemon.model.domain.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject

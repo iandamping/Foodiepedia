@@ -5,28 +5,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.R
-import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
-import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueBreakfast
 import com.ian.junemon.foodiepedia.base.BaseFragment
+import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
+import com.ian.junemon.foodiepedia.core.data.model.data.dto.mapToCachePresentation
+import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.presentation.util.EventObserver
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHelper
+import com.ian.junemon.foodiepedia.core.util.DataConstant.filterValueBreakfast
 import com.ian.junemon.foodiepedia.databinding.FragmentHomeBinding
-import com.ian.junemon.foodiepedia.core.presentation.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.util.FoodConstant.foodPresentationRvCallback
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
+import com.ian.junemon.foodiepedia.feature.vm.SharedDialogListenerViewModel
 import com.junemon.model.ProfileResults
 import com.junemon.model.Results
-import com.junemon.model.data.dto.mapToCachePresentation
-import com.junemon.model.domain.FoodCacheDomain
-import com.junemon.model.presentation.FoodCachePresentation
 import kotlinx.android.synthetic.main.item_custom_home.view.*
 import kotlinx.android.synthetic.main.item_home.view.ivFoodImage
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -51,6 +53,10 @@ class HomeFragment : BaseFragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
+    private val sharedViewModel: SharedDialogListenerViewModel by activityViewModels()
+
+    private var filterState: String = ""
+
     private val binding get() = _binding!!
 
     override fun createView(
@@ -61,6 +67,12 @@ class HomeFragment : BaseFragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         foodVm = viewModelProvider(viewModelFactory)
         profileVm = viewModelProvider(viewModelFactory)
+
+        return binding.root
+    }
+
+    override fun viewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.initView()
         /**Observe loading state to show loading*/
         foodVm.loadingState.observe(viewLifecycleOwner, { show ->
             if (show) {
@@ -77,21 +89,22 @@ class HomeFragment : BaseFragment() {
                 foodVm.onSnackbarShown()
             }
         })
-        return binding.root
-    }
 
-    override fun viewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.initView()
+        sharedViewModel.setFilterState.observe(viewLifecycleOwner, EventObserver {
+            if (it.isNotEmpty()) {
+                foodVm.setSharedPreferenceFilter(it)
+            }
+        })
     }
 
     override fun destroyView() {
-        foodVm.unregisterSharedPrefStringListener()
         _binding = null
     }
 
     override fun activityCreated() {
-        foodVm.registerSharedPrefStringListener()
         consumeFoodPrefetch()
+        observeFilter()
+        filterFood()
         consumeProfileData()
         setupNavigation()
     }
@@ -102,37 +115,13 @@ class HomeFragment : BaseFragment() {
                 HomeFragmentDirections.actionHomeFragmentToBottomFilterFragment()
             navigate(bottomFilterDirections)
         }
-        /*fabHome.setOnClickListener {
-            foodVm.moveToUploadFragment()
-        }*/
+
         ivPhotoProfile.setOnClickListener {
             foodVm.moveToProfileFragment()
         }
         rlSearch.setOnClickListener {
             foodVm.moveToSearchFragmentEvent()
         }
-    }
-
-    private fun iniDataView(data: List<FoodCacheDomain>) {
-        foodVm.loadSharedPreferenceFilter().observe(viewLifecycleOwner, { localeStatus ->
-            if (localeStatus != null && localeStatus != "") {
-                binding.tvHomeFilter.text = localeStatus
-                val userPickData = data.filter { it.foodCategory == localeStatus }
-                binding.setupRecyclerView(userPickData.mapToCachePresentation())
-            } else {
-                binding.tvHomeFilter.text = filterValueBreakfast
-                val defaultBreakfastData = data.filter { it.foodCategory == filterValueBreakfast }
-                binding.setupRecyclerView(defaultBreakfastData.mapToCachePresentation())
-            }
-        })
-
-        // foodVm.eventDissmissFromFilter.observe(viewLifecycleOwner, EventObserver {
-        //     requireActivity().run {
-        //         val intent by lazy { Intent(this, this::class.java) }
-        //         startActivity(intent)
-        //         finish()
-        //     }
-        // })
     }
 
     private fun FragmentHomeBinding.enableShimmer() {
@@ -151,7 +140,7 @@ class HomeFragment : BaseFragment() {
 
     private fun FragmentHomeBinding.setupRecyclerView(data: List<FoodCachePresentation>?) {
         rvHome.onFlingListener = null
-        recyclerHelper.run {
+        with(recyclerHelper) {
             recyclerviewCatching {
                 checkNotNull(data)
                 rvHome.setUpSkidAdapter(items = data,
@@ -159,7 +148,7 @@ class HomeFragment : BaseFragment() {
                     layoutResId = R.layout.item_custom_home,
                     bindHolder = {
                         with(this) {
-                            loadImageHelper.run { ivFoodImage.loadWithGlide(it?.foodImage) }
+                            with(loadImageHelper) { ivFoodImage.loadWithGlide(it?.foodImage) }
                             tv_title.text = it?.foodName
                             tv_description.text = it?.foodDescription
                         }
@@ -205,12 +194,12 @@ class HomeFragment : BaseFragment() {
         profileVm.getUserProfile().observe(viewLifecycleOwner, {
             when (it) {
                 is ProfileResults.Success -> {
-                    loadImageHelper.run {
+                    with(loadImageHelper) {
                         binding.ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
                     }
                 }
                 else -> {
-                    loadImageHelper.run {
+                    with(loadImageHelper) {
                         binding.ivPhotoProfile.loadWithGlide(
                             ContextCompat.getDrawable(
                                 requireContext(),
@@ -224,24 +213,46 @@ class HomeFragment : BaseFragment() {
         })
     }
 
+    private fun observeFilter() {
+        foodVm.loadSharedPreferenceFilter().observe(viewLifecycleOwner) {
+            Timber.e("filter result : $it")
+            if (it.isNullOrEmpty()) {
+                foodVm.setSharedPreferenceFilter(filterValueBreakfast)
+                binding.tvHomeFilter.text = filterValueBreakfast
+                filterState = filterValueBreakfast
+            } else {
+                binding.tvHomeFilter.text = it
+                filterState = it
+            }
+        }
+    }
+
+    private fun filterFood() {
+        foodVm.getFoodBasedOnFilter().observe(viewLifecycleOwner) { value ->
+            when (value) {
+                is Results.Error -> {
+                    Timber.e(value.exception)
+                }
+                is Results.Success -> {
+                    val userPickData = value.data.filter { it.foodCategory == filterState }
+                    binding.setupRecyclerView(userPickData.mapToCachePresentation())
+                }
+            }
+        }
+    }
+
     private fun consumeFoodPrefetch() {
-        foodVm.foodPrefetch().observe(viewLifecycleOwner, {
-            when (it) {
+        foodVm.getCache().observe(viewLifecycleOwner, { value ->
+            when (value) {
                 is Results.Loading -> {
-                    if (!it.cache.isNullOrEmpty()) {
-                        foodVm.setupLoadingState(true)
-                        iniDataView(it.cache!!)
-                    } else {
-                        foodVm.setupLoadingState(false)
-                    }
+                    foodVm.setupLoadingState(false)
                 }
                 is Results.Success -> {
                     foodVm.setupLoadingState(true)
-                    iniDataView(it.data)
                 }
                 is Results.Error -> {
                     foodVm.setupLoadingState(true)
-                    foodVm.setupSnackbarMessage(it.exception.message)
+                    foodVm.setupSnackbarMessage(value.exception.message)
                 }
             }
         })

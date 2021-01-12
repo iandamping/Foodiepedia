@@ -4,16 +4,23 @@ import android.net.Uri
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.GenericPairData
+import com.ian.junemon.foodiepedia.core.domain.model.domain.SavedFoodCacheDomain
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
+import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
 import com.ian.junemon.foodiepedia.core.presentation.util.Event
+import com.ian.junemon.foodiepedia.core.util.DataConstant
 import com.junemon.model.FirebaseResult
 import com.junemon.model.Results
-import com.junemon.model.domain.FoodCacheDomain
-import com.junemon.model.domain.FoodRemoteDomain
-import com.junemon.model.domain.SavedFoodCacheDomain
-import com.junemon.model.presentation.FoodCachePresentation
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -57,10 +64,6 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         })
     }
 
-    fun registerSharedPrefStringListener() = repository.registerSharedPrefStringListener()
-
-    fun unregisterSharedPrefStringListener() = repository.unregisterSharedPrefStringListener()
-
     fun moveToDetailFragment(foodValue: String) {
         _moveToDetailFragmentEvent.value = Event(foodValue)
     }
@@ -95,7 +98,7 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         }
     }
 
-    fun getSavedDetailCache() = repository.getSavedDetailCache()
+    fun getSavedDetailCache() = repository.getSavedDetailCache().asLiveData(viewModelScope.coroutineContext)
 
     fun deleteSelectedId(selectedId: Int) {
         viewModelScope.launch {
@@ -103,17 +106,28 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         }
     }
 
-    fun foodPrefetch(): LiveData<Results<List<FoodCacheDomain>>> = repository.homeFoodPrefetch()
+    fun getFoodBasedOnFilter() = repository.loadSharedPreferenceFilter().flatMapLatest {
+        if (it.isEmpty()){
+            repository.getCategorizeCache(DataConstant.filterValueBreakfast)
+        } else{
+            repository.getCategorizeCache(it)
+        }
+    }.asLiveData(viewModelScope.coroutineContext)
 
+    fun getCache(): LiveData<Results<List<FoodCacheDomain>>> = repository.getCache().asLiveData(viewModelScope.coroutineContext)
 
-    fun getCache(): LiveData<List<FoodCacheDomain>> = repository.getCache()
 
     fun uploadFirebaseData(
         data: FoodRemoteDomain,
         imageUri: Uri
     ): LiveData<FirebaseResult<Nothing>> = repository.uploadFirebaseData(data, imageUri)
 
-    fun loadSharedPreferenceFilter():LiveData<String?> = repository.loadSharedPreferenceFilter()
+    fun loadSharedPreferenceFilter(): LiveData<String> =
+        repository.loadSharedPreferenceFilter().asLiveData(viewModelScope.coroutineContext)
 
-    fun setSharedPreferenceFilter(data:String) = repository.setSharedPreferenceFilter(data)
+    fun setSharedPreferenceFilter(data: String) {
+        viewModelScope.launch {
+            repository.setSharedPreferenceFilter(data)
+        }
+    }
 }

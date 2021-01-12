@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,8 +16,9 @@ import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHe
 import com.ian.junemon.foodiepedia.databinding.FragmentDetailBinding
 import com.ian.junemon.foodiepedia.core.presentation.util.EventObserver
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
-import com.junemon.model.data.dto.mapToDetailDatabasePresentation
-import com.junemon.model.presentation.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.data.model.data.dto.mapToDetailDatabasePresentation
+import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
+import com.junemon.model.Results
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -135,24 +135,27 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun FragmentDetailBinding.consumeBookmarkData() {
-        foodVm.getSavedDetailCache().observe(viewLifecycleOwner, Observer { result ->
-            if (!result.isNullOrEmpty()) {
-                val data = result.filter { it.foodName == passedData.foodName }
-                if (data.isNotEmpty()) {
-                    data.forEach {
-                        if (it.foodName == passedData.foodName) {
-                            idForDeleteItem = it.localFoodID
-                            isFavorite = true
-                            bookmarkedState = isFavorite
+        foodVm.getSavedDetailCache().observe(viewLifecycleOwner, {cacheValue ->
+            when(cacheValue){
+                is Results.Success ->{
+                    val data = cacheValue.data.filter { it.foodName == passedData.foodName }
+                    if (data.isNotEmpty()) {
+                        data.forEach {
+                            if (it.foodName == passedData.foodName) {
+                                idForDeleteItem = it.localFoodID
+                                isFavorite = true
+                                bookmarkedState = isFavorite
+                            }
                         }
+                    } else {
+                        isFavorite = false
+                        bookmarkedState = isFavorite
                     }
-                } else {
+                }
+                is Results.Error ->{
                     isFavorite = false
                     bookmarkedState = isFavorite
                 }
-            } else {
-                isFavorite = false
-                bookmarkedState = isFavorite
             }
         })
     }

@@ -1,7 +1,6 @@
 package com.ian.junemon.foodiepedia.dagger
 
 import com.ian.junemon.foodiepedia.FoodApp
-import com.ian.junemon.foodiepedia.core.dagger.module.DatabaseHelperModule
 import com.ian.junemon.foodiepedia.core.dagger.module.DatabaseModule
 import com.ian.junemon.foodiepedia.core.dagger.module.GlideModule
 import com.ian.junemon.foodiepedia.core.dagger.module.CoroutineModule
@@ -9,11 +8,9 @@ import com.ian.junemon.foodiepedia.core.dagger.module.DataModule
 import com.ian.junemon.foodiepedia.core.dagger.module.DomainModule
 import com.ian.junemon.foodiepedia.core.dagger.module.PresentationModule
 import com.ian.junemon.foodiepedia.core.dagger.factory.ViewModelModule
-import com.ian.junemon.foodiepedia.core.dagger.module.RemoteHelperModule
+import com.ian.junemon.foodiepedia.core.dagger.module.DataStorePreferenceHelperModule
 import com.ian.junemon.foodiepedia.core.dagger.module.RemoteModule
-import com.ian.junemon.foodiepedia.core.dagger.module.SharedPreferenceHelperModule
-import com.ian.junemon.foodiepedia.core.dagger.module.SharedPreferenceListenerModule
-import com.ian.junemon.foodiepedia.core.dagger.module.SharedPreferenceModule
+import com.ian.junemon.foodiepedia.core.dagger.module.DataStorePreferenceModule
 import com.ian.junemon.foodiepedia.dagger.module.ActivityBindingModule
 import com.ian.junemon.foodiepedia.dagger.module.AppModule
 import dagger.Component
@@ -28,15 +25,12 @@ import javax.inject.Singleton
         ActivityBindingModule::class,
         ViewModelModule::class,
         DatabaseModule::class,
-        SharedPreferenceModule::class,
-        SharedPreferenceHelperModule::class,
-        SharedPreferenceListenerModule::class,
+        DataStorePreferenceModule::class,
+        DataStorePreferenceHelperModule::class,
         CoroutineModule::class,
         DataModule::class,
         DomainModule::class,
         RemoteModule::class,
-        DatabaseHelperModule::class,
-        RemoteHelperModule::class,
         PresentationModule::class,
         GlideModule::class]
 )

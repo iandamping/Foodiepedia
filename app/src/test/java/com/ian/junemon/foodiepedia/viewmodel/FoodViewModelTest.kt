@@ -3,16 +3,16 @@ package com.ian.junemon.foodiepedia.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
 import com.ian.junemon.foodiepedia.MainCoroutineRule
-import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
+import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCaseImpl
 import com.ian.junemon.foodiepedia.data.data.fake.FakeFoodRepository
 import com.ian.junemon.foodiepedia.data.datasource.cache.FakeFoodCacheDataSourceImpl
 import com.ian.junemon.foodiepedia.data.datasource.remote.FakeFoodRemoteDataSourceImpl
 import com.ian.junemon.foodiepedia.getOrAwaitValue
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.junemon.model.Results
-import com.junemon.model.data.dto.mapToCacheDomain
-import com.junemon.model.domain.FoodRemoteDomain
-import com.junemon.model.domain.SavedFoodCacheDomain
+import com.ian.junemon.foodiepedia.core.data.model.data.dto.mapToCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -52,7 +52,7 @@ class FoodViewModelTest {
     private lateinit var cacheDataSource: FakeFoodCacheDataSourceImpl
     private lateinit var remoteDataSource: FakeFoodRemoteDataSourceImpl
     private lateinit var foodRepository: FakeFoodRepository
-    private lateinit var foodUseCase: FoodUseCase
+    private lateinit var foodUseCase: FoodUseCaseImpl
 
 
     // Set the main coroutines dispatcher for unit testing.
@@ -77,7 +77,7 @@ class FoodViewModelTest {
             FakeFoodRepository(
                 remoteDataSource, cacheDataSource
             )
-        foodUseCase= FoodUseCase(foodRepository)
+        foodUseCase= FoodUseCaseImpl(foodRepository)
         fakeFoodViewModel = FoodViewModel(foodUseCase)
 
     }

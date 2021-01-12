@@ -8,7 +8,7 @@ import androidx.lifecycle.liveData
 import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileCacheDataSource
 import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileRemoteDataSource
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
-import com.junemon.model.domain.UserProfileDataModel
+import com.ian.junemon.foodiepedia.core.domain.model.domain.UserProfileDataModel
 import kotlinx.coroutines.flow.collect
 
 /**

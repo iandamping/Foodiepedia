@@ -1,24 +1,26 @@
 package com.ian.junemon.foodiepedia.feature.view
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
-import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueBreakfast
-import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueBrunch
-import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueDinner
-import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueLunch
-import com.ian.junemon.foodiepedia.core.presentation.PresentationConstant.filterValueSupper
 import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
+import com.ian.junemon.foodiepedia.core.util.DataConstant.filterValueBreakfast
+import com.ian.junemon.foodiepedia.core.util.DataConstant.filterValueBrunch
+import com.ian.junemon.foodiepedia.core.util.DataConstant.filterValueDinner
+import com.ian.junemon.foodiepedia.core.util.DataConstant.filterValueLunch
+import com.ian.junemon.foodiepedia.core.util.DataConstant.filterValueSupper
 import com.ian.junemon.foodiepedia.databinding.FragmentBottomFilterBinding
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
+import com.ian.junemon.foodiepedia.feature.vm.SharedDialogListenerViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -37,23 +39,19 @@ class BottomFilterFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentBottomFilterBinding? = null
     private val binding get() = _binding!!
+    private val sharedViewModel: SharedDialogListenerViewModel by activityViewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        foodVm.registerSharedPrefStringListener()
-        dialog?.window?.attributes?.windowAnimations = R.style.DialogAnimation
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        dialog?.window?.attributes?.windowAnimations = R.style.DialogAnimation
         _binding = FragmentBottomFilterBinding.inflate(inflater, container, false)
         foodVm = viewModelProvider(viewModelFactory)
         return binding.root
@@ -64,63 +62,67 @@ class BottomFilterFragment : BottomSheetDialogFragment() {
         binding.initView()
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun FragmentBottomFilterBinding.initView() {
-        loadImageHelper.run {
-            ivBrunch.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_filter_4
+        with(loadImageHelper) {
+            ivBrunch.loadWithGlide(
+                requireContext().resources.getDrawable(
+                    R.drawable.ic_filter_4,
+                    requireContext().theme
                 )
             )
 
-            ivSupper.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_filter_5
+            ivSupper.loadWithGlide(
+                requireContext().resources.getDrawable(
+                    R.drawable.ic_filter_5,
+                    requireContext().theme
                 )
             )
 
-            ivLunch.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_filter_2
+            ivLunch.loadWithGlide(
+                requireContext().resources.getDrawable(
+                    R.drawable.ic_filter_2,
+                    requireContext().theme
                 )
             )
-            ivDinner.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_filter_3
+
+            ivDinner.loadWithGlide(
+                requireContext().resources.getDrawable(
+                    R.drawable.ic_filter_3,
+                    requireContext().theme
                 )
             )
-            ivBreakfast.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_filter_1
+
+            ivBreakfast.loadWithGlide(
+                requireContext().resources.getDrawable(
+                    R.drawable.ic_filter_1,
+                    requireContext().theme
                 )
             )
+
         }
         lnPickBreakfast.setOnClickListener {
-            foodVm.setSharedPreferenceFilter(filterValueBreakfast)
+            sharedViewModel.setsetFilterState(filterValueBreakfast)
             dismiss()
         }
 
         lnPickLunch.setOnClickListener {
-            foodVm.setSharedPreferenceFilter(filterValueLunch)
+            sharedViewModel.setsetFilterState(filterValueLunch)
             dismiss()
         }
 
         lnPickDinner.setOnClickListener {
-            foodVm.setSharedPreferenceFilter(filterValueDinner)
+            sharedViewModel.setsetFilterState(filterValueDinner)
             dismiss()
         }
 
         lnPickBrunch.setOnClickListener {
-            foodVm.setSharedPreferenceFilter(filterValueBrunch)
+            sharedViewModel.setsetFilterState(filterValueBrunch)
             dismiss()
         }
 
         lnPickSupper.setOnClickListener {
-            foodVm.setSharedPreferenceFilter(filterValueSupper)
+            sharedViewModel.setsetFilterState(filterValueSupper)
             dismiss()
         }
 
@@ -128,85 +130,81 @@ class BottomFilterFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
-        foodVm.loadSharedPreferenceFilter().observe(viewLifecycleOwner, { localeStatus ->
-            when (localeStatus) {
+        foodVm.loadSharedPreferenceFilter().observe(viewLifecycleOwner, {
+            when (it) {
                 filterValueBreakfast -> {
-                    loadImageHelper.run {
-                        ivPickBreakfast.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                requireContext(),
-                                R.drawable.ic_check_circle_green_24dp
+                    with(loadImageHelper){
+                        ivPickBreakfast.loadWithGlide(
+                            requireContext().resources.getDrawable(
+                                R.drawable.ic_check_circle_green_24dp,
+                                requireContext().theme
                             )
                         )
                     }
+
                 }
                 filterValueDinner -> {
-                    loadImageHelper.run {
-                        ivPickDinner.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                requireContext(),
-                                R.drawable.ic_check_circle_green_24dp
+                    with(loadImageHelper){
+                        ivPickDinner.loadWithGlide(
+                            requireContext().resources.getDrawable(
+                                R.drawable.ic_check_circle_green_24dp,
+                                requireContext().theme
                             )
                         )
                     }
                 }
 
                 filterValueLunch -> {
-                    loadImageHelper.run {
-                        ivPickLunch.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                requireContext(),
-                                R.drawable.ic_check_circle_green_24dp
+                    with(loadImageHelper){
+                        ivPickLunch.loadWithGlide(
+                            requireContext().resources.getDrawable(
+                                R.drawable.ic_check_circle_green_24dp,
+                                requireContext().theme
                             )
                         )
                     }
+
                 }
 
                 filterValueBrunch -> {
-                    loadImageHelper.run {
-                        ivPickBrunch.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                requireContext(),
-                                R.drawable.ic_check_circle_green_24dp
+                    with(loadImageHelper){
+                        ivPickBrunch.loadWithGlide(
+                            requireContext().resources.getDrawable(
+                                R.drawable.ic_check_circle_green_24dp,
+                                requireContext().theme
                             )
                         )
                     }
+
                 }
 
                 filterValueSupper -> {
-                    loadImageHelper.run {
-                        ivPickSupper.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                requireContext(),
-                                R.drawable.ic_check_circle_green_24dp
+                    with(loadImageHelper){
+                        ivPickSupper.loadWithGlide(
+                            requireContext().resources.getDrawable(
+                                R.drawable.ic_check_circle_green_24dp,
+                                requireContext().theme
                             )
                         )
                     }
                 }
 
                 else -> {
-                    loadImageHelper.run {
-                        ivPickBreakfast.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                requireContext(),
-                                R.drawable.ic_check_circle_green_24dp
+                    with(loadImageHelper){
+                        ivPickBreakfast.loadWithGlide(
+                            requireContext().resources.getDrawable(
+                                R.drawable.ic_check_circle_green_24dp,
+                                requireContext().theme
                             )
                         )
                     }
                 }
             }
-
         })
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        // foodVm.eventDissmissFromFilter()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        foodVm.unregisterSharedPrefStringListener()
         _binding = null
     }
 }

@@ -2,41 +2,33 @@ package com.ian.junemon.foodiepedia.core.domain.usecase
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
+import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.domain.SavedFoodCacheDomain
 import com.junemon.model.FirebaseResult
 import com.junemon.model.Results
-import com.junemon.model.WorkerResult
-import com.junemon.model.domain.FoodCacheDomain
-import com.junemon.model.domain.FoodRemoteDomain
-import com.junemon.model.domain.SavedFoodCacheDomain
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
 /**
- * Created by Ian Damping on 27,January,2020
+ * Created by Ian Damping on 03,January,2021
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class FoodUseCase @Inject constructor(private val repo: FoodRepository) {
+interface FoodUseCase {
 
-    fun homeFoodPrefetch():  LiveData<Results<List<FoodCacheDomain>>> = repo.homeFoodPrefetch()
+    fun getCache(): Flow<Results<List<FoodCacheDomain>>>
 
-    suspend fun setCacheDetailFood(vararg data: SavedFoodCacheDomain) = repo.setCacheDetailFood(*data)
+    fun getCategorizeCache(foodCategory: String): Flow<Results<List<FoodCacheDomain>>>
 
-    fun getSavedDetailCache() = repo.getSavedDetailCache()
+    fun getSavedDetailCache(): Flow<Results<List<SavedFoodCacheDomain>>>
 
-    suspend fun deleteSelectedId(selectedId: Int) = repo.deleteSelectedId(selectedId)
+    fun uploadFirebaseData(data: FoodRemoteDomain, imageUri: Uri): LiveData<FirebaseResult<Nothing>>
 
-    fun getCache(): LiveData<List<FoodCacheDomain>> = repo.getCache()
+    suspend fun setCacheDetailFood(vararg data: SavedFoodCacheDomain)
 
-    fun uploadFirebaseData(data: FoodRemoteDomain, imageUri: Uri): LiveData<FirebaseResult<Nothing>> = repo.uploadFirebaseData(data, imageUri)
+    suspend fun deleteSelectedId(selectedId: Int)
 
-    fun registerSharedPrefStringListener() = repo.registerSharedPrefStringListener()
+    fun loadSharedPreferenceFilter(): Flow<String>
 
-    fun unregisterSharedPrefStringListener() = repo.unregisterSharedPrefStringListener()
-
-    fun loadSharedPreferenceFilter(): LiveData<String?> = repo.loadSharedPreferenceFilter().asLiveData()
-
-    fun setSharedPreferenceFilter(data:String) = repo.setSharedPreferenceFilter(data)
+    suspend fun setSharedPreferenceFilter(data: String)
 }

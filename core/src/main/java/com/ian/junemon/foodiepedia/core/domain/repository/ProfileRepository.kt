@@ -2,9 +2,9 @@ package com.ian.junemon.foodiepedia.core.domain.repository
 
 import android.content.Intent
 import androidx.lifecycle.LiveData
-import com.ian.junemon.foodiepedia.core.remote.firebaseuser.AuthenticatedUserInfo
+import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
 import com.junemon.model.ProfileResults
-import com.junemon.model.domain.UserProfileDataModel
+import com.ian.junemon.foodiepedia.core.domain.model.domain.UserProfileDataModel
 
 interface ProfileRepository {
 

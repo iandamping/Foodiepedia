@@ -7,7 +7,7 @@ import com.ian.junemon.foodiepedia.data.data.fake.FakeProfileRepository
 import com.ian.junemon.foodiepedia.data.datasource.cache.FakeProfileCacheDataSourceImpl
 import com.ian.junemon.foodiepedia.data.datasource.remote.FakeProfileRemoteDataSourceImpl
 import com.ian.junemon.foodiepedia.getOrAwaitValue
-import com.junemon.model.domain.UserProfileDataModel
+import com.ian.junemon.foodiepedia.core.domain.model.domain.UserProfileDataModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
