@@ -1,7 +1,7 @@
 package com.ian.junemon.foodiepedia.uploader.ui
 
 import android.os.Bundle
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
+import com.ian.junemon.foodiepedia.uploader.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.uploader.databinding.ActivityMainBinding
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject

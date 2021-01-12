@@ -1,7 +1,7 @@
 package com.ian.junemon.foodiepedia.core.data
 
-import com.junemon.model.DataSourceHelper
-import com.junemon.model.Results
+import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
+import com.ian.junemon.foodiepedia.core.domain.model.Results
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first

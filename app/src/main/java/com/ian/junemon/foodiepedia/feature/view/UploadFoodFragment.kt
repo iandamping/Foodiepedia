@@ -12,23 +12,21 @@ import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.base.BaseFragment
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ImageUtilHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.PermissionHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
+import com.ian.junemon.foodiepedia.util.interfaces.ImageUtilHelper
+import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
+import com.ian.junemon.foodiepedia.util.interfaces.PermissionHelper
+import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentUploadBinding
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
-import com.junemon.model.FirebaseResult
-import com.junemon.model.ProfileResults
-import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
-import kotlinx.coroutines.launch
+import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
+import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
+import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
 import javax.inject.Inject
 
 /**

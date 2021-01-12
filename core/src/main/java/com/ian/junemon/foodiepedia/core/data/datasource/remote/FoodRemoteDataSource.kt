@@ -1,9 +1,9 @@
 package com.ian.junemon.foodiepedia.core.data.datasource.remote
 
 import android.net.Uri
-import com.junemon.model.DataSourceHelper
-import com.junemon.model.FirebaseResult
-import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
+import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
+import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
 import kotlinx.coroutines.flow.Flow
 
 interface FoodRemoteDataSource {

@@ -1,7 +1,7 @@
 package com.ian.junemon.foodiepedia.data.datasource.cache
 
 import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileCacheDataSource
-import com.ian.junemon.foodiepedia.core.domain.model.domain.UserProfileDataModel
+import com.ian.junemon.foodiepedia.core.domain.model.UserProfileDataModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 

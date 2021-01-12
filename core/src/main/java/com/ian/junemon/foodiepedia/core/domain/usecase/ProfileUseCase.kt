@@ -3,7 +3,7 @@ package com.ian.junemon.foodiepedia.core.domain.usecase
 import android.content.Intent
 import androidx.lifecycle.LiveData
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
-import com.junemon.model.ProfileResults
+import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
 
 /**
  * Created by Ian Damping on 03,January,2021

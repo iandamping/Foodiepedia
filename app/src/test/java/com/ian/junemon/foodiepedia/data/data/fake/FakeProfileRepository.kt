@@ -2,14 +2,11 @@ package com.ian.junemon.foodiepedia.data.data.fake
 
 import android.content.Intent
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.liveData
 import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileCacheDataSource
 import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileRemoteDataSource
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
-import com.ian.junemon.foodiepedia.core.domain.model.domain.UserProfileDataModel
-import kotlinx.coroutines.flow.collect
+import com.ian.junemon.foodiepedia.core.domain.model.UserProfileDataModel
 
 /**
  * Created by Ian Damping on 07,February,2020

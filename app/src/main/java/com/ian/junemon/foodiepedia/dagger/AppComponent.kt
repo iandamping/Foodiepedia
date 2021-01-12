@@ -6,7 +6,7 @@ import com.ian.junemon.foodiepedia.core.dagger.module.GlideModule
 import com.ian.junemon.foodiepedia.core.dagger.module.CoroutineModule
 import com.ian.junemon.foodiepedia.core.dagger.module.DataModule
 import com.ian.junemon.foodiepedia.core.dagger.module.DomainModule
-import com.ian.junemon.foodiepedia.core.dagger.module.PresentationModule
+import com.ian.junemon.foodiepedia.dagger.module.PresentationModule
 import com.ian.junemon.foodiepedia.core.dagger.factory.ViewModelModule
 import com.ian.junemon.foodiepedia.core.dagger.module.DataStorePreferenceHelperModule
 import com.ian.junemon.foodiepedia.core.dagger.module.RemoteModule

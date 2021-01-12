@@ -2,23 +2,21 @@ package com.ian.junemon.foodiepedia.data.data.fake
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodCacheDataSource
 import com.ian.junemon.foodiepedia.core.data.data.datasource.FoodRemoteDataSource
 import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
-import com.junemon.model.DataSourceHelper
-import com.junemon.model.FirebaseResult
-import com.junemon.model.Results
+import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
+import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
+import com.ian.junemon.foodiepedia.core.domain.model.Results
 import com.junemon.model.WorkerResult
-import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodCacheDomain
-import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
-import com.ian.junemon.foodiepedia.core.domain.model.domain.SavedFoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.map
 
 /**
  * Created by Ian Damping on 07,February,2020

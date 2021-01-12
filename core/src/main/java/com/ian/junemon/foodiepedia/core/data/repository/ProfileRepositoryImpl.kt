@@ -6,8 +6,8 @@ import androidx.lifecycle.asLiveData
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.ProfileRemoteDataSource
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
-import com.junemon.model.DataSourceHelper
-import com.junemon.model.ProfileResults
+import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
+import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

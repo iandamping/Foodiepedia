@@ -6,21 +6,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodCacheDomain
-import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
-import com.ian.junemon.foodiepedia.core.domain.model.domain.GenericPairData
-import com.ian.junemon.foodiepedia.core.domain.model.domain.SavedFoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
 import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
-import com.ian.junemon.foodiepedia.core.presentation.util.Event
+import com.ian.junemon.foodiepedia.core.domain.model.Event
 import com.ian.junemon.foodiepedia.core.util.DataConstant
-import com.junemon.model.FirebaseResult
-import com.junemon.model.Results
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapConcat
+import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
+import com.ian.junemon.foodiepedia.core.domain.model.Results
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 /**

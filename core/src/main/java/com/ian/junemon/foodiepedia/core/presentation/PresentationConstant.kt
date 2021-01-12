@@ -37,6 +37,6 @@ object PresentationConstant {
 inline val Context.layoutInflater: LayoutInflater
     get() = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-internal fun ViewGroup.inflates(layout: Int): View {
+ fun ViewGroup.inflates(layout: Int): View {
     return LayoutInflater.from(context).inflate(layout, this, false)
 }

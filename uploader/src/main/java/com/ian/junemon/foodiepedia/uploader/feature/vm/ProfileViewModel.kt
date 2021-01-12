@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
 import com.ian.junemon.foodiepedia.core.domain.usecase.ProfileUseCase
-import com.ian.junemon.foodiepedia.core.presentation.util.Event
-import com.junemon.model.ProfileResults
+import com.ian.junemon.foodiepedia.core.domain.model.Event
+import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

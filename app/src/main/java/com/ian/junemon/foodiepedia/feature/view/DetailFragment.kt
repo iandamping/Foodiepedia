@@ -11,14 +11,14 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.base.BaseFragment
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.IntentUtilHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
+import com.ian.junemon.foodiepedia.util.interfaces.IntentUtilHelper
+import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentDetailBinding
-import com.ian.junemon.foodiepedia.core.presentation.util.EventObserver
+import com.ian.junemon.foodiepedia.core.domain.model.EventObserver
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
-import com.ian.junemon.foodiepedia.core.data.model.data.dto.mapToDetailDatabasePresentation
 import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
-import com.junemon.model.Results
+import com.ian.junemon.foodiepedia.core.domain.model.Results
+import com.ian.junemon.foodiepedia.core.util.mapToDetailDatabasePresentation
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

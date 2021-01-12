@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.lifecycle.LiveData
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
-import com.junemon.model.ProfileResults
+import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
 import javax.inject.Inject
 
 /**

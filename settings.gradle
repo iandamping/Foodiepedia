@@ -1,2 +1,2 @@
 include ':uploader'
-include ':app', ':model', ':core'
+include ':app', ':core'

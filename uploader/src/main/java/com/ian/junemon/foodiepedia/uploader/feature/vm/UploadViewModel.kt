@@ -4,9 +4,9 @@ import android.net.Uri
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
-import com.junemon.model.FirebaseResult
+import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
 import javax.inject.Inject
 
 /**

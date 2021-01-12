@@ -77,7 +77,6 @@ android {
 }
 
 dependencies {
-    implementation project(':model')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
 }

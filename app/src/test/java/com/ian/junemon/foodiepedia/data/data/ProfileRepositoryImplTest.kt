@@ -5,7 +5,7 @@ import com.ian.junemon.foodiepedia.core.data.repository.ProfileRepositoryImpl
 import com.ian.junemon.foodiepedia.data.datasource.cache.FakeProfileCacheDataSourceImpl
 import com.ian.junemon.foodiepedia.data.datasource.remote.FakeProfileRemoteDataSourceImpl
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
-import com.ian.junemon.foodiepedia.core.domain.model.domain.UserProfileDataModel
+import com.ian.junemon.foodiepedia.core.domain.model.UserProfileDataModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

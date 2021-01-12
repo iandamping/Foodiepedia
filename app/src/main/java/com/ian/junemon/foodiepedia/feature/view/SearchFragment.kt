@@ -12,16 +12,16 @@ import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.base.BaseFragment
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
-import com.ian.junemon.foodiepedia.core.data.model.data.dto.mapToCachePresentation
 import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
-import com.ian.junemon.foodiepedia.core.presentation.util.EventObserver
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.RecyclerHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
+import com.ian.junemon.foodiepedia.core.domain.model.EventObserver
+import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
+import com.ian.junemon.foodiepedia.util.interfaces.RecyclerHelper
+import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentSearchBinding
 import com.ian.junemon.foodiepedia.feature.util.FoodConstant
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
-import com.junemon.model.Results
+import com.ian.junemon.foodiepedia.core.domain.model.Results
+import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
 import kotlinx.android.synthetic.main.item_home.view.*
 import javax.inject.Inject
 
@@ -85,15 +85,15 @@ class SearchFragment : BaseFragment() {
     }
 
     private fun getCache() {
-        foodVm.getCache().observe(viewLifecycleOwner, {
-            when (it) {
+        foodVm.getCache().observe(viewLifecycleOwner, { results ->
+            when (results) {
                 is Results.Success -> {
-                    data = it.data.map { it.mapToCachePresentation() }
+                    data = results.data.map { it.mapToCachePresentation() }
                     foodVm.setSearchItem(data = data.toMutableList())
                 }
                 is Results.Error -> {
                     foodVm.setupLoadingState(true)
-                    foodVm.setupSnackbarMessage(it.exception.message)
+                    foodVm.setupSnackbarMessage(results.exception.message)
                 }
             }
 

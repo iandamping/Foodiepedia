@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
+import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.util.DataConstant.filterValueBreakfast
 import com.ian.junemon.foodiepedia.core.util.DataConstant.filterValueBrunch
 import com.ian.junemon.foodiepedia.core.util.DataConstant.filterValueDinner

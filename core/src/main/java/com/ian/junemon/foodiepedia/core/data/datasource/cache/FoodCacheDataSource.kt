@@ -1,8 +1,8 @@
 package com.ian.junemon.foodiepedia.core.data.datasource.cache
 
-import com.junemon.model.DataSourceHelper
-import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodCacheDomain
-import com.ian.junemon.foodiepedia.core.domain.model.domain.SavedFoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
+import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
 import kotlinx.coroutines.flow.Flow
 
 interface FoodCacheDataSource {

@@ -3,7 +3,7 @@ package com.ian.junemon.foodiepedia.feature.vm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ian.junemon.foodiepedia.core.presentation.util.Event
+import com.ian.junemon.foodiepedia.core.domain.model.Event
 
 /**
  * Created by Ian Damping on 12,January,2021

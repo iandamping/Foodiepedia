@@ -10,9 +10,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.ian.junemon.foodiepedia.R
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.PermissionHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
+import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
+import com.ian.junemon.foodiepedia.util.interfaces.PermissionHelper
+import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.databinding.ActivitySplashBinding
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.coroutines.delay

@@ -16,20 +16,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ImageUtilHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.PermissionHelper
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.ViewHelper
+import com.ian.junemon.foodiepedia.uploader.util.interfaces.ImageUtilHelper
 import com.ian.junemon.foodiepedia.uploader.R
 import com.ian.junemon.foodiepedia.uploader.base.BaseFragment
 import com.ian.junemon.foodiepedia.uploader.databinding.FragmentUploadBinding
 import com.ian.junemon.foodiepedia.uploader.feature.vm.ProfileViewModel
 import com.ian.junemon.foodiepedia.uploader.feature.vm.UploadViewModel
-import com.junemon.model.FirebaseResult
-import com.junemon.model.ProfileResults
-import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
+import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
+import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.uploader.util.interfaces.LoadImageHelper
+import com.ian.junemon.foodiepedia.uploader.util.interfaces.PermissionHelper
+import com.ian.junemon.foodiepedia.uploader.util.interfaces.ViewHelper
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 /**

@@ -11,11 +11,11 @@ import androidx.navigation.fragment.findNavController
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.base.BaseFragment
-import com.ian.junemon.foodiepedia.core.presentation.util.interfaces.LoadImageHelper
+import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentProfileBinding
-import com.ian.junemon.foodiepedia.core.presentation.util.EventObserver
+import com.ian.junemon.foodiepedia.core.domain.model.EventObserver
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
-import com.junemon.model.ProfileResults
+import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

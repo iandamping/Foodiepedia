@@ -7,12 +7,12 @@ import com.ian.junemon.foodiepedia.core.dagger.module.DataStorePreferenceHelperM
 import com.ian.junemon.foodiepedia.core.dagger.module.DatabaseModule
 import com.ian.junemon.foodiepedia.core.dagger.module.DomainModule
 import com.ian.junemon.foodiepedia.core.dagger.module.GlideModule
-import com.ian.junemon.foodiepedia.core.dagger.module.PresentationModule
 import com.ian.junemon.foodiepedia.core.dagger.module.RemoteModule
 import com.ian.junemon.foodiepedia.core.dagger.module.DataStorePreferenceModule
 import com.ian.junemon.foodiepedia.uploader.UploadApplication
 import com.ian.junemon.foodiepedia.uploader.dagger.module.ActivityBindingModule
 import com.ian.junemon.foodiepedia.uploader.dagger.module.AppModule
+import com.ian.junemon.foodiepedia.uploader.dagger.module.UploadPresentationModule
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -37,7 +37,7 @@ import javax.inject.Singleton
         DataModule::class,
         DomainModule::class,
         RemoteModule::class,
-        PresentationModule::class,
+        UploadPresentationModule::class,
         GlideModule::class]
 )
 interface UploadComponent : AndroidInjector<UploadApplication> {

@@ -3,7 +3,7 @@ package com.ian.junemon.foodiepedia.core.data.datasource.cache
 import com.ian.junemon.foodiepedia.core.data.datasource.cache.db.dao.ProfileDao
 import com.ian.junemon.foodiepedia.core.util.mapToDatabase
 import com.ian.junemon.foodiepedia.core.util.mapToDomain
-import com.ian.junemon.foodiepedia.core.domain.model.domain.UserProfileDataModel
+import com.ian.junemon.foodiepedia.core.domain.model.UserProfileDataModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

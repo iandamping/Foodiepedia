@@ -8,9 +8,9 @@ import com.ian.junemon.foodiepedia.core.util.DataConstant.ERROR_EMPTY_DATA
 import com.ian.junemon.foodiepedia.core.util.mapToCacheDomain
 import com.ian.junemon.foodiepedia.core.util.mapToDatabase
 import com.ian.junemon.foodiepedia.core.util.mapToDetailDatabase
-import com.junemon.model.DataSourceHelper
-import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodCacheDomain
-import com.ian.junemon.foodiepedia.core.domain.model.domain.SavedFoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
+import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

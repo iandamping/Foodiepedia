@@ -202,7 +202,7 @@
                     android:textSize="@dimen/letter_xlarge"
                     android:textStyle="bold" />
 
-                <com.ian.junemon.foodiepedia.core.presentation.util.classes.JustifyTextView
+                <com.ian.junemon.foodiepedia.util.classes.JustifyTextView
                     android:id="@+id/tvFoodDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

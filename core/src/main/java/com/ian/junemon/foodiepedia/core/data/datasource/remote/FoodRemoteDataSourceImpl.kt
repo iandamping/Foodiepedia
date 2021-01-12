@@ -8,11 +8,11 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.StorageReference
 import com.ian.junemon.foodiepedia.core.dagger.module.DefaultDispatcher
 import com.ian.junemon.foodiepedia.core.util.DataConstant
-import com.junemon.model.DataSourceHelper
-import com.junemon.model.FirebaseResult
-import com.ian.junemon.foodiepedia.core.data.model.data.FoodEntity
-import com.ian.junemon.foodiepedia.core.data.model.data.dto.mapToRemoteDomain
-import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
+import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
+import com.ian.junemon.foodiepedia.core.data.model.FoodEntity
+import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.util.mapToRemoteDomain
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi

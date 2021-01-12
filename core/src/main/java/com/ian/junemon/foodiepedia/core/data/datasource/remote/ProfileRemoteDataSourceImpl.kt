@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.ian.junemon.foodiepedia.core.dagger.module.IoDispatcher
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.FirebaseUserInfo
-import com.junemon.model.DataSourceHelper
+import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel

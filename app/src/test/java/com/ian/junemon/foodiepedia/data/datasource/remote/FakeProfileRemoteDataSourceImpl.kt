@@ -2,7 +2,7 @@ package com.ian.junemon.foodiepedia.data.datasource.remote
 
 import android.content.Intent
 import com.ian.junemon.foodiepedia.core.data.data.datasource.ProfileRemoteDataSource
-import com.ian.junemon.foodiepedia.core.domain.model.domain.UserProfileDataModel
+import com.ian.junemon.foodiepedia.core.domain.model.UserProfileDataModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 

@@ -2,11 +2,11 @@ package com.ian.junemon.foodiepedia.core.domain.usecase
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
-import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodCacheDomain
-import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
-import com.ian.junemon.foodiepedia.core.domain.model.domain.SavedFoodCacheDomain
-import com.junemon.model.FirebaseResult
-import com.junemon.model.Results
+import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
+import com.ian.junemon.foodiepedia.core.domain.model.Results
 import kotlinx.coroutines.flow.Flow
 
 /**

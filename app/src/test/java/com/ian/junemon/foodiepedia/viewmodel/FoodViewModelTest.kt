@@ -9,10 +9,10 @@ import com.ian.junemon.foodiepedia.data.datasource.cache.FakeFoodCacheDataSource
 import com.ian.junemon.foodiepedia.data.datasource.remote.FakeFoodRemoteDataSourceImpl
 import com.ian.junemon.foodiepedia.getOrAwaitValue
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
-import com.junemon.model.Results
-import com.ian.junemon.foodiepedia.core.data.model.data.dto.mapToCacheDomain
-import com.ian.junemon.foodiepedia.core.domain.model.domain.FoodRemoteDomain
-import com.ian.junemon.foodiepedia.core.domain.model.domain.SavedFoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.Results
+import com.ian.junemon.foodiepedia.core.data.model.dto.mapToCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
