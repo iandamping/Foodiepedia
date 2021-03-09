@@ -1,19 +1,14 @@
 package com.ian.junemon.foodiepedia.ui
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.view.Window
-import android.view.WindowManager
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.ian.junemon.foodiepedia.R
-import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
-import com.ian.junemon.foodiepedia.util.interfaces.PermissionHelper
-import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.databinding.ActivitySplashBinding
+import com.ian.junemon.foodiepedia.util.activityViewBinding
+import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
+import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,25 +20,26 @@ import javax.inject.Inject
  * Indonesia.
  */
 class SplashActivity : DaggerAppCompatActivity() {
-    private lateinit var binding: ActivitySplashBinding
     @Inject
     lateinit var viewHelper: ViewHelper
+
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
 
+    private val binding by activityViewBinding(ActivitySplashBinding::inflate)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewHelper.run { fullScreenAnimation() }
-        binding = ActivitySplashBinding.inflate(layoutInflater)
+        with(viewHelper) {
+            fullScreenAnimation()
+        }
         binding.initView()
-        setContentView(binding.root)
 
         runDelayed {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
     }
-
 
     private fun ActivitySplashBinding.initView() {
         loadImageHelper.run {

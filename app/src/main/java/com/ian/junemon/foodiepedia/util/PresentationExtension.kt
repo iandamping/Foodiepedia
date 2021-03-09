@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.util.*
 
 /**
  * Created by Ian Damping on 04,December,2019
@@ -59,6 +60,15 @@ fun RecyclerView.gridRecyclerviewInitializer(size: Int) {
     layoutManager = GridLayoutManager(
         this.context, size
     )
+}
+
+fun generateRandomHexColor(): String {
+    // create object of Random class
+    val obj = Random()
+    val randomNumber = obj.nextInt(0xffffff + 1)
+    // format it as hexadecimal string and print
+
+    return String.format("#%06x", randomNumber)
 }
 
 

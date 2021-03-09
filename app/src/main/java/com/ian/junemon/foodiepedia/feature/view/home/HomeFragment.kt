@@ -12,14 +12,13 @@ import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
 import com.ian.junemon.foodiepedia.core.domain.model.Results
 import com.ian.junemon.foodiepedia.util.clicks
-import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 import com.ian.junemon.foodiepedia.util.observe
 import com.ian.junemon.foodiepedia.util.observeEvent
 import com.ian.junemon.foodiepedia.util.shimmerHandler
 import com.ian.junemon.foodiepedia.core.util.DataConstant.filterValueBreakfast
 import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
 import com.ian.junemon.foodiepedia.databinding.FragmentHomeBinding
-import com.ian.junemon.foodiepedia.feature.view.HomeFragmentDirections
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.ian.junemon.foodiepedia.util.horizontalRecyclerviewInitializer
@@ -148,7 +147,6 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
                         // Force a redraw
                         this.notifyDataSetChanged()
                     }
-                    // binding.setupRecyclerView(userPickData.mapToCachePresentation())
                 }
             }
         }
@@ -191,7 +189,7 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
 
     override fun onClicked(data: FoodCachePresentation) {
         val direction = HomeFragmentDirections.actionHomeFragmentToDetailFragment(
-            gson.toJson(data)
+            data
         )
         foodVm.setNavigate(direction)
     }

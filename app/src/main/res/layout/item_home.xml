@@ -23,31 +23,29 @@
                 android:adjustViewBounds="true"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
-            <LinearLayout
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/ivFoodImage"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/spacing_medium"
-                android:background="@drawable/view_curve_yellow"
-                android:orientation="horizontal"
-                android:padding="@dimen/spacing_medium">
+                android:layout_margin="@dimen/spacing_large"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Air Terjun Pinang Seribu">
 
-                <ImageView
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipDetail"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_person_black_24dp" />
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:chipBackgroundColor="@color/blue_food"
+                    tools:text="testing chips" />
+            </com.google.android.material.chip.ChipGroup>
 
-                <TextView
-                    android:id="@+id/tvFoodContributor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Ian Christian"
-                    android:textColor="@color/textColor"
-                    android:textStyle="bold" />
-            </LinearLayout>
+
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

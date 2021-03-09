@@ -9,7 +9,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
-import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.util.interfaces.RecyclerHelper
 import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
@@ -19,7 +19,6 @@ import com.ian.junemon.foodiepedia.core.domain.model.Results
 import com.ian.junemon.foodiepedia.util.observe
 import com.ian.junemon.foodiepedia.util.observeEvent
 import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
-import com.ian.junemon.foodiepedia.feature.view.SearchFragmentDirections
 import com.ian.junemon.foodiepedia.util.gridRecyclerviewInitializer
 import kotlinx.android.synthetic.main.item_home.view.*
 import javax.inject.Inject
@@ -151,8 +150,7 @@ class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),SearchAd
         get() = FragmentSearchBinding::inflate
 
     override fun onClicked(data: FoodCachePresentation) {
-        val action =
-            SearchFragmentDirections.actionSearchFragmentToDetailFragment(gson.toJson(this))
+        val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(data)
         foodVm.setNavigate(action)
     }
 }

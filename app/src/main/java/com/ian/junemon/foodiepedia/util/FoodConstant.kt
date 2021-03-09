@@ -2,7 +2,7 @@ package com.ian.junemon.foodiepedia.util
 
 import androidx.recyclerview.widget.DiffUtil
 import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
-import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 
 /**
  * Created by Ian Damping on 29,January,2020

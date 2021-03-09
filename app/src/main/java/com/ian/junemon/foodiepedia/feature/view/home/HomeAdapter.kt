@@ -3,9 +3,8 @@ package com.ian.junemon.foodiepedia.feature.view.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 import com.ian.junemon.foodiepedia.databinding.ItemCustomHomeBinding
-import com.ian.junemon.foodiepedia.util.FoodConstant
 import com.ian.junemon.foodiepedia.util.FoodConstant.foodPresentationRvCallback
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 

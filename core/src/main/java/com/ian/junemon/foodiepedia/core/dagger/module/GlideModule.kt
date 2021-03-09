@@ -33,6 +33,6 @@ object GlideModule {
         return RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             // .placeholder(R.drawable.empty_image)
             .format(DecodeFormat.PREFER_RGB_565)
-            .error(R.drawable.no_data)
+            .error(R.drawable.empty_image)
     }
 }

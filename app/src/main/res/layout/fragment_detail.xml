@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="detailFood"
+            type="com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation" />
+
+        <variable
             name="bookmarkedState"
             type="Boolean" />
     </data>
@@ -144,6 +148,7 @@
                             android:textColor="@color/gray_food_2"
                             android:textSize="@dimen/letter_medium"
                             android:textStyle="bold"
+                            android:text="@{detailFood.foodName}"
                             tools:text="Oncom" />
 
                         <TextView
@@ -154,6 +159,7 @@
                             android:textColor="@color/gray_food_2"
                             android:textSize="@dimen/letter_medium"
                             android:textStyle="bold"
+                            android:text="@{detailFood.foodCategory}"
                             tools:text="Breakfast" />
 
 
@@ -174,6 +180,7 @@
                             android:textColor="@color/gray_food_2"
                             android:textSize="@dimen/letter_medium"
                             android:textStyle="bold"
+                            android:text="@{detailFood.foodContributor}"
                             tools:text="Ian Damping" />
 
                         <TextView
@@ -184,6 +191,7 @@
                             android:textColor="@color/gray_food_2"
                             android:textSize="@dimen/letter_medium"
                             android:textStyle="bold"
+                            android:text="@{detailFood.foodArea}"
                             tools:text="Indonesia" />
 
                     </LinearLayout>
@@ -211,6 +219,7 @@
                     android:layout_marginEnd="@dimen/spacing_large"
                     android:layout_marginBottom="@dimen/spacing_medium"
                     android:textColor="@color/gray_food_2"
+                    android:text="@{detailFood.foodDescription}"
                     android:textSize="@dimen/letter_medium"
                     android:textStyle="bold"
                     tools:text="@tools:sample/lorem/random" />

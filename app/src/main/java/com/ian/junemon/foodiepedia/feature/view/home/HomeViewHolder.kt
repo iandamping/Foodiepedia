@@ -1,7 +1,7 @@
 package com.ian.junemon.foodiepedia.feature.view.home
 
 import androidx.recyclerview.widget.RecyclerView
-import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 import com.ian.junemon.foodiepedia.databinding.ItemCustomHomeBinding
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 
@@ -16,8 +16,11 @@ class HomeViewHolder(
 ) : RecyclerView.ViewHolder(itemBinding.root) {
 
     fun bind(data: FoodCachePresentation) {
-        with(loadImageHelper) { itemBinding.ivFoodImage.loadWithGlide(data.foodImage) }
-        itemBinding.tvTitle.text = data.foodName
-        itemBinding.tvDescription.text = data.foodDescription
+        with(itemBinding){
+            with(loadImageHelper) { ivFoodImage.loadWithGlide(data.foodImage) }
+            tvTitle.text = data.foodName
+            tvDescription.text = data.foodDescription
+        }
+
     }
 }

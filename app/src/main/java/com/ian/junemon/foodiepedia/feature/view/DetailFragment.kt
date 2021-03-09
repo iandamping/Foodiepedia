@@ -3,19 +3,19 @@ package com.ian.junemon.foodiepedia.feature.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.base.BaseFragmentDataBinding
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.core.domain.model.Results
-import com.ian.junemon.foodiepedia.util.clicks
-import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
-import com.ian.junemon.foodiepedia.util.observe
 import com.ian.junemon.foodiepedia.core.util.mapToDetailDatabasePresentation
 import com.ian.junemon.foodiepedia.databinding.FragmentDetailBinding
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
+import com.ian.junemon.foodiepedia.util.clicks
 import com.ian.junemon.foodiepedia.util.interfaces.IntentUtilHelper
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
+import com.ian.junemon.foodiepedia.util.observe
 import javax.inject.Inject
 
 /**
@@ -24,6 +24,8 @@ import javax.inject.Inject
  * Indonesia.
  */
 class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
+    private val args: DetailFragmentArgs by navArgs()
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var foodVm: FoodViewModel
@@ -39,32 +41,25 @@ class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
 
     private var idForDeleteItem: Int? = null
     private var isFavorite: Boolean = false
-    private val passedData by lazy {
-        gson.fromJson(
-            DetailFragmentArgs.fromBundle(requireArguments()).detailValue,
-            FoodCachePresentation::class.java
-        )
-    }
+    private val passedData by lazy { args.detailValue }
 
     override fun viewCreated() {
         foodVm = viewModelProvider(viewModelFactory)
 
         binding.apply {
-            lifecycleOwner = viewLifecycleOwner
             initView()
-            consumeBookmarkData()
+            detailFood = passedData
         }
     }
 
     override fun activityCreated() {
+        consumeBookmarkData()
+
     }
 
     private fun FragmentDetailBinding.initView() {
-        ilegallStateCatching {
-            checkNotNull(passedData)
-            with(loadImageHelper) {
-                ivFoodDetail.loadWithGlide(passedData.foodImage)
-            }
+        with(loadImageHelper) {
+            ivFoodDetail.loadWithGlide(passedData.foodImage)
         }
 
         clicks(btnBookmark) {
@@ -93,11 +88,7 @@ class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
 
             }
         }
-        tvFoodName.text = passedData.foodName
-        tvFoodCategory.text = passedData.foodCategory
-        tvFoodContributor.text = passedData.foodContributor
-        tvFoodArea.text = passedData.foodArea
-        tvFoodDescription.text = passedData.foodDescription
+
 
         appbarDetailLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, i ->
             var isShow = true
@@ -118,8 +109,8 @@ class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
         })
     }
 
-    private fun FragmentDetailBinding.consumeBookmarkData() {
-        observe(foodVm.getSavedDetailCache()){ cacheValue ->
+    private fun consumeBookmarkData() {
+        observe(foodVm.getSavedDetailCache()) { cacheValue ->
             when (cacheValue) {
                 is Results.Success -> {
                     val data = cacheValue.data.filter { it.foodName == passedData.foodName }
@@ -128,17 +119,17 @@ class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
                             if (it.foodName == passedData.foodName) {
                                 idForDeleteItem = it.localFoodID
                                 isFavorite = true
-                                bookmarkedState = isFavorite
+                                binding.bookmarkedState = isFavorite
                             }
                         }
                     } else {
                         isFavorite = false
-                        bookmarkedState = isFavorite
+                        binding.bookmarkedState = isFavorite
                     }
                 }
                 is Results.Error -> {
                     isFavorite = false
-                    bookmarkedState = isFavorite
+                    binding.bookmarkedState = isFavorite
                 }
             }
         }

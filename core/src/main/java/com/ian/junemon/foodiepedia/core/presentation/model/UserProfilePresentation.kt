@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.core.presentation.model.presentation
+package com.ian.junemon.foodiepedia.core.presentation.model
 
 data class UserProfilePresentation(
     var localID: Int?,

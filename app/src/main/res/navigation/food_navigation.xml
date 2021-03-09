@@ -87,7 +87,7 @@
 
         <argument
             android:name="detailValue"
-            app:argType="string" />
+            app:argType="com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation" />
 
     </fragment>
     <fragment

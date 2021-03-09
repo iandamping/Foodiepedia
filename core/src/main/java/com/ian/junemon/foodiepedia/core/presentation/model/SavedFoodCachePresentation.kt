@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.core.presentation.model.presentation
+package com.ian.junemon.foodiepedia.core.presentation.model
 
 /**
  * Created by Ian Damping on 10,February,2020
