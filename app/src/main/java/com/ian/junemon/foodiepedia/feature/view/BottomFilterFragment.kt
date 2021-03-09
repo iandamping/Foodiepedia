@@ -17,8 +17,10 @@ import com.ian.junemon.foodiepedia.core.util.DataConstant.filterValueBrunch
 import com.ian.junemon.foodiepedia.core.util.DataConstant.filterValueDinner
 import com.ian.junemon.foodiepedia.core.util.DataConstant.filterValueLunch
 import com.ian.junemon.foodiepedia.core.util.DataConstant.filterValueSupper
+import com.ian.junemon.foodiepedia.core.util.DataConstant.noFilterValue
 import com.ian.junemon.foodiepedia.databinding.FragmentBottomFilterBinding
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
+import com.ian.junemon.foodiepedia.util.getDrawables
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
@@ -64,41 +66,35 @@ class BottomFilterFragment : BottomSheetDialogFragment() {
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun FragmentBottomFilterBinding.initView() {
         with(loadImageHelper) {
+            ivNoFilter.loadWithGlide(
+                getDrawables(R.drawable.ic_filter_0)
+
+            )
             ivBrunch.loadWithGlide(
-                requireContext().resources.getDrawable(
-                    R.drawable.ic_filter_4,
-                    requireContext().theme
-                )
+                getDrawables(R.drawable.ic_filter_4)
             )
 
             ivSupper.loadWithGlide(
-                requireContext().resources.getDrawable(
-                    R.drawable.ic_filter_5,
-                    requireContext().theme
-                )
+                getDrawables(R.drawable.ic_filter_5)
             )
 
             ivLunch.loadWithGlide(
-                requireContext().resources.getDrawable(
-                    R.drawable.ic_filter_2,
-                    requireContext().theme
-                )
+                getDrawables(R.drawable.ic_filter_2)
             )
 
             ivDinner.loadWithGlide(
-                requireContext().resources.getDrawable(
-                    R.drawable.ic_filter_3,
-                    requireContext().theme
-                )
+                getDrawables(R.drawable.ic_filter_3)
             )
 
             ivBreakfast.loadWithGlide(
-                requireContext().resources.getDrawable(
-                    R.drawable.ic_filter_1,
-                    requireContext().theme
-                )
+                getDrawables(R.drawable.ic_filter_1)
             )
 
+        }
+
+        clicks(lnPickNoFilter) {
+            foodVm.setSharedPreferenceFilter(noFilterValue)
+            dismiss()
         }
         clicks(lnPickBreakfast) {
             foodVm.setSharedPreferenceFilter(filterValueBreakfast)
@@ -136,23 +132,24 @@ class BottomFilterFragment : BottomSheetDialogFragment() {
     private fun observeFilterState(view: FragmentBottomFilterBinding) {
         observe(foodVm.loadSharedPreferenceFilter()) {
             when (it) {
+                noFilterValue ->{
+                    with(loadImageHelper) {
+                        view.ivPickNoFilter.loadWithGlide(
+                            getDrawables(R.drawable.ic_check_circle_green_24dp)
+                        )
+                    }
+                }
                 filterValueBreakfast -> {
                     with(loadImageHelper) {
                         view.ivPickBreakfast.loadWithGlide(
-                            requireContext().resources.getDrawable(
-                                R.drawable.ic_check_circle_green_24dp,
-                                requireContext().theme
-                            )
+                            getDrawables(R.drawable.ic_check_circle_green_24dp)
                         )
                     }
                 }
                 filterValueDinner -> {
                     with(loadImageHelper) {
                         view.ivPickDinner.loadWithGlide(
-                            requireContext().resources.getDrawable(
-                                R.drawable.ic_check_circle_green_24dp,
-                                requireContext().theme
-                            )
+                            getDrawables(R.drawable.ic_check_circle_green_24dp)
                         )
                     }
                 }
@@ -160,10 +157,7 @@ class BottomFilterFragment : BottomSheetDialogFragment() {
                 filterValueLunch -> {
                     with(loadImageHelper) {
                         view.ivPickLunch.loadWithGlide(
-                            requireContext().resources.getDrawable(
-                                R.drawable.ic_check_circle_green_24dp,
-                                requireContext().theme
-                            )
+                            getDrawables(R.drawable.ic_check_circle_green_24dp)
                         )
                     }
                 }
@@ -171,10 +165,7 @@ class BottomFilterFragment : BottomSheetDialogFragment() {
                 filterValueBrunch -> {
                     with(loadImageHelper) {
                         view.ivPickBrunch.loadWithGlide(
-                            requireContext().resources.getDrawable(
-                                R.drawable.ic_check_circle_green_24dp,
-                                requireContext().theme
-                            )
+                            getDrawables(R.drawable.ic_check_circle_green_24dp)
                         )
                     }
                 }
@@ -182,23 +173,13 @@ class BottomFilterFragment : BottomSheetDialogFragment() {
                 filterValueSupper -> {
                     with(loadImageHelper) {
                         view.ivPickSupper.loadWithGlide(
-                            requireContext().resources.getDrawable(
-                                R.drawable.ic_check_circle_green_24dp,
-                                requireContext().theme
-                            )
+                            getDrawables(R.drawable.ic_check_circle_green_24dp)
                         )
                     }
                 }
 
                 else -> {
-                    with(loadImageHelper) {
-                        view.ivPickBreakfast.loadWithGlide(
-                            requireContext().resources.getDrawable(
-                                R.drawable.ic_check_circle_green_24dp,
-                                requireContext().theme
-                            )
-                        )
-                    }
+                    foodVm.setSharedPreferenceFilter(noFilterValue)
                 }
             }
         }

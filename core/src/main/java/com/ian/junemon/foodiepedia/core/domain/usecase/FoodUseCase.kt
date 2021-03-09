@@ -18,6 +18,8 @@ interface FoodUseCase {
 
     fun getCache(): Flow<Results<List<FoodCacheDomain>>>
 
+    fun prefetchData(): Flow<Results<List<FoodCacheDomain>>>
+
     fun getCategorizeCache(foodCategory: String): Flow<Results<List<FoodCacheDomain>>>
 
     fun getSavedDetailCache(): Flow<Results<List<SavedFoodCacheDomain>>>

@@ -11,11 +11,12 @@ import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
 import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
-import com.ian.junemon.foodiepedia.core.util.DataConstant
 import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
 import com.ian.junemon.foodiepedia.core.domain.model.Results
+import com.ian.junemon.foodiepedia.core.util.DataConstant.noFilterValue
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -74,11 +75,15 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         }
     }
 
-    fun getFoodBasedOnFilter() = repository.loadSharedPreferenceFilter().flatMapLatest {
+    fun getFood() = repository.loadSharedPreferenceFilter().flatMapLatest {
         if (it.isEmpty()){
-            repository.getCategorizeCache(DataConstant.filterValueBreakfast)
+            repository.prefetchData()
         } else{
-            repository.getCategorizeCache(it)
+            if (it == noFilterValue){
+                repository.getCache()
+            }else {
+                repository.getCategorizeCache(it)
+            }
         }
     }.asLiveData(viewModelScope.coroutineContext)
 

@@ -13,6 +13,7 @@ object DataConstant {
     const val RequestOpenCamera = 234
 
     const val filterKey = "filter key"
+    const val noFilterValue = "Unfiltered"
     const val filterValueBreakfast = "Breakfast"
     const val filterValueDinner = "Dinner"
     const val filterValueLunch = "Lunch"

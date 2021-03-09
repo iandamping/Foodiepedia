@@ -1,9 +1,12 @@
 package com.ian.junemon.foodiepedia.util
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.model.Event
 import com.ian.junemon.foodiepedia.model.EventObserver
 import com.ian.junemon.foodiepedia.util.classes.RecyclerHorizontalSnapHelper
@@ -133,4 +137,11 @@ fun Boolean.shimmerHandler(view:ShimmerFrameLayout){
             view.visibility = View.GONE
         }
     }
+}
+
+fun Fragment.getDrawables(@DrawableRes drawableId:Int):Drawable{
+    return ContextCompat.getDrawable(
+        requireContext(),
+        drawableId
+    )!!
 }

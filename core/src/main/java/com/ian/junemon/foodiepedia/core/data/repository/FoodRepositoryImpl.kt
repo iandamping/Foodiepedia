@@ -15,6 +15,7 @@ import com.ian.junemon.foodiepedia.core.domain.model.Results
 import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
 import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
 import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
+import com.ian.junemon.foodiepedia.core.util.DataConstant.ERROR_EMPTY_DATA
 import com.ian.junemon.foodiepedia.core.util.mapRemoteToCacheDomain
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -43,7 +44,7 @@ class FoodRepositoryImpl @Inject constructor(
         return this.mapRemoteToCacheDomain()
     }
 
-    override fun getCache(): Flow<Results<List<FoodCacheDomain>>> {
+    override fun prefetchData(): Flow<Results<List<FoodCacheDomain>>> {
         return object : NetworkBoundResource<List<FoodCacheDomain>, List<FoodRemoteDomain>>() {
             override fun loadFromDB(): Flow<List<FoodCacheDomain>> {
                 return cacheDataSource.getCache()
@@ -61,6 +62,17 @@ class FoodRepositoryImpl @Inject constructor(
                 cacheDataSource.setCache(*data.applyMainSafeSort().toTypedArray())
             }
         }.asFlow()
+    }
+
+    override fun getCache(): Flow<Results<List<FoodCacheDomain>>> {
+        return cacheDataSource.getCache().map {
+            if (it.isEmpty()){
+                Results.Error(Exception(ERROR_EMPTY_DATA))
+            } else {
+                Results.Success(it)
+            }
+
+        }
     }
 
     override fun getCategorizeCache(foodCategory: String): Flow<Results<List<FoodCacheDomain>>> {

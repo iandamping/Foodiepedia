@@ -17,9 +17,12 @@ import javax.inject.Inject
  * Indonesia.
  */
 class FoodUseCaseImpl @Inject constructor(private val repo: FoodRepository) : FoodUseCase {
-
     override fun getCache(): Flow<Results<List<FoodCacheDomain>>> {
         return repo.getCache()
+    }
+
+    override fun prefetchData(): Flow<Results<List<FoodCacheDomain>>> {
+        return repo.prefetchData()
     }
 
     override fun getCategorizeCache(foodCategory: String): Flow<Results<List<FoodCacheDomain>>> {

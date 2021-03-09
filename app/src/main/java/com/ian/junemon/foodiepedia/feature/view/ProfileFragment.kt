@@ -14,6 +14,7 @@ import com.ian.junemon.foodiepedia.util.observe
 import com.ian.junemon.foodiepedia.util.observeEvent
 import com.ian.junemon.foodiepedia.databinding.FragmentProfileBinding
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
+import com.ian.junemon.foodiepedia.util.getDrawables
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import javax.inject.Inject
 
@@ -63,10 +64,7 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
         }
         with(loadImageHelper){
             ivFoodProfile.loadWithGlide(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.foodiepedia
-                )!!
+                getDrawables(R.drawable.foodiepedia)
             )
         }
     }
@@ -82,7 +80,7 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
                         }
                     } else {
                         with(binding) {
-                            loadImageHelper.run {
+                            with(loadImageHelper){
                                 ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
                             }
                             llProfileData.visibility = View.VISIBLE
@@ -93,12 +91,9 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
                     }
                 }
                 is ProfileResults.Error -> {
-                    loadImageHelper.run {
+                    with(loadImageHelper) {
                         binding.ivPhotoProfile.loadWithGlide(
-                            ContextCompat.getDrawable(
-                                requireContext(),
-                                R.drawable.ic_profiles
-                            )!!
+                            getDrawables( R.drawable.ic_profiles)
                         )
                     }
                 }

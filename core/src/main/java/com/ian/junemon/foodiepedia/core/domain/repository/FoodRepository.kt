@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.Flow
  */
 interface FoodRepository {
 
+    fun prefetchData(): Flow<Results<List<FoodCacheDomain>>>
+
     fun getCache(): Flow<Results<List<FoodCacheDomain>>>
 
     fun getCategorizeCache(foodCategory: String): Flow<Results<List<FoodCacheDomain>>>
