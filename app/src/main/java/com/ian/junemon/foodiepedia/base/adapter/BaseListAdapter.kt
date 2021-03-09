@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ian.junemon.foodiepedia.core.presentation.inflates
+import com.ian.junemon.foodiepedia.util.inflates
 import kotlinx.android.extensions.LayoutContainer
 
 /**

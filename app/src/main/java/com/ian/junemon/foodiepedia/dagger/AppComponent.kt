@@ -36,6 +36,6 @@ import javax.inject.Singleton
 )
 interface AppComponent : AndroidInjector<FoodApp> {
 
-    @Component.Builder
-    abstract class Builder : AndroidInjector.Builder<FoodApp>()
+    @Component.Factory
+    abstract class Builder : AndroidInjector.Factory<FoodApp>
 }

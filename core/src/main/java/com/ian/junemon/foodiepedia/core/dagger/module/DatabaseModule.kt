@@ -9,6 +9,7 @@ import com.ian.junemon.foodiepedia.core.data.datasource.cache.db.dao.SavedFoodDa
 import com.ian.junemon.foodiepedia.core.util.DataConstant.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 /**
  * Created by Ian Damping on 06,January,2020
@@ -19,6 +20,7 @@ import dagger.Provides
 object DatabaseModule {
 
     @Provides
+    @Singleton
     fun provideDb(app: Context): FoodDatabase {
         return Room
             .databaseBuilder(app, FoodDatabase::class.java, DATABASE_NAME)

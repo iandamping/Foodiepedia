@@ -7,6 +7,7 @@ import androidx.datastore.preferences.createDataStore
 import com.ian.junemon.foodiepedia.core.util.DataConstant
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 /**
  * Created by Ian Damping on 23,September,2020
@@ -17,6 +18,7 @@ import dagger.Provides
 object DataStorePreferenceModule {
 
     @Provides
+    @Singleton
     fun provideSharedPreference(context: Context) = context.createDataStore(
         name = DataConstant.prefHelperInit,
         // Since we're migrating from SharedPreferences, add a migration based on the

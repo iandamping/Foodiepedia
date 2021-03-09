@@ -1,6 +1,6 @@
 package com.ian.junemon.foodiepedia.dagger.module
 
-import com.ian.junemon.foodiepedia.core.dagger.scope.PerActivities
+import com.ian.junemon.foodiepedia.dagger.scoped.ActivityScoped
 import com.ian.junemon.foodiepedia.ui.MainActivity
 import com.ian.junemon.foodiepedia.ui.SplashActivity
 import dagger.Module
@@ -14,11 +14,11 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class ActivityBindingModule {
 
-    @PerActivities
     @ContributesAndroidInjector
+    @ActivityScoped
     abstract fun splashActivity(): SplashActivity
 
-    @PerActivities
+    @ActivityScoped
     @ContributesAndroidInjector(
         modules = [  // fragments
             FoodModule::class]

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ian.junemon.foodiepedia.core.domain.model
+package com.ian.junemon.foodiepedia.model
 
 import androidx.lifecycle.Observer
 

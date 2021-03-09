@@ -2,12 +2,12 @@ package com.ian.junemon.foodiepedia.dagger.module
 
 import androidx.lifecycle.ViewModel
 import com.ian.junemon.foodiepedia.core.dagger.factory.ViewModelKey
-import com.ian.junemon.foodiepedia.core.dagger.scope.FeatureScope
+import com.ian.junemon.foodiepedia.dagger.scoped.FragmentScoped
 import com.ian.junemon.foodiepedia.feature.view.BottomFilterFragment
 import com.ian.junemon.foodiepedia.feature.view.DetailFragment
-import com.ian.junemon.foodiepedia.feature.view.HomeFragment
+import com.ian.junemon.foodiepedia.feature.view.home.HomeFragment
 import com.ian.junemon.foodiepedia.feature.view.ProfileFragment
-import com.ian.junemon.foodiepedia.feature.view.SearchFragment
+import com.ian.junemon.foodiepedia.feature.view.search.SearchFragment
 import com.ian.junemon.foodiepedia.feature.view.UploadFoodFragment
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
@@ -24,28 +24,28 @@ import dagger.multibindings.IntoMap
 @Module
 abstract class FoodModule {
 
-    @FeatureScope
     @ContributesAndroidInjector
+    @FragmentScoped
     abstract fun contributeDetailFragment(): DetailFragment
 
-    @FeatureScope
     @ContributesAndroidInjector
+    @FragmentScoped
     abstract fun contributeSearchFragment(): SearchFragment
 
-    @FeatureScope
     @ContributesAndroidInjector
+    @FragmentScoped
     abstract fun contributeBottomFilterFragment(): BottomFilterFragment
 
-    @FeatureScope
     @ContributesAndroidInjector
+    @FragmentScoped
     abstract fun contributeHomeFragment(): HomeFragment
 
-    @FeatureScope
     @ContributesAndroidInjector
+    @FragmentScoped
     abstract fun contributeProfileFragment(): ProfileFragment
 
-    @FeatureScope
     @ContributesAndroidInjector
+    @FragmentScoped
     abstract fun contributeUploadFoodFragment(): UploadFoodFragment
 
     @Binds

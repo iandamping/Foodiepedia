@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.feature.util
+package com.ian.junemon.foodiepedia.util
 
 import androidx.recyclerview.widget.DiffUtil
 import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
@@ -37,7 +37,7 @@ object FoodConstant {
             oldItem: FoodCachePresentation,
             newItem: FoodCachePresentation
         ): Boolean {
-            return oldItem.foodId == newItem.foodId
+            return oldItem == newItem
         }
     }
 }

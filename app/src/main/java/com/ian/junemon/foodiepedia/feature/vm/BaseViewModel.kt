@@ -3,6 +3,8 @@ package com.ian.junemon.foodiepedia.feature.vm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavDirections
+import com.ian.junemon.foodiepedia.model.Event
 
 /**
  * Created by Ian Damping on 26,May,2020
@@ -33,6 +35,15 @@ abstract class BaseViewModel: ViewModel() {
      */
     val loadingState: LiveData<Boolean>
         get() = _loadingState
+
+
+    private val _navigateEvent: MutableLiveData<Event<NavDirections>> = MutableLiveData()
+    val navigateEvent: LiveData<Event<NavDirections>> = _navigateEvent
+
+
+    fun setNavigate(direction: NavDirections){
+        _navigateEvent.value = Event(direction)
+    }
 
     fun setupLoadingState(data:Boolean){
         _loadingState.value = data

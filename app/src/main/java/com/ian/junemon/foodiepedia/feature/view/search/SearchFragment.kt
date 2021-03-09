@@ -1,27 +1,26 @@
-package com.ian.junemon.foodiepedia.feature.view
+package com.ian.junemon.foodiepedia.feature.view.search
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
-import com.ian.junemon.foodiepedia.R
-import com.ian.junemon.foodiepedia.base.BaseFragment
+import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
-import com.ian.junemon.foodiepedia.core.domain.model.EventObserver
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.util.interfaces.RecyclerHelper
 import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentSearchBinding
-import com.ian.junemon.foodiepedia.feature.util.FoodConstant
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.core.domain.model.Results
+import com.ian.junemon.foodiepedia.util.observe
+import com.ian.junemon.foodiepedia.util.observeEvent
 import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
+import com.ian.junemon.foodiepedia.feature.view.SearchFragmentDirections
+import com.ian.junemon.foodiepedia.util.gridRecyclerviewInitializer
 import kotlinx.android.synthetic.main.item_home.view.*
 import javax.inject.Inject
 
@@ -30,7 +29,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SearchFragment : BaseFragment() {
+class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),SearchAdapter.SearchAdapterListener {
     @Inject
     lateinit var gson: Gson
 
@@ -47,40 +46,28 @@ class SearchFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var foodVm: FoodViewModel
 
+    private lateinit var searchAdapter: SearchAdapter
+
     private var data: List<FoodCachePresentation> = mutableListOf()
-    private var _binding: FragmentSearchBinding? = null
-    private val binding get() = _binding!!
 
-    override fun createView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+    override fun viewCreated() {
         foodVm = viewModelProvider(viewModelFactory)
-        return binding.root
-    }
-
-    override fun viewCreated(view: View, savedInstanceState: Bundle?) {
+        searchAdapter = SearchAdapter(this,loadImageHelper)
         binding.initView()
     }
 
-    override fun destroyView() {
-        _binding = null
-    }
 
     override fun activityCreated() {
         initData()
-        setupNavigation()
+        obvserveNavigation()
 
         /**Show a snackbar whenever the [snackbar] is updated a non-null value*/
-        foodVm.snackbar.observe(viewLifecycleOwner, { text ->
+        observe(foodVm.snackbar){ text ->
             text?.let {
                 Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
                 foodVm.onSnackbarShown()
             }
-        })
-
+        }
         getCache()
     }
 
@@ -101,6 +88,11 @@ class SearchFragment : BaseFragment() {
     }
 
     private fun FragmentSearchBinding.initView() {
+        rvSearchPlace.apply {
+            gridRecyclerviewInitializer(2)
+            adapter = searchAdapter
+        }
+
         searchViews.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -129,12 +121,12 @@ class SearchFragment : BaseFragment() {
             }
             foodVm.setSearchItem(tempListData)
             if (tempListData.isEmpty()) {
-                viewHelper.run {
+                with(viewHelper) {
                     binding.lnSearchFailed.visible()
                     binding.rvSearchPlace.gone()
                 }
             } else {
-                viewHelper.run {
+                with(viewHelper) {
                     binding.lnSearchFailed.gone()
                     binding.rvSearchPlace.visible()
                 }
@@ -143,34 +135,24 @@ class SearchFragment : BaseFragment() {
     }
 
     private fun initData() {
-        foodVm.searchItem.observe(viewLifecycleOwner, {
-            recyclerViewHelper.run {
-                binding.rvSearchPlace.setUpVerticalGridAdapter(
-                    items = it,
-                    gridSize = 2,
-                    diffUtil = FoodConstant.foodPresentationRvCallback,
-                    layoutResId = R.layout.item_home,
-                    bindHolder = {
-                        with(this) {
-                            loadImageHelper.run { ivFoodImage.loadWithGlide(it?.foodImage) }
-                            tvFoodContributor.text = it?.foodContributor
-                        }
-                    },
-                    itemClick = {
-                        foodVm.moveToDetailFragment(gson.toJson(this))
-                    })
-            }
-        })
+        observe(foodVm.searchItem){ data ->
+            searchAdapter.submitList(data)
+        }
     }
 
-    private fun setupNavigation() {
-        foodVm.moveToDetailFragmentEvent.observe(viewLifecycleOwner, EventObserver {
-            navigateToDetailFoodFragment(it)
-        })
+
+    private fun obvserveNavigation() {
+        observeEvent(foodVm.navigateEvent) {
+            navigate(it)
+        }
     }
 
-    private fun navigateToDetailFoodFragment(foodValue: String) {
-        val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(foodValue)
-        navigate(action)
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentSearchBinding
+        get() = FragmentSearchBinding::inflate
+
+    override fun onClicked(data: FoodCachePresentation) {
+        val action =
+            SearchFragmentDirections.actionSearchFragmentToDetailFragment(gson.toJson(this))
+        foodVm.setNavigate(action)
     }
 }

@@ -11,7 +11,6 @@ import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
 import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
 import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
-import com.ian.junemon.foodiepedia.core.domain.model.Event
 import com.ian.junemon.foodiepedia.core.util.DataConstant
 import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
 import com.ian.junemon.foodiepedia.core.domain.model.Results
@@ -34,18 +33,6 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
     private val _foodImageUri: MutableLiveData<Uri> = MutableLiveData()
     val foodImageUri: LiveData<Uri> = _foodImageUri
 
-    private val _moveToDetailFragmentEvent = MutableLiveData<Event<String>>()
-    val moveToDetailFragmentEvent: LiveData<Event<String>> = _moveToDetailFragmentEvent
-
-    private val _moveToProfileFragmentEvent = MutableLiveData<Event<Unit>>()
-    val moveToProfileFragmentEvent: LiveData<Event<Unit>> = _moveToProfileFragmentEvent
-
-    private val _moveToSearchFragmentEvent = MutableLiveData<Event<Unit>>()
-    val moveToSearchFragmentEvent: LiveData<Event<Unit>> = _moveToSearchFragmentEvent
-
-    private val _moveDetailToHomeFragmentEvent = MutableLiveData<Event<Unit>>()
-    val moveDetailToHomeFragmentEvent: LiveData<Event<Unit>> = _moveDetailToHomeFragmentEvent
-
     val etFoodName: MutableLiveData<String> = MutableLiveData()
     val etFoodArea: MutableLiveData<String> = MutableLiveData()
     val etFoodDescription: MutableLiveData<String> = MutableLiveData()
@@ -60,21 +47,6 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         })
     }
 
-    fun moveToDetailFragment(foodValue: String) {
-        _moveToDetailFragmentEvent.value = Event(foodValue)
-    }
-
-    fun moveToProfileFragment() {
-        _moveToProfileFragmentEvent.value = Event(Unit)
-    }
-
-    fun moveToSearchFragmentEvent() {
-        _moveToSearchFragmentEvent.value = Event(Unit)
-    }
-
-    fun moveDetailToHomeFragment() {
-        _moveDetailToHomeFragmentEvent.value = Event(Unit)
-    }
 
     fun setFood(data: FoodRemoteDomain) {
         _foodData.value = data

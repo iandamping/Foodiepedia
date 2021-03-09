@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.base.BaseFragment
+import com.ian.junemon.foodiepedia.base.BaseFragmentDataBinding
 import com.ian.junemon.foodiepedia.util.interfaces.ImageUtilHelper
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.util.interfaces.PermissionHelper
@@ -34,7 +35,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class UploadFoodFragment : BaseFragment() {
+class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
     @Inject
     lateinit var viewHelper: ViewHelper
 
@@ -69,9 +70,6 @@ class UploadFoodFragment : BaseFragment() {
     private val remoteFoodUpload: FoodRemoteDomain = FoodRemoteDomain()
     private var selectedUriForFirebase: Uri? = null
 
-    private var _binding: FragmentUploadBinding? = null
-    private val binding get() = _binding!!
-
     private val REQUEST_CAMERA_CODE_PERMISSIONS = 10
     private val REQUIRED_CAMERA_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
 
@@ -85,18 +83,11 @@ class UploadFoodFragment : BaseFragment() {
     private fun requestReadPermissionsGranted() =
         permissionHelper.requestReadPermissionsGranted(REQUIRED_READ_PERMISSIONS)
 
-    override fun createView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentUploadBinding.inflate(inflater, container, false)
+
+    override fun viewCreated() {
         foodVm = viewModelProvider(viewModelFactory)
         profileVm = viewModelProvider(viewModelFactory)
-        return binding.root
-    }
 
-    override fun viewCreated(view: View, savedInstanceState: Bundle?) {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             initView()
@@ -106,9 +97,6 @@ class UploadFoodFragment : BaseFragment() {
         }
     }
 
-    override fun destroyView() {
-        _binding = null
-    }
 
     override fun activityCreated() {
         observerUri()
@@ -320,4 +308,7 @@ class UploadFoodFragment : BaseFragment() {
         intents.type = "image/*"
         startActivityForResult(intents, REQUEST_READ_CODE_PERMISSIONS)
     }
+
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentUploadBinding
+        get() = FragmentUploadBinding::inflate
 }

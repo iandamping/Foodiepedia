@@ -19,19 +19,16 @@ import dagger.Provides
 object GlideModule {
 
     @Provides
-    @JvmStatic
     fun provideGlide(context: Context): Glide {
         return Glide.get(context)
     }
 
     @Provides
-    @JvmStatic
     fun provideGlideRequestManager(context: Context): RequestManager {
         return Glide.with(context)
     }
 
     @Provides
-    @JvmStatic
     fun provideGlideRequestOptions(): RequestOptions {
         return RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             // .placeholder(R.drawable.empty_image)

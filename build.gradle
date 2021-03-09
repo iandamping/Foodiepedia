@@ -19,7 +19,7 @@ buildscript {
         legacySupport = "1.0.0"
         fragment_version = '1.2.5'
         activity_version = '1.1.0'
-        dagger_version = '2.25.2'
+        dagger_version = '2.32'
         timberVersion = '4.7.1'
         koin_version = '2.1.6'
         glide_version ='4.10.0'

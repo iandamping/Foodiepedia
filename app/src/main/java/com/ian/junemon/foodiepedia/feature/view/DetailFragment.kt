@@ -1,25 +1,21 @@
 package com.ian.junemon.foodiepedia.feature.view
 
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
+import com.ian.junemon.foodiepedia.base.BaseFragmentDataBinding
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
-import com.ian.junemon.foodiepedia.base.BaseFragment
+import com.ian.junemon.foodiepedia.core.domain.model.Results
+import com.ian.junemon.foodiepedia.util.clicks
+import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
+import com.ian.junemon.foodiepedia.util.observe
+import com.ian.junemon.foodiepedia.core.util.mapToDetailDatabasePresentation
+import com.ian.junemon.foodiepedia.databinding.FragmentDetailBinding
+import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.util.interfaces.IntentUtilHelper
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
-import com.ian.junemon.foodiepedia.databinding.FragmentDetailBinding
-import com.ian.junemon.foodiepedia.core.domain.model.EventObserver
-import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
-import com.ian.junemon.foodiepedia.core.presentation.model.presentation.FoodCachePresentation
-import com.ian.junemon.foodiepedia.core.domain.model.Results
-import com.ian.junemon.foodiepedia.core.util.mapToDetailDatabasePresentation
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -27,16 +23,19 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class DetailFragment : BaseFragment() {
+class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var foodVm: FoodViewModel
+
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
+
     @Inject
     lateinit var intentHelper: IntentUtilHelper
+
     @Inject
-    lateinit var gson :Gson
+    lateinit var gson: Gson
 
     private var idForDeleteItem: Int? = null
     private var isFavorite: Boolean = false
@@ -47,21 +46,9 @@ class DetailFragment : BaseFragment() {
         )
     }
 
-    private var _binding: FragmentDetailBinding? = null
-    private val binding get() = _binding!!
-
-
-    override fun createView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentDetailBinding.inflate(inflater, container, false)
+    override fun viewCreated() {
         foodVm = viewModelProvider(viewModelFactory)
-        return binding.root
-    }
 
-    override fun viewCreated(view: View, savedInstanceState: Bundle?) {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             initView()
@@ -69,75 +56,72 @@ class DetailFragment : BaseFragment() {
         }
     }
 
-    override fun destroyView() {
-        _binding = null
-
-    }
-
     override fun activityCreated() {
-        setupNavigation()
     }
-
 
     private fun FragmentDetailBinding.initView() {
-            ilegallStateCatching {
-                checkNotNull(passedData)
-                loadImageHelper.run {
-                    ivFoodDetail.loadWithGlide(passedData.foodImage)
-                }
+        ilegallStateCatching {
+            checkNotNull(passedData)
+            with(loadImageHelper) {
+                ivFoodDetail.loadWithGlide(passedData.foodImage)
             }
+        }
 
-            btnBookmark.setOnClickListener {
-                if (isFavorite) {
-                    if (idForDeleteItem != null) foodVm.deleteSelectedId(idForDeleteItem!!)
-                } else {
-                    foodVm.setCacheDetailFood(passedData.mapToDetailDatabasePresentation())
-                }
+        clicks(btnBookmark) {
+            if (isFavorite) {
+                if (idForDeleteItem != null) foodVm.deleteSelectedId(idForDeleteItem!!)
+            } else {
+                foodVm.setCacheDetailFood(passedData.mapToDetailDatabasePresentation())
             }
+        }
 
-            btnBack.setOnClickListener {
-                foodVm.moveDetailToHomeFragment()
+        clicks(btnBack) {
+            navigateUp()
+        }
+
+        clicks(btnShare) {
+            consumeSuspend {
+                setDialogShow(false)
+                intentHelper.intentShareImageAndText(
+                    tittle = passedData.foodName,
+                    imageUrl = passedData.foodImage,
+                    message = passedData.foodCategory
+                ) {
+                    setDialogShow(true)
+                    sharedImageIntent(it)
+                }
+
             }
-            btnShare.setOnClickListener {
-                lifecycleOwner?.lifecycleScope?.launch {
-                    setDialogShow(false)
-                    intentHelper.intentShareImageAndText( tittle = passedData.foodName,
-                        imageUrl = passedData.foodImage,
-                        message = passedData.foodCategory){
-                        setDialogShow(true)
-                        sharedImageIntent(it)
-                    }
-                }
+        }
+        tvFoodName.text = passedData.foodName
+        tvFoodCategory.text = passedData.foodCategory
+        tvFoodContributor.text = passedData.foodContributor
+        tvFoodArea.text = passedData.foodArea
+        tvFoodDescription.text = passedData.foodDescription
+
+        appbarDetailLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, i ->
+            var isShow = true
+            var scrollRange: Int = -1
+
+            if (scrollRange == -1) {
+                scrollRange = appBarLayout.totalScrollRange
             }
-            tvFoodName.text = passedData.foodName
-            tvFoodCategory.text = passedData.foodCategory
-            tvFoodContributor.text = passedData.foodContributor
-            tvFoodArea.text = passedData.foodArea
-            tvFoodDescription.text = passedData.foodDescription
-
-            appbarDetailLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, i ->
-                var isShow = true
-                var scrollRange: Int = -1
-
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.totalScrollRange
-                }
-                if (scrollRange + i == 0) {
-                    collapsingToolbar.title = passedData.foodName
-                    // tvDetailTittles.visibility = View.GONE
-                    // isShow = true
-                } else if (isShow) {
-                    collapsingToolbar.title = " "
-                    // tvDetailTittles.visibility = View.VISIBLE
-                    // isShow = false
-                }
-            })
+            if (scrollRange + i == 0) {
+                collapsingToolbar.title = passedData.foodName
+                // tvDetailTittles.visibility = View.GONE
+                // isShow = true
+            } else if (isShow) {
+                collapsingToolbar.title = " "
+                // tvDetailTittles.visibility = View.VISIBLE
+                // isShow = false
+            }
+        })
     }
 
     private fun FragmentDetailBinding.consumeBookmarkData() {
-        foodVm.getSavedDetailCache().observe(viewLifecycleOwner, {cacheValue ->
-            when(cacheValue){
-                is Results.Success ->{
+        observe(foodVm.getSavedDetailCache()){ cacheValue ->
+            when (cacheValue) {
+                is Results.Success -> {
                     val data = cacheValue.data.filter { it.foodName == passedData.foodName }
                     if (data.isNotEmpty()) {
                         data.forEach {
@@ -152,22 +136,14 @@ class DetailFragment : BaseFragment() {
                         bookmarkedState = isFavorite
                     }
                 }
-                is Results.Error ->{
+                is Results.Error -> {
                     isFavorite = false
                     bookmarkedState = isFavorite
                 }
             }
-        })
+        }
     }
 
-    private fun setupNavigation() {
-        foodVm.moveDetailToHomeFragmentEvent.observe(viewLifecycleOwner, EventObserver {
-            navigateToHomeFragment()
-        })
-    }
-
-    private fun navigateToHomeFragment() {
-        findNavController().navigateUp()
-    }
-
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDetailBinding
+        get() = FragmentDetailBinding::inflate
 }
