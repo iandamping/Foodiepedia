@@ -24,4 +24,8 @@
     <color name="textview_bg">#F1F6F7</color>
     <color name="textColorHint">#CCCCCC</color>
     <color name="gray_food_2">#ff888888</color>
+
+    <color name="icActive">#FFFFFFFF</color>
+    <color name="icFocused">#DDFFFFFF</color>
+    <color name="icPressed">#AAFFFFFF</color>
 </resources>

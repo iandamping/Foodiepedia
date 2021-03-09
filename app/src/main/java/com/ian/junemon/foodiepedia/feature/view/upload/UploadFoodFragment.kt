@@ -1,33 +1,40 @@
-package com.ian.junemon.foodiepedia.feature.view
+package com.ian.junemon.foodiepedia.feature.view.upload
 
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.ian.junemon.foodiepedia.R
-import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
-import com.ian.junemon.foodiepedia.base.BaseFragment
 import com.ian.junemon.foodiepedia.base.BaseFragmentDataBinding
+import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
+import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
+import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
+import com.ian.junemon.foodiepedia.core.util.DataConstant.RequestOpenCamera
+import com.ian.junemon.foodiepedia.core.util.DataConstant.RequestSelectGalleryImage
+import com.ian.junemon.foodiepedia.databinding.FragmentUploadBinding
+import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
+import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
+import com.ian.junemon.foodiepedia.feature.vm.SharedViewModel
+import com.ian.junemon.foodiepedia.util.clicks
+import com.ian.junemon.foodiepedia.util.createBitmapFromUri
 import com.ian.junemon.foodiepedia.util.interfaces.ImageUtilHelper
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.util.interfaces.PermissionHelper
 import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
-import com.ian.junemon.foodiepedia.databinding.FragmentUploadBinding
-import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
-import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
-import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
-import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
-import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.util.observe
+import com.ian.junemon.foodiepedia.util.observeEvent
 import javax.inject.Inject
 
 /**
@@ -53,6 +60,10 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
     @Inject
     lateinit var loadingImageHelper: LoadImageHelper
 
+    private val sharedVm: SharedViewModel by activityViewModels()
+
+    private var bitmap: Bitmap? = null
+
     private val animationSlideUp by lazy {
         AnimationUtils.loadAnimation(
             requireContext(),
@@ -70,21 +81,22 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
     private val remoteFoodUpload: FoodRemoteDomain = FoodRemoteDomain()
     private var selectedUriForFirebase: Uri? = null
 
-    private val REQUEST_CAMERA_CODE_PERMISSIONS = 10
+    private val REQUEST_CAMERA_CODE_PERMISSIONS = RequestOpenCamera
     private val REQUIRED_CAMERA_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
 
-    private val REQUEST_READ_CODE_PERMISSIONS = 3
+    private val REQUEST_READ_CODE_PERMISSIONS = RequestSelectGalleryImage
     private val REQUIRED_READ_PERMISSIONS = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE
     )
+
     private fun requestCameraPermissionsGranted() =
         permissionHelper.requestCameraPermissionsGranted(REQUIRED_CAMERA_PERMISSIONS)
 
     private fun requestReadPermissionsGranted() =
         permissionHelper.requestReadPermissionsGranted(REQUIRED_READ_PERMISSIONS)
 
-
     override fun viewCreated() {
+        initOnBackPressed()
         foodVm = viewModelProvider(viewModelFactory)
         profileVm = viewModelProvider(viewModelFactory)
 
@@ -97,12 +109,14 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
         }
     }
 
-
     override fun activityCreated() {
         observerUri()
         consumeViewModelData()
         consumeProfileData()
         observeViewModelData()
+        observeViewEffect()
+        obvserveNavigation()
+        consumeSharedUri()
     }
 
     private fun FragmentUploadBinding.initView() {
@@ -113,16 +127,16 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
         arrayTypeFoodSpinnerAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spPlaceType.adapter = arrayTypeFoodSpinnerAdapter
 
-        btnUnggahFoto.setOnClickListener {
+        clicks(btnUnggahFoto) {
             openGalleryAndCamera()
         }
 
-        btnBack.setOnClickListener {
-            findNavController().navigateUp()
-
+        clicks(btnBack) {
+            val action = UploadFoodFragmentDirections.actionUploadFoodFragmentToHomeFragment()
+            foodVm.setNavigate(action)
         }
 
-        btnUnggah.setOnClickListener {
+        clicks(btnUnggah) {
             if (selectedUriForFirebase != null) {
                 setDialogShow(false)
                 remoteFoodUpload.foodCategory = binding.spPlaceType.selectedItem.toString()
@@ -131,15 +145,14 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
                         when (result) {
                             is FirebaseResult.SuccessPush -> {
                                 setDialogShow(true)
-                                findNavController().navigateUp()
+                                clearUri()
+                                val action = UploadFoodFragmentDirections.actionUploadFoodFragmentToHomeFragment()
+                                foodVm.setNavigate(action)
                             }
                             is FirebaseResult.ErrorPush -> {
                                 setDialogShow(true)
-                                Snackbar.make(
-                                    binding.root,
-                                    "Something happen ${result.exception}",
-                                    Snackbar.LENGTH_SHORT
-                                ).show()
+                                clearUri()
+                                foodVm.setupSnackbarMessage("Something happen ${result.exception}")
                             }
                         }
                     })
@@ -157,7 +170,7 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
                         if (requestReadPermissionsGranted()) {
                             openImageFromGallery()
                         } else {
-                            permissionHelper.run {
+                            with(permissionHelper) {
                                 requestingPermission(
                                     REQUIRED_READ_PERMISSIONS,
                                     REQUEST_READ_CODE_PERMISSIONS
@@ -167,9 +180,11 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
                     }
                     1 -> {
                         if (requestCameraPermissionsGranted()) {
-                            imageHelper.openImageFromCamera(this)
+                            val action =
+                                UploadFoodFragmentDirections.actionUploadFoodFragmentToOpenCameraFragment()
+                            foodVm.setNavigate(action)
                         } else {
-                            permissionHelper.run {
+                            with(permissionHelper) {
                                 requestingPermission(
                                     REQUIRED_CAMERA_PERMISSIONS,
                                     REQUEST_CAMERA_CODE_PERMISSIONS
@@ -179,8 +194,7 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
                     }
                 }
                 dialog.dismiss()
-            }
-            .show()
+            }.show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -193,18 +207,15 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
 
                     foodVm.setFoodUri(data.data!!)
 
+                    bitmap = imageHelper.getBitmapFromGallery(data.data!!)
 
-                    selectedUriForFirebase = data.data!!
-
-                    val bitmap = imageHelper.getBitmapFromGallery(data.data!!)
-
-                    loadingImageHelper.run {
+                    with(loadingImageHelper) {
                         if (bitmap != null) {
-                            binding.ivPickPhoto.loadWithGlide(bitmap)
+                            binding.ivPickPhoto.loadWithGlide(bitmap!!)
                         }
                     }
 
-                    viewHelper.run {
+                    with(viewHelper) {
                         binding.btnUnggahFoto.gone()
                         binding.tvInfoUpload.gone()
                         binding.ivPickPhoto.visible()
@@ -233,32 +244,30 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
     }
 
     private fun consumeProfileData() {
-        profileVm.getUserProfile().observe(viewLifecycleOwner, {
-            when (it) {
-                is ProfileResults.Success -> {
-                    remoteFoodUpload.foodContributor = it.data.getDisplayName()
-                }
+        observe(profileVm.getUserProfile()) {
+            if (it is ProfileResults.Success) {
+                remoteFoodUpload.foodContributor = it.data.getDisplayName()
             }
-        })
+        }
     }
 
     private fun observerUri() {
-        foodVm.foodImageUri.observe(viewLifecycleOwner, { imageResult ->
+        observe(foodVm.foodImageUri) { imageResult ->
             selectedUriForFirebase = imageResult
-        })
+        }
     }
 
     private fun observeViewModelData() {
-        foodVm.foodData.observe(viewLifecycleOwner, { result ->
+        observe(foodVm.foodData) { result ->
             if (!result.foodName.isNullOrEmpty() && !result.foodArea.isNullOrEmpty() &&
                 !result.foodDescription.isNullOrEmpty() && selectedUriForFirebase != null
             ) {
-                viewHelper.run {
+                with(viewHelper) {
                     binding.btnUnggah.visible()
                 }
             }
 
-        })
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -267,20 +276,18 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        permissionHelper.run {
+        with(permissionHelper) {
             onRequestingPermissionsResult(
                 REQUEST_CAMERA_CODE_PERMISSIONS,
                 requestCode,
                 grantResults,
                 {
-                    imageHelper.openImageFromCamera(this@UploadFoodFragment)
+                    val action =
+                        UploadFoodFragmentDirections.actionUploadFoodFragmentToOpenCameraFragment()
+                    foodVm.setNavigate(action)
                 },
                 {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.permission_not_granted),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    foodVm.setupSnackbarMessage(getString(R.string.permission_not_granted))
                 })
 
 
@@ -292,21 +299,59 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
                     openImageFromGallery()
                 },
                 {
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.permission_not_granted),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    foodVm.setupSnackbarMessage(getString(R.string.permission_not_granted))
                 })
         }
     }
-
-
 
     private fun openImageFromGallery() {
         val intents = Intent(Intent.ACTION_PICK)
         intents.type = "image/*"
         startActivityForResult(intents, REQUEST_READ_CODE_PERMISSIONS)
+    }
+
+    private fun observeViewEffect() {
+        observe(foodVm.snackbar) { text ->
+            text?.let {
+                Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+                foodVm.onSnackbarShown()
+            }
+        }
+    }
+
+    private fun obvserveNavigation() {
+        observeEvent(foodVm.navigateEvent) {
+            navigate(it)
+        }
+    }
+
+    private fun consumeSharedUri() {
+        observeEvent(sharedVm.passedUri) {
+            val savedUri = Uri.parse(it)
+
+            foodVm.setFoodUri(savedUri)
+
+            bitmap = requireContext().createBitmapFromUri(savedUri)
+
+            binding.ivPickPhoto.setImageBitmap(bitmap)
+
+            with(viewHelper) {
+                binding.btnUnggahFoto.gone()
+                binding.tvInfoUpload.gone()
+                binding.ivPickPhoto.visible()
+            }
+        }
+    }
+
+    private fun initOnBackPressed() {
+        onBackPressed {
+            val action = UploadFoodFragmentDirections.actionUploadFoodFragmentToHomeFragment()
+            foodVm.setNavigate(action)
+        }
+    }
+
+    private fun clearUri() {
+        bitmap?.recycle()
     }
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentUploadBinding

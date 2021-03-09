@@ -82,19 +82,13 @@ class FoodRemoteDataSourceImpl @Inject constructor(
                 checkNotNull(imageUri.lastPathSegment) { "last path segment from imageuri is null" }
                 val reference = storagePlaceReference.child(imageUri.lastPathSegment!!)
                 /**This is where we put file into firebase storage*/
-                /**This is where we put file into firebase storage*/
                 reference.putFile(imageUri).run {
-                    /**we try to check if it success or failed to upload file in firebase storage*/
                     /**we try to check if it success or failed to upload file in firebase storage*/
                     addOnSuccessListener {
                         /** now we try to donwload the url for image that has been put into firebase storage*/
-                        /** now we try to donwload the url for image that has been put into firebase storage*/
                         reference.downloadUrl.run {
                             /**we try to check if it success or failed to download url from firebase storage*/
-                            /**we try to check if it success or failed to download url from firebase storage*/
                             addOnSuccessListener {
-                                /** if we succed now we use that url to put it into our model,
-                                 * and upload it into our firebase database*/
                                 /** if we succed now we use that url to put it into our model,
                                  * and upload it into our firebase database*/
                                 data.foodImage = it.toString()

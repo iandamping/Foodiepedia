@@ -1,7 +1,12 @@
 package com.ian.junemon.foodiepedia.util
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -145,3 +150,19 @@ fun Fragment.getDrawables(@DrawableRes drawableId:Int):Drawable{
         drawableId
     )!!
 }
+ fun Context.createBitmapFromUri(uri: Uri?): Bitmap? =
+    if (uri != null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            ImageDecoder.decodeBitmap(
+                ImageDecoder.createSource(
+                    this.contentResolver,
+                    uri
+                )
+            )
+        } else {
+            MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
+        }
+    } else {
+        null
+    }
+

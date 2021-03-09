@@ -3,8 +3,10 @@ package com.ian.junemon.foodiepedia.base
 import android.content.Context
 import android.content.Intent
 import android.os.StrictMode
+import androidx.activity.OnBackPressedCallback
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import com.ian.junemon.foodiepedia.feature.view.upload.UploadFoodFragmentDirections
 import dagger.android.support.DaggerFragment
 import timber.log.Timber
 
@@ -74,5 +76,19 @@ abstract class BaseFragment : DaggerFragment() {
         } catch (e: Exception) {
             Timber.e(e)
         }
+    }
+
+    protected fun backPressed(action:()->Unit) {
+        val backCallback by lazy {
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() { // Handle the back button event
+                   action.invoke()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            backCallback
+        )
     }
 }

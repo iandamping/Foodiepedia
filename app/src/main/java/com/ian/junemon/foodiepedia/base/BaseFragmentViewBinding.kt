@@ -106,4 +106,6 @@ abstract class BaseFragmentViewBinding<out VB : ViewBinding> : BaseFragment() {
             }
         }
     }
+
+    protected fun onBackPressed(action:()->Unit) = backPressed(action)
 }

@@ -24,6 +24,7 @@ buildscript {
         koin_version = '2.1.6'
         glide_version ='4.10.0'
         shimmerVer = '0.5.0'
+        camerax_version = '1.0.0-beta06'
         // testings dependencies
         androidXVersion = '1.0.0'
         androidXTestCoreVersion = '1.2.0-beta01'

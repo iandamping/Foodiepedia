@@ -10,6 +10,14 @@ import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
  * Indonesia.
  */
 object FoodConstant {
+    const val FILENAME = "Foodiepedia"
+    const val PHOTO_EXTENSION = ".jpg"
+
+
+    /** Milliseconds used for UI animations */
+    const val ANIMATION_FAST_MILLIS = 50L
+    const val ANIMATION_SLOW_MILLIS = 100L
+
     const val requestSignIn = 2341
 
     val foodDomainRvCallback = object : DiffUtil.ItemCallback<FoodCacheDomain?>() {

@@ -8,9 +8,11 @@ import com.ian.junemon.foodiepedia.feature.view.DetailFragment
 import com.ian.junemon.foodiepedia.feature.view.home.HomeFragment
 import com.ian.junemon.foodiepedia.feature.view.ProfileFragment
 import com.ian.junemon.foodiepedia.feature.view.search.SearchFragment
-import com.ian.junemon.foodiepedia.feature.view.UploadFoodFragment
+import com.ian.junemon.foodiepedia.feature.view.upload.UploadFoodFragment
 import com.ian.junemon.foodiepedia.feature.view.home.HomeAdapterModule
 import com.ian.junemon.foodiepedia.feature.view.search.SearchAdapterModule
+import com.ian.junemon.foodiepedia.feature.view.upload.OpenCameraFragment
+import com.ian.junemon.foodiepedia.feature.view.upload.SelectImageFragment
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import dagger.Binds
@@ -49,6 +51,14 @@ abstract class FoodModule {
     @ContributesAndroidInjector
     @FragmentScoped
     abstract fun contributeUploadFoodFragment(): UploadFoodFragment
+
+    @ContributesAndroidInjector
+    @FragmentScoped
+    abstract fun contributeOpenCameraFragment(): OpenCameraFragment
+
+    @ContributesAndroidInjector
+    @FragmentScoped
+    abstract fun contributeSelectImageFragment(): SelectImageFragment
 
     @Binds
     @IntoMap
