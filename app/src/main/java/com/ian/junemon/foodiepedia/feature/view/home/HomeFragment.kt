@@ -42,20 +42,17 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
     private lateinit var profileVm: ProfileViewModel
 
     @Inject
-    lateinit var recyclerHelper: RecyclerHelper
-
-    @Inject
     lateinit var loadImageHelper: LoadImageHelper
 
     @Inject
     lateinit var gson: Gson
 
-    private lateinit var homeAdapter: HomeAdapter
+    @Inject
+    lateinit var homeAdapter: HomeAdapter
 
     override fun viewCreated() {
         foodVm = viewModelProvider(viewModelFactory)
         profileVm = viewModelProvider(viewModelFactory)
-        homeAdapter = HomeAdapter(this,loadImageHelper)
         binding.initView()
     }
 

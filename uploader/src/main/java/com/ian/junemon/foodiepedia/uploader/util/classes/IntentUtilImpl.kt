@@ -9,8 +9,8 @@ import android.os.Environment
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.RequestManager
-import com.ian.junemon.foodiepedia.core.dagger.module.IoDispatcher
-import com.ian.junemon.foodiepedia.core.dagger.module.MainDispatcher
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.IoDispatcher
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.MainDispatcher
 import com.ian.junemon.foodiepedia.uploader.util.interfaces.IntentUtilHelper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

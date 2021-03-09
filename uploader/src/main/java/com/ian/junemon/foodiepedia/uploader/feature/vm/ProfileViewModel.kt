@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
 import com.ian.junemon.foodiepedia.core.domain.usecase.ProfileUseCase
-import com.ian.junemon.foodiepedia.model.Event
 import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
+import com.ian.junemon.foodiepedia.model.Event
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,11 +19,11 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(private val repository: ProfileUseCase) :
     BaseViewModel() {
 
-    private val _moveToUploadFragmentEvent = MutableLiveData<com.ian.junemon.foodiepedia.model.Event<Unit>>()
-    val moveToUploadFragmentEvent: LiveData<com.ian.junemon.foodiepedia.model.Event<Unit>> = _moveToUploadFragmentEvent
+    private val _moveToUploadFragmentEvent = MutableLiveData<Event<Unit>>()
+    val moveToUploadFragmentEvent: LiveData<Event<Unit>> = _moveToUploadFragmentEvent
 
     fun moveToUploadFragment() {
-        _moveToUploadFragmentEvent.value = com.ian.junemon.foodiepedia.model.Event(Unit)
+        _moveToUploadFragmentEvent.value = Event(Unit)
     }
 
     fun getUserProfile(): LiveData<ProfileResults<AuthenticatedUserInfo>> =

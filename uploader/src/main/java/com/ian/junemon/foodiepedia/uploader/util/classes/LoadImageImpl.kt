@@ -6,11 +6,9 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import com.ian.junemon.foodiepedia.core.R
-import com.ian.junemon.foodiepedia.core.dagger.module.IoDispatcher
-import com.ian.junemon.foodiepedia.core.dagger.module.MainDispatcher
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.IoDispatcher
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.MainDispatcher
 import com.ian.junemon.foodiepedia.uploader.util.interfaces.LoadImageHelper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

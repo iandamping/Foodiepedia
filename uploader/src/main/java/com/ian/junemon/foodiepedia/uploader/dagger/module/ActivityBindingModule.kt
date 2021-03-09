@@ -1,6 +1,6 @@
 package com.ian.junemon.foodiepedia.uploader.dagger.module
 
-import com.ian.junemon.foodiepedia.core.dagger.scope.PerActivities
+import com.ian.junemon.foodiepedia.uploader.dagger.scope.ActivityScoped
 import com.ian.junemon.foodiepedia.uploader.ui.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -13,7 +13,7 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class ActivityBindingModule {
 
-    @PerActivities
+    @ActivityScoped
     @ContributesAndroidInjector(
         modules = [  // fragments
             UploadModule::class]

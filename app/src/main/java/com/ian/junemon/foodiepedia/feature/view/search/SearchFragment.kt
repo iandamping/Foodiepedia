@@ -9,18 +9,16 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
+import com.ian.junemon.foodiepedia.core.domain.model.Results
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
-import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
-import com.ian.junemon.foodiepedia.util.interfaces.RecyclerHelper
-import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
+import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
 import com.ian.junemon.foodiepedia.databinding.FragmentSearchBinding
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
-import com.ian.junemon.foodiepedia.core.domain.model.Results
+import com.ian.junemon.foodiepedia.util.gridRecyclerviewInitializer
+import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
+import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.util.observe
 import com.ian.junemon.foodiepedia.util.observeEvent
-import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
-import com.ian.junemon.foodiepedia.util.gridRecyclerviewInitializer
-import kotlinx.android.synthetic.main.item_home.view.*
 import javax.inject.Inject
 
 /**
@@ -28,7 +26,8 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),SearchAdapter.SearchAdapterListener {
+class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),
+    SearchAdapter.SearchAdapterListener {
     @Inject
     lateinit var gson: Gson
 
@@ -39,29 +38,25 @@ class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),SearchAd
     lateinit var viewHelper: ViewHelper
 
     @Inject
-    lateinit var recyclerViewHelper: RecyclerHelper
+    lateinit var searchAdapter: SearchAdapter
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var foodVm: FoodViewModel
 
-    private lateinit var searchAdapter: SearchAdapter
-
     private var data: List<FoodCachePresentation> = mutableListOf()
 
     override fun viewCreated() {
         foodVm = viewModelProvider(viewModelFactory)
-        searchAdapter = SearchAdapter(this,loadImageHelper)
         binding.initView()
     }
-
 
     override fun activityCreated() {
         initData()
         obvserveNavigation()
 
         /**Show a snackbar whenever the [snackbar] is updated a non-null value*/
-        observe(foodVm.snackbar){ text ->
+        observe(foodVm.snackbar) { text ->
             text?.let {
                 Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
                 foodVm.onSnackbarShown()
@@ -134,11 +129,10 @@ class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),SearchAd
     }
 
     private fun initData() {
-        observe(foodVm.searchItem){ data ->
+        observe(foodVm.searchItem) { data ->
             searchAdapter.submitList(data)
         }
     }
-
 
     private fun obvserveNavigation() {
         observeEvent(foodVm.navigateEvent) {

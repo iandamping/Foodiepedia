@@ -1,11 +1,8 @@
 package com.ian.junemon.foodiepedia.feature.view.search
 
-import android.content.res.ColorStateList
-import android.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
-import com.ian.junemon.foodiepedia.databinding.ItemHomeBinding
-import com.ian.junemon.foodiepedia.util.generateRandomHexColor
+import com.ian.junemon.foodiepedia.databinding.ItemSearchBinding
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 
 /**
@@ -14,17 +11,14 @@ import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
  * Indonesia.
  */
 class SearchViewHolder(
-    private val itemHomeBinding: ItemHomeBinding,
+    private val itemHomeBinding: ItemSearchBinding,
     private val loadImageHelper: LoadImageHelper
 ) : RecyclerView.ViewHolder(itemHomeBinding.root) {
 
     fun bind(data: FoodCachePresentation) {
-        with(itemHomeBinding){
-            with(loadImageHelper){ ivFoodImage.loadWithGlide(data.foodImage) }
-            chipDetail.text = data.foodCategory
-            chipDetail.chipBackgroundColor =
-                ColorStateList.valueOf(Color.parseColor(generateRandomHexColor()))
+        with(itemHomeBinding) {
+            with(loadImageHelper) { ivFoodImage.loadWithGlide(data.foodImage) }
+            tvFoodName.text = data.foodName
         }
-
     }
 }

@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.dagger.scoped;
+package com.ian.junemon.foodiepedia.uploader.dagger.scope;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

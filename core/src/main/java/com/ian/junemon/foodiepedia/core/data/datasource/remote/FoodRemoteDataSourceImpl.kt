@@ -6,7 +6,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.StorageReference
-import com.ian.junemon.foodiepedia.core.dagger.module.DefaultDispatcher
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.DefaultDispatcher
 import com.ian.junemon.foodiepedia.core.util.DataConstant
 import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
 import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult

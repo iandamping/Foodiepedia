@@ -1,6 +1,6 @@
 package com.ian.junemon.foodiepedia.dagger.module
 
-import com.ian.junemon.foodiepedia.dagger.scoped.ActivityScoped
+import com.ian.junemon.foodiepedia.dagger.scope.ActivityScoped
 import com.ian.junemon.foodiepedia.ui.MainActivity
 import com.ian.junemon.foodiepedia.ui.SplashActivity
 import dagger.Module

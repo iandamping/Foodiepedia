@@ -5,7 +5,7 @@ import android.content.Intent
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.ian.junemon.foodiepedia.core.dagger.module.IoDispatcher
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.IoDispatcher
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.FirebaseUserInfo
 import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper

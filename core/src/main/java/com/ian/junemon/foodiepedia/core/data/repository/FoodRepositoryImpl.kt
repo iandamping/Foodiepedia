@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.annotation.AnyThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.ian.junemon.foodiepedia.core.dagger.module.DefaultDispatcher
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.DefaultDispatcher
 import com.ian.junemon.foodiepedia.core.data.NetworkBoundResource
 import com.ian.junemon.foodiepedia.core.data.datasource.cache.FoodCacheDataSource
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.FoodRemoteDataSource

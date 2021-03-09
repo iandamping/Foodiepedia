@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ian.junemon.foodiepedia.core.dagger.module
+package com.ian.junemon.foodiepedia.core.dagger.qualifier
 
 import javax.inject.Qualifier
 

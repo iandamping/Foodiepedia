@@ -2,7 +2,7 @@ package com.ian.junemon.foodiepedia.uploader.dagger.module
 
 import androidx.lifecycle.ViewModel
 import com.ian.junemon.foodiepedia.core.dagger.factory.ViewModelKey
-import com.ian.junemon.foodiepedia.core.dagger.scope.FeatureScope
+import com.ian.junemon.foodiepedia.uploader.dagger.scope.FragmentScoped
 import com.ian.junemon.foodiepedia.uploader.feature.FragmentUpload
 import com.ian.junemon.foodiepedia.uploader.feature.vm.ProfileViewModel
 import com.ian.junemon.foodiepedia.uploader.feature.vm.UploadViewModel
@@ -19,7 +19,7 @@ import dagger.multibindings.IntoMap
 @Module
 abstract class UploadModule {
 
-    @FeatureScope
+    @FragmentScoped
     @ContributesAndroidInjector
     abstract fun contributeFragmentUpload(): FragmentUpload
 

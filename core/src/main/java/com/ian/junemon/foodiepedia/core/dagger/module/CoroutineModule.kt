@@ -1,5 +1,8 @@
 package com.ian.junemon.foodiepedia.core.dagger.module
 
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.DefaultDispatcher
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.IoDispatcher
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.MainDispatcher
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher

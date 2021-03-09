@@ -10,7 +10,7 @@
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:orientation="vertical">
@@ -19,35 +19,29 @@
                 android:id="@+id/ivFoodImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroupDetail"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tvFoodName"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/ivFoodImage"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/spacing_large"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/letter_large"
+                android:textStyle="bold"
+                android:transitionName="title_1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text="Air Terjun Pinang Seribu">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipDetail"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    app:chipBackgroundColor="@color/blue_food"
-                    tools:text="testing chips" />
-            </com.google.android.material.chip.ChipGroup>
+                tools:text="Tittle" />
 
 
-
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>
 
