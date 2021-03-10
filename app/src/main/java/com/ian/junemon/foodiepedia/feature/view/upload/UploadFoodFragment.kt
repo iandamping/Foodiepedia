@@ -6,11 +6,8 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +24,8 @@ import com.ian.junemon.foodiepedia.databinding.FragmentUploadBinding
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.ian.junemon.foodiepedia.feature.vm.SharedViewModel
+import com.ian.junemon.foodiepedia.util.animationSlidDown
+import com.ian.junemon.foodiepedia.util.animationSlideUp
 import com.ian.junemon.foodiepedia.util.clicks
 import com.ian.junemon.foodiepedia.util.createBitmapFromUri
 import com.ian.junemon.foodiepedia.util.interfaces.ImageUtilHelper
@@ -35,6 +34,7 @@ import com.ian.junemon.foodiepedia.util.interfaces.PermissionHelper
 import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.util.observe
 import com.ian.junemon.foodiepedia.util.observeEvent
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -65,17 +65,11 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
     private var bitmap: Bitmap? = null
 
     private val animationSlideUp by lazy {
-        AnimationUtils.loadAnimation(
-            requireContext(),
-            R.anim.slide_in_up
-        )
+        requireContext().animationSlideUp()
     }
 
     private val animationSlidDown by lazy {
-        AnimationUtils.loadAnimation(
-            requireContext(),
-            R.anim.slide_in_down
-        )
+        requireContext().animationSlidDown()
     }
 
     private val remoteFoodUpload: FoodRemoteDomain = FoodRemoteDomain()
@@ -200,27 +194,12 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == FragmentActivity.RESULT_OK) {
-            if (requestCode == REQUEST_READ_CODE_PERMISSIONS) {
-                universalCatching {
-                    requireNotNull(data)
-                    requireNotNull(data.data)
+            universalCatching {
+                requireNotNull(data)
+                requireNotNull(data.data)
 
-                    foodVm.setFoodUri(data.data!!)
+                foodVm.setFoodUri(data.data!!)
 
-                    bitmap = imageHelper.getBitmapFromGallery(data.data!!)
-
-                    with(loadingImageHelper) {
-                        if (bitmap != null) {
-                            binding.ivPickPhoto.loadWithGlide(bitmap!!)
-                        }
-                    }
-
-                    with(viewHelper) {
-                        binding.btnUnggahFoto.gone()
-                        binding.tvInfoUpload.gone()
-                        binding.ivPickPhoto.visible()
-                    }
-                }
             }
         }
     }
@@ -254,6 +233,17 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
     private fun observerUri() {
         observe(foodVm.foodImageUri) { imageResult ->
             selectedUriForFirebase = imageResult
+
+            bitmap = requireContext().createBitmapFromUri(imageResult)
+            // bitmap = imageHelper.getBitmapFromGallery(imageResult)
+
+            binding.ivPickPhoto.setImageBitmap(bitmap)
+
+            with(viewHelper) {
+                binding.btnUnggahFoto.gone()
+                binding.tvInfoUpload.gone()
+                binding.ivPickPhoto.visible()
+            }
         }
     }
 
@@ -331,15 +321,7 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
 
             foodVm.setFoodUri(savedUri)
 
-            bitmap = requireContext().createBitmapFromUri(savedUri)
 
-            binding.ivPickPhoto.setImageBitmap(bitmap)
-
-            with(viewHelper) {
-                binding.btnUnggahFoto.gone()
-                binding.tvInfoUpload.gone()
-                binding.ivPickPhoto.visible()
-            }
         }
     }
 

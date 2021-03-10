@@ -77,7 +77,7 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
                         with(binding) {
                             rlSignOut.visibility = View.GONE
                             rlSignIn.visibility = View.VISIBLE
-                            fabUpload.visibility = View.VISIBLE
+                            fabUpload.visibility = View.GONE
                         }
                     } else {
                         with(binding) {
@@ -88,7 +88,7 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
                             tvProfileName.text = it.data.getDisplayName()
                             rlSignOut.visibility = View.VISIBLE
                             rlSignIn.visibility = View.GONE
-                            fabUpload.visibility = View.GONE
+                            fabUpload.visibility = View.VISIBLE
                         }
                     }
                 }

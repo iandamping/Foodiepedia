@@ -18,20 +18,9 @@ object FoodConstant {
     const val ANIMATION_FAST_MILLIS = 50L
     const val ANIMATION_SLOW_MILLIS = 100L
 
-    const val requestSignIn = 2341
-
-    val foodDomainRvCallback = object : DiffUtil.ItemCallback<FoodCacheDomain?>() {
-        override fun areItemsTheSame(oldItem: FoodCacheDomain, newItem: FoodCacheDomain): Boolean {
-            return oldItem.foodId == newItem.foodId
-        }
-
-        override fun areContentsTheSame(
-            oldItem: FoodCacheDomain,
-            newItem: FoodCacheDomain
-        ): Boolean {
-            return oldItem.foodId == newItem.foodId
-        }
-    }
+    const val VERTICAL = 0
+    const val HORIZONTAL = 1
+    const val GRID = 2
 
     val foodPresentationRvCallback = object : DiffUtil.ItemCallback<FoodCachePresentation?>() {
         override fun areItemsTheSame(

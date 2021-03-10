@@ -10,6 +10,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -165,4 +166,17 @@ fun Fragment.getDrawables(@DrawableRes drawableId:Int):Drawable{
     } else {
         null
     }
+
+
+fun Context.animationSlideUp() =  AnimationUtils.loadAnimation(
+    this,
+    R.anim.slide_in_up
+)
+
+
+fun Context.animationSlidDown() =  AnimationUtils.loadAnimation(
+    this,
+    R.anim.slide_in_down
+)
+
 
