@@ -30,7 +30,16 @@ fun FoodCacheDomain.mapToDatabase(): Food =
         foodDescription
     )
 
-fun SavedFood.mapToDetailDatabase(): SavedFoodCacheDomain = SavedFoodCacheDomain(localFoodID, foodId, foodName, foodCategory, foodArea, foodImage, foodContributor, foodDescription)
+fun SavedFood.mapToDetailDatabase(): SavedFoodCacheDomain = SavedFoodCacheDomain(
+    localFoodID,
+    foodId,
+    foodName,
+    foodCategory,
+    foodArea,
+    foodImage,
+    foodContributor,
+    foodDescription
+)
 
 fun SavedFoodCacheDomain.mapToDatabase(): SavedFood =
     SavedFood(
@@ -46,7 +55,8 @@ fun SavedFoodCacheDomain.mapToDatabase(): SavedFood =
 
 fun List<FoodCacheDomain>.mapToDatabase(): List<Food> = map { it.mapToDatabase() }
 
-fun List<SavedFood>.mapToDetailDatabase(): List<SavedFoodCacheDomain> = map { it.mapToDetailDatabase() }
+fun List<SavedFood>.mapToDetailDatabase(): List<SavedFoodCacheDomain> =
+    map { it.mapToDetailDatabase() }
 
 fun Food.mapToCacheDomain(): FoodCacheDomain = FoodCacheDomain(
     foodId,
@@ -71,10 +81,30 @@ fun UserProfile.mapToDomain() =
 
 fun Flow<UserProfile>.mapToDomain() = map { it?.mapToDomain() }
 
+fun FoodEntity.mapToRemoteDomain(): FoodRemoteDomain =
+    FoodRemoteDomain(foodName, foodCategory, foodArea, foodImage, foodContributor, foodDescription)
 
-fun FoodEntity.mapToRemoteDomain(): FoodRemoteDomain = FoodRemoteDomain(foodName, foodCategory, foodArea, foodImage, foodContributor, foodDescription)
-fun FoodRemoteDomain.mapToCacheDomain(): FoodCacheDomain = FoodCacheDomain(null,foodName, foodCategory, foodArea, foodImage, foodContributor, foodDescription)
-fun FoodCachePresentation.mapToDetailDatabasePresentation() = SavedFoodCacheDomain(null,foodId, foodName, foodCategory, foodArea, foodImage, foodContributor,foodDescription)
+fun FoodRemoteDomain.mapToCacheDomain(): FoodCacheDomain = FoodCacheDomain(
+    null,
+    foodName,
+    foodCategory,
+    foodArea,
+    foodImage,
+    foodContributor,
+    foodDescription
+)
+
+fun FoodCachePresentation.mapToDetailDatabasePresentation() = SavedFoodCacheDomain(
+    null,
+    foodId,
+    foodName,
+    foodCategory,
+    foodArea,
+    foodImage,
+    foodContributor,
+    foodDescription
+)
+
 fun FoodCacheDomain.mapToCachePresentation(): FoodCachePresentation =
     FoodCachePresentation(
         foodId,
@@ -89,10 +119,22 @@ fun FoodCacheDomain.mapToCachePresentation(): FoodCachePresentation =
 fun List<FoodRemoteDomain>.mapRemoteToCacheDomain(): List<FoodCacheDomain> =
     map { it.mapToCacheDomain() }
 
-
-
 fun List<FoodEntity>.mapToRemoteDomain(): List<FoodRemoteDomain> =
     map { it.mapToRemoteDomain() }
 
 fun List<FoodCacheDomain>.mapToCachePresentation(): List<FoodCachePresentation> =
     map { it.mapToCachePresentation() }
+
+
+fun SavedFoodCacheDomain.mapFavToCachePresentation(): FoodCachePresentation =
+    FoodCachePresentation(
+        localFoodID,
+        foodName,
+        foodCategory,
+        foodArea,
+        foodImage,
+        foodContributor,
+        foodDescription
+    )
+
+fun List<SavedFoodCacheDomain>.mapListFavToCachePresentation(): List<FoodCachePresentation> = map { it.mapFavToCachePresentation() }

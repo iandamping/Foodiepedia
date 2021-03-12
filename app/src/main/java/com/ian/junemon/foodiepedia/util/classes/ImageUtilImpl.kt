@@ -13,15 +13,19 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.StorageReference
 import com.ian.junemon.foodiepedia.core.R
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.DefaultCameraFileDirectory
 import com.ian.junemon.foodiepedia.util.interfaces.ImageUtilHelper
 import com.ian.junemon.foodiepedia.core.util.DataConstant.RequestOpenCamera
 import com.ian.junemon.foodiepedia.core.util.DataConstant.RequestSelectGalleryImage
+import com.ian.junemon.foodiepedia.util.FoodConstant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,6 +45,7 @@ import javax.inject.Inject
  * Indonesia.
  */
 class ImageUtilImpl @Inject constructor(
+    @DefaultCameraFileDirectory private val foodiePediaFile:File,
     private val storagePlaceReference: StorageReference,
     private val ctx: Context
 ) :
@@ -265,22 +270,49 @@ class ImageUtilImpl @Inject constructor(
         return f
     }
 
-    override fun openImageFromGallery(fragment: Fragment) {
+    override fun openImageFromGallery(launcer: ActivityResultLauncher<Intent>) {
         val intents = Intent(Intent.ACTION_PICK)
         intents.type = "image/*"
-        fragment.startActivityForResult(intents, RequestSelectGalleryImage)
+        launcer.launch(intents)
     }
 
-    override fun openImageFromCamera(fragment: Fragment) {
+    override fun openImageFromCamera(launcer: ActivityResultLauncher<Intent>) {
         val pictureUri: Uri = FileProvider.getUriForFile(
             ctx,
-            fragment.getString(R.string.package_name),
-            createImageFileFromPhoto()
+            ctx.getString(R.string.package_name),
+            // createImageFileFromPhoto()
+        foodiePediaFile
         )
+        Timber.e("uri :$pictureUri")
         val intents = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intents.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri)
         intents.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-        fragment.startActivityForResult(intents, RequestOpenCamera)
+        launcer.launch(intents)
+
+
+        // Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+        //     // Ensure that there's a camera activity to handle the intent
+        //     takePictureIntent.resolveActivity(ctx.packageManager)?.also {
+        //         // Create the File where the photo should go
+        //         val photoFile: File? = try {
+        //             foodiePediaFile
+        //         } catch (ex: IOException) {
+        //             // Error occurred while creating the File
+        //             null
+        //         }
+        //         // Continue only if the File was successfully created
+        //         photoFile?.also {
+        //             val photoURI: Uri = FileProvider.getUriForFile(
+        //                 ctx,
+        //                 ctx.getString(R.string.package_name),
+        //                 it
+        //             )
+        //             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+        //             launcer.launch(takePictureIntent)
+        //         }
+        //     }
+        // }
+
     }
 
     override fun createImageFileFromPhoto(uri: (Uri) -> Unit): File {
@@ -290,6 +322,15 @@ class ImageUtilImpl @Inject constructor(
     private fun createImageFileFromPhoto(): File {
         return nonVoidCustomMediaScannerConnection(saveCaptureImagePath)
     }
+
+    private fun galleryAddPic() {
+        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
+            val f = File(foodiePediaFile.absolutePath)
+            mediaScanIntent.data = Uri.fromFile(f)
+            ctx.sendBroadcast(mediaScanIntent)
+        }
+    }
+
 
     private fun nonVoidCustomMediaScannerConnection(
         paths: String,

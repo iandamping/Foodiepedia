@@ -13,6 +13,7 @@ import com.ian.junemon.foodiepedia.util.clicks
 import com.ian.junemon.foodiepedia.util.observe
 import com.ian.junemon.foodiepedia.util.observeEvent
 import com.ian.junemon.foodiepedia.databinding.FragmentProfileBinding
+import com.ian.junemon.foodiepedia.feature.view.upload.UploadFoodFragmentDirections
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.ian.junemon.foodiepedia.util.getDrawables
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
@@ -43,6 +44,7 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
     }
 
     override fun activityCreated() {
+        initOnBackPressed()
         consumeProfileData()
         obvserveNavigation()
     }
@@ -50,6 +52,10 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
     private fun FragmentProfileBinding.initView() {
         clicks(fabUpload) {
             val action = ProfileFragmentDirections.actionProfileFragmentToUploadFoodFragment()
+            profileVm.setNavigate(action)
+        }
+        clicks(relativeLayout2){
+            val action = ProfileFragmentDirections.actionProfileFragmentToFavoriteFragment()
             profileVm.setNavigate(action)
         }
         clicks(rlSignIn) {
@@ -77,7 +83,8 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
                         with(binding) {
                             rlSignOut.visibility = View.GONE
                             rlSignIn.visibility = View.VISIBLE
-                            fabUpload.visibility = View.GONE
+
+                            // fabUpload.visibility = View.GONE
                         }
                     } else {
                         with(binding) {
@@ -88,7 +95,7 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
                             tvProfileName.text = it.data.getDisplayName()
                             rlSignOut.visibility = View.VISIBLE
                             rlSignIn.visibility = View.GONE
-                            fabUpload.visibility = View.VISIBLE
+                            // fabUpload.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -127,6 +134,14 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
     private fun obvserveNavigation() {
         observeEvent(profileVm.navigateEvent) {
             navigate(it)
+        }
+    }
+
+    private fun initOnBackPressed() {
+        onBackPressed {
+            // val action = ProfileFragmentDirections.actionProfileFragmentToHomeFragment()
+            // profileVm.setNavigate(action)
+            navigateUp()
         }
     }
 

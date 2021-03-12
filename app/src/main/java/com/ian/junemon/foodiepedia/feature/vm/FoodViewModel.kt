@@ -14,12 +14,8 @@ import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
 import com.ian.junemon.foodiepedia.core.domain.model.Results
 import com.ian.junemon.foodiepedia.core.util.DataConstant.noFilterValue
-import com.ian.junemon.foodiepedia.util.FoodConstant.VERTICAL
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -37,9 +33,6 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
     private val _foodImageUri: MutableLiveData<Uri> = MutableLiveData()
     val foodImageUri: LiveData<Uri> = _foodImageUri
 
-    private val _layoutState:MutableStateFlow<Int> = MutableStateFlow(VERTICAL)
-    val layoutState:StateFlow<Int> = _layoutState
-
     val etFoodName: MutableLiveData<String> = MutableLiveData()
     val etFoodArea: MutableLiveData<String> = MutableLiveData()
     val etFoodDescription: MutableLiveData<String> = MutableLiveData()
@@ -53,13 +46,6 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
             data.invoke(it)
         })
     }
-
-    fun setLayoutState(state:Int){
-        viewModelScope.launch {
-            _layoutState.emit(state)
-        }
-    }
-
 
     fun setFood(data: FoodRemoteDomain) {
         _foodData.value = data

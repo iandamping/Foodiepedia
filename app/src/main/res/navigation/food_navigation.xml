@@ -36,27 +36,6 @@
         <action
             android:id="@+id/action_homeFragment_to_bottomFilterFragment"
             app:destination="@id/bottomFilterFragment" />
-        <!--<action
-            android:id="@+id/action_homeFragment_to_detailFragment"
-            app:destination="@id/detailFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_fade_enter"
-            app:popExitAnim="@anim/fragment_fade_exit" />
-        <action
-            android:id="@+id/action_homeFragment_to_paginationFragment"
-            app:destination="@id/paginationFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_fade_enter"
-            app:popExitAnim="@anim/fragment_fade_exit" />
-        <action
-            android:id="@+id/action_homeFragment_to_searchFragment"
-            app:destination="@id/searchFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_fade_enter"
-            app:popExitAnim="@anim/fragment_fade_exit" />-->
     </fragment>
 
     <fragment
@@ -67,14 +46,22 @@
         <action
             android:id="@+id/action_uploadFoodFragment_to_openCameraFragment"
             app:destination="@id/openCameraFragment"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/food_navigation"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@id/food_navigation" />
+<!--        <action-->
+<!--            android:id="@+id/action_uploadFoodFragment_to_homeFragment"-->
+<!--            app:destination="@id/homeFragment"-->
+<!--            app:launchSingleTop="true"-->
+<!--            app:popUpTo="@id/food_navigation"-->
+<!--            app:popUpToInclusive="true" />-->
         <action
-            android:id="@+id/action_uploadFoodFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
+            android:id="@+id/action_uploadFoodFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/profileFragment"
             app:launchSingleTop="true"
-            app:popUpTo="@id/food_navigation"
             app:popUpToInclusive="true" />
     </fragment>
 
@@ -90,6 +77,19 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_profileFragment_to_favoriteFragment"
+            app:destination="@id/favoriteFragment"
+            app:enterAnim="@anim/push_up_in"
+            app:exitAnim="@anim/push_down_out"
+            app:popEnterAnim="@anim/push_up_in"
+            app:popExitAnim="@anim/push_down_out"/>
+        <action
+            android:id="@+id/action_profileFragment_to_homeFragment"
+            app:destination="@id/food_navigation"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/food_navigation"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -137,7 +137,22 @@
         android:label="SelectImageFragment" >
         <action
             android:id="@+id/action_selectImageFragment_to_uploadFoodFragment"
-            app:destination="@id/uploadFoodFragment" />
+            app:destination="@id/uploadFoodFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/openCameraFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.ian.junemon.foodiepedia.feature.view.favorite.FavoriteFragment"
+        android:label="FavoriteFragment" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_detailFragment"
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left"/>
     </fragment>
 
 </navigation>

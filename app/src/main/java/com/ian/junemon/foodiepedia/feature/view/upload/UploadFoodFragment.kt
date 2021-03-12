@@ -1,6 +1,7 @@
 package com.ian.junemon.foodiepedia.feature.view.upload
 
 import android.Manifest
+import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
@@ -8,6 +9,9 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -72,6 +76,8 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
         requireContext().animationSlidDown()
     }
 
+    private lateinit var intentLauncher: ActivityResultLauncher<Intent>
+
     private val remoteFoodUpload: FoodRemoteDomain = FoodRemoteDomain()
     private var selectedUriForFirebase: Uri? = null
 
@@ -111,6 +117,23 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
         observeViewEffect()
         obvserveNavigation()
         consumeSharedUri()
+
+        // Create this as a variable in your Fragment class
+        intentLauncher = registerForActivityResult(
+            StartActivityForResult()){ result ->
+            if (result.resultCode == RESULT_OK){
+                val intentResult = result.data
+                if (intentResult != null){
+                    val uriResult = intentResult.data
+                    if (uriResult !=null){
+                        foodVm.setFoodUri(uriResult)
+                    }
+                }
+            }
+            Timber.e("result : $result")
+        }
+
+
     }
 
     private fun FragmentUploadBinding.initView() {
@@ -126,8 +149,7 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
         }
 
         clicks(btnBack) {
-            val action = UploadFoodFragmentDirections.actionUploadFoodFragmentToHomeFragment()
-            foodVm.setNavigate(action)
+            navigateUp()
         }
 
         clicks(btnUnggah) {
@@ -140,7 +162,8 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
                             is FirebaseResult.SuccessPush -> {
                                 setDialogShow(true)
                                 clearUri()
-                                val action = UploadFoodFragmentDirections.actionUploadFoodFragmentToHomeFragment()
+                                val action =
+                                    UploadFoodFragmentDirections.actionUploadFoodFragmentToProfileFragment()
                                 foodVm.setNavigate(action)
                             }
                             is FirebaseResult.ErrorPush -> {
@@ -162,7 +185,7 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
                 when (which) {
                     0 -> {
                         if (requestReadPermissionsGranted()) {
-                            openImageFromGallery()
+                            imageHelper.openImageFromGallery(intentLauncher)
                         } else {
                             with(permissionHelper) {
                                 requestingPermission(
@@ -286,7 +309,7 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
                 requestCode,
                 grantResults,
                 {
-                    openImageFromGallery()
+                    imageHelper.openImageFromGallery(intentLauncher)
                 },
                 {
                     foodVm.setupSnackbarMessage(getString(R.string.permission_not_granted))
@@ -294,11 +317,6 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
         }
     }
 
-    private fun openImageFromGallery() {
-        val intents = Intent(Intent.ACTION_PICK)
-        intents.type = "image/*"
-        startActivityForResult(intents, REQUEST_READ_CODE_PERMISSIONS)
-    }
 
     private fun observeViewEffect() {
         observe(foodVm.snackbar) { text ->
@@ -327,8 +345,7 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
 
     private fun initOnBackPressed() {
         onBackPressed {
-            val action = UploadFoodFragmentDirections.actionUploadFoodFragmentToHomeFragment()
-            foodVm.setNavigate(action)
+            navigateUp()
         }
     }
 
