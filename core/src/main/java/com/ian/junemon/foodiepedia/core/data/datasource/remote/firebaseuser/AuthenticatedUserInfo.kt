@@ -9,4 +9,6 @@ interface AuthenticatedUserInfo {
 
     fun getPhotoUrl(): String?
 
+    fun getUid():String?
+
 }

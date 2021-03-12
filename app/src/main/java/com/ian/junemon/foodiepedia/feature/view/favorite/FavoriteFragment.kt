@@ -1,9 +1,11 @@
 package com.ian.junemon.foodiepedia.feature.view.favorite
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
+import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.core.domain.model.Results
@@ -11,6 +13,8 @@ import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 import com.ian.junemon.foodiepedia.core.util.mapListFavToCachePresentation
 import com.ian.junemon.foodiepedia.databinding.FragmentFavoriteBinding
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
+import com.ian.junemon.foodiepedia.util.getDrawables
+import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.util.observe
 import com.ian.junemon.foodiepedia.util.observeEvent
 import com.ian.junemon.foodiepedia.util.verticalRecyclerviewInitializer
@@ -27,6 +31,8 @@ class FavoriteFragment : BaseFragmentViewBinding<FragmentFavoriteBinding>(),Favo
     private lateinit var foodVm: FoodViewModel
 
     @Inject
+    lateinit var loadImageHelper: LoadImageHelper
+    @Inject
     lateinit var favAdapter: FavoriteAdapter
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentFavoriteBinding
@@ -38,11 +44,13 @@ class FavoriteFragment : BaseFragmentViewBinding<FragmentFavoriteBinding>(),Favo
             verticalRecyclerviewInitializer()
             adapter = favAdapter
         }
+        with(loadImageHelper){
+            binding.ivNoData.loadWithGlide(getDrawables(R.drawable.no_data))
+        }
     }
 
     override fun activityCreated() {
         getFavoriteFood()
-        observeViewEffect()
         obvserveNavigation()
     }
 
@@ -50,6 +58,8 @@ class FavoriteFragment : BaseFragmentViewBinding<FragmentFavoriteBinding>(),Favo
         observe(foodVm.getSavedDetailCache()) { cacheValue ->
             when (cacheValue) {
                 is Results.Success -> {
+                    binding.rvFavorite.visibility = View.VISIBLE
+                    binding.ivNoData.visibility = View.GONE
                     with(favAdapter) {
                         submitList(cacheValue.data.mapListFavToCachePresentation())
                         // Force a redraw
@@ -57,21 +67,14 @@ class FavoriteFragment : BaseFragmentViewBinding<FragmentFavoriteBinding>(),Favo
                     }
                 }
                 is Results.Error -> {
-                    foodVm.setupSnackbarMessage(cacheValue.exception.message)
+                    binding.rvFavorite.visibility = View.GONE
+                    binding.ivNoData.visibility = View.VISIBLE
                 }
             }
         }
     }
 
-    private fun observeViewEffect() {
-        observe(foodVm.snackbar) { text ->
-            text?.let {
-                Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
-                foodVm.onSnackbarShown()
-            }
 
-        }
-    }
 
     private fun obvserveNavigation() {
         observeEvent(foodVm.navigateEvent) {

@@ -11,4 +11,6 @@ open class FirebaseUserInfo(
     override fun getDisplayName(): String? = firebaseUser?.displayName
 
     override fun getPhotoUrl(): String? = firebaseUser?.photoUrl.toString()
+
+    override fun getUid(): String? = firebaseUser?.uid
 }

@@ -18,8 +18,8 @@ object FoodConstant {
     const val ANIMATION_FAST_MILLIS = 50L
     const val ANIMATION_SLOW_MILLIS = 100L
 
-    const val ADMIN_1 = "Pw1oWAkBNxRFZqZRZymAfjGe4sK2"
-    const val ADMIN_2 = "wrffhDN5OQaGa5NK6JF8S3RQSf73"
+    const val ADMIN_1 = "y4RKj8hhKpTUAs74PiHGgKBnoqm1"
+    const val ADMIN_2 = "AOpJOXhJ82cgLHI9J3nXtp9d4fI3"
 
     val foodPresentationRvCallback = object : DiffUtil.ItemCallback<FoodCachePresentation?>() {
         override fun areItemsTheSame(

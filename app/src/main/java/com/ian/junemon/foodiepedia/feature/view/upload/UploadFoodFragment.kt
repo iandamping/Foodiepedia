@@ -130,7 +130,6 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
                     }
                 }
             }
-            Timber.e("result : $result")
         }
 
 

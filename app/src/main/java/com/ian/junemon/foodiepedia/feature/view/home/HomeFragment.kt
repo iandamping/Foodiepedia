@@ -1,8 +1,10 @@
 package com.ian.junemon.foodiepedia.feature.view.home
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -92,6 +94,9 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
             val action = HomeFragmentDirections.actionHomeFragmentToSearchFragment()
             foodVm.setNavigate(action)
         }
+        with(loadImageHelper){
+            ivNoData.loadWithGlide(getDrawables(R.drawable.no_data))
+        }
     }
 
 
@@ -127,9 +132,17 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
         observe(foodVm.getFood()) { value ->
             when (value) {
                 is Results.Error -> {
-                    foodVm.setupSnackbarMessage(value.exception.message)
+                    with(binding){
+                       foodVm.setupLoadingState(false)
+                        rvHome.visibility = View.GONE
+                        ivNoData.visibility = View.VISIBLE
+                    }
                 }
                 is Results.Success -> {
+                    with(binding){
+                        rvHome.visibility = View.VISIBLE
+                        ivNoData.visibility = View.GONE
+                    }
                     with(homeAdapter) {
                         submitList(value.data.mapToCachePresentation())
                         // Force a redraw
@@ -144,14 +157,6 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
         /**Observe loading state to show loading*/
         observe(foodVm.loadingState) { show ->
             show.shimmerHandler(binding.shimmerSlider)
-        }
-
-        observe(foodVm.snackbar) { text ->
-            text?.let {
-                Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
-                foodVm.onSnackbarShown()
-            }
-
         }
     }
 
