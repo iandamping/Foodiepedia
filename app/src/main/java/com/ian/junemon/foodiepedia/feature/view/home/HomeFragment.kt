@@ -59,6 +59,7 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
     }
 
     override fun activityCreated() {
+        prefecthFood()
         consumeFilterState()
         consumeFilterFood()
         consumeProfileData()
@@ -153,10 +154,34 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
         }
     }
 
+    private fun prefecthFood(){
+        observe(foodVm.getPrefecth()) { value ->
+            when (value) {
+                is Results.Loading -> {
+                    foodVm.setupLoadingState(false)
+                }
+                is Results.Success -> {
+                    foodVm.setupLoadingState(true)
+                }
+                is Results.Error -> {
+                    foodVm.setupLoadingState(true)
+                    foodVm.setupSnackbarMessage(value.exception.message)
+                }
+            }
+        }
+    }
+
     private fun observeViewEffect() {
         /**Observe loading state to show loading*/
         observe(foodVm.loadingState) { show ->
             show.shimmerHandler(binding.shimmerSlider)
+        }
+
+        observe(foodVm.snackbar) { text ->
+            text?.let {
+                Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+                foodVm.onSnackbarShown()
+            }
         }
     }
 

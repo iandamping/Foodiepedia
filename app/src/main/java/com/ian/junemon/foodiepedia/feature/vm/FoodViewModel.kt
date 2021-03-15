@@ -75,7 +75,7 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
 
     fun getFood() = repository.loadSharedPreferenceFilter().flatMapLatest {
         if (it.isEmpty()){
-            repository.prefetchData()
+            repository.getCache()
         } else{
             if (it == noFilterValue){
                 repository.getCache()
@@ -84,6 +84,8 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
             }
         }
     }.asLiveData(viewModelScope.coroutineContext)
+
+    fun getPrefecth(): LiveData<Results<List<FoodCacheDomain>>> = repository.prefetchData().asLiveData(viewModelScope.coroutineContext)
 
     fun getCache(): LiveData<Results<List<FoodCacheDomain>>> = repository.getCache().asLiveData(viewModelScope.coroutineContext)
 

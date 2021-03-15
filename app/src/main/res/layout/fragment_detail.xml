@@ -105,12 +105,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorIngredient"
+            android:layout_margin="@dimen/spacing_medium"
+
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium"
                 android:orientation="vertical">
 
                 <TextView
@@ -119,84 +120,24 @@
                     android:layout_marginTop="@dimen/spacing_medium"
                     android:layout_marginEnd="@dimen/spacing_large"
                     android:layout_marginStart="@dimen/spacing_large"
-                    android:text="About"
+                    android:text="Where To Find "
                     android:textColor="@color/yellow_food"
                     android:textSize="@dimen/letter_xlarge"
                     android:textStyle="bold" />
 
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tvFoodArea"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/spacing_medium"
-                    android:layout_marginStart="@dimen/spacing_medium"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-
-                        <TextView
-                            android:id="@+id/tvFoodName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/spacing_medium"
-                            android:textColor="@color/gray_food_2"
-                            android:textSize="@dimen/letter_medium"
-                            android:textStyle="bold"
-                            android:text="@{detailFood.foodName}"
-                            tools:text="Oncom" />
-
-                        <TextView
-                            android:id="@+id/tvFoodCategory"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/spacing_medium"
-                            android:textColor="@color/gray_food_2"
-                            android:textSize="@dimen/letter_medium"
-                            android:textStyle="bold"
-                            android:text="@{detailFood.foodCategory}"
-                            tools:text="Breakfast" />
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-
-                        <TextView
-                            android:id="@+id/tvFoodContributor"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/spacing_medium"
-                            android:textColor="@color/gray_food_2"
-                            android:textSize="@dimen/letter_medium"
-                            android:textStyle="bold"
-                            android:text="@{detailFood.foodContributor}"
-                            tools:text="Ian Damping" />
-
-                        <TextView
-                            android:id="@+id/tvFoodArea"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/spacing_medium"
-                            android:textColor="@color/gray_food_2"
-                            android:textSize="@dimen/letter_medium"
-                            android:textStyle="bold"
-                            android:text="@{detailFood.foodArea}"
-                            tools:text="Indonesia" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:layout_marginEnd="@dimen/spacing_large"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:textColor="@color/gray_food_2"
+                    android:textSize="@dimen/letter_medium"
+                    android:textStyle="bold"
+                    android:text="@{detailFood.foodArea}"
+                    tools:text="Indonesia" />
 
 
                 <TextView

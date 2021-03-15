@@ -2,16 +2,13 @@ package com.ian.junemon.foodiepedia.ui
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import com.ian.junemon.foodiepedia.R
+import com.ian.junemon.foodiepedia.base.BaseActivity
 import com.ian.junemon.foodiepedia.databinding.ActivitySplashBinding
 import com.ian.junemon.foodiepedia.util.activityViewBinding
+import com.ian.junemon.foodiepedia.util.getDrawables
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
-import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -19,9 +16,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SplashActivity : DaggerAppCompatActivity() {
-    @Inject
-    lateinit var viewHelper: ViewHelper
+class SplashActivity : BaseActivity() {
 
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
@@ -30,9 +25,7 @@ class SplashActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        with(viewHelper) {
-            fullScreenAnimation()
-        }
+
         binding.initView()
 
         runDelayed {
@@ -42,18 +35,15 @@ class SplashActivity : DaggerAppCompatActivity() {
     }
 
     private fun ActivitySplashBinding.initView() {
-        loadImageHelper.run {
+        with(loadImageHelper) {
             ivLoadSplash.loadWithGlide(
-                ContextCompat.getDrawable(
-                    this@SplashActivity,
-                    R.drawable.splash
-                )!!
+                getDrawables(R.drawable.splash)
             )
         }
     }
 
     private fun runDelayed(call: () -> Unit) {
-        lifecycleScope.launch {
+        consumeSuspend {
             delay(500L)
             call.invoke()
         }

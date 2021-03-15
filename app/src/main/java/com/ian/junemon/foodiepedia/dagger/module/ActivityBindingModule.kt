@@ -1,5 +1,6 @@
 package com.ian.junemon.foodiepedia.dagger.module
 
+import com.ian.junemon.foodiepedia.base.BaseActivity
 import com.ian.junemon.foodiepedia.dagger.scope.ActivityScoped
 import com.ian.junemon.foodiepedia.ui.MainActivity
 import com.ian.junemon.foodiepedia.ui.SplashActivity
@@ -16,12 +17,16 @@ abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector
     @ActivityScoped
-    abstract fun splashActivity(): SplashActivity
+    abstract fun contributeBaseActivity(): BaseActivity
+
+    @ContributesAndroidInjector
+    @ActivityScoped
+    abstract fun contributeSplashActivity(): SplashActivity
 
     @ActivityScoped
     @ContributesAndroidInjector(
         modules = [  // fragments
             FoodModule::class]
     )
-    abstract fun mainActivity(): MainActivity
+    abstract fun contributeMainActivity(): MainActivity
 }

@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -151,6 +152,14 @@ fun Fragment.getDrawables(@DrawableRes drawableId:Int):Drawable{
         drawableId
     )!!
 }
+
+fun FragmentActivity.getDrawables(@DrawableRes drawableId:Int):Drawable{
+    return ContextCompat.getDrawable(
+        this,
+        drawableId
+    )!!
+}
+
  fun Context.createBitmapFromUri(uri: Uri?): Bitmap? =
     if (uri != null) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
