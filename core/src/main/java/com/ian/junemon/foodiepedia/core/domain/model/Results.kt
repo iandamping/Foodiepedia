@@ -23,3 +23,8 @@ sealed class FirebaseResult<out R> {
     data class ErrorPush(val exception:Exception) : FirebaseResult<Nothing>()
 }
 
+sealed class Prefetch{
+    object SuccessPrefetch:Prefetch()
+    data class FailedPrefetch(val exception: Exception) : Prefetch()
+}
+

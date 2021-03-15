@@ -7,6 +7,7 @@ import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
 import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
 import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
 import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
+import com.ian.junemon.foodiepedia.core.domain.model.Prefetch
 import com.ian.junemon.foodiepedia.core.domain.model.Results
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -21,7 +22,7 @@ class FoodUseCaseImpl @Inject constructor(private val repo: FoodRepository) : Fo
         return repo.getCache()
     }
 
-    override fun prefetchData(): Flow<Results<List<FoodCacheDomain>>> {
+    override fun prefetchData(): Flow<Prefetch> {
         return repo.prefetchData()
     }
 

@@ -6,6 +6,7 @@ import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
 import com.ian.junemon.foodiepedia.core.domain.model.Results
 import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
 import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.Prefetch
 import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
 import kotlinx.coroutines.flow.Flow
 
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface FoodRepository {
 
-    fun prefetchData(): Flow<Results<List<FoodCacheDomain>>>
+    fun prefetchData(): Flow<Prefetch>
 
     fun getCache(): Flow<Results<List<FoodCacheDomain>>>
 

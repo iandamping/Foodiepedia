@@ -7,8 +7,9 @@ package com.ian.junemon.foodiepedia.model
  */
 sealed class DataEvent {
     object PreFetchFoodData : DataEvent()
+    object CompletePreFetchFoodData : DataEvent()
     // object ConsumeFilterState : DataEvent()
-    object ConsumeFilterCacheFoodData : DataEvent()
-    object ConsumeUserProfileData : DataEvent()
+    // object ConsumeFilterCacheFoodData : DataEvent()
+    // object ConsumeUserProfileData : DataEvent()
     // data class Navigate(val navigation: NavDirections) : DataEvent()
 }

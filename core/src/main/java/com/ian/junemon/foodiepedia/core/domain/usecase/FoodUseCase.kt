@@ -6,6 +6,7 @@ import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
 import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
 import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
 import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
+import com.ian.junemon.foodiepedia.core.domain.model.Prefetch
 import com.ian.junemon.foodiepedia.core.domain.model.Results
 import kotlinx.coroutines.flow.Flow
 
@@ -18,7 +19,7 @@ interface FoodUseCase {
 
     fun getCache(): Flow<Results<List<FoodCacheDomain>>>
 
-    fun prefetchData(): Flow<Results<List<FoodCacheDomain>>>
+    fun prefetchData(): Flow<Prefetch>
 
     fun getCategorizeCache(foodCategory: String): Flow<Results<List<FoodCacheDomain>>>
 

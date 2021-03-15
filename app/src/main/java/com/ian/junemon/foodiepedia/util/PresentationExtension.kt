@@ -133,7 +133,7 @@ fun <T> Flow<T>.throttleFirst(windowDuration: Long): Flow<T> = flow {
 
 
 fun Boolean.shimmerHandler(view:ShimmerFrameLayout){
-    if (this){
+    if (!this){
         if (!view.isShimmerStarted && !view.isShimmerVisible) {
             view.startShimmer()
         }

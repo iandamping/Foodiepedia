@@ -12,8 +12,11 @@ import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
+import com.ian.junemon.foodiepedia.core.domain.model.Prefetch
 import com.ian.junemon.foodiepedia.core.domain.model.Results
 import com.ian.junemon.foodiepedia.core.util.DataConstant.noFilterValue
+import com.ian.junemon.foodiepedia.model.DataEvent
+import com.ian.junemon.foodiepedia.model.Event
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,6 +36,9 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
     private val _foodImageUri: MutableLiveData<Uri> = MutableLiveData()
     val foodImageUri: LiveData<Uri> = _foodImageUri
 
+    private val _dataEvent: MutableLiveData<Event<DataEvent>> = MutableLiveData()
+    val dataEvent: LiveData<Event<DataEvent>> = _dataEvent
+
     val etFoodName: MutableLiveData<String> = MutableLiveData()
     val etFoodArea: MutableLiveData<String> = MutableLiveData()
     val etFoodDescription: MutableLiveData<String> = MutableLiveData()
@@ -45,6 +51,10 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         liveData.observe(lifecycleOwner, {
             data.invoke(it)
         })
+    }
+
+    fun setDataEvent(data:DataEvent){
+        _dataEvent.value = Event(data)
     }
 
     fun setFood(data: FoodRemoteDomain) {
@@ -85,7 +95,7 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         }
     }.asLiveData(viewModelScope.coroutineContext)
 
-    fun getPrefecth(): LiveData<Results<List<FoodCacheDomain>>> = repository.prefetchData().asLiveData(viewModelScope.coroutineContext)
+    fun getPrefetch(): LiveData<Prefetch> = repository.prefetchData().asLiveData(viewModelScope.coroutineContext)
 
     fun getCache(): LiveData<Results<List<FoodCacheDomain>>> = repository.getCache().asLiveData(viewModelScope.coroutineContext)
 

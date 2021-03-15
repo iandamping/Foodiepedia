@@ -14,11 +14,17 @@ import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
 import com.ian.junemon.foodiepedia.core.domain.model.Results
 import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
 import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.Prefetch
 import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
 import com.ian.junemon.foodiepedia.core.util.DataConstant.ERROR_EMPTY_DATA
 import com.ian.junemon.foodiepedia.core.util.mapRemoteToCacheDomain
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -44,24 +50,21 @@ class FoodRepositoryImpl @Inject constructor(
         return this.mapRemoteToCacheDomain()
     }
 
-    override fun prefetchData(): Flow<Results<List<FoodCacheDomain>>> {
-        return object : NetworkBoundResource<List<FoodCacheDomain>, List<FoodRemoteDomain>>() {
-            override fun loadFromDB(): Flow<List<FoodCacheDomain>> {
-                return cacheDataSource.getCache()
+    override fun prefetchData(): Flow<Prefetch> {
+        return flow {
+            remoteDataSource.getFirebaseData().collect {  responseStatus ->
+                when(responseStatus){
+                    is DataSourceHelper.DataSourceError ->{
+                        emit(Prefetch.FailedPrefetch(responseStatus.exception))
+                    }
+                    is DataSourceHelper.DataSourceValue ->{
+                        cacheDataSource.setCache(*responseStatus.data.applyMainSafeSort().toTypedArray())
+                        emit(Prefetch.SuccessPrefetch)
+                    }
+                }
             }
 
-            override fun shouldFetch(data: List<FoodCacheDomain>?): Boolean {
-                return data == null || data.isEmpty()
-            }
-
-            override suspend fun createCall(): Flow<DataSourceHelper<List<FoodRemoteDomain>>> {
-                return remoteDataSource.getFirebaseData()
-            }
-
-            override suspend fun saveCallResult(data: List<FoodRemoteDomain>) {
-                cacheDataSource.setCache(*data.applyMainSafeSort().toTypedArray())
-            }
-        }.asFlow()
+        }
     }
 
     override fun getCache(): Flow<Results<List<FoodCacheDomain>>> {

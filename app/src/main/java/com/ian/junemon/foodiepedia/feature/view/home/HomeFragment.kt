@@ -3,32 +3,29 @@ package com.ian.junemon.foodiepedia.feature.view.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
+import com.ian.junemon.foodiepedia.core.domain.model.Prefetch
 import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
 import com.ian.junemon.foodiepedia.core.domain.model.Results
-import com.ian.junemon.foodiepedia.util.clicks
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
-import com.ian.junemon.foodiepedia.util.observe
-import com.ian.junemon.foodiepedia.util.observeEvent
-import com.ian.junemon.foodiepedia.util.shimmerHandler
-import com.ian.junemon.foodiepedia.core.util.DataConstant.filterValueBreakfast
 import com.ian.junemon.foodiepedia.core.util.DataConstant.noFilterValue
 import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
 import com.ian.junemon.foodiepedia.databinding.FragmentHomeBinding
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
+import com.ian.junemon.foodiepedia.model.DataEvent
+import com.ian.junemon.foodiepedia.util.clicks
 import com.ian.junemon.foodiepedia.util.getDrawables
 import com.ian.junemon.foodiepedia.util.horizontalRecyclerviewInitializer
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
-import com.ian.junemon.foodiepedia.util.interfaces.RecyclerHelper
-import timber.log.Timber
+import com.ian.junemon.foodiepedia.util.observe
+import com.ian.junemon.foodiepedia.util.observeEvent
+import com.ian.junemon.foodiepedia.util.shimmerHandler
 import javax.inject.Inject
 
 /**
@@ -59,12 +56,28 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
     }
 
     override fun activityCreated() {
-        prefecthFood()
+        with(foodVm){
+            setDataEvent(DataEvent.PreFetchFoodData)
+            setupLoadingState(false)
+        }
+        observeDataEvent()
         consumeFilterState()
-        consumeFilterFood()
         consumeProfileData()
         obvserveNavigation()
         observeViewEffect()
+    }
+
+    private fun observeDataEvent(){
+        observeEvent(foodVm.dataEvent){
+            when(it){
+                is DataEvent.PreFetchFoodData ->{
+                    prefetchFood()
+                }
+                is DataEvent.CompletePreFetchFoodData ->{
+                    consumeFilterFood()
+                }
+            }
+        }
     }
 
     private fun obvserveNavigation() {
@@ -95,16 +108,15 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
             val action = HomeFragmentDirections.actionHomeFragmentToSearchFragment()
             foodVm.setNavigate(action)
         }
-        with(loadImageHelper){
+        with(loadImageHelper) {
             ivNoData.loadWithGlide(getDrawables(R.drawable.no_data))
         }
     }
 
-
     private fun consumeProfileData() {
         observe(profileVm.getUserProfile()) {
-            if (it is ProfileResults.Success){
-                if (it.data.getPhotoUrl().isNullOrEmpty() || it.data.getPhotoUrl() == "null"){
+            if (it is ProfileResults.Success) {
+                if (it.data.getPhotoUrl().isNullOrEmpty() || it.data.getPhotoUrl() == "null") {
                     with(loadImageHelper) {
                         binding.ivPhotoProfile.loadWithGlide(
                             getDrawables(R.drawable.ic_profiles)
@@ -133,14 +145,13 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
         observe(foodVm.getFood()) { value ->
             when (value) {
                 is Results.Error -> {
-                    with(binding){
-                       foodVm.setupLoadingState(false)
+                    with(binding) {
                         rvHome.visibility = View.GONE
                         ivNoData.visibility = View.VISIBLE
                     }
                 }
                 is Results.Success -> {
-                    with(binding){
+                    with(binding) {
                         rvHome.visibility = View.VISIBLE
                         ivNoData.visibility = View.GONE
                     }
@@ -154,18 +165,21 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
         }
     }
 
-    private fun prefecthFood(){
-        observe(foodVm.getPrefecth()) { value ->
+    private fun prefetchFood() {
+        observe(foodVm.getPrefetch()) { value ->
             when (value) {
-                is Results.Loading -> {
-                    foodVm.setupLoadingState(false)
+                is Prefetch.SuccessPrefetch -> {
+                    with(foodVm){
+                        setDataEvent(DataEvent.CompletePreFetchFoodData)
+                        setupLoadingState(true)
+                    }
                 }
-                is Results.Success -> {
-                    foodVm.setupLoadingState(true)
-                }
-                is Results.Error -> {
-                    foodVm.setupLoadingState(true)
-                    foodVm.setupSnackbarMessage(value.exception.message)
+                is Prefetch.FailedPrefetch -> {
+                    with(foodVm){
+                        setDataEvent(DataEvent.CompletePreFetchFoodData)
+                        setupLoadingState(true)
+                        setupSnackbarMessage(value.exception.message)
+                    }
                 }
             }
         }
