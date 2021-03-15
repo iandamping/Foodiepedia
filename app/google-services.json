@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "678492392538-sirfk312ejepdq0l5jvd5kjeo55r69m4.apps.googleusercontent.com",
+          "client_id": "678492392538-e4m7j4s6un80rkdm3i2h1vd57l0ig7o8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.junemon.foodiepedia",
-            "certificate_hash": "858cfb23638346381cbd46e251df867394d7ec3e"
+            "certificate_hash": "16f5aa6d0afdef25fcbe69374a484a7b7c23d0fc"
           }
         },
         {
@@ -31,11 +31,11 @@
           }
         },
         {
-          "client_id": "678492392538-e4m7j4s6un80rkdm3i2h1vd57l0ig7o8.apps.googleusercontent.com",
+          "client_id": "678492392538-sirfk312ejepdq0l5jvd5kjeo55r69m4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.junemon.foodiepedia",
-            "certificate_hash": "16f5aa6d0afdef25fcbe69374a484a7b7c23d0fc"
+            "certificate_hash": "858cfb23638346381cbd46e251df867394d7ec3e"
           }
         },
         {
@@ -92,6 +92,14 @@
           }
         },
         {
+          "client_id": "678492392538-v3ecr1ko8smbsebieblf6h66ehs52qsp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ian.junemon.foodiepedia",
+            "certificate_hash": "98c2f86d2f6e505e50ed66b7e70ca86936ac607c"
+          }
+        },
+        {
           "client_id": "678492392538-mg009tqjnqlrkhk19e1d49h62kbfu6qa.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -115,6 +123,43 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:678492392538:android:ee4cd070f3e2178fd61c63",
+        "android_client_info": {
+          "package_name": "com.ian.junemon.foodiepedia.uploader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678492392538-qe2or32q7ingc12a3uvn9a9jfp64f1n3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ian.junemon.foodiepedia.uploader",
+            "certificate_hash": "1c952623c1f9e05a2b85d6b5763d844238db5dab"
+          }
+        },
+        {
+          "client_id": "678492392538-mg009tqjnqlrkhk19e1d49h62kbfu6qa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7IT04Rq9Fnwgl_6U3d_Yf97-XwD_r-6c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678492392538-mg009tqjnqlrkhk19e1d49h62kbfu6qa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:678492392538:android:1ad63988b0f1fa6ed61c63",
         "android_client_info": {
           "package_name": "com.junemon.travelingapps"
@@ -126,6 +171,43 @@
           "client_type": 1,
           "android_info": {
             "package_name": "com.junemon.travelingapps",
+            "certificate_hash": "1c952623c1f9e05a2b85d6b5763d844238db5dab"
+          }
+        },
+        {
+          "client_id": "678492392538-mg009tqjnqlrkhk19e1d49h62kbfu6qa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7IT04Rq9Fnwgl_6U3d_Yf97-XwD_r-6c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678492392538-mg009tqjnqlrkhk19e1d49h62kbfu6qa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678492392538:android:eee683c32cb482b2d61c63",
+        "android_client_info": {
+          "package_name": "com.junemon.uploader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678492392538-q8guuh15uln6lli2m9piirdmfgjhha8f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.junemon.uploader",
             "certificate_hash": "1c952623c1f9e05a2b85d6b5763d844238db5dab"
           }
         },
