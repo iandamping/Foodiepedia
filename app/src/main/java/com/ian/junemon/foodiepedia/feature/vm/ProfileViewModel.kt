@@ -2,11 +2,10 @@ package com.ian.junemon.foodiepedia.feature.vm
 
 import android.content.Intent
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.asLiveData
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
-import com.ian.junemon.foodiepedia.core.domain.usecase.ProfileUseCase
 import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
-import kotlinx.coroutines.launch
+import com.ian.junemon.foodiepedia.core.domain.usecase.ProfileUseCase
 import javax.inject.Inject
 
 /**
@@ -17,15 +16,10 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(private val repository: ProfileUseCase) :
     BaseViewModel() {
 
-
     fun getUserProfile(): LiveData<ProfileResults<AuthenticatedUserInfo>> =
-        repository.getUserProfile()
+        repository.getUserProfile().asLiveData()
 
     suspend fun initSignIn(): Intent = repository.initSignIn()
 
-    fun initLogout(successLogout: () -> Unit) {
-        viewModelScope.launch {
-            repository.initLogout(successLogout)
-        }
-    }
+    suspend fun initLogout(successLogout: () -> Unit) = repository.initLogout(successLogout)
 }

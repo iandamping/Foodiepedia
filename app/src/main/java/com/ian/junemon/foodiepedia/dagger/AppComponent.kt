@@ -8,6 +8,7 @@ import com.ian.junemon.foodiepedia.core.dagger.module.DataModule
 import com.ian.junemon.foodiepedia.core.dagger.module.DomainModule
 import com.ian.junemon.foodiepedia.dagger.module.PresentationModule
 import com.ian.junemon.foodiepedia.core.dagger.factory.ViewModelModule
+import com.ian.junemon.foodiepedia.core.dagger.module.CoroutineScopeModule
 import com.ian.junemon.foodiepedia.core.dagger.module.DataStorePreferenceHelperModule
 import com.ian.junemon.foodiepedia.core.dagger.module.RemoteModule
 import com.ian.junemon.foodiepedia.core.dagger.module.DataStorePreferenceModule
@@ -29,6 +30,7 @@ import javax.inject.Singleton
         DataStorePreferenceModule::class,
         DataStorePreferenceHelperModule::class,
         CoroutineModule::class,
+        CoroutineScopeModule::class,
         DataModule::class,
         DomainModule::class,
         RemoteModule::class,

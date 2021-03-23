@@ -3,6 +3,7 @@ package com.ian.junemon.foodiepedia.uploader.feature.vm
 import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
 import com.ian.junemon.foodiepedia.core.domain.usecase.ProfileUseCase
@@ -27,7 +28,7 @@ class ProfileViewModel @Inject constructor(private val repository: ProfileUseCas
     }
 
     fun getUserProfile(): LiveData<ProfileResults<AuthenticatedUserInfo>> =
-        repository.getUserProfile()
+        repository.getUserProfile().asLiveData()
 
     suspend fun initSignIn(): Intent = repository.initSignIn()
 

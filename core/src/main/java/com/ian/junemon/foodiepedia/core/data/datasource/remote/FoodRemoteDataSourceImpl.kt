@@ -1,25 +1,21 @@
 package com.ian.junemon.foodiepedia.core.data.datasource.remote
 
 import android.net.Uri
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.StorageReference
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.DefaultDispatcher
-import com.ian.junemon.foodiepedia.core.util.DataConstant
+import com.ian.junemon.foodiepedia.core.data.model.FoodEntity
 import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
 import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
-import com.ian.junemon.foodiepedia.core.data.model.FoodEntity
 import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.PushFirebase
 import com.ian.junemon.foodiepedia.core.util.mapToRemoteDomain
+import com.ian.junemon.foodiepedia.core.util.valueEventFlow
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -35,41 +31,19 @@ class FoodRemoteDataSourceImpl @Inject constructor(
     private val databasePlaceReference: DatabaseReference
 ) : FoodRemoteDataSource {
 
-
     override suspend fun getFirebaseData(): Flow<DataSourceHelper<List<FoodRemoteDomain>>> =
-        callbackFlow {
-            val container: MutableSet<FoodEntity> = mutableSetOf()
-            val databaseListener = object : ValueEventListener {
-                override fun onDataChange(p0: DataSnapshot) {
-                    p0.children.map {
+        databasePlaceReference.valueEventFlow().map { value ->
+            when (value) {
+                is PushFirebase.Changed -> {
+                    val result = value.snapshot.children.mapNotNull {
                         it.getValue(FoodEntity::class.java)
-                    }.forEach {
-                        if (it != null) {
-                            container.add(it)
-                        }
-                    }
-                    if (container.isNullOrEmpty()) {
-                        sendBlocking(DataSourceHelper.DataSourceError(Exception(DataConstant.ERROR_EMPTY_DATA)))
-                    } else {
-                        sendBlocking(
-                            DataSourceHelper.DataSourceValue(
-                                container.toList().mapToRemoteDomain()
-                            )
-                        )
-                    }
+                    }.toList()
+                    DataSourceHelper.DataSourceValue(result.mapToRemoteDomain())
                 }
-
-                override fun onCancelled(p0: DatabaseError) {
-                    sendBlocking(DataSourceHelper.DataSourceError(p0.toException()))
+                is PushFirebase.Cancelled -> {
+                    DataSourceHelper.DataSourceError(value.error.toException())
                 }
             }
-            databasePlaceReference.addValueEventListener(databaseListener)
-
-            awaitClose {
-                databasePlaceReference
-                    .removeEventListener(databaseListener)
-            }
-
         }
 
     override suspend fun uploadFirebaseData(

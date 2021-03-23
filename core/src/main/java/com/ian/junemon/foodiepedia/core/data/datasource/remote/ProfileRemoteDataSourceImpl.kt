@@ -9,11 +9,11 @@ import com.ian.junemon.foodiepedia.core.dagger.qualifier.IoDispatcher
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.FirebaseUserInfo
 import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
+import com.ian.junemon.foodiepedia.core.util.valueEventProfileFlow
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -26,31 +26,20 @@ import javax.inject.Inject
 class ProfileRemoteDataSourceImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val context: Context,
-    private val mFirebaseAuth: FirebaseAuth) :
+    private val mFirebaseAuth: FirebaseAuth
+) :
     ProfileRemoteDataSource {
 
-    private var isListening = false
-
-    // Channel that keeps track of User Authentication
-
-    private val channel = ConflatedBroadcastChannel<DataSourceHelper<AuthenticatedUserInfo>>()
-
-    private val listener: ((FirebaseAuth) -> Unit) = { auth ->
-
-        if (!channel.isClosedForSend) {
-            channel.offer(DataSourceHelper.DataSourceValue(FirebaseUserInfo(auth.currentUser)))
-        } else {
-            unregisterListener()
-        }
-    }
-
     override fun getUserProfile(): Flow<DataSourceHelper<AuthenticatedUserInfo>> {
-        if (!isListening) {
-            mFirebaseAuth.addAuthStateListener(listener)
-            isListening = true
+        return mFirebaseAuth.valueEventProfileFlow().map { auth ->
+            if (auth.currentUser != null) {
+                DataSourceHelper.DataSourceValue(FirebaseUserInfo(auth.currentUser))
+            } else {
+                DataSourceHelper.DataSourceError(Exception("User not login"))
+            }
         }
-        return channel.asFlow()
     }
+
     override suspend fun initSignIn(): Intent {
         return withContext(ioDispatcher) {
             // this is mutable because FirebaseUI requires it to be mutable
@@ -77,7 +66,4 @@ class ProfileRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    private fun unregisterListener() {
-        mFirebaseAuth.removeAuthStateListener(listener)
-    }
 }

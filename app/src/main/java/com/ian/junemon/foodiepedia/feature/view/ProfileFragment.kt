@@ -91,28 +91,26 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
         profileVm.getUserProfile().observe(viewLifecycleOwner, {
             when (it) {
                 is ProfileResults.Success -> {
-                    if (it.data.getPhotoUrl().isNullOrEmpty() || it.data.getPhotoUrl() == "null") {
-                        with(binding) {
-                            rlSignOut.visibility = View.GONE
-                            rlSignIn.visibility = View.VISIBLE
-                            fabUpload.visibility = View.GONE
+                    with(binding) {
+                        with(loadImageHelper){
+                            ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
                         }
-                    } else {
-                        with(binding) {
-                            with(loadImageHelper){
-                                ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
-                            }
-                            llProfileData.visibility = View.VISIBLE
-                            tvProfileName.text = it.data.getDisplayName()
-                            rlSignOut.visibility = View.VISIBLE
-                            rlSignIn.visibility = View.GONE
-                            when(it.data.getUid()){
-                                ADMIN_1, ADMIN_2 -> fabUpload.visibility = View.VISIBLE
-                            }
+                        llProfileData.visibility = View.VISIBLE
+                        tvProfileName.text = it.data.getDisplayName()
+                        rlSignOut.visibility = View.VISIBLE
+                        rlSignIn.visibility = View.GONE
+                        when(it.data.getUid()){
+                            ADMIN_1, ADMIN_2 -> fabUpload.visibility = View.VISIBLE
                         }
                     }
                 }
                 is ProfileResults.Error -> {
+                    with(binding) {
+                        rlSignOut.visibility = View.GONE
+                        rlSignIn.visibility = View.VISIBLE
+                        fabUpload.visibility = View.GONE
+                    }
+
                     with(loadImageHelper) {
                         binding.ivPhotoProfile.loadWithGlide(
                             getDrawables( R.drawable.ic_profiles)

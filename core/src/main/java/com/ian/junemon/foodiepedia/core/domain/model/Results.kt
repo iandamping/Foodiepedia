@@ -1,5 +1,8 @@
 package com.ian.junemon.foodiepedia.core.domain.model
 
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+
 sealed class Results<out R> {
     data class Success<out T>(val data: T) : Results<T>()
     object Loading : Results<Nothing>()
@@ -28,3 +31,7 @@ sealed class Prefetch{
     data class FailedPrefetch(val exception: Exception) : Prefetch()
 }
 
+sealed class PushFirebase {
+    data class Changed(val snapshot: DataSnapshot): PushFirebase()
+    data class Cancelled(val error: DatabaseError): PushFirebase()
+}

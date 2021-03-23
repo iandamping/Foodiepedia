@@ -116,16 +116,16 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
     private fun consumeProfileData() {
         observe(profileVm.getUserProfile()) {
             if (it is ProfileResults.Success) {
-                if (it.data.getPhotoUrl().isNullOrEmpty() || it.data.getPhotoUrl() == "null") {
-                    with(loadImageHelper) {
-                        binding.ivPhotoProfile.loadWithGlide(
-                            getDrawables(R.drawable.ic_profiles)
-                        )
-                    }
-                } else
-                    with(loadImageHelper) {
-                        binding.ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
-                    }
+                with(loadImageHelper) {
+                    binding.ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
+                }
+
+            } else {
+                with(loadImageHelper) {
+                    binding.ivPhotoProfile.loadWithGlide(
+                        getDrawables(R.drawable.ic_profiles)
+                    )
+                }
             }
 
         }

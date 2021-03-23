@@ -258,16 +258,14 @@ class FragmentUpload : BaseFragment() {
     private fun consumeProfileData() {
         profileVm.getUserProfile().observe(viewLifecycleOwner, {
             if (it is ProfileResults.Success) {
-                if (it.data.getPhotoUrl().isNullOrEmpty() || it.data.getPhotoUrl() != "null"){
-                    isUserAlreadyLogin = true
-                    binding.ivPhotoProfile.visibility = View.VISIBLE
-                    remoteFoodUpload.foodContributor = it.data.getDisplayName()
-                    loadingImageHelper.run {
-                        binding.ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
-                    }
-                }else{
-                    isUserAlreadyLogin = false
+                isUserAlreadyLogin = true
+                binding.ivPhotoProfile.visibility = View.VISIBLE
+                remoteFoodUpload.foodContributor = it.data.getDisplayName()
+                loadingImageHelper.run {
+                    binding.ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
                 }
+            } else{
+                isUserAlreadyLogin = false
 
             }
         })
