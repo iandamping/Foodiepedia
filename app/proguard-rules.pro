@@ -19,3 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keepnames class com.ian.junemon.foodiepedia.core.presentation.model.** { *; }
+-keepnames class com.ian.junemon.foodiepedia.core.domain.model.** { *; }
+-keepnames class com.ian.junemon.foodiepedia.core.data.model.** { *; }

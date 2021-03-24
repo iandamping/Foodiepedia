@@ -1,12 +1,14 @@
 package com.ian.junemon.foodiepedia.core.domain.model
 
+import com.google.gson.annotations.SerializedName
+
 data class FoodRemoteDomain(
-    var foodName: String?,
-    var foodCategory: String?,
-    var foodArea: String?,
-    var foodImage: String?,
-    var foodContributor: String?,
-    var foodDescription: String?
+    @SerializedName("foodName") var foodName: String?,
+    @SerializedName("foodCategory")var foodCategory: String?,
+    @SerializedName("foodArea")var foodArea: String?,
+    @SerializedName("foodImage")var foodImage: String?,
+    @SerializedName("foodContributor")var foodContributor: String?,
+    @SerializedName("foodDescription")var foodDescription: String?
 ) {
     constructor() : this(
         null,
