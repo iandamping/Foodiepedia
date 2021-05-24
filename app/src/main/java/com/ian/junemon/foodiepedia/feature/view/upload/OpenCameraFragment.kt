@@ -15,14 +15,18 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.CameraXFileDirectory
 import com.ian.junemon.foodiepedia.databinding.FragmentOpenCameraBinding
+import com.ian.junemon.foodiepedia.feature.vm.NavigationViewModel
 import com.ian.junemon.foodiepedia.feature.vm.SharedViewModel
 import com.ian.junemon.foodiepedia.util.FoodConstant.ANIMATION_FAST_MILLIS
 import com.ian.junemon.foodiepedia.util.FoodConstant.ANIMATION_SLOW_MILLIS
 import com.ian.junemon.foodiepedia.util.clicks
 import com.ian.junemon.foodiepedia.util.observeEvent
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
@@ -42,7 +46,7 @@ class OpenCameraFragment : BaseFragmentViewBinding<FragmentOpenCameraBinding>() 
     private var preview: Preview? = null
     private var imageCapture: ImageCapture? = null
     private var camera: Camera? = null
-
+    private val navigationVm: NavigationViewModel by activityViewModels()
     private val sharedVm: SharedViewModel by activityViewModels()
 
 
@@ -116,7 +120,7 @@ class OpenCameraFragment : BaseFragmentViewBinding<FragmentOpenCameraBinding>() 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val action = OpenCameraFragmentDirections
                         .actionOpenCameraFragmentToSelectImageFragment()
-                    sharedVm.setNavigate(action)
+                    navigationVm.setNavigationDirection(action)
                 }
             })
 
@@ -147,8 +151,10 @@ class OpenCameraFragment : BaseFragmentViewBinding<FragmentOpenCameraBinding>() 
         }
 
     private fun observeNavigation() {
-        observeEvent(sharedVm.navigateEvent) {
-            navigate(it)
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            navigationVm.navigationFlow.onEach {
+                navigate(it)
+            }.launchIn(this)
         }
     }
 

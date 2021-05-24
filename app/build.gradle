@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
@@ -13,8 +13,8 @@ android {
         applicationId "com.ian.junemon.foodiepedia"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 7
-        versionName "7.0"
+        versionCode 8
+        versionName "8.0"
         resConfigs "en"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
@@ -26,8 +26,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

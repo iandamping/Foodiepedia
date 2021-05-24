@@ -3,7 +3,9 @@ package com.ian.junemon.foodiepedia.feature.view.favorite
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
@@ -13,11 +15,14 @@ import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 import com.ian.junemon.foodiepedia.core.util.mapListFavToCachePresentation
 import com.ian.junemon.foodiepedia.databinding.FragmentFavoriteBinding
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
+import com.ian.junemon.foodiepedia.feature.vm.NavigationViewModel
 import com.ian.junemon.foodiepedia.util.getDrawables
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.util.observe
 import com.ian.junemon.foodiepedia.util.observeEvent
 import com.ian.junemon.foodiepedia.util.verticalRecyclerviewInitializer
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 /**
@@ -34,6 +39,7 @@ class FavoriteFragment : BaseFragmentViewBinding<FragmentFavoriteBinding>(),Favo
     lateinit var loadImageHelper: LoadImageHelper
     @Inject
     lateinit var favAdapter: FavoriteAdapter
+    private val navigationVm: NavigationViewModel by activityViewModels()
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentFavoriteBinding
         get() = FragmentFavoriteBinding::inflate
@@ -77,13 +83,15 @@ class FavoriteFragment : BaseFragmentViewBinding<FragmentFavoriteBinding>(),Favo
 
 
     private fun obvserveNavigation() {
-        observeEvent(foodVm.navigateEvent) {
-            navigate(it)
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            navigationVm.navigationFlow.onEach {
+                navigate(it)
+            }.launchIn(this)
         }
     }
 
     override fun onClicked(data: FoodCachePresentation) {
         val action = FavoriteFragmentDirections.actionFavoriteFragmentToDetailFragment(data)
-        foodVm.setNavigate(action)
+        navigationVm.setNavigationDirection(action)
     }
 }

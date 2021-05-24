@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
@@ -18,11 +20,14 @@ import com.ian.junemon.foodiepedia.util.observe
 import com.ian.junemon.foodiepedia.util.observeEvent
 import com.ian.junemon.foodiepedia.databinding.FragmentProfileBinding
 import com.ian.junemon.foodiepedia.feature.view.upload.UploadFoodFragmentDirections
+import com.ian.junemon.foodiepedia.feature.vm.NavigationViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.ian.junemon.foodiepedia.util.FoodConstant.ADMIN_1
 import com.ian.junemon.foodiepedia.util.FoodConstant.ADMIN_2
 import com.ian.junemon.foodiepedia.util.getDrawables
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -40,6 +45,8 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
 
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
+
+    private val navigationVm:NavigationViewModel by activityViewModels()
 
     override fun viewCreated() {
         profileVm = viewModelProvider(viewModelFactory)
@@ -64,11 +71,11 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
     private fun FragmentProfileBinding.initView() {
         clicks(fabUpload) {
             val action = ProfileFragmentDirections.actionProfileFragmentToUploadFoodFragment()
-            profileVm.setNavigate(action)
+            navigationVm.setNavigationDirection(action)
         }
         clicks(relativeLayout2){
             val action = ProfileFragmentDirections.actionProfileFragmentToFavoriteFragment()
-            profileVm.setNavigate(action)
+            navigationVm.setNavigationDirection(action)
         }
         clicks(rlSignIn) {
             fireSignIn()
@@ -144,8 +151,10 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
     }
 
     private fun obvserveNavigation() {
-        observeEvent(profileVm.navigateEvent) {
-            navigate(it)
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            navigationVm.navigationFlow.onEach {
+                navigate(it)
+            }.launchIn(this)
         }
     }
 

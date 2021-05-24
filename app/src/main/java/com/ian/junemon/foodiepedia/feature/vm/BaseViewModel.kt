@@ -37,14 +37,6 @@ abstract class BaseViewModel: ViewModel() {
         get() = _loadingState
 
 
-    private val _navigateEvent: MutableLiveData<Event<NavDirections>> = MutableLiveData()
-    val navigateEvent: LiveData<Event<NavDirections>> = _navigateEvent
-
-
-    fun setNavigate(direction: NavDirections){
-        _navigateEvent.value = Event(direction)
-    }
-
     fun setupLoadingState(data:Boolean){
         _loadingState.value = data
     }

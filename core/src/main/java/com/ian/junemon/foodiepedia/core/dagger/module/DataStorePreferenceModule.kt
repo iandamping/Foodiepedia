@@ -1,9 +1,8 @@
 package com.ian.junemon.foodiepedia.core.dagger.module
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.datastore.preferences.SharedPreferencesMigration
-import androidx.datastore.preferences.createDataStore
+import androidx.datastore.preferences.preferencesDataStore
 import com.ian.junemon.foodiepedia.core.util.DataConstant
 import dagger.Module
 import dagger.Provides
@@ -17,12 +16,16 @@ import javax.inject.Singleton
 @Module
 object DataStorePreferenceModule {
 
-    @Provides
-    @Singleton
-    fun provideSharedPreference(context: Context) = context.createDataStore(
+    private val Context.dataStore by preferencesDataStore(
         name = DataConstant.prefHelperInit,
         // Since we're migrating from SharedPreferences, add a migration based on the
         // SharedPreferences name
-        migrations = listOf(SharedPreferencesMigration(context, DataConstant.prefHelperInit))
+        produceMigrations = { contexts ->
+            listOf(SharedPreferencesMigration(contexts, DataConstant.prefHelperInit))
+        }
     )
+
+    @Provides
+    @Singleton
+    fun provideSharedPreference(context: Context) = context.dataStore
 }

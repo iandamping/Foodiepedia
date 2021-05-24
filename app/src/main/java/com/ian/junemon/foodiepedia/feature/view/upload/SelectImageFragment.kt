@@ -6,14 +6,18 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.CameraXFileDirectory
 import com.ian.junemon.foodiepedia.databinding.FragmentSelectImageBinding
+import com.ian.junemon.foodiepedia.feature.vm.NavigationViewModel
 import com.ian.junemon.foodiepedia.feature.vm.SharedViewModel
 import com.ian.junemon.foodiepedia.util.clicks
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.util.observeEvent
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.io.File
 import javax.inject.Inject
 
@@ -32,6 +36,7 @@ class SelectImageFragment : BaseFragmentViewBinding<FragmentSelectImageBinding>(
     lateinit var loadingImageHelper: LoadImageHelper
 
     private val sharedVm: SharedViewModel by activityViewModels()
+    private val navigationVm: NavigationViewModel by activityViewModels()
 
     override fun viewCreated() {
         with(binding) {
@@ -47,7 +52,7 @@ class SelectImageFragment : BaseFragmentViewBinding<FragmentSelectImageBinding>(
                 sharedVm.setPassedUri(savedUri.toString())
 
                 val action =SelectImageFragmentDirections.actionSelectImageFragmentToUploadFoodFragment()
-                sharedVm.setNavigate(action)
+                navigationVm.setNavigationDirection(action)
             }
             clicks(ivImageDelete) {
                 imageFile.delete()
@@ -64,8 +69,10 @@ class SelectImageFragment : BaseFragmentViewBinding<FragmentSelectImageBinding>(
     }
 
     private fun observeNavigation() {
-        observeEvent(sharedVm.navigateEvent) {
-            navigate(it)
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            navigationVm.navigationFlow.onEach {
+                navigate(it)
+            }.launchIn(this)
         }
     }
 

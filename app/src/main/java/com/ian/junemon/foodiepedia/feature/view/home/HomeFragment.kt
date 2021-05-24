@@ -3,7 +3,9 @@ package com.ian.junemon.foodiepedia.feature.view.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.R
@@ -17,6 +19,7 @@ import com.ian.junemon.foodiepedia.core.util.DataConstant.noFilterValue
 import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
 import com.ian.junemon.foodiepedia.databinding.FragmentHomeBinding
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
+import com.ian.junemon.foodiepedia.feature.vm.NavigationViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.ian.junemon.foodiepedia.model.DataEvent
 import com.ian.junemon.foodiepedia.util.clicks
@@ -26,6 +29,8 @@ import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.util.observe
 import com.ian.junemon.foodiepedia.util.observeEvent
 import com.ian.junemon.foodiepedia.util.shimmerHandler
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 /**
@@ -39,6 +44,7 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var foodVm: FoodViewModel
     private lateinit var profileVm: ProfileViewModel
+    private val navigationVm: NavigationViewModel by activityViewModels()
 
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
@@ -81,8 +87,10 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
     }
 
     private fun obvserveNavigation() {
-        observeEvent(foodVm.navigateEvent) {
-            navigate(it)
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            navigationVm.navigationFlow.onEach {
+                navigate(it)
+            }.launchIn(this)
         }
     }
 
@@ -101,12 +109,12 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
 
         clicks(ivPhotoProfile) {
             val action = HomeFragmentDirections.actionHomeFragmentToProfileFragment()
-            foodVm.setNavigate(action)
+            navigationVm.setNavigationDirection(action)
 
         }
         clicks(rlSearch) {
             val action = HomeFragmentDirections.actionHomeFragmentToSearchFragment()
-            foodVm.setNavigate(action)
+            navigationVm.setNavigationDirection(action)
         }
         with(loadImageHelper) {
             ivNoData.loadWithGlide(getDrawables(R.drawable.no_data))
@@ -206,6 +214,6 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
         val direction = HomeFragmentDirections.actionHomeFragmentToDetailFragment(
             data
         )
-        foodVm.setNavigate(direction)
+        navigationVm.setNavigationDirection(direction)
     }
 }

@@ -27,8 +27,8 @@ import javax.inject.Inject
  * Indonesia.
  */
 class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : BaseViewModel() {
-    private val _searchItem: MutableLiveData<MutableList<FoodCachePresentation>> = MutableLiveData()
-    val searchItem: LiveData<MutableList<FoodCachePresentation>> = _searchItem
+    private val _searchItem: MutableLiveData<List<FoodCachePresentation>> = MutableLiveData()
+    val searchItem: LiveData<List<FoodCachePresentation>> = _searchItem
 
     private val _foodData: MutableLiveData<FoodRemoteDomain> = MutableLiveData()
     val foodData: LiveData<FoodRemoteDomain> = _foodData
@@ -65,7 +65,7 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         _foodImageUri.value = uri
     }
 
-    fun setSearchItem(data: MutableList<FoodCachePresentation>) {
+    fun setSearchItem(data: List<FoodCachePresentation>) {
         this._searchItem.value = data
     }
 

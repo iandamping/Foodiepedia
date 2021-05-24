@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
@@ -14,11 +16,14 @@ import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
 import com.ian.junemon.foodiepedia.databinding.FragmentSearchBinding
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
+import com.ian.junemon.foodiepedia.feature.vm.NavigationViewModel
 import com.ian.junemon.foodiepedia.util.gridRecyclerviewInitializer
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.util.observe
 import com.ian.junemon.foodiepedia.util.observeEvent
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 /**
@@ -44,7 +49,7 @@ class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var foodVm: FoodViewModel
 
-    private var data: List<FoodCachePresentation> = mutableListOf()
+    private val navigationVm: NavigationViewModel by activityViewModels()
 
     override fun viewCreated() {
         foodVm = viewModelProvider(viewModelFactory)
@@ -69,11 +74,9 @@ class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),
         foodVm.getCache().observe(viewLifecycleOwner, { results ->
             when (results) {
                 is Results.Success -> {
-                    data = results.data.map { it.mapToCachePresentation() }
-                    foodVm.setSearchItem(data = data.toMutableList())
+                    searchAdapter.submitList(results.data.map { it.mapToCachePresentation() })
                 }
                 is Results.Error -> {
-                    foodVm.setupLoadingState(true)
                     foodVm.setupSnackbarMessage(results.exception.message)
                 }
             }
@@ -97,29 +100,43 @@ class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                searchPlace(newText)
+                if (!newText.isNullOrEmpty()) {
+                    searchFood(newText)
+                }
                 return false
+
             }
         })
     }
 
     @SuppressLint("DefaultLocale")
-    private fun searchPlace(s: String?) {
-        ilegallStateCatching {
-            val tempListData: MutableList<FoodCachePresentation> = mutableListOf()
-            check(data.isNotEmpty())
-            data.forEach {
-                if (s?.toLowerCase()?.let { it1 -> it.foodName?.toLowerCase()?.contains(it1) }!!) {
-                    tempListData.add(it)
+    private fun searchFood(s: String?) {
+        foodVm.getCache().observe(viewLifecycleOwner,{ result ->
+            when (result) {
+                is Results.Success -> {
+                    foodVm.setSearchItem(result.data.mapToCachePresentation().filter {
+                        it.foodName?.toLowerCase()?.contains(s.toString())!!
+                    })
+                }
+                is Results.Error -> {
+                    foodVm.setupSnackbarMessage(result.exception.message)
                 }
             }
-            foodVm.setSearchItem(tempListData)
-            if (tempListData.isEmpty()) {
+        })
+    }
+
+    private fun initData() {
+        observe(foodVm.searchItem) { data ->
+            if (data.isEmpty()){
                 with(viewHelper) {
                     binding.lnSearchFailed.visible()
                     binding.rvSearchPlace.gone()
                 }
-            } else {
+            }else {
+                with(searchAdapter) {
+                    submitList(data)
+                    notifyDataSetChanged()
+                }
                 with(viewHelper) {
                     binding.lnSearchFailed.gone()
                     binding.rvSearchPlace.visible()
@@ -128,15 +145,11 @@ class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),
         }
     }
 
-    private fun initData() {
-        observe(foodVm.searchItem) { data ->
-            searchAdapter.submitList(data)
-        }
-    }
-
     private fun obvserveNavigation() {
-        observeEvent(foodVm.navigateEvent) {
-            navigate(it)
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            navigationVm.navigationFlow.onEach {
+                navigate(it)
+            }.launchIn(this)
         }
     }
 
@@ -145,6 +158,6 @@ class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),
 
     override fun onClicked(data: FoodCachePresentation) {
         val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(data)
-        foodVm.setNavigate(action)
+        navigationVm.setNavigationDirection(action)
     }
 }

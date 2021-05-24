@@ -19,7 +19,8 @@ buildscript {
         legacySupport = "1.0.0"
         fragment_version = '1.2.5'
         activity_version = '1.1.0'
-        dagger_version = '2.32'
+        dagger_version = '2.35.1'
+        hilt_version = '2.35'
         timberVersion = '4.7.1'
         koin_version = '2.1.6'
         glide_version ='4.10.0'
@@ -66,6 +67,7 @@ buildscript {
     dependencies {
         classpath 'com.google.gms:google-services:4.3.1'
         classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVer"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong

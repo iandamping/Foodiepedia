@@ -1,6 +1,6 @@
 package com.ian.junemon.foodiepedia.core.util
 
-import androidx.datastore.preferences.core.preferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 
 /**
  * Created by Ian Damping on 03,January,2021
@@ -22,7 +22,7 @@ object DataConstant {
     const val prefHelperInit = " init preference helper"
     const val DATABASE_NAME = "foodiepedia.db"
 
-    val FILTER_KEY = preferencesKey<String>(filterKey)
+    val FILTER_KEY = stringPreferencesKey(filterKey)
     // val BREAKFAST_KEY = preferencesKey<String>(filterValueBreakfast)
     // val LUNCH_KEY = preferencesKey<String>(filterValueLunch)
     // val DINNER_KEY = preferencesKey<String>(filterValueDinner)
