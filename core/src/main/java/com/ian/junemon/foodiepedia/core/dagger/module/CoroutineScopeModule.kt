@@ -1,6 +1,5 @@
 package com.ian.junemon.foodiepedia.core.dagger.module
 
-import com.ian.junemon.foodiepedia.core.dagger.qualifier.ApplicationScope
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.DefaultDispatcher
 import dagger.Module
 import dagger.Provides
@@ -17,7 +16,6 @@ import javax.inject.Singleton
 @Module
 object CoroutineScopeModule {
 
-    @ApplicationScope
     @Singleton
     @Provides
     fun providesApplicationScope(

@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.StorageReference
 import com.ian.junemon.foodiepedia.core.R
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.CameraxPhotoFile
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.DefaultCameraFileDirectory
 import com.ian.junemon.foodiepedia.util.interfaces.ImageUtilHelper
 import com.ian.junemon.foodiepedia.core.util.DataConstant.RequestOpenCamera
@@ -45,7 +46,7 @@ import javax.inject.Inject
  * Indonesia.
  */
 class ImageUtilImpl @Inject constructor(
-    @DefaultCameraFileDirectory private val foodiePediaFile:File,
+    @CameraxPhotoFile private val foodiePediaFile:File,
     private val storagePlaceReference: StorageReference,
     private val ctx: Context
 ) :
@@ -280,7 +281,6 @@ class ImageUtilImpl @Inject constructor(
         val pictureUri: Uri = FileProvider.getUriForFile(
             ctx,
             ctx.getString(R.string.package_name),
-            // createImageFileFromPhoto()
         foodiePediaFile
         )
         Timber.e("uri :$pictureUri")
@@ -289,29 +289,6 @@ class ImageUtilImpl @Inject constructor(
         intents.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         launcer.launch(intents)
 
-
-        // Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-        //     // Ensure that there's a camera activity to handle the intent
-        //     takePictureIntent.resolveActivity(ctx.packageManager)?.also {
-        //         // Create the File where the photo should go
-        //         val photoFile: File? = try {
-        //             foodiePediaFile
-        //         } catch (ex: IOException) {
-        //             // Error occurred while creating the File
-        //             null
-        //         }
-        //         // Continue only if the File was successfully created
-        //         photoFile?.also {
-        //             val photoURI: Uri = FileProvider.getUriForFile(
-        //                 ctx,
-        //                 ctx.getString(R.string.package_name),
-        //                 it
-        //             )
-        //             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-        //             launcer.launch(takePictureIntent)
-        //         }
-        //     }
-        // }
 
     }
 

@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.CameraXFileDirectory
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.CameraxPhotoFile
 import com.ian.junemon.foodiepedia.databinding.FragmentSelectImageBinding
 import com.ian.junemon.foodiepedia.feature.vm.NavigationViewModel
 import com.ian.junemon.foodiepedia.feature.vm.SharedViewModel
@@ -29,8 +30,8 @@ import javax.inject.Inject
 class SelectImageFragment : BaseFragmentViewBinding<FragmentSelectImageBinding>() {
 
     @Inject
-    @CameraXFileDirectory
-    lateinit var cameraXDirectory: File
+    @CameraxPhotoFile
+    lateinit var photoFile: File
 
     @Inject
     lateinit var loadingImageHelper: LoadImageHelper
@@ -40,10 +41,10 @@ class SelectImageFragment : BaseFragmentViewBinding<FragmentSelectImageBinding>(
 
     override fun viewCreated() {
         with(binding) {
-            val savedUri = Uri.fromFile(cameraXDirectory)
+            val savedUri = Uri.fromFile(photoFile)
 
-            val imageFile: File = File(cameraXDirectory.absolutePath)
-            val bitmap = BitmapFactory.decodeFile(cameraXDirectory.absolutePath)
+            val imageFile: File = File(photoFile.absolutePath)
+            val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
 
             with(loadingImageHelper){
                 ivImage.loadWithGlide(bitmap)
@@ -57,7 +58,7 @@ class SelectImageFragment : BaseFragmentViewBinding<FragmentSelectImageBinding>(
             clicks(ivImageDelete) {
                 imageFile.delete()
                 MediaScannerConnection.scanFile(
-                    requireContext(), arrayOf(cameraXDirectory.absolutePath), null, null
+                    requireContext(), arrayOf(photoFile.absolutePath), null, null
                 )
                 navigateUp()
             }

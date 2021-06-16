@@ -87,12 +87,4 @@ dependencies {
     implementation "me.relex:circleindicator:1.2.2@aar"
     implementation "com.facebook.shimmer:shimmer:$shimmerVer"
     implementation 'com.mikhaellopez:circularimageview:4.1.0'
-
-    // CameraX core library using camera2 implementation
-    implementation "androidx.camera:camera-camera2:$camerax_version"
-    // CameraX Lifecycle Library
-    implementation "androidx.camera:camera-lifecycle:$camerax_version"
-    // CameraX View class
-    implementation "androidx.camera:camera-view:1.0.0-alpha13"
-
 }

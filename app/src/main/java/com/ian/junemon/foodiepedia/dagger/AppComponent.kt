@@ -8,13 +8,16 @@ import com.ian.junemon.foodiepedia.core.dagger.module.DataModule
 import com.ian.junemon.foodiepedia.core.dagger.module.DomainModule
 import com.ian.junemon.foodiepedia.dagger.module.PresentationModule
 import com.ian.junemon.foodiepedia.core.dagger.factory.ViewModelModule
+import com.ian.junemon.foodiepedia.core.dagger.module.CameraxConstructorModule
+import com.ian.junemon.foodiepedia.core.dagger.module.CameraxFileModule
+import com.ian.junemon.foodiepedia.core.dagger.module.CameraxListenerModule
+import com.ian.junemon.foodiepedia.core.dagger.module.CameraxModule
 import com.ian.junemon.foodiepedia.core.dagger.module.CoroutineScopeModule
 import com.ian.junemon.foodiepedia.core.dagger.module.DataStorePreferenceHelperModule
 import com.ian.junemon.foodiepedia.core.dagger.module.RemoteModule
 import com.ian.junemon.foodiepedia.core.dagger.module.DataStorePreferenceModule
 import com.ian.junemon.foodiepedia.dagger.module.ActivityBindingModule
 import com.ian.junemon.foodiepedia.dagger.module.AppModule
-import com.ian.junemon.foodiepedia.dagger.module.CameraXModule
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -35,7 +38,10 @@ import javax.inject.Singleton
         DomainModule::class,
         RemoteModule::class,
         PresentationModule::class,
-        CameraXModule::class,
+        CameraxConstructorModule::class,
+        CameraxFileModule::class,
+        CameraxListenerModule::class,
+        CameraxModule::class,
         GlideModule::class]
 )
 interface AppComponent : AndroidInjector<FoodApp> {

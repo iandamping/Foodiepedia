@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">core</string>
+    <string name="app_name">FoodiePedia</string>
     <string name="package_name">com.ian.junemon.foodiepedia.provider</string>
     <string name="package_name_uploader">com.ian.junemon.foodiepedia.uploader.provider</string>
     <string name="please_wait">Please wait a bit…</string>

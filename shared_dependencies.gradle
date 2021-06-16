@@ -29,6 +29,12 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$dagger_version"
     kapt 'com.google.dagger:dagger-android-processor:2.28.3'
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    // CameraX core library using camera2 implementation
+    implementation "androidx.camera:camera-camera2:$camerax_version"
+    // CameraX Lifecycle Library
+    implementation "androidx.camera:camera-lifecycle:$camerax_version"
+    // CameraX View class
+    implementation "androidx.camera:camera-view:1.0.0-alpha25"
     //custom linearlayout
     implementation 'com.github.DingMouRen:LayoutManagerGroup:1e6f4f96eb'
     implementation "com.google.code.gson:gson:$gson_version"
