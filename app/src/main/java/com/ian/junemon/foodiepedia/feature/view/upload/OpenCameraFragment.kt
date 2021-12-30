@@ -51,7 +51,6 @@ class OpenCameraFragment : BaseFragmentViewBinding<FragmentOpenCameraBinding>() 
 
     override fun activityCreated() {
         bindCameraUseCases()
-        observeNavigation()
         observeTakePhotoResult()
     }
 
@@ -87,18 +86,10 @@ class OpenCameraFragment : BaseFragmentViewBinding<FragmentOpenCameraBinding>() 
                     ImageCaptureState.Success -> {
                         val action = OpenCameraFragmentDirections
                             .actionOpenCameraFragmentToSelectImageFragment()
-                        navigationVm.setNavigationDirection(action)
+                        navigate(action)
 
                     }
                 }
-            }.launchIn(this)
-        }
-    }
-
-    private fun observeNavigation() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            navigationVm.navigationFlow.onEach {
-                navigate(it)
             }.launchIn(this)
         }
     }

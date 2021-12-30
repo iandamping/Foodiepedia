@@ -50,9 +50,8 @@ class FoodCacheDataSourceImpl @Inject constructor(
     }
 
     override suspend fun setCache(vararg data: FoodCacheDomain) {
-        foodDao.deleteAllFood().let {
-            foodDao.saveFood(*data.map { it.mapToDatabase() }.toTypedArray())
-        }
+        foodDao.deleteAllFood()
+        foodDao.saveFood(*data.map { it.mapToDatabase() }.toTypedArray())
     }
 
     override suspend fun setCacheDetailFood(vararg data: SavedFoodCacheDomain) {

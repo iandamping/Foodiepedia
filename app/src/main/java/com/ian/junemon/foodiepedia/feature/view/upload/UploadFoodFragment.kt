@@ -9,20 +9,18 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.asLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.base.BaseFragmentDataBinding
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
 import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
-import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
 import com.ian.junemon.foodiepedia.core.util.DataConstant.RequestOpenCamera
 import com.ian.junemon.foodiepedia.core.util.DataConstant.RequestSelectGalleryImage
 import com.ian.junemon.foodiepedia.databinding.FragmentUploadBinding
@@ -40,9 +38,6 @@ import com.ian.junemon.foodiepedia.util.interfaces.PermissionHelper
 import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.util.observe
 import com.ian.junemon.foodiepedia.util.observeEvent
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -111,15 +106,14 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
             rlUploadImage.animation = animationSlidDown
             llInsertData.animation = animationSlideUp
         }
+        observeUiState()
     }
 
     override fun activityCreated() {
         observerUri()
         consumeViewModelData()
-        consumeProfileData()
         observeViewModelData()
         observeViewEffect()
-        obvserveNavigation()
         consumeSharedUri()
 
         // Create this as a variable in your Fragment class
@@ -167,7 +161,7 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
                                 clearUri()
                                 val action =
                                     UploadFoodFragmentDirections.actionUploadFoodFragmentToProfileFragment()
-                                navigationVm.setNavigationDirection(action)
+                                navigate(action)
                             }
                             is FirebaseResult.ErrorPush -> {
                                 setDialogShow(true)
@@ -202,7 +196,7 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
                         if (requestCameraPermissionsGranted()) {
                             val action =
                                 UploadFoodFragmentDirections.actionUploadFoodFragmentToOpenCameraFragment()
-                            navigationVm.setNavigationDirection(action)
+                            navigate(action)
                         } else {
                             with(permissionHelper) {
                                 requestingPermission(
@@ -248,10 +242,12 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
         }
     }
 
-    private fun consumeProfileData() {
-        observe(profileVm.getUserProfile()) {
-            if (it is ProfileResults.Success) {
-                remoteFoodUpload.foodContributor = it.data.getDisplayName()
+    private fun observeUiState() {
+        profileVm.userData.asLiveData().observe(viewLifecycleOwner){
+            when{
+                it.user != null ->{
+                    remoteFoodUpload.foodContributor = it.user.getDisplayName()
+                }
             }
         }
     }
@@ -300,7 +296,7 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
                 {
                     val action =
                         UploadFoodFragmentDirections.actionUploadFoodFragmentToOpenCameraFragment()
-                    navigationVm.setNavigationDirection(action)
+                    navigate(action)
                 },
                 {
                     foodVm.setupSnackbarMessage(getString(R.string.permission_not_granted))
@@ -327,14 +323,6 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
                 Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
                 foodVm.onSnackbarShown()
             }
-        }
-    }
-
-    private fun obvserveNavigation() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            navigationVm.navigationFlow.onEach {
-                navigate(it)
-            }.launchIn(this)
         }
     }
 

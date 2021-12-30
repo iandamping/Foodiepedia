@@ -10,15 +10,11 @@ import com.ian.junemon.foodiepedia.core.data.datasource.cache.model.SavedFood
 import com.ian.junemon.foodiepedia.core.data.datasource.cache.model.UserProfile
 import com.ian.junemon.foodiepedia.core.data.model.FoodEntity
 import com.ian.junemon.foodiepedia.core.data.model.UserProfileEntity
-import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
-import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
-import com.ian.junemon.foodiepedia.core.domain.model.PushFirebase
-import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
-import com.ian.junemon.foodiepedia.core.domain.model.UserProfileDataModel
+import com.ian.junemon.foodiepedia.core.domain.model.*
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.channelFlow
@@ -38,13 +34,14 @@ fun Job?.cancelIfActive() {
     }
 }
 
-suspend fun DatabaseReference.valueEventFlow(): Flow<PushFirebase> = callbackFlow {
+fun DatabaseReference.valueEventFlow(): Flow<PushFirebase> = callbackFlow {
+
     val valueEventListener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot): Unit =
-            sendBlocking(PushFirebase.Changed(snapshot))
+            trySendBlocking(PushFirebase.Changed(snapshot)).getOrThrow()
 
         override fun onCancelled(error: DatabaseError): Unit =
-            sendBlocking(PushFirebase.Cancelled(error))
+            trySendBlocking(PushFirebase.Cancelled(error)).getOrThrow()
     }
     addValueEventListener(valueEventListener)
     awaitClose {
@@ -69,9 +66,10 @@ suspend fun DatabaseReference.singleValueEvent(): PushFirebase =
 
 fun FirebaseAuth.valueEventProfileFlow(): Flow<FirebaseAuth> = channelFlow {
     val profileListener = FirebaseAuth.AuthStateListener {
-        channel.offer(it)
+        channel.trySend(it).isSuccess
     }
     addAuthStateListener(profileListener)
+
     awaitClose {
         removeAuthStateListener(profileListener)
     }
@@ -196,4 +194,5 @@ fun SavedFoodCacheDomain.mapFavToCachePresentation(): FoodCachePresentation =
         foodDescription
     )
 
-fun List<SavedFoodCacheDomain>.mapListFavToCachePresentation(): List<FoodCachePresentation> = map { it.mapFavToCachePresentation() }
+fun List<SavedFoodCacheDomain>.mapListFavToCachePresentation(): List<FoodCachePresentation> =
+    map { it.mapFavToCachePresentation() }

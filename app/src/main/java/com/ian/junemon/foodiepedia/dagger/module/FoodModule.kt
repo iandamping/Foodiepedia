@@ -17,6 +17,7 @@ import com.ian.junemon.foodiepedia.feature.view.upload.OpenCameraFragment
 import com.ian.junemon.foodiepedia.feature.view.upload.SelectImageFragment
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
+import com.ian.junemon.foodiepedia.feature.vm.SearchFoodViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -69,10 +70,15 @@ abstract class FoodModule {
     @Binds
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)
-    abstract fun bindProfileViewModel(gameViewModel: ProfileViewModel): ViewModel
+    abstract fun bindProfileViewModel(vm: ProfileViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(FoodViewModel::class)
-    abstract fun bindFoodViewModel(gameViewModel: FoodViewModel): ViewModel
+    abstract fun bindFoodViewModel(vm: FoodViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SearchFoodViewModel::class)
+    abstract fun bindSearchFoodViewModel(vm: SearchFoodViewModel): ViewModel
 }

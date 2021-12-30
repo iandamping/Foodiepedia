@@ -11,6 +11,7 @@ object DataConstant {
     const val ERROR_EMPTY_DATA = "Empty Data"
     const val RequestSelectGalleryImage = 102
     const val RequestOpenCamera = 234
+    const val APPLICATION_ERROR = "Application encounter unknown error"
 
     const val filterKey = "filter key"
     const val noFilterValue = "Unfiltered"

@@ -14,12 +14,12 @@ import kotlinx.coroutines.launch
  */
 class NavigationViewModel:ViewModel() {
 
-    private val _setNavigationChannel = Channel<NavDirections>(Channel.CONFLATED)
-    val navigationFlow = _setNavigationChannel.receiveAsFlow()
+//    private val _setNavigationChannel = Channel<NavDirections>(Channel.CONFLATED)
+//    val navigationFlow = _setNavigationChannel.receiveAsFlow()
 
-    fun setNavigationDirection(directions: NavDirections) {
-        viewModelScope.launch {
-            _setNavigationChannel.send(directions)
-        }
-    }
+//    fun setNavigationDirection(directions: NavDirections) {
+//        viewModelScope.launch {
+//            _setNavigationChannel.send(directions)
+//        }
+//    }
 }

@@ -6,19 +6,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
 import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
+import com.ian.junemon.foodiepedia.core.domain.model.RepositoryData
 import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
-import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
-import com.ian.junemon.foodiepedia.core.domain.model.Prefetch
-import com.ian.junemon.foodiepedia.core.domain.model.Results
 import com.ian.junemon.foodiepedia.core.util.DataConstant.noFilterValue
-import com.ian.junemon.foodiepedia.model.DataEvent
-import com.ian.junemon.foodiepedia.model.Event
-import kotlinx.coroutines.flow.flatMapLatest
+import com.ian.junemon.foodiepedia.feature.event.CategorizeFoodUiState
+import com.ian.junemon.foodiepedia.feature.event.FoodUiState
+import com.ian.junemon.foodiepedia.feature.event.SavedFoodUiState
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -27,6 +28,13 @@ import javax.inject.Inject
  * Indonesia.
  */
 class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : BaseViewModel() {
+    private val _foodCache = MutableStateFlow(FoodUiState.initial())
+    val foodCache = _foodCache.asStateFlow()
+
+
+    private val _savedFood = MutableStateFlow(SavedFoodUiState.initial())
+    val savedFood = _savedFood.asStateFlow()
+
     private val _searchItem: MutableLiveData<List<FoodCachePresentation>> = MutableLiveData()
     val searchItem: LiveData<List<FoodCachePresentation>> = _searchItem
 
@@ -35,9 +43,6 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
 
     private val _foodImageUri: MutableLiveData<Uri> = MutableLiveData()
     val foodImageUri: LiveData<Uri> = _foodImageUri
-
-    private val _dataEvent: MutableLiveData<Event<DataEvent>> = MutableLiveData()
-    val dataEvent: LiveData<Event<DataEvent>> = _dataEvent
 
     val etFoodName: MutableLiveData<String> = MutableLiveData()
     val etFoodArea: MutableLiveData<String> = MutableLiveData()
@@ -53,9 +58,19 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         })
     }
 
-    fun setDataEvent(data:DataEvent){
-        _dataEvent.value = Event(data)
+    init {
+        consumeSuspend {
+            repository.prefetchData().collect { result ->
+                when (result) {
+                    is RepositoryData.Error -> Timber.e("error : ${result.msg}")
+                    is RepositoryData.Success -> repository.setCache(*result.data.toTypedArray())
+
+                }
+
+            }
+        }
     }
+
 
     fun setFood(data: FoodRemoteDomain) {
         _foodData.value = data
@@ -65,9 +80,6 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         _foodImageUri.value = uri
     }
 
-    fun setSearchItem(data: List<FoodCachePresentation>) {
-        this._searchItem.value = data
-    }
 
     fun setCacheDetailFood(data: SavedFoodCacheDomain) {
         viewModelScope.launch {
@@ -75,7 +87,20 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         }
     }
 
-    fun getSavedDetailCache() = repository.getSavedDetailCache().asLiveData(viewModelScope.coroutineContext)
+    fun getSavedDetailCache() {
+        viewModelScope.launch {
+            repository.getSavedDetailCache().collect { result ->
+                when (result) {
+                    is RepositoryData.Error -> _savedFood.update { currentUiState ->
+                        currentUiState.copy(data = emptyList(), errorMessage = result.msg)
+                    }
+                    is RepositoryData.Success -> _savedFood.update { currentUiState ->
+                        currentUiState.copy(data = result.data, errorMessage = "")
+                    }
+                }
+            }
+        }
+    }
 
     fun deleteSelectedId(selectedId: Int) {
         viewModelScope.launch {
@@ -83,21 +108,34 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
         }
     }
 
-    fun getFood() = repository.loadSharedPreferenceFilter().flatMapLatest {
-        if (it.isEmpty()){
-            repository.getCache()
-        } else{
-            if (it == noFilterValue){
-                repository.getCache()
-            }else {
-                repository.getCategorizeCache(it)
+    fun getFood() {
+        viewModelScope.launch {
+            repository.loadSharedPreferenceFilter().flatMapLatest {
+                when{
+                    it.isEmpty() -> repository.getCache()
+                    it == noFilterValue -> repository.getCache()
+                    else -> repository.getCategorizeCache(it)
+                }
+            }.debounce(100).collect { result ->
+                when (result) {
+                    is RepositoryData.Error -> _foodCache.update { currentUiState ->
+                        currentUiState.copy(
+                            data = emptyList(),
+                            errorMessage = result.msg,
+                            isLoading = false
+                        )
+                    }
+                    is RepositoryData.Success -> _foodCache.update { currentUiState ->
+                        currentUiState.copy(
+                            data = result.data,
+                            errorMessage = "",
+                            isLoading = false
+                        )
+                    }
+                }
             }
         }
-    }.asLiveData(viewModelScope.coroutineContext)
-
-    fun getPrefetch(): LiveData<Prefetch> = repository.prefetchData().asLiveData(viewModelScope.coroutineContext)
-
-    fun getCache(): LiveData<Results<List<FoodCacheDomain>>> = repository.getCache().asLiveData(viewModelScope.coroutineContext)
+    }
 
 
     fun uploadFirebaseData(

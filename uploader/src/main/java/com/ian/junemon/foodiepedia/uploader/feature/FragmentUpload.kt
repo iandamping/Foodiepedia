@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -110,6 +111,8 @@ class FragmentUpload : BaseFragment() {
             rlUploadImage.animation = animationSlidDown
             llInsertData.animation = animationSlideUp
         }
+        consumeProfileData()
+
     }
 
     override fun destroyView() {
@@ -119,7 +122,6 @@ class FragmentUpload : BaseFragment() {
     override fun activityCreated() {
         observerUri()
         consumeViewModelData()
-        consumeProfileData()
         observeViewModelData()
     }
 
@@ -256,19 +258,19 @@ class FragmentUpload : BaseFragment() {
     }
 
     private fun consumeProfileData() {
-        profileVm.getUserProfile().observe(viewLifecycleOwner, {
-            if (it is ProfileResults.Success) {
-                isUserAlreadyLogin = true
-                binding.ivPhotoProfile.visibility = View.VISIBLE
-                remoteFoodUpload.foodContributor = it.data.getDisplayName()
-                loadingImageHelper.run {
-                    binding.ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
+        profileVm.userData.asLiveData().observe(viewLifecycleOwner){
+            when{
+                it.errorMessage.isNotEmpty() -> isUserAlreadyLogin = false
+                it.user !=null -> {
+                    isUserAlreadyLogin = true
+                    binding.ivPhotoProfile.visibility = View.VISIBLE
+                    remoteFoodUpload.foodContributor = it.user.getDisplayName()
+                    loadingImageHelper.run {
+                        binding.ivPhotoProfile.loadWithGlide(it.user.getPhotoUrl())
+                    }
                 }
-            } else{
-                isUserAlreadyLogin = false
-
             }
-        })
+        }
     }
 
     private fun observerUri() {

@@ -112,7 +112,7 @@ fun Fragment.clicks(view: View, duration: Long = 300, isUsingThrottle:Boolean = 
 @ExperimentalCoroutinesApi
 private fun View.clickListener(): Flow<Unit> = callbackFlow {
     setOnClickListener {
-        offer(Unit)
+        trySend(Unit).isSuccess
     }
     awaitClose { this@clickListener.setOnClickListener(null) }
 }

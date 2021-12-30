@@ -8,14 +8,9 @@ import com.ian.junemon.foodiepedia.core.dagger.qualifier.DefaultDispatcher
 import com.ian.junemon.foodiepedia.core.data.NetworkBoundResource
 import com.ian.junemon.foodiepedia.core.data.datasource.cache.FoodCacheDataSource
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.FoodRemoteDataSource
+import com.ian.junemon.foodiepedia.core.domain.model.*
 import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
-import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
-import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
-import com.ian.junemon.foodiepedia.core.domain.model.Results
-import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
-import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
-import com.ian.junemon.foodiepedia.core.domain.model.Prefetch
-import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
+import com.ian.junemon.foodiepedia.core.util.DataConstant.APPLICATION_ERROR
 import com.ian.junemon.foodiepedia.core.util.DataConstant.ERROR_EMPTY_DATA
 import com.ian.junemon.foodiepedia.core.util.mapRemoteToCacheDomain
 import kotlinx.coroutines.CoroutineDispatcher
@@ -50,55 +45,51 @@ class FoodRepositoryImpl @Inject constructor(
         return this.mapRemoteToCacheDomain()
     }
 
-    override fun prefetchData(): Flow<Prefetch> {
-        return flow {
-            remoteDataSource.getFirebaseData().collect {  responseStatus ->
-                when(responseStatus){
-                    is DataSourceHelper.DataSourceError ->{
-                        emit(Prefetch.FailedPrefetch(responseStatus.exception))
-                    }
-                    is DataSourceHelper.DataSourceValue ->{
-                        cacheDataSource.setCache(*responseStatus.data.applyMainSafeSort().toTypedArray())
-                        emit(Prefetch.SuccessPrefetch)
-                    }
+    override fun prefetchData(): Flow<RepositoryData<List<FoodCacheDomain>>> {
+        return remoteDataSource.getFirebaseData().map {  responseStatus ->
+            when(responseStatus){
+                is DataSourceHelper.DataSourceError ->{
+                    RepositoryData.Error(responseStatus.exception.localizedMessage ?: APPLICATION_ERROR)
+                }
+                is DataSourceHelper.DataSourceValue ->{
+                    RepositoryData.Success(responseStatus.data.applyMainSafeSort())
                 }
             }
-
         }
     }
 
-    override fun getCache(): Flow<Results<List<FoodCacheDomain>>> {
+    override fun getCache(): Flow<RepositoryData<List<FoodCacheDomain>>> {
         return cacheDataSource.getCache().map {
             if (it.isEmpty()){
-                Results.Error(Exception(ERROR_EMPTY_DATA))
+                RepositoryData.Error(ERROR_EMPTY_DATA)
             } else {
-                Results.Success(it)
+                RepositoryData.Success(it)
             }
 
         }
     }
 
-    override fun getCategorizeCache(foodCategory: String): Flow<Results<List<FoodCacheDomain>>> {
+    override fun getCategorizeCache(foodCategory: String): Flow<RepositoryData<List<FoodCacheDomain>>> {
         return cacheDataSource.getCategorizeCache(foodCategory).map {
             when(it){
                 is DataSourceHelper.DataSourceError ->{
-                    Results.Error(it.exception)
+                    RepositoryData.Error(it.exception.localizedMessage ?: APPLICATION_ERROR)
                 }
                 is DataSourceHelper.DataSourceValue ->{
-                    Results.Success(it.data)
+                    RepositoryData.Success(it.data)
                 }
             }
         }
     }
 
-    override fun getSavedDetailCache(): Flow<Results<List<SavedFoodCacheDomain>>> {
+    override fun getSavedDetailCache(): Flow<RepositoryData<List<SavedFoodCacheDomain>>> {
         return cacheDataSource.getSavedDetailCache().map {
             when (it) {
                 is DataSourceHelper.DataSourceValue -> {
-                    Results.Success(it.data)
+                    RepositoryData.Success(it.data)
                 }
                 is DataSourceHelper.DataSourceError -> {
-                    Results.Error(it.exception)
+                    RepositoryData.Error(it.exception.localizedMessage ?: APPLICATION_ERROR)
                 }
             }
         }
@@ -115,6 +106,10 @@ class FoodRepositoryImpl @Inject constructor(
                 is FirebaseResult.ErrorPush -> emit(FirebaseResult.ErrorPush(pushStatus.exception))
             }
         }
+    }
+
+    override suspend fun setCache(vararg data: FoodCacheDomain) {
+        cacheDataSource.setCache(*data)
     }
 
     override suspend fun setCacheDetailFood(vararg data: SavedFoodCacheDomain) {

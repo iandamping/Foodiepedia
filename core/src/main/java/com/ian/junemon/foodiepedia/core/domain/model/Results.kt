@@ -20,6 +20,11 @@ sealed class DataSourceHelper<out T>{
     data class DataSourceError(val exception: Exception) : DataSourceHelper<Nothing>()
 }
 
+sealed class RepositoryData<out T>{
+    data class Success<out T>(val data: T) : RepositoryData<T>()
+    data class Error(val msg: String) : RepositoryData<Nothing>()
+}
+
 
 sealed class FirebaseResult<out R> {
     object SuccessPush : FirebaseResult<Nothing>()

@@ -3,34 +3,21 @@ package com.ian.junemon.foodiepedia.feature.view.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.asLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
-import com.ian.junemon.foodiepedia.core.domain.model.Prefetch
-import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
-import com.ian.junemon.foodiepedia.core.domain.model.Results
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 import com.ian.junemon.foodiepedia.core.util.DataConstant.noFilterValue
 import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
 import com.ian.junemon.foodiepedia.databinding.FragmentHomeBinding
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
-import com.ian.junemon.foodiepedia.feature.vm.NavigationViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
-import com.ian.junemon.foodiepedia.model.DataEvent
-import com.ian.junemon.foodiepedia.util.clicks
-import com.ian.junemon.foodiepedia.util.getDrawables
-import com.ian.junemon.foodiepedia.util.horizontalRecyclerviewInitializer
+import com.ian.junemon.foodiepedia.util.*
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
-import com.ian.junemon.foodiepedia.util.observe
-import com.ian.junemon.foodiepedia.util.observeEvent
-import com.ian.junemon.foodiepedia.util.shimmerHandler
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 /**
@@ -44,7 +31,6 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var foodVm: FoodViewModel
     private lateinit var profileVm: ProfileViewModel
-    private val navigationVm: NavigationViewModel by activityViewModels()
 
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
@@ -59,40 +45,15 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
         foodVm = viewModelProvider(viewModelFactory)
         profileVm = viewModelProvider(viewModelFactory)
         binding.initView()
+        foodVm.getFood()
+        observeUiState()
     }
 
     override fun activityCreated() {
-        with(foodVm){
-            setDataEvent(DataEvent.PreFetchFoodData)
-            setupLoadingState(false)
-        }
-        observeDataEvent()
         consumeFilterState()
-        consumeProfileData()
-        obvserveNavigation()
         observeViewEffect()
     }
 
-    private fun observeDataEvent(){
-        observeEvent(foodVm.dataEvent){
-            when(it){
-                is DataEvent.PreFetchFoodData ->{
-                    prefetchFood()
-                }
-                is DataEvent.CompletePreFetchFoodData ->{
-                    consumeFilterFood()
-                }
-            }
-        }
-    }
-
-    private fun obvserveNavigation() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            navigationVm.navigationFlow.onEach {
-                navigate(it)
-            }.launchIn(this)
-        }
-    }
 
     private fun FragmentHomeBinding.initView() {
         rvHome.apply {
@@ -109,33 +70,15 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
 
         clicks(ivPhotoProfile) {
             val action = HomeFragmentDirections.actionHomeFragmentToProfileFragment()
-            navigationVm.setNavigationDirection(action)
+            navigate(action)
 
         }
         clicks(rlSearch) {
             val action = HomeFragmentDirections.actionHomeFragmentToSearchFragment()
-            navigationVm.setNavigationDirection(action)
+            navigate(action)
         }
         with(loadImageHelper) {
             ivNoData.loadWithGlide(getDrawables(R.drawable.no_data))
-        }
-    }
-
-    private fun consumeProfileData() {
-        observe(profileVm.getUserProfile()) {
-            if (it is ProfileResults.Success) {
-                with(loadImageHelper) {
-                    binding.ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
-                }
-
-            } else {
-                with(loadImageHelper) {
-                    binding.ivPhotoProfile.loadWithGlide(
-                        getDrawables(R.drawable.ic_profiles)
-                    )
-                }
-            }
-
         }
     }
 
@@ -149,45 +92,40 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
         }
     }
 
-    private fun consumeFilterFood() {
-        observe(foodVm.getFood()) { value ->
-            when (value) {
-                is Results.Error -> {
-                    with(binding) {
-                        rvHome.visibility = View.GONE
-                        ivNoData.visibility = View.VISIBLE
-                    }
+    private fun observeUiState() {
+        profileVm.userData.asLiveData().observe(viewLifecycleOwner) {
+            when {
+                it.errorMessage.isNotEmpty() -> with(loadImageHelper) {
+                    binding.ivPhotoProfile.loadWithGlide(
+                        getDrawables(R.drawable.ic_profiles)
+                    )
                 }
-                is Results.Success -> {
-                    with(binding) {
-                        rvHome.visibility = View.VISIBLE
-                        ivNoData.visibility = View.GONE
-                    }
-                    with(homeAdapter) {
-                        submitList(value.data.mapToCachePresentation())
-                        // Force a redraw
-                        this.notifyDataSetChanged()
+                it.user != null -> {
+                    with(loadImageHelper) {
+                        binding.ivPhotoProfile.loadWithGlide(it.user.getPhotoUrl())
                     }
                 }
             }
         }
-    }
 
-    private fun prefetchFood() {
-        observe(foodVm.getPrefetch()) { value ->
-            when (value) {
-                is Prefetch.SuccessPrefetch -> {
-                    with(foodVm){
-                        setDataEvent(DataEvent.CompletePreFetchFoodData)
-                        setupLoadingState(true)
+        foodVm.foodCache.asLiveData().observe(viewLifecycleOwner) {
+
+            foodVm.setupLoadingState(it.isLoading)
+
+            when {
+                it.data.isNotEmpty() -> {
+                    with(binding) {
+                        rvHome.visibility = View.VISIBLE
+                        ivNoData.visibility = View.GONE
                     }
+                    homeAdapter.submitList(it.data.mapToCachePresentation())
                 }
-                is Prefetch.FailedPrefetch -> {
-                    with(foodVm){
-                        setDataEvent(DataEvent.CompletePreFetchFoodData)
-                        setupLoadingState(true)
-                        setupSnackbarMessage(value.exception.message)
+                it.errorMessage.isNotEmpty() -> {
+                    with(binding) {
+                        rvHome.visibility = View.GONE
+                        ivNoData.visibility = View.VISIBLE
                     }
+                    foodVm.setupSnackbarMessage(it.errorMessage)
                 }
             }
         }
@@ -214,6 +152,6 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
         val direction = HomeFragmentDirections.actionHomeFragmentToDetailFragment(
             data
         )
-        navigationVm.setNavigationDirection(direction)
+        navigate(direction)
     }
 }

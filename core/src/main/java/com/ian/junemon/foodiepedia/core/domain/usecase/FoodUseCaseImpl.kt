@@ -2,13 +2,8 @@ package com.ian.junemon.foodiepedia.core.domain.usecase
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
-import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
-import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
-import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
+import com.ian.junemon.foodiepedia.core.domain.model.*
 import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
-import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
-import com.ian.junemon.foodiepedia.core.domain.model.Prefetch
-import com.ian.junemon.foodiepedia.core.domain.model.Results
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -18,19 +13,23 @@ import javax.inject.Inject
  * Indonesia.
  */
 class FoodUseCaseImpl @Inject constructor(private val repo: FoodRepository) : FoodUseCase {
-    override fun getCache(): Flow<Results<List<FoodCacheDomain>>> {
+    override fun getCache(): Flow<RepositoryData<List<FoodCacheDomain>>> {
         return repo.getCache()
     }
 
-    override fun prefetchData(): Flow<Prefetch> {
+    override fun prefetchData():  Flow<RepositoryData<List<FoodCacheDomain>>> {
         return repo.prefetchData()
     }
 
-    override fun getCategorizeCache(foodCategory: String): Flow<Results<List<FoodCacheDomain>>> {
+    override suspend fun setCache(vararg data: FoodCacheDomain) {
+        repo.setCache(*data)
+    }
+
+    override fun getCategorizeCache(foodCategory: String): Flow<RepositoryData<List<FoodCacheDomain>>> {
         return repo.getCategorizeCache(foodCategory)
     }
 
-    override fun getSavedDetailCache(): Flow<Results<List<SavedFoodCacheDomain>>> {
+    override fun getSavedDetailCache(): Flow<RepositoryData<List<SavedFoodCacheDomain>>> {
         return repo.getSavedDetailCache()
     }
 

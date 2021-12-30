@@ -5,7 +5,9 @@ import com.ian.junemon.foodiepedia.core.data.datasource.remote.ProfileRemoteData
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
 import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
 import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
+import com.ian.junemon.foodiepedia.core.domain.model.RepositoryData
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
+import com.ian.junemon.foodiepedia.core.util.DataConstant.APPLICATION_ERROR
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -19,12 +21,12 @@ class ProfileRepositoryImpl @Inject constructor(
     private val remoteDataSource: ProfileRemoteDataSource
 ) : ProfileRepository {
 
-    override fun getUserProfile(): Flow<ProfileResults<AuthenticatedUserInfo>> {
+    override fun getUserProfile(): Flow<RepositoryData<AuthenticatedUserInfo>> {
         return remoteDataSource.getUserProfile().map { userResult ->
             if (userResult is DataSourceHelper.DataSourceValue) {
-                ProfileResults.Success(userResult.data)
+                RepositoryData.Success(userResult.data)
             } else {
-                ProfileResults.Error(Exception("FirebaseAuth error"))
+                RepositoryData.Error(APPLICATION_ERROR)
             }
         }
     }

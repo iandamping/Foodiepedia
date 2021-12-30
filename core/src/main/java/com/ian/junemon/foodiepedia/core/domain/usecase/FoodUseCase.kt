@@ -2,12 +2,7 @@ package com.ian.junemon.foodiepedia.core.domain.usecase
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
-import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
-import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
-import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
-import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
-import com.ian.junemon.foodiepedia.core.domain.model.Prefetch
-import com.ian.junemon.foodiepedia.core.domain.model.Results
+import com.ian.junemon.foodiepedia.core.domain.model.*
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -17,13 +12,15 @@ import kotlinx.coroutines.flow.Flow
  */
 interface FoodUseCase {
 
-    fun getCache(): Flow<Results<List<FoodCacheDomain>>>
+    fun getCache(): Flow<RepositoryData<List<FoodCacheDomain>>>
 
-    fun prefetchData(): Flow<Prefetch>
+    fun prefetchData():  Flow<RepositoryData<List<FoodCacheDomain>>>
 
-    fun getCategorizeCache(foodCategory: String): Flow<Results<List<FoodCacheDomain>>>
+    suspend fun setCache(vararg data: FoodCacheDomain)
 
-    fun getSavedDetailCache(): Flow<Results<List<SavedFoodCacheDomain>>>
+    fun getCategorizeCache(foodCategory: String): Flow<RepositoryData<List<FoodCacheDomain>>>
+
+    fun getSavedDetailCache(): Flow<RepositoryData<List<SavedFoodCacheDomain>>>
 
     fun uploadFirebaseData(data: FoodRemoteDomain, imageUri: Uri): LiveData<FirebaseResult<Nothing>>
 

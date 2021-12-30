@@ -37,7 +37,6 @@ class SelectImageFragment : BaseFragmentViewBinding<FragmentSelectImageBinding>(
     lateinit var loadingImageHelper: LoadImageHelper
 
     private val sharedVm: SharedViewModel by activityViewModels()
-    private val navigationVm: NavigationViewModel by activityViewModels()
 
     override fun viewCreated() {
         with(binding) {
@@ -53,7 +52,7 @@ class SelectImageFragment : BaseFragmentViewBinding<FragmentSelectImageBinding>(
                 sharedVm.setPassedUri(savedUri.toString())
 
                 val action =SelectImageFragmentDirections.actionSelectImageFragmentToUploadFoodFragment()
-                navigationVm.setNavigationDirection(action)
+                navigate(action)
             }
             clicks(ivImageDelete) {
                 imageFile.delete()
@@ -66,16 +65,8 @@ class SelectImageFragment : BaseFragmentViewBinding<FragmentSelectImageBinding>(
     }
 
     override fun activityCreated() {
-        observeNavigation()
     }
 
-    private fun observeNavigation() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            navigationVm.navigationFlow.onEach {
-                navigate(it)
-            }.launchIn(this)
-        }
-    }
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentSelectImageBinding
         get() = FragmentSelectImageBinding::inflate

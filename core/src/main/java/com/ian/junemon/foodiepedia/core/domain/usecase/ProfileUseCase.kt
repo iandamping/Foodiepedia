@@ -3,6 +3,7 @@ package com.ian.junemon.foodiepedia.core.domain.usecase
 import android.content.Intent
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
 import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
+import com.ian.junemon.foodiepedia.core.domain.model.RepositoryData
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface ProfileUseCase {
 
-    fun getUserProfile(): Flow<ProfileResults<AuthenticatedUserInfo>>
+    fun getUserProfile(): Flow<RepositoryData<AuthenticatedUserInfo>>
 
     suspend fun initSignIn(): Intent
 

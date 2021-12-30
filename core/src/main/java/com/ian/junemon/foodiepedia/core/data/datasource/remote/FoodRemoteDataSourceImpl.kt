@@ -4,6 +4,7 @@ import android.net.Uri
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.StorageReference
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.DefaultDispatcher
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.IoDispatcher
 import com.ian.junemon.foodiepedia.core.data.model.FoodEntity
 import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
 import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
@@ -15,6 +16,8 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -27,11 +30,12 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class FoodRemoteDataSourceImpl @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val storagePlaceReference: StorageReference,
     private val databasePlaceReference: DatabaseReference
 ) : FoodRemoteDataSource {
 
-    override suspend fun getFirebaseData(): Flow<DataSourceHelper<List<FoodRemoteDomain>>> =
+    override fun getFirebaseData(): Flow<DataSourceHelper<List<FoodRemoteDomain>>> =
         databasePlaceReference.valueEventFlow().map { value ->
             when (value) {
                 is PushFirebase.Changed -> {
@@ -44,7 +48,8 @@ class FoodRemoteDataSourceImpl @Inject constructor(
                     DataSourceHelper.DataSourceError(value.error.toException())
                 }
             }
-        }
+        }.catch { DataSourceHelper.DataSourceError(Exception(it)) }
+            .flowOn(ioDispatcher)
 
     override suspend fun uploadFirebaseData(
         data: FoodRemoteDomain,

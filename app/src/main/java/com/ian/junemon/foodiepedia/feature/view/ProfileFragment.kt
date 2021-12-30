@@ -1,34 +1,24 @@
 package com.ian.junemon.foodiepedia.feature.view
 
-import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.asLiveData
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
 import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
-import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
 import com.ian.junemon.foodiepedia.util.clicks
 import com.ian.junemon.foodiepedia.util.observe
-import com.ian.junemon.foodiepedia.util.observeEvent
 import com.ian.junemon.foodiepedia.databinding.FragmentProfileBinding
-import com.ian.junemon.foodiepedia.feature.view.upload.UploadFoodFragmentDirections
-import com.ian.junemon.foodiepedia.feature.vm.NavigationViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.ian.junemon.foodiepedia.util.FoodConstant.ADMIN_1
 import com.ian.junemon.foodiepedia.util.FoodConstant.ADMIN_2
 import com.ian.junemon.foodiepedia.util.getDrawables
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -46,8 +36,6 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
 
-    private val navigationVm:NavigationViewModel by activityViewModels()
-
     override fun viewCreated() {
         profileVm = viewModelProvider(viewModelFactory)
         /**Observe loading state to show loading*/
@@ -55,12 +43,11 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
             setDialogShow(show)
         }
         binding.initView()
+        observeUiState()
     }
 
     override fun activityCreated() {
         initOnBackPressed()
-        consumeProfileData()
-        obvserveNavigation()
         intentLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ){
@@ -71,11 +58,11 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
     private fun FragmentProfileBinding.initView() {
         clicks(fabUpload) {
             val action = ProfileFragmentDirections.actionProfileFragmentToUploadFoodFragment()
-            navigationVm.setNavigationDirection(action)
+            navigate(action)
         }
         clicks(relativeLayout2){
             val action = ProfileFragmentDirections.actionProfileFragmentToFavoriteFragment()
-            navigationVm.setNavigationDirection(action)
+            navigate(action)
         }
         clicks(rlSignIn) {
             fireSignIn()
@@ -94,24 +81,10 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
         }
     }
 
-    private fun consumeProfileData() {
-        profileVm.getUserProfile().observe(viewLifecycleOwner, {
-            when (it) {
-                is ProfileResults.Success -> {
-                    with(binding) {
-                        with(loadImageHelper){
-                            ivPhotoProfile.loadWithGlide(it.data.getPhotoUrl())
-                        }
-                        llProfileData.visibility = View.VISIBLE
-                        tvProfileName.text = it.data.getDisplayName()
-                        rlSignOut.visibility = View.VISIBLE
-                        rlSignIn.visibility = View.GONE
-                        when(it.data.getUid()){
-                            ADMIN_1, ADMIN_2 -> fabUpload.visibility = View.VISIBLE
-                        }
-                    }
-                }
-                is ProfileResults.Error -> {
+    private fun observeUiState() {
+        profileVm.userData.asLiveData().observe(viewLifecycleOwner){
+            when{
+                it.errorMessage.isNotEmpty() ->{
                     with(binding) {
                         rlSignOut.visibility = View.GONE
                         rlSignIn.visibility = View.VISIBLE
@@ -124,9 +97,22 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
                         )
                     }
                 }
+                it.user != null ->{
+                    with(binding) {
+                        with(loadImageHelper){
+                            ivPhotoProfile.loadWithGlide(it.user.getPhotoUrl())
+                        }
+                        llProfileData.visibility = View.VISIBLE
+                        tvProfileName.text = it.user.getDisplayName()
+                        rlSignOut.visibility = View.VISIBLE
+                        rlSignIn.visibility = View.GONE
+                        when(it.user.getUid()){
+                            ADMIN_1, ADMIN_2 -> fabUpload.visibility = View.VISIBLE
+                        }
+                    }
+                }
             }
-
-        })
+        }
     }
 
     private fun fireSignIn() {
@@ -147,14 +133,6 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
                     rlSignIn.visibility = View.VISIBLE
                 }
             }
-        }
-    }
-
-    private fun obvserveNavigation() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            navigationVm.navigationFlow.onEach {
-                navigate(it)
-            }.launchIn(this)
         }
     }
 

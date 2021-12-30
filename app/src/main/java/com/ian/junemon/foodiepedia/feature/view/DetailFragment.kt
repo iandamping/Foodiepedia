@@ -3,6 +3,7 @@ package com.ian.junemon.foodiepedia.feature.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
@@ -54,7 +55,7 @@ class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
 
     override fun activityCreated() {
         consumeBookmarkData()
-
+        observeUiState()
     }
 
     private fun FragmentDetailBinding.initView() {
@@ -109,15 +110,19 @@ class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
         })
     }
 
-    private fun consumeBookmarkData() {
-        observe(foodVm.getSavedDetailCache()) { cacheValue ->
-            when (cacheValue) {
-                is Results.Success -> {
-                    val data = cacheValue.data.filter { it.foodName == passedData.foodName }
+    private fun observeUiState() {
+        foodVm.savedFood.asLiveData().observe(viewLifecycleOwner) {
+            when {
+                it.errorMessage.isNotEmpty() -> {
+                    isFavorite = false
+                    binding.bookmarkedState = isFavorite
+                }
+                it.data.isNotEmpty() -> {
+                    val data = it.data.filter { result -> result.foodName == passedData.foodName }
                     if (data.isNotEmpty()) {
-                        data.forEach {
-                            if (it.foodName == passedData.foodName) {
-                                idForDeleteItem = it.localFoodID
+                        data.forEach { savedFood ->
+                            if (savedFood.foodName == passedData.foodName) {
+                                idForDeleteItem = savedFood.localFoodID
                                 isFavorite = true
                                 binding.bookmarkedState = isFavorite
                             }
@@ -127,12 +132,12 @@ class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
                         binding.bookmarkedState = isFavorite
                     }
                 }
-                is Results.Error -> {
-                    isFavorite = false
-                    binding.bookmarkedState = isFavorite
-                }
             }
         }
+    }
+
+    private fun consumeBookmarkData() {
+        foodVm.getSavedDetailCache()
     }
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDetailBinding
