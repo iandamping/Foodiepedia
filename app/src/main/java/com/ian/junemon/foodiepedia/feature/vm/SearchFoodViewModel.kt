@@ -1,5 +1,8 @@
 package com.ian.junemon.foodiepedia.feature.vm
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.ian.junemon.foodiepedia.core.domain.model.RepositoryData
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
@@ -9,7 +12,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.*
-import javax.inject.Inject
 
 
 /**
@@ -17,11 +19,23 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SearchFoodViewModel @Inject constructor(private val repository: FoodUseCase) :
+class SearchFoodViewModel(
+    private val savedStateHandle: SavedStateHandle,
+    private val repository: FoodUseCase
+) :
     BaseViewModel() {
 
     private val _searchFoodCache = MutableStateFlow(CategorizeFoodUiState.initial())
     val searchFoodCache = _searchFoodCache.asStateFlow()
+
+    val filteredData: LiveData<String> =
+        savedStateHandle.getLiveData<String>("query")
+
+
+    fun setQuery(query: String) {
+        savedStateHandle["query"] = query
+    }
+
 
     init {
         consumeSuspend {
@@ -44,6 +58,9 @@ class SearchFoodViewModel @Inject constructor(private val repository: FoodUseCas
                 }
             }
         }
+
+
+        searchFood(savedStateHandle.get<String>("query"))
     }
 
     fun searchFood(newText: String?) {
@@ -60,7 +77,7 @@ class SearchFoodViewModel @Inject constructor(private val repository: FoodUseCas
                         _searchFoodCache.update { currentUiState ->
                             currentUiState.copy(
                                 errorMessage = "",
-                                data = if (newText.isNullOrEmpty()){
+                                data = if (newText.isNullOrEmpty()) {
                                     result.data
                                 } else result.data.filter {
                                     it.foodName?.lowercase(Locale.getDefault())

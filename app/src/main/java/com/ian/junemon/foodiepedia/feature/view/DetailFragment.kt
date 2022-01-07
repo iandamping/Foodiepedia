@@ -2,6 +2,7 @@ package com.ian.junemon.foodiepedia.feature.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.navArgs
@@ -29,7 +30,7 @@ class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var foodVm: FoodViewModel
+    private val foodVm: FoodViewModel by viewModels { viewModelFactory }
 
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
@@ -45,8 +46,6 @@ class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
     private val passedData by lazy { args.detailValue }
 
     override fun viewCreated() {
-        foodVm = viewModelProvider(viewModelFactory)
-
         binding.apply {
             initView()
             detailFood = passedData

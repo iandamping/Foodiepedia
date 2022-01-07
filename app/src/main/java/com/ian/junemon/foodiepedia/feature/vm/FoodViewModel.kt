@@ -66,7 +66,6 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
                     is RepositoryData.Success -> repository.setCache(*result.data.toTypedArray())
 
                 }
-
             }
         }
     }

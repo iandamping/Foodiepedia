@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import com.ian.junemon.foodiepedia.R
@@ -31,13 +32,12 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var profileVm: ProfileViewModel
+    private val profileVm: ProfileViewModel by viewModels { viewModelFactory }
 
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
 
     override fun viewCreated() {
-        profileVm = viewModelProvider(viewModelFactory)
         /**Observe loading state to show loading*/
         observe(profileVm.loadingState){ show ->
             setDialogShow(show)

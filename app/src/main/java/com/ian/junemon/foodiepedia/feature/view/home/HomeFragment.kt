@@ -3,6 +3,7 @@ package com.ian.junemon.foodiepedia.feature.view.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import com.google.android.material.snackbar.Snackbar
@@ -29,8 +30,8 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
     HomeAdapter.HomeAdapterListener {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var foodVm: FoodViewModel
-    private lateinit var profileVm: ProfileViewModel
+    private val foodVm: FoodViewModel by viewModels { viewModelFactory }
+    private val profileVm: ProfileViewModel by viewModels { viewModelFactory }
 
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
@@ -42,8 +43,6 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
     lateinit var homeAdapter: HomeAdapter
 
     override fun viewCreated() {
-        foodVm = viewModelProvider(viewModelFactory)
-        profileVm = viewModelProvider(viewModelFactory)
         binding.initView()
         foodVm.getFood()
         observeUiState()

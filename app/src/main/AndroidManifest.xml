@@ -36,7 +36,6 @@
         <activity
             android:name="com.ian.junemon.foodiepedia.ui.MainActivity"
             android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait"
             android:exported="false"
             android:theme="@style/FullScreen" />
 

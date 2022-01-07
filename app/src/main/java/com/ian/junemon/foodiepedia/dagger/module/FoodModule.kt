@@ -77,8 +77,4 @@ abstract class FoodModule {
     @ViewModelKey(FoodViewModel::class)
     abstract fun bindFoodViewModel(vm: FoodViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(SearchFoodViewModel::class)
-    abstract fun bindSearchFoodViewModel(vm: SearchFoodViewModel): ViewModel
 }
