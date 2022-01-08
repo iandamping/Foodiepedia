@@ -77,4 +77,9 @@ abstract class FoodModule {
     @ViewModelKey(FoodViewModel::class)
     abstract fun bindFoodViewModel(vm: FoodViewModel): ViewModel
 
+
+    @ContributesAndroidInjector
+    @FragmentScoped
+    abstract fun bindAssistedViewModelFactory(): SearchFoodViewModel.Factory
+
 }

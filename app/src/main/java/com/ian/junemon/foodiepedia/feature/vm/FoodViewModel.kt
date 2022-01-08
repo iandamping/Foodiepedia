@@ -31,12 +31,8 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
     private val _foodCache = MutableStateFlow(FoodUiState.initial())
     val foodCache = _foodCache.asStateFlow()
 
-
     private val _savedFood = MutableStateFlow(SavedFoodUiState.initial())
     val savedFood = _savedFood.asStateFlow()
-
-    private val _searchItem: MutableLiveData<List<FoodCachePresentation>> = MutableLiveData()
-    val searchItem: LiveData<List<FoodCachePresentation>> = _searchItem
 
     private val _foodData: MutableLiveData<FoodRemoteDomain> = MutableLiveData()
     val foodData: LiveData<FoodRemoteDomain> = _foodData
@@ -115,7 +111,7 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
                     it == noFilterValue -> repository.getCache()
                     else -> repository.getCategorizeCache(it)
                 }
-            }.debounce(100).collect { result ->
+            }.collect { result ->
                 when (result) {
                     is RepositoryData.Error -> _foodCache.update { currentUiState ->
                         currentUiState.copy(

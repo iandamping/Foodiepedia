@@ -4,22 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
-import com.ian.junemon.foodiepedia.core.dagger.factory.GenericSavedStateViewModelFactory
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
-import com.ian.junemon.foodiepedia.dagger.factory.SearchFoodViewModelFactory
+import com.ian.junemon.foodiepedia.dagger.factory.lazyViewModel
 import com.ian.junemon.foodiepedia.databinding.FragmentSearchBinding
 import com.ian.junemon.foodiepedia.feature.vm.SearchFoodViewModel
 import com.ian.junemon.foodiepedia.util.gridRecyclerviewInitializer
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.util.observe
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -43,25 +40,27 @@ class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),
     lateinit var searchAdapter: SearchAdapter
 
     @Inject
-    lateinit var viewModelFactory: SearchFoodViewModelFactory
-    private val foodVm: SearchFoodViewModel by viewModels {
-        GenericSavedStateViewModelFactory(viewModelFactory, this)
+    lateinit var viewModelFactory: SearchFoodViewModel.Factory
+
+    private val foodVm: SearchFoodViewModel by lazyViewModel { stateHandle ->
+        viewModelFactory.create(stateHandle)
     }
-    private var text:String? = null
+
+    private var text: String? = null
 
     override fun viewCreated() {
         binding.initView()
         observeUiState()
-        foodVm.filteredData.observe(viewLifecycleOwner){ savedQuery ->
-            if (savedQuery.isNotEmpty()){
-                binding.searchViews.setQuery(savedQuery,false)
+        foodVm.filteredData.observe(viewLifecycleOwner) { savedQuery ->
+            if (savedQuery.isNotEmpty()) {
+                binding.searchViews.setQuery(savedQuery, false)
             }
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        if (!text.isNullOrEmpty()){
+        if (!text.isNullOrEmpty()) {
             foodVm.setQuery(text!!)
         }
     }
@@ -94,7 +93,7 @@ class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 foodVm.searchFood(newText)
-                text=newText
+                text = newText
                 return false
 
             }

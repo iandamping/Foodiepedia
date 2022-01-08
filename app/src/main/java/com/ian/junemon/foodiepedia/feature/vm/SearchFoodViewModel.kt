@@ -2,11 +2,13 @@ package com.ian.junemon.foodiepedia.feature.vm
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.ian.junemon.foodiepedia.core.domain.model.RepositoryData
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
 import com.ian.junemon.foodiepedia.feature.event.CategorizeFoodUiState
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -19,11 +21,16 @@ import java.util.*
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SearchFoodViewModel(
-    private val savedStateHandle: SavedStateHandle,
+class SearchFoodViewModel @AssistedInject constructor(
+    @Assisted private val savedStateHandle: SavedStateHandle,
     private val repository: FoodUseCase
 ) :
     BaseViewModel() {
+
+    @AssistedFactory
+    interface Factory {
+        fun create(savedStateHandle: SavedStateHandle): SearchFoodViewModel
+    }
 
     private val _searchFoodCache = MutableStateFlow(CategorizeFoodUiState.initial())
     val searchFoodCache = _searchFoodCache.asStateFlow()

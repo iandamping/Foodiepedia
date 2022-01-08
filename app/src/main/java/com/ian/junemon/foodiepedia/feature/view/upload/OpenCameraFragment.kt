@@ -5,18 +5,16 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
 import com.ian.junemon.foodiepedia.core.presentation.camera.ImageCaptureState
 import com.ian.junemon.foodiepedia.core.presentation.camera.helper.CameraxHelper
+import com.ian.junemon.foodiepedia.core.presentation.camera.listener.PhotoListener
 import com.ian.junemon.foodiepedia.databinding.FragmentOpenCameraBinding
-import com.ian.junemon.foodiepedia.feature.vm.NavigationViewModel
 import com.ian.junemon.foodiepedia.util.FoodConstant.ANIMATION_FAST_MILLIS
 import com.ian.junemon.foodiepedia.util.FoodConstant.ANIMATION_SLOW_MILLIS
 import com.ian.junemon.foodiepedia.util.clicks
-import com.ian.junemon.foodiepedia.core.presentation.camera.listener.PhotoListener
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
@@ -36,13 +34,10 @@ class OpenCameraFragment : BaseFragmentViewBinding<FragmentOpenCameraBinding>() 
     lateinit var cameraxHelper: CameraxHelper
 
 
-    private val navigationVm: NavigationViewModel by activityViewModels()
-
-
     override fun viewCreated() {
-        with(binding){
-            clicks(cameraCaptureButton){
-               cameraxHelper.takePhoto()
+        with(binding) {
+            clicks(cameraCaptureButton) {
+                cameraxHelper.takePhoto()
                 // We can only change the foreground Drawable using API level 23+ API
                 flashAnimationAfterTakingPicture()
             }
@@ -78,11 +73,11 @@ class OpenCameraFragment : BaseFragmentViewBinding<FragmentOpenCameraBinding>() 
         }
     }
 
-    private fun observeTakePhotoResult(){
+    private fun observeTakePhotoResult() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             listener.photoState.onEach { state ->
-                when(state){
-                    is ImageCaptureState.Failed ->  Timber.e(state.message)
+                when (state) {
+                    is ImageCaptureState.Failed -> Timber.e(state.message)
                     ImageCaptureState.Success -> {
                         val action = OpenCameraFragmentDirections
                             .actionOpenCameraFragmentToSelectImageFragment()

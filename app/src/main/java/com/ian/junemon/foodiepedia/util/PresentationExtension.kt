@@ -28,12 +28,7 @@ import com.ian.junemon.foodiepedia.util.classes.RecyclerHorizontalSnapHelper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import java.util.*
 
 /**
@@ -45,7 +40,7 @@ import java.util.*
 inline val Context.layoutInflater: LayoutInflater
     get() = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
- fun ViewGroup.inflates(layout: Int): View {
+fun ViewGroup.inflates(layout: Int): View {
     return LayoutInflater.from(context).inflate(layout, this, false)
 }
 
@@ -95,12 +90,17 @@ fun <T> Fragment.observe(data: LiveData<T>, onBound: ((T) -> Unit)) {
     }
 }
 
-fun Fragment.clicks(view: View, duration: Long = 300, isUsingThrottle:Boolean = true,onBound: () -> Unit) {
-    if (isUsingThrottle){
+fun Fragment.clicks(
+    view: View,
+    duration: Long = 300,
+    isUsingThrottle: Boolean = true,
+    onBound: () -> Unit
+) {
+    if (isUsingThrottle) {
         view.clickListener().throttleFirst(duration).onEach {
             onBound.invoke()
         }.launchIn(this.viewLifecycleOwner.lifecycleScope)
-    } else{
+    } else {
         view.setOnClickListener {
             onBound.invoke()
         }
@@ -132,12 +132,12 @@ fun <T> Flow<T>.throttleFirst(windowDuration: Long): Flow<T> = flow {
 }
 
 
-fun Boolean.shimmerHandler(view:ShimmerFrameLayout){
-    if (!this){
+fun Boolean.shimmerHandler(view: ShimmerFrameLayout) {
+    if (!this) {
         if (!view.isShimmerStarted && !view.isShimmerVisible) {
             view.startShimmer()
         }
-    } else{
+    } else {
         if (view.isShimmerStarted && view.isShimmerVisible) {
             view.stopShimmer()
             view.hideShimmer()
@@ -146,21 +146,21 @@ fun Boolean.shimmerHandler(view:ShimmerFrameLayout){
     }
 }
 
-fun Fragment.getDrawables(@DrawableRes drawableId:Int):Drawable{
+fun Fragment.getDrawables(@DrawableRes drawableId: Int): Drawable {
     return ContextCompat.getDrawable(
         requireContext(),
         drawableId
     )!!
 }
 
-fun FragmentActivity.getDrawables(@DrawableRes drawableId:Int):Drawable{
+fun FragmentActivity.getDrawables(@DrawableRes drawableId: Int): Drawable {
     return ContextCompat.getDrawable(
         this,
         drawableId
     )!!
 }
 
- fun Context.createBitmapFromUri(uri: Uri?): Bitmap? =
+fun Context.createBitmapFromUri(uri: Uri?): Bitmap? =
     if (uri != null) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             ImageDecoder.decodeBitmap(
@@ -177,15 +177,16 @@ fun FragmentActivity.getDrawables(@DrawableRes drawableId:Int):Drawable{
     }
 
 
-fun Context.animationSlideUp() =  AnimationUtils.loadAnimation(
+fun Context.animationSlideUp() = AnimationUtils.loadAnimation(
     this,
     R.anim.slide_in_up
 )
 
 
-fun Context.animationSlidDown() =  AnimationUtils.loadAnimation(
+fun Context.animationSlidDown() = AnimationUtils.loadAnimation(
     this,
     R.anim.slide_in_down
 )
+
 
 

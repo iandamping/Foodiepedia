@@ -25,19 +25,13 @@ import com.ian.junemon.foodiepedia.core.util.DataConstant.RequestOpenCamera
 import com.ian.junemon.foodiepedia.core.util.DataConstant.RequestSelectGalleryImage
 import com.ian.junemon.foodiepedia.databinding.FragmentUploadBinding
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
-import com.ian.junemon.foodiepedia.feature.vm.NavigationViewModel
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.ian.junemon.foodiepedia.feature.vm.SharedViewModel
-import com.ian.junemon.foodiepedia.util.animationSlidDown
-import com.ian.junemon.foodiepedia.util.animationSlideUp
-import com.ian.junemon.foodiepedia.util.clicks
-import com.ian.junemon.foodiepedia.util.createBitmapFromUri
+import com.ian.junemon.foodiepedia.util.*
 import com.ian.junemon.foodiepedia.util.interfaces.ImageUtilHelper
 import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.util.interfaces.PermissionHelper
 import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
-import com.ian.junemon.foodiepedia.util.observe
-import com.ian.junemon.foodiepedia.util.observeEvent
 import javax.inject.Inject
 
 /**
@@ -59,10 +53,10 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var foodVm: FoodViewModel
     private lateinit var profileVm: ProfileViewModel
+
     @Inject
     lateinit var loadingImageHelper: LoadImageHelper
 
-    private val navigationVm: NavigationViewModel by activityViewModels()
     private val sharedVm: SharedViewModel by activityViewModels()
 
     private var bitmap: Bitmap? = null
@@ -118,12 +112,13 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
 
         // Create this as a variable in your Fragment class
         intentLauncher = registerForActivityResult(
-            StartActivityForResult()){ result ->
-            if (result.resultCode == RESULT_OK){
+            StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
                 val intentResult = result.data
-                if (intentResult != null){
+                if (intentResult != null) {
                     val uriResult = intentResult.data
-                    if (uriResult !=null){
+                    if (uriResult != null) {
                         foodVm.setFoodUri(uriResult)
                     }
                 }
@@ -243,9 +238,9 @@ class UploadFoodFragment : BaseFragmentDataBinding<FragmentUploadBinding>() {
     }
 
     private fun observeUiState() {
-        profileVm.userData.asLiveData().observe(viewLifecycleOwner){
-            when{
-                it.user != null ->{
+        profileVm.userData.asLiveData().observe(viewLifecycleOwner) {
+            when {
+                it.user != null -> {
                     remoteFoodUpload.foodContributor = it.user.getDisplayName()
                 }
             }
