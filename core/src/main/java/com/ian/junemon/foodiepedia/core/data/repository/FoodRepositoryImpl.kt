@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -35,6 +36,13 @@ class FoodRepositoryImpl @Inject constructor(
     private val cacheDataSource: FoodCacheDataSource
 ) : FoodRepository {
 
+    companion object {
+        private val CACHE_EXPIRY = TimeUnit.HOURS.toMillis(1)
+    }
+
+    private fun Long.isExpired(): Boolean = (System.currentTimeMillis() - this) > CACHE_EXPIRY
+
+
     @AnyThread
     private suspend fun List<FoodRemoteDomain>.applyMainSafeSort() =
         withContext(defaultDispatcher) {
@@ -46,16 +54,24 @@ class FoodRepositoryImpl @Inject constructor(
     }
 
     override fun prefetchData(): Flow<RepositoryData<List<FoodCacheDomain>>> {
-        return remoteDataSource.getFirebaseData().map {  responseStatus ->
-            when(responseStatus){
-                is DataSourceHelper.DataSourceError ->{
-                    RepositoryData.Error(responseStatus.exception.localizedMessage ?: APPLICATION_ERROR)
-                }
-                is DataSourceHelper.DataSourceValue ->{
-                    RepositoryData.Success(responseStatus.data.applyMainSafeSort())
-                }
+        return object : NetworkBoundResource<List<FoodCacheDomain>, List<FoodRemoteDomain>>(){
+
+            override fun loadFromDB(): Flow<List<FoodCacheDomain>> {
+                return cacheDataSource.getCache()
             }
-        }
+
+            override fun shouldFetch(data: List<FoodCacheDomain>?): Boolean {
+                return data == null || data.isEmpty()
+            }
+
+            override suspend fun createCall(): Flow<DataSourceHelper<List<FoodRemoteDomain>>> {
+                return remoteDataSource.getFirebaseData()
+            }
+
+            override suspend fun saveCallResult(data: List<FoodRemoteDomain>) {
+                cacheDataSource.setCache(*data.applyMainSafeSort().toTypedArray())
+            }
+        }.asFlow()
     }
 
     override fun getCache(): Flow<RepositoryData<List<FoodCacheDomain>>> {
@@ -65,7 +81,6 @@ class FoodRepositoryImpl @Inject constructor(
             } else {
                 RepositoryData.Success(it)
             }
-
         }
     }
 
@@ -126,5 +141,9 @@ class FoodRepositoryImpl @Inject constructor(
 
     override suspend fun setSharedPreferenceFilter(data: String) {
         cacheDataSource.setSharedPreferenceFilter(data)
+    }
+
+    override suspend fun deleteFood() {
+        cacheDataSource.deleteFood()
     }
 }

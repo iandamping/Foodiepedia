@@ -55,4 +55,8 @@ class FoodUseCaseImpl @Inject constructor(private val repo: FoodRepository) : Fo
     override suspend fun setSharedPreferenceFilter(data: String) {
         repo.setSharedPreferenceFilter(data)
     }
+
+    override suspend fun deleteFood() {
+        repo.deleteFood()
+    }
 }

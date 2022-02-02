@@ -26,7 +26,7 @@ class FoodCacheDataSourceImpl @Inject constructor(
     private val dataHelper: DataStoreHelper
 ) : FoodCacheDataSource {
     override fun getCache(): Flow<List<FoodCacheDomain>> {
-        return foodDao.loadFood().map {it.mapToCacheDomain() }
+        return foodDao.loadFood().map { it.mapToCacheDomain() }
     }
 
     override fun getSavedDetailCache(): Flow<DataSourceHelper<List<SavedFoodCacheDomain>>> {
@@ -67,6 +67,10 @@ class FoodCacheDataSourceImpl @Inject constructor(
     }
 
     override suspend fun setSharedPreferenceFilter(data: String) {
-        dataHelper.saveStringInDataStore(DataConstant.FILTER_KEY,data)
+        dataHelper.saveStringInDataStore(DataConstant.FILTER_KEY, data)
+    }
+
+    override suspend fun deleteFood() {
+        savedFoodDao.deleteAllFood()
     }
 }

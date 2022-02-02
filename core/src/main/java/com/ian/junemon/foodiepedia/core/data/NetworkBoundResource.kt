@@ -1,30 +1,23 @@
 package com.ian.junemon.foodiepedia.core.data
 
 import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
-import com.ian.junemon.foodiepedia.core.domain.model.Results
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import com.ian.junemon.foodiepedia.core.domain.model.RepositoryData
+import kotlinx.coroutines.flow.*
 
 abstract class NetworkBoundResource<ResultType, RequestType> {
 
-    private var result: Flow<Results<ResultType>> = flow {
-        emit(Results.Loading)
+    private var result: Flow<RepositoryData<ResultType>> = flow {
         val dbSource = loadFromDB().first()
 
 
         if (shouldFetch(dbSource)) {
-            emit(Results.Loading)
-
             when (val apiResponse = createCall().first()) {
 
                 is DataSourceHelper.DataSourceValue -> {
                     saveCallResult(apiResponse.data)
 
                     emitAll(loadFromDB().map {
-                        Results.Success(
+                        RepositoryData.Success(
                             it
                         )
                     })
@@ -33,15 +26,16 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
                 is DataSourceHelper.DataSourceError -> {
                     onFetchFailed()
                     emit(
-                        Results.Error(
-                            apiResponse.exception
+                        RepositoryData.Error(
+                            apiResponse.exception.localizedMessage
+                                ?: "Application encounter unknown error"
                         )
                     )
                 }
             }
         } else {
             emitAll(loadFromDB().map {
-                Results.Success(
+                RepositoryData.Success(
                     it
                 )
             })
@@ -59,5 +53,5 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
 
     protected abstract suspend fun saveCallResult(data: RequestType)
 
-    fun asFlow(): Flow<Results<ResultType>> = result
+    fun asFlow(): Flow<RepositoryData<ResultType>> = result
 }

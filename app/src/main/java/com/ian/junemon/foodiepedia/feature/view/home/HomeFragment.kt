@@ -44,7 +44,7 @@ class HomeFragment : BaseFragmentViewBinding<FragmentHomeBinding>(),
 
     override fun viewCreated() {
         binding.initView()
-        foodVm.getFood()
+//        foodVm.getFood()
         observeUiState()
     }
 

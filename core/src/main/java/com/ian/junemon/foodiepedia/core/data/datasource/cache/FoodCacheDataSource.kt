@@ -22,4 +22,6 @@ interface FoodCacheDataSource {
     fun loadSharedPreferenceFilter(): Flow<String>
 
     suspend fun setSharedPreferenceFilter(data: String)
+
+    suspend fun deleteFood()
 }

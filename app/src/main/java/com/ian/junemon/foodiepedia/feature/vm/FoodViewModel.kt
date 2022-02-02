@@ -11,15 +11,14 @@ import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
 import com.ian.junemon.foodiepedia.core.domain.model.RepositoryData
 import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
-import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.util.DataConstant.ERROR_EMPTY_DATA
 import com.ian.junemon.foodiepedia.core.util.DataConstant.noFilterValue
-import com.ian.junemon.foodiepedia.feature.event.CategorizeFoodUiState
 import com.ian.junemon.foodiepedia.feature.event.FoodUiState
 import com.ian.junemon.foodiepedia.feature.event.SavedFoodUiState
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -44,23 +43,49 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
     val etFoodArea: MutableLiveData<String> = MutableLiveData()
     val etFoodDescription: MutableLiveData<String> = MutableLiveData()
 
+    companion object {
+        private val CACHE_EXPIRY = TimeUnit.HOURS.toMillis(1)
+    }
+
+    private fun Long.isExpired(): Boolean = (System.currentTimeMillis() - this) > CACHE_EXPIRY
+
+
+
     inline fun observingEditText(
         lifecycleOwner: LifecycleOwner,
         liveData: LiveData<String>,
         crossinline data: (String) -> Unit
     ) {
-        liveData.observe(lifecycleOwner, {
+        liveData.observe(lifecycleOwner) {
             data.invoke(it)
-        })
+        }
     }
 
     init {
         consumeSuspend {
-            repository.prefetchData().collect { result ->
+            repository.loadSharedPreferenceFilter().flatMapLatest {
+                when{
+                    it.isEmpty() -> repository.prefetchData()
+                    it == noFilterValue -> repository.prefetchData()
+                    else -> repository.getCategorizeCache(it)
+                }
+            }.collect { result ->
                 when (result) {
-                    is RepositoryData.Error -> Timber.e("error : ${result.msg}")
-                    is RepositoryData.Success -> repository.setCache(*result.data.toTypedArray())
-
+                    is RepositoryData.Error -> _foodCache.update { currentUiState ->
+                        currentUiState.copy(
+                            data = emptyList(),
+                            errorMessage = result.msg,
+                            isLoading = false
+                        )
+                    }
+                    is RepositoryData.Success ->
+                            _foodCache.update { currentUiState ->
+                                currentUiState.copy(
+                                    data = result.data,
+                                    errorMessage = "",
+                                    isLoading = false
+                                )
+                            }
                 }
             }
         }
@@ -102,36 +127,6 @@ class FoodViewModel @Inject constructor(private val repository: FoodUseCase) : B
             repository.deleteSelectedId(selectedId)
         }
     }
-
-    fun getFood() {
-        viewModelScope.launch {
-            repository.loadSharedPreferenceFilter().flatMapLatest {
-                when{
-                    it.isEmpty() -> repository.getCache()
-                    it == noFilterValue -> repository.getCache()
-                    else -> repository.getCategorizeCache(it)
-                }
-            }.collect { result ->
-                when (result) {
-                    is RepositoryData.Error -> _foodCache.update { currentUiState ->
-                        currentUiState.copy(
-                            data = emptyList(),
-                            errorMessage = result.msg,
-                            isLoading = false
-                        )
-                    }
-                    is RepositoryData.Success -> _foodCache.update { currentUiState ->
-                        currentUiState.copy(
-                            data = result.data,
-                            errorMessage = "",
-                            isLoading = false
-                        )
-                    }
-                }
-            }
-        }
-    }
-
 
     fun uploadFirebaseData(
         data: FoodRemoteDomain,
