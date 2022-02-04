@@ -4,6 +4,8 @@ import com.ian.junemon.foodiepedia.core.presentation.camera.helper.CameraxHelper
 import com.ian.junemon.foodiepedia.core.presentation.camera.helper.CameraxHelperImpl
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
@@ -12,6 +14,7 @@ import javax.inject.Singleton
  * Indonesia.
  */
 @Module
+@InstallIn(SingletonComponent::class)
 interface CameraxModule {
     @Binds
     @Singleton

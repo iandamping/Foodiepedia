@@ -6,14 +6,13 @@ import androidx.lifecycle.viewModelScope
 import com.ian.junemon.foodiepedia.core.domain.model.RepositoryData
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
 import com.ian.junemon.foodiepedia.feature.event.CategorizeFoodUiState
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
 
 /**
@@ -21,16 +20,12 @@ import java.util.*
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SearchFoodViewModel @AssistedInject constructor(
-    @Assisted private val savedStateHandle: SavedStateHandle,
+@HiltViewModel
+class SearchFoodViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val repository: FoodUseCase
 ) :
     BaseViewModel() {
-
-    @AssistedFactory
-    interface Factory {
-        fun create(savedStateHandle: SavedStateHandle): SearchFoodViewModel
-    }
 
     private val _searchFoodCache = MutableStateFlow(CategorizeFoodUiState.initial())
     val searchFoodCache = _searchFoodCache.asStateFlow()

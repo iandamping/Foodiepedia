@@ -13,7 +13,6 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-@ExperimentalCoroutinesApi
 class ProfileCacheDataSourceImpl @Inject constructor(private val profileDao: ProfileDao) :
     ProfileCacheDataSource {
 

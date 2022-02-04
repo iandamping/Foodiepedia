@@ -5,7 +5,15 @@ package com.ian.junemon.foodiepedia.core.presentation.camera
  * Github https://github.com/iandamping
  * Indonesia.
  */
-sealed class ImageCaptureState{
-    object Success:ImageCaptureState()
-    data class Failed(val message:String):ImageCaptureState()
+
+data class ImageCaptureState(
+    val success:String,
+    val failed:String
+){
+    companion object {
+        fun initialize() = ImageCaptureState(
+            success = "",
+            failed = ""
+        )
+    }
 }

@@ -2,8 +2,8 @@ package com.ian.junemon.foodiepedia.feature.view.search
 
 import androidx.recyclerview.widget.RecyclerView
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.presentation.view.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.ItemSearchBinding
-import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 
 /**
  * Created by Ian Damping on 09,March,2021
@@ -17,7 +17,7 @@ class SearchViewHolder(
 
     fun bind(data: FoodCachePresentation) {
         with(itemHomeBinding) {
-            with(loadImageHelper) { ivFoodImage.loadWithGlide(data.foodImage) }
+            loadImageHelper.loadWithGlide(ivFoodImage, data.foodImage)
             tvFoodName.text = data.foodName
         }
     }

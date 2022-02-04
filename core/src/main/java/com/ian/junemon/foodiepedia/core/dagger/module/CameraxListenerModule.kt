@@ -6,6 +6,8 @@ import com.ian.junemon.foodiepedia.core.presentation.camera.listener.PhotoListen
 import com.ian.junemon.foodiepedia.core.presentation.camera.photo.ImageCaptureListenerImpl
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
@@ -14,6 +16,7 @@ import javax.inject.Singleton
  * Indonesia.
  */
 @Module
+@InstallIn(SingletonComponent::class)
 interface CameraxListenerModule {
     @Binds
     @Singleton

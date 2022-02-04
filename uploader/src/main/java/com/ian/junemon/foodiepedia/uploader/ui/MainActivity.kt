@@ -1,18 +1,21 @@
 package com.ian.junemon.foodiepedia.uploader.ui
 
 import android.os.Bundle
-import com.ian.junemon.foodiepedia.uploader.util.interfaces.ViewHelper
+import androidx.appcompat.app.AppCompatActivity
+import com.ian.junemon.foodiepedia.core.presentation.view.ViewHelper
 import com.ian.junemon.foodiepedia.uploader.databinding.ActivityMainBinding
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class MainActivity : DaggerAppCompatActivity() {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
     @Inject
     lateinit var viewHelper: ViewHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewHelper.run { fullScreenAnimation() }
+        viewHelper.fullScreenAnimation(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)

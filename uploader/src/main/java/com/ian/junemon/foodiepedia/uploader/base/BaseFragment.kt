@@ -10,12 +10,12 @@ import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import com.ian.junemon.foodiepedia.core.databinding.CustomLoadingBinding
 import com.ian.junemon.foodiepedia.uploader.util.layoutInflater
-import dagger.android.support.DaggerFragment
 import timber.log.Timber
 
 /**
@@ -23,7 +23,7 @@ import timber.log.Timber
  * Github https://github.com/iandamping
  * Indonesia.
  */
-abstract class BaseFragment : DaggerFragment() {
+abstract class BaseFragment : Fragment() {
     private var _binding: CustomLoadingBinding? = null
     private val binding get() = _binding!!
     private lateinit var alert: AlertDialog

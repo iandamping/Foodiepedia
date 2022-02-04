@@ -10,6 +10,10 @@ import com.ian.junemon.foodiepedia.core.dagger.qualifier.LensFacingBack
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.LensFacingFront
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import java.util.concurrent.Executor
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -20,7 +24,9 @@ import javax.inject.Singleton
  * Github https://github.com/iandamping
  * Indonesia.
  */
+
 @Module
+@InstallIn(SingletonComponent::class)
 object CameraxConstructorModule {
 
     @Provides
@@ -29,11 +35,11 @@ object CameraxConstructorModule {
 
     @Provides
     @Singleton
-    fun provideCameraMainExecutor(context: Context): Executor =
+    fun provideCameraMainExecutor(@ApplicationContext context: Context): Executor =
         ContextCompat.getMainExecutor(context)
 
     @Provides
-    fun provideProcessCameraProviderFuture(context: Context): ListenableFuture<ProcessCameraProvider> =
+    fun provideProcessCameraProviderFuture(@ApplicationContext context: Context): ListenableFuture<ProcessCameraProvider> =
         ProcessCameraProvider.getInstance(context)
 
     @Provides

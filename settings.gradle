@@ -1,2 +1,3 @@
 include ':uploader'
 include ':app', ':core'
+include ':compose'

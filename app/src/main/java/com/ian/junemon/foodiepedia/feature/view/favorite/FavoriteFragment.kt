@@ -3,18 +3,18 @@ package com.ian.junemon.foodiepedia.feature.view.favorite
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
-import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.presentation.view.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.util.mapListFavToCachePresentation
 import com.ian.junemon.foodiepedia.databinding.FragmentFavoriteBinding
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.util.getDrawables
-import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 import com.ian.junemon.foodiepedia.util.verticalRecyclerviewInitializer
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
@@ -22,30 +22,31 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class FavoriteFragment : BaseFragmentViewBinding<FragmentFavoriteBinding>(),
+@AndroidEntryPoint
+class FavoriteFragment @Inject constructor(
+    private val factory: FavoriteAdapter.Factory,
+    private val loadImageHelper: LoadImageHelper
+) : BaseFragmentViewBinding<FragmentFavoriteBinding>(),
     FavoriteAdapter.FavoriteAdapterListener {
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var foodVm: FoodViewModel
 
-    @Inject
-    lateinit var loadImageHelper: LoadImageHelper
+    private val favAdapter: FavoriteAdapter by lazy {
+        factory.create(this)
+    }
 
-    @Inject
-    lateinit var favAdapter: FavoriteAdapter
+    private val foodVm: FoodViewModel by viewModels()
+
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentFavoriteBinding
         get() = FragmentFavoriteBinding::inflate
 
     override fun viewCreated() {
-        foodVm = viewModelProvider(viewModelFactory)
         binding.rvFavorite.apply {
             verticalRecyclerviewInitializer()
             adapter = favAdapter
         }
-        with(loadImageHelper) {
-            binding.ivNoData.loadWithGlide(getDrawables(R.drawable.no_data))
-        }
+
+        loadImageHelper.loadWithGlide(binding.ivNoData, getDrawables(R.drawable.no_data))
+
     }
 
     override fun activityCreated() {

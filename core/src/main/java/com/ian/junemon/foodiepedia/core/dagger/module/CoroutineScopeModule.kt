@@ -1,8 +1,10 @@
 package com.ian.junemon.foodiepedia.core.dagger.module
 
-import com.ian.junemon.foodiepedia.core.dagger.qualifier.DefaultDispatcher
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.*
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -14,11 +16,27 @@ import javax.inject.Singleton
  * Indonesia.
  */
 @Module
+@InstallIn(SingletonComponent::class)
 object CoroutineScopeModule {
 
     @Singleton
     @Provides
-    fun providesApplicationScope(
-        @DefaultDispatcher defaultDispatcher: CoroutineDispatcher
-    ): CoroutineScope = CoroutineScope(SupervisorJob() + defaultDispatcher)
+    @ApplicationDefaultScope
+    fun providesApplicationDefaultScope(
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
+    ): CoroutineScope = CoroutineScope(SupervisorJob() + dispatcher)
+
+    @Singleton
+    @Provides
+    @ApplicationIoScope
+    fun providesApplicationIoScope(
+        @IoDispatcher dispatcher: CoroutineDispatcher
+    ): CoroutineScope = CoroutineScope(SupervisorJob() + dispatcher)
+
+    @Singleton
+    @Provides
+    @ApplicationMainScope
+    fun providesApplicationMainScope(
+        @MainDispatcher dispatcher: CoroutineDispatcher
+    ): CoroutineScope = CoroutineScope(SupervisorJob() + dispatcher)
 }

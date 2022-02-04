@@ -14,6 +14,9 @@ import com.ian.junemon.foodiepedia.core.domain.repository.FoodRepository
 import com.ian.junemon.foodiepedia.core.domain.repository.ProfileRepository
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 /**
  * Created by Ian Damping on 27,January,2020
@@ -21,23 +24,30 @@ import dagger.Module
  * Indonesia.
  */
 @Module
-abstract class DataModule {
+@InstallIn(SingletonComponent::class)
+interface DataModule {
 
     @Binds
-    abstract fun bindFoodRemoteDataSource(remoteDataSource: FoodRemoteDataSourceImpl): FoodRemoteDataSource
+    @Singleton
+    fun bindFoodRemoteDataSource(remoteDataSource: FoodRemoteDataSourceImpl): FoodRemoteDataSource
 
     @Binds
-    abstract fun bindFoodCacheDataSource(cacheDataSource: FoodCacheDataSourceImpl): FoodCacheDataSource
+    @Singleton
+    fun bindFoodCacheDataSource(cacheDataSource: FoodCacheDataSourceImpl): FoodCacheDataSource
 
     @Binds
-    abstract fun bindProfileRemoteDataSource(remoteDataSource: ProfileRemoteDataSourceImpl): ProfileRemoteDataSource
+    @Singleton
+    fun bindProfileRemoteDataSource(remoteDataSource: ProfileRemoteDataSourceImpl): ProfileRemoteDataSource
 
     @Binds
-    abstract fun bindProfileCacheDataSource(remoteDataSource: ProfileCacheDataSourceImpl): ProfileCacheDataSource
+    @Singleton
+    fun bindProfileCacheDataSource(remoteDataSource: ProfileCacheDataSourceImpl): ProfileCacheDataSource
 
     @Binds
-    abstract fun bindProfileRepository(profileRepository: ProfileRepositoryImpl): ProfileRepository
+    @Singleton
+    fun bindProfileRepository(profileRepository: ProfileRepositoryImpl): ProfileRepository
 
     @Binds
-    abstract fun bindFoodRepository(foodRepository: FoodRepositoryImpl): FoodRepository
+    @Singleton
+    fun bindFoodRepository(foodRepository: FoodRepositoryImpl): FoodRepository
 }

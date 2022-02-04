@@ -33,4 +33,12 @@ annotation class MainDispatcher
 
 @Retention(AnnotationRetention.BINARY)
 @Qualifier
-annotation class ApplicationScope
+annotation class ApplicationDefaultScope
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class ApplicationIoScope
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class ApplicationMainScope

@@ -4,20 +4,27 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.presentation.view.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.ItemSearchBinding
 import com.ian.junemon.foodiepedia.util.FoodConstant.foodPresentationRvCallback
-import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
-import javax.inject.Inject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
 /**
  * Created by Ian Damping on 09,March,2021
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SearchAdapter @Inject constructor(
-    private val listener: SearchAdapterListener,
+class SearchAdapter @AssistedInject constructor(
+    @Assisted private val listener: SearchAdapterListener,
     private val loadImageHelper: LoadImageHelper
 ) : ListAdapter<FoodCachePresentation, SearchViewHolder>(foodPresentationRvCallback) {
+
+    @AssistedFactory
+    interface Factory {
+        fun create(listener: SearchAdapterListener): SearchAdapter
+    }
 
     interface SearchAdapterListener {
         fun onClicked(data: FoodCachePresentation)

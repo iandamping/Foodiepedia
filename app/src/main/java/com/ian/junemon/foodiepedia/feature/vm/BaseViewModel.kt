@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavDirections
-import com.ian.junemon.foodiepedia.model.Event
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -14,7 +12,7 @@ import kotlinx.coroutines.launch
  * Github https://github.com/iandamping
  * Indonesia.
  */
-abstract class BaseViewModel: ViewModel() {
+abstract class BaseViewModel : ViewModel() {
 
     /**
      * Request a snackbar to display a string.
@@ -33,6 +31,7 @@ abstract class BaseViewModel: ViewModel() {
         get() = _snackbar
 
     private val _loadingState = MutableLiveData<Boolean>()
+
     /**
      * Show a loading spinner if true
      */
@@ -50,12 +49,11 @@ abstract class BaseViewModel: ViewModel() {
     }
 
 
-
-    fun setupLoadingState(data:Boolean){
+    fun setupLoadingState(data: Boolean) {
         _loadingState.value = data
     }
 
-    fun setupSnackbarMessage(data:String?){
+    fun setupSnackbarMessage(data: String?) {
         _snackbar.value = data
     }
 

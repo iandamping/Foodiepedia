@@ -9,6 +9,9 @@ import com.ian.junemon.foodiepedia.core.data.datasource.cache.db.dao.SavedFoodDa
 import com.ian.junemon.foodiepedia.core.util.DataConstant.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
@@ -17,13 +20,14 @@ import javax.inject.Singleton
  * Indonesia.
  */
 @Module
+@InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDb(app: Context): FoodDatabase {
+    fun provideDb(@ApplicationContext context: Context): FoodDatabase {
         return Room
-            .databaseBuilder(app, FoodDatabase::class.java, DATABASE_NAME)
+            .databaseBuilder(context, FoodDatabase::class.java, DATABASE_NAME)
             .fallbackToDestructiveMigration()
             .build()
     }

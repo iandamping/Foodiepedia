@@ -3,17 +3,14 @@ package com.ian.junemon.foodiepedia.uploader.feature.vm
 import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.AuthenticatedUserInfo
 import com.ian.junemon.foodiepedia.core.domain.usecase.ProfileUseCase
-import com.ian.junemon.foodiepedia.core.domain.model.ProfileResults
 import com.ian.junemon.foodiepedia.core.domain.model.RepositoryData
-import com.ian.junemon.foodiepedia.model.Event
+import com.ian.junemon.foodiepedia.uploader.model.Event
 import com.ian.junemon.foodiepedia.uploader.feature.state.UserProfileUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,6 +20,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
+@HiltViewModel
 class ProfileViewModel @Inject constructor(private val repository: ProfileUseCase) :
     BaseViewModel() {
 

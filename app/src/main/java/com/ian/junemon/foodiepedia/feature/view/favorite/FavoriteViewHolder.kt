@@ -2,8 +2,8 @@ package com.ian.junemon.foodiepedia.feature.view.favorite
 
 import androidx.recyclerview.widget.RecyclerView
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.presentation.view.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.ItemFavoriteBinding
-import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
 
 /**
  * Created by Ian Damping on 11,March,2021
@@ -17,7 +17,7 @@ class FavoriteViewHolder(
 
     fun bind(data: FoodCachePresentation) {
         with(itemSliderBinding) {
-            with(loadImageHelper) { ivFavoriteFoodImage.loadWithGlide(data.foodImage) }
+            loadImageHelper.loadWithGlide(ivFavoriteFoodImage, data.foodImage)
             tvFavoriteFoodName.text = data.foodName
         }
     }

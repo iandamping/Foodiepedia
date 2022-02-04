@@ -4,6 +4,8 @@ import com.ian.junemon.foodiepedia.core.data.datasource.cache.datastore.DataStor
 import com.ian.junemon.foodiepedia.core.data.datasource.cache.datastore.DataStoreHelperImpl
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
 /**
  * Created by Ian Damping on 03,January,2021
@@ -11,8 +13,9 @@ import dagger.Module
  * Indonesia.
  */
 @Module
-abstract class DataStorePreferenceHelperModule {
+@InstallIn(SingletonComponent::class)
+interface DataStorePreferenceHelperModule {
 
     @Binds
-    abstract fun bindDataStoreHelper(dataStoreHelper: DataStoreHelperImpl): DataStoreHelper
+    fun bindDataStoreHelper(dataStoreHelper: DataStoreHelperImpl): DataStoreHelper
 }

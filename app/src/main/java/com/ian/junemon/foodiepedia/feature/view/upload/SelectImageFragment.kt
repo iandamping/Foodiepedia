@@ -8,10 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.CameraxPhotoFile
+import com.ian.junemon.foodiepedia.core.presentation.view.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentSelectImageBinding
 import com.ian.junemon.foodiepedia.feature.vm.SharedViewModel
 import com.ian.junemon.foodiepedia.util.clicks
-import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import javax.inject.Inject
 
@@ -20,14 +21,11 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SelectImageFragment : BaseFragmentViewBinding<FragmentSelectImageBinding>() {
-
-    @Inject
-    @CameraxPhotoFile
-    lateinit var photoFile: File
-
-    @Inject
-    lateinit var loadingImageHelper: LoadImageHelper
+@AndroidEntryPoint
+class SelectImageFragment @Inject constructor(
+    private val loadingImageHelper: LoadImageHelper,
+    @CameraxPhotoFile private val photoFile: File
+) : BaseFragmentViewBinding<FragmentSelectImageBinding>() {
 
     private val sharedVm: SharedViewModel by activityViewModels()
 
@@ -38,9 +36,8 @@ class SelectImageFragment : BaseFragmentViewBinding<FragmentSelectImageBinding>(
             val imageFile: File = File(photoFile.absolutePath)
             val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
 
-            with(loadingImageHelper) {
-                ivImage.loadWithGlide(bitmap)
-            }
+            loadingImageHelper.loadWithGlide(ivImage, bitmap)
+
             clicks(ivImageSelect) {
                 sharedVm.setPassedUri(savedUri.toString())
 

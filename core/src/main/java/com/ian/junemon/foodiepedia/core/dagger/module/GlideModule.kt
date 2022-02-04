@@ -9,6 +9,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.ian.junemon.foodiepedia.core.R
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.components.SingletonComponent
 
 /**
  * Created by Ian Damping on 23,June,2020
@@ -16,15 +20,16 @@ import dagger.Provides
  * Indonesia.
  */
 @Module
+@InstallIn(ActivityComponent::class)
 object GlideModule {
 
     @Provides
-    fun provideGlide(context: Context): Glide {
+    fun provideGlide(@ActivityContext context: Context): Glide {
         return Glide.get(context)
     }
 
     @Provides
-    fun provideGlideRequestManager(context: Context): RequestManager {
+    fun provideGlideRequestManager(@ActivityContext context: Context): RequestManager {
         return Glide.with(context)
     }
 

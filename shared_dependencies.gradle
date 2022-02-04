@@ -23,12 +23,13 @@ dependencies {
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+    //live data
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$livedata_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_version"
-    implementation "com.google.dagger:dagger:$dagger_version"
-    implementation "com.google.dagger:dagger-android:$dagger_version"
-    implementation "com.google.dagger:dagger-android-support:$dagger_version"
-    kapt 'com.google.dagger:dagger-android-processor:2.28.3'
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$livedata_version"
+    //hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     // CameraX core library using camera2 implementation
     implementation "androidx.camera:camera-camera2:$camerax_version"
     // CameraX Lifecycle Library

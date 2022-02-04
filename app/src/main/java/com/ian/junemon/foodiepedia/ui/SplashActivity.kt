@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.base.BaseActivity
+import com.ian.junemon.foodiepedia.core.presentation.view.LoadImageHelper
+import com.ian.junemon.foodiepedia.core.presentation.view.ViewHelper
 import com.ian.junemon.foodiepedia.databinding.ActivitySplashBinding
 import com.ian.junemon.foodiepedia.util.activityViewBinding
 import com.ian.junemon.foodiepedia.util.getDrawables
-import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 
@@ -16,7 +18,11 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
+@AndroidEntryPoint
 class SplashActivity : BaseActivity() {
+
+    @Inject
+    lateinit var viewHelper: ViewHelper
 
     @Inject
     lateinit var loadImageHelper: LoadImageHelper
@@ -25,7 +31,7 @@ class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        viewHelper.fullScreenAnimation(this)
         binding.initView()
 
         runDelayed {
@@ -35,11 +41,7 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun ActivitySplashBinding.initView() {
-        with(loadImageHelper) {
-            ivLoadSplash.loadWithGlide(
-                getDrawables(R.drawable.splash)
-            )
-        }
+        loadImageHelper.loadWithGlide(ivLoadSplash, getDrawables(R.drawable.splash))
     }
 
     private fun runDelayed(call: () -> Unit) {

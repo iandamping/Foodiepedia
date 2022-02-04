@@ -27,7 +27,6 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-@ExperimentalCoroutinesApi
 class FoodRemoteDataSourceImpl @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,

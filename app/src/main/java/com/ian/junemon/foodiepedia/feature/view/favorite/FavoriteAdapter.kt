@@ -4,20 +4,27 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.presentation.view.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.ItemFavoriteBinding
 import com.ian.junemon.foodiepedia.util.FoodConstant
-import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
-import javax.inject.Inject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
 /**
  * Created by Ian Damping on 11,March,2021
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class FavoriteAdapter @Inject constructor(
-    private val listener: FavoriteAdapterListener,
+class FavoriteAdapter @AssistedInject constructor(
+    @Assisted private val listener: FavoriteAdapterListener,
     private val loadImageHelper: LoadImageHelper
 ) : ListAdapter<FoodCachePresentation, FavoriteViewHolder>(FoodConstant.foodPresentationRvCallback) {
+
+    @AssistedFactory
+    interface Factory {
+        fun create(listener: FavoriteAdapterListener): FavoriteAdapter
+    }
 
     interface FavoriteAdapterListener {
         fun onClicked(data: FoodCachePresentation)

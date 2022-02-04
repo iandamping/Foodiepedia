@@ -1,8 +1,7 @@
 package com.ian.junemon.foodiepedia.uploader
 
-import com.ian.junemon.foodiepedia.uploader.dagger.DaggerUploadComponent
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
 /**
@@ -10,7 +9,9 @@ import timber.log.Timber
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class UploadApplication: DaggerApplication() {
+
+@HiltAndroidApp
+class UploadApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -19,7 +20,4 @@ class UploadApplication: DaggerApplication() {
         }
     }
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerUploadComponent.builder().create(this)
-    }
 }

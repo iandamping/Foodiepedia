@@ -2,9 +2,9 @@ package com.ian.junemon.foodiepedia.core.presentation.camera.listener
 
 import com.ian.junemon.foodiepedia.core.presentation.camera.ImageCaptureState
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,16 +13,15 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class PhotoListenerImpl @Inject constructor(private val scope: CoroutineScope) : PhotoListener {
+class PhotoListenerImpl @Inject constructor() : PhotoListener {
 
-    private val channel = Channel<ImageCaptureState>(Channel.CONFLATED)
+    private val _photoState: MutableStateFlow<ImageCaptureState> =
+        MutableStateFlow(ImageCaptureState.initialize())
 
     override fun setPhotoState(data: ImageCaptureState) {
-        scope.launch {
-            channel.send(data)
-        }
+        _photoState.value = data
     }
 
     override val photoState: Flow<ImageCaptureState>
-        get() = channel.receiveAsFlow()
+        get() = _photoState.asStateFlow()
 }

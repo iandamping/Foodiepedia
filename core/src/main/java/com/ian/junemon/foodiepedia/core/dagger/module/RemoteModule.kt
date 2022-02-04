@@ -10,6 +10,8 @@ import com.ian.junemon.foodiepedia.core.BuildConfig.firebaseStorageUrl
 import com.ian.junemon.foodiepedia.core.BuildConfig.foodNode
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
 /**
  * Created by Ian Damping on 07,January,2020
@@ -17,6 +19,7 @@ import dagger.Provides
  * Indonesia.
  */
 @Module
+@InstallIn(SingletonComponent::class)
 object RemoteModule {
 
     @Provides

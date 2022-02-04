@@ -10,6 +10,8 @@ import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
  * Indonesia.
  */
 object FoodConstant {
+    const val FRAGMENT_RESULT_KEY = "fragment result key "
+    const val FILTER_BUNDLE_KEY = "filtering key bundle"
     const val FILENAME = "Foodiepedia"
     const val PHOTO_EXTENSION = ".jpg"
 

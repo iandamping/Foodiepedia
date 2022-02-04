@@ -10,6 +10,7 @@ import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.Auth
 import com.ian.junemon.foodiepedia.core.data.datasource.remote.firebaseuser.FirebaseUserInfo
 import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
 import com.ian.junemon.foodiepedia.core.util.valueEventProfileFlow
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -22,10 +23,9 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-@ExperimentalCoroutinesApi
 class ProfileRemoteDataSourceImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-    private val context: Context,
+    @ApplicationContext private val context: Context,
     private val mFirebaseAuth: FirebaseAuth
 ) :
     ProfileRemoteDataSource {

@@ -4,20 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.presentation.view.ViewHelper
 import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
-import com.ian.junemon.foodiepedia.dagger.factory.lazyViewModel
 import com.ian.junemon.foodiepedia.databinding.FragmentSearchBinding
 import com.ian.junemon.foodiepedia.feature.vm.SearchFoodViewModel
 import com.ian.junemon.foodiepedia.util.gridRecyclerviewInitializer
-import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
-import com.ian.junemon.foodiepedia.util.interfaces.ViewHelper
 import com.ian.junemon.foodiepedia.util.observe
-import java.util.*
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
@@ -25,26 +23,20 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),
+@AndroidEntryPoint
+class SearchFragment @Inject constructor(
+    private val viewHelper: ViewHelper,
+    private val factory: SearchAdapter.Factory
+) : BaseFragmentViewBinding<FragmentSearchBinding>(),
     SearchAdapter.SearchAdapterListener {
-    @Inject
-    lateinit var gson: Gson
 
-    @Inject
-    lateinit var loadImageHelper: LoadImageHelper
 
-    @Inject
-    lateinit var viewHelper: ViewHelper
-
-    @Inject
-    lateinit var searchAdapter: SearchAdapter
-
-    @Inject
-    lateinit var viewModelFactory: SearchFoodViewModel.Factory
-
-    private val foodVm: SearchFoodViewModel by lazyViewModel { stateHandle ->
-        viewModelFactory.create(stateHandle)
+    private val searchAdapter: SearchAdapter by lazy {
+        factory.create(this)
     }
+
+
+    private val foodVm: SearchFoodViewModel by viewModels()
 
     private var text: String? = null
 
@@ -66,7 +58,6 @@ class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),
     }
 
     override fun activityCreated() {
-        /**Show a snackbar whenever the [snackbar] is updated a non-null value*/
         observe(foodVm.snackbar) { text ->
             text?.let {
                 Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
@@ -105,8 +96,8 @@ class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),
             when {
                 it.errorMessage.isNotEmpty() -> {
                     with(viewHelper) {
-                        binding.lnSearchFailed.visible()
-                        binding.rvSearchPlace.gone()
+                        visible(binding.lnSearchFailed)
+                        gone(binding.rvSearchPlace)
                     }
                     foodVm.setupSnackbarMessage(it.errorMessage)
 
@@ -116,8 +107,8 @@ class SearchFragment : BaseFragmentViewBinding<FragmentSearchBinding>(),
                         mapData.mapToCachePresentation()
                     })
                     with(viewHelper) {
-                        binding.lnSearchFailed.gone()
-                        binding.rvSearchPlace.visible()
+                        gone(binding.lnSearchFailed)
+                        visible(binding.rvSearchPlace)
                     }
                 }
             }

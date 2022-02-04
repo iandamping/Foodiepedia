@@ -3,18 +3,17 @@ package com.ian.junemon.foodiepedia.feature.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.appbar.AppBarLayout
-import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.base.BaseFragmentDataBinding
+import com.ian.junemon.foodiepedia.core.presentation.view.IntentUtilHelper
+import com.ian.junemon.foodiepedia.core.presentation.view.LoadImageHelper
 import com.ian.junemon.foodiepedia.core.util.mapToDetailDatabasePresentation
 import com.ian.junemon.foodiepedia.databinding.FragmentDetailBinding
 import com.ian.junemon.foodiepedia.feature.vm.FoodViewModel
 import com.ian.junemon.foodiepedia.util.clicks
-import com.ian.junemon.foodiepedia.util.interfaces.IntentUtilHelper
-import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
@@ -22,21 +21,15 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
+@AndroidEntryPoint
+class DetailFragment @Inject constructor(
+    private val loadImageHelper: LoadImageHelper,
+    private val intentHelper: IntentUtilHelper
+) : BaseFragmentDataBinding<FragmentDetailBinding>() {
     private val args: DetailFragmentArgs by navArgs()
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val foodVm: FoodViewModel by viewModels { viewModelFactory }
+    private val foodVm: FoodViewModel by viewModels()
 
-    @Inject
-    lateinit var loadImageHelper: LoadImageHelper
-
-    @Inject
-    lateinit var intentHelper: IntentUtilHelper
-
-    @Inject
-    lateinit var gson: Gson
 
     private var idForDeleteItem: Int? = null
     private var isFavorite: Boolean = false
@@ -55,9 +48,7 @@ class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
     }
 
     private fun FragmentDetailBinding.initView() {
-        with(loadImageHelper) {
-            ivFoodDetail.loadWithGlide(passedData.foodImage)
-        }
+        loadImageHelper.loadWithGlide(ivFoodDetail, passedData.foodImage)
 
         clicks(btnBookmark) {
             if (isFavorite) {
@@ -72,18 +63,11 @@ class DetailFragment : BaseFragmentDataBinding<FragmentDetailBinding>() {
         }
 
         clicks(btnShare) {
-            consumeSuspend {
-                setDialogShow(false)
-                intentHelper.intentShareImageAndText(
-                    tittle = passedData.foodName,
-                    imageUrl = passedData.foodImage,
-                    message = passedData.foodCategory
-                ) {
-                    setDialogShow(true)
-                    sharedImageIntent(it)
-                }
-
-            }
+            intentHelper.intentShareImageAndText(
+                tittle = passedData.foodName,
+                imageUrl = passedData.foodImage,
+                message = passedData.foodCategory
+            )
         }
 
 

@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
  */
 object DataConstant {
     const val ERROR_EMPTY_DATA = "Empty Data"
+    const val RequestReadWrite = 101
     const val RequestSelectGalleryImage = 102
     const val RequestOpenCamera = 234
     const val APPLICATION_ERROR = "Application encounter unknown error"

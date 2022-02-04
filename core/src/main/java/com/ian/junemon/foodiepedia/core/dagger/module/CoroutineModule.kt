@@ -5,6 +5,8 @@ import com.ian.junemon.foodiepedia.core.dagger.qualifier.IoDispatcher
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.MainDispatcher
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
@@ -14,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
  * Indonesia.
  */
 @Module
+@InstallIn(SingletonComponent::class)
 object CoroutineModule {
 
     @DefaultDispatcher

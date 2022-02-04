@@ -6,6 +6,9 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.ian.junemon.foodiepedia.core.util.DataConstant
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
@@ -14,6 +17,7 @@ import javax.inject.Singleton
  * Indonesia.
  */
 @Module
+@InstallIn(SingletonComponent::class)
 object DataStorePreferenceModule {
 
     private val Context.dataStore by preferencesDataStore(
@@ -27,5 +31,5 @@ object DataStorePreferenceModule {
 
     @Provides
     @Singleton
-    fun provideSharedPreference(context: Context) = context.dataStore
+    fun provideSharedPreference(@ApplicationContext context: Context) = context.dataStore
 }

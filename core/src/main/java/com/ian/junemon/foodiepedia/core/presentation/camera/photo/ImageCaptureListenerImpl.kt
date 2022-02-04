@@ -19,11 +19,11 @@ class ImageCaptureListenerImpl @Inject constructor(
     override fun providePhotoListener(): ImageCapture.OnImageSavedCallback {
        return object : ImageCapture.OnImageSavedCallback {
            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-               listener.setPhotoState(ImageCaptureState.Success)
+               listener.setPhotoState(ImageCaptureState(success = "success", failed = ""))
            }
 
            override fun onError(exception: ImageCaptureException) {
-               listener.setPhotoState(ImageCaptureState.Failed("Photo capture failed: ${exception.message}"))
+               listener.setPhotoState(ImageCaptureState(success = "", failed = "${exception.message}"))
            }
        }
     }

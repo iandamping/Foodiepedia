@@ -6,6 +6,8 @@ import com.ian.junemon.foodiepedia.core.domain.usecase.ProfileUseCase
 import com.ian.junemon.foodiepedia.core.domain.usecase.ProfileUseCaseImpl
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
 /**
  * Created by Ian Damping on 27,January,2020
@@ -13,11 +15,12 @@ import dagger.Module
  * Indonesia.
  */
 @Module
-abstract class DomainModule {
+@InstallIn(SingletonComponent::class)
+interface DomainModule {
 
     @Binds
-    abstract fun bindFoodUseCase(foodUseCaseImpl: FoodUseCaseImpl): FoodUseCase
+    fun bindFoodUseCase(foodUseCaseImpl: FoodUseCaseImpl): FoodUseCase
 
     @Binds
-    abstract fun bindProfileUseCase(profileUseCaseImpl: ProfileUseCaseImpl): ProfileUseCase
+    fun bindProfileUseCase(profileUseCaseImpl: ProfileUseCaseImpl): ProfileUseCase
 }

@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
-import com.ian.junemon.foodiepedia.core.presentation.camera.ImageCaptureState
 import com.ian.junemon.foodiepedia.core.presentation.camera.helper.CameraxHelper
 import com.ian.junemon.foodiepedia.core.presentation.camera.listener.PhotoListener
 import com.ian.junemon.foodiepedia.databinding.FragmentOpenCameraBinding
 import com.ian.junemon.foodiepedia.util.FoodConstant.ANIMATION_FAST_MILLIS
 import com.ian.junemon.foodiepedia.util.FoodConstant.ANIMATION_SLOW_MILLIS
 import com.ian.junemon.foodiepedia.util.clicks
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
@@ -25,13 +25,11 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class OpenCameraFragment : BaseFragmentViewBinding<FragmentOpenCameraBinding>() {
-
-    @Inject
-    lateinit var listener: PhotoListener
-
-    @Inject
-    lateinit var cameraxHelper: CameraxHelper
+@AndroidEntryPoint
+class OpenCameraFragment @Inject constructor(
+    private val listener: PhotoListener,
+    private val cameraxHelper: CameraxHelper
+) : BaseFragmentViewBinding<FragmentOpenCameraBinding>() {
 
 
     override fun viewCreated() {
@@ -76,13 +74,12 @@ class OpenCameraFragment : BaseFragmentViewBinding<FragmentOpenCameraBinding>() 
     private fun observeTakePhotoResult() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             listener.photoState.onEach { state ->
-                when (state) {
-                    is ImageCaptureState.Failed -> Timber.e(state.message)
-                    ImageCaptureState.Success -> {
+                when {
+                    state.failed.isNotEmpty() -> Timber.e("failed")
+                    state.success.isNotEmpty() -> {
                         val action = OpenCameraFragmentDirections
                             .actionOpenCameraFragmentToSelectImageFragment()
                         navigate(action)
-
                     }
                 }
             }.launchIn(this)

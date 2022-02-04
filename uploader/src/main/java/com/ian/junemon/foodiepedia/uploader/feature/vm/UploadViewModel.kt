@@ -4,9 +4,10 @@ import android.net.Uri
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
 import com.ian.junemon.foodiepedia.core.domain.model.FoodRemoteDomain
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
-import com.ian.junemon.foodiepedia.core.domain.model.FirebaseResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 /**
@@ -14,6 +15,7 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
+@HiltViewModel
 class UploadViewModel @Inject constructor(private val repository: FoodUseCase) : BaseViewModel() {
     private val _foodData: MutableLiveData<FoodRemoteDomain> = MutableLiveData()
     val foodData: LiveData<FoodRemoteDomain> = _foodData
@@ -30,9 +32,12 @@ class UploadViewModel @Inject constructor(private val repository: FoodUseCase) :
         liveData: LiveData<String>,
         crossinline data: (String) -> Unit
     ) {
-        liveData.observe(lifecycleOwner, {
-            data.invoke(it)
-        })
+        liveData.observe(
+            lifecycleOwner,
+            {
+                data.invoke(it)
+            }
+        )
     }
 
     fun setFood(data: FoodRemoteDomain) {

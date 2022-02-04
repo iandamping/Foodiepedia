@@ -7,19 +7,18 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.base.BaseFragmentViewBinding
-import com.ian.junemon.foodiepedia.core.dagger.factory.viewModelProvider
-import com.ian.junemon.foodiepedia.util.clicks
-import com.ian.junemon.foodiepedia.util.observe
+import com.ian.junemon.foodiepedia.core.presentation.view.LoadImageHelper
 import com.ian.junemon.foodiepedia.databinding.FragmentProfileBinding
 import com.ian.junemon.foodiepedia.feature.vm.ProfileViewModel
 import com.ian.junemon.foodiepedia.util.FoodConstant.ADMIN_1
 import com.ian.junemon.foodiepedia.util.FoodConstant.ADMIN_2
+import com.ian.junemon.foodiepedia.util.clicks
 import com.ian.junemon.foodiepedia.util.getDrawables
-import com.ian.junemon.foodiepedia.util.interfaces.LoadImageHelper
+import com.ian.junemon.foodiepedia.util.observe
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
@@ -27,19 +26,17 @@ import javax.inject.Inject
  * Github https://github.com/iandamping
  * Indonesia.
  */
-class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
+@AndroidEntryPoint
+class ProfileFragment @Inject constructor(private val loadImageHelper: LoadImageHelper) :
+    BaseFragmentViewBinding<FragmentProfileBinding>() {
+
     private lateinit var intentLauncher: ActivityResultLauncher<Intent>
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val profileVm: ProfileViewModel by viewModels { viewModelFactory }
-
-    @Inject
-    lateinit var loadImageHelper: LoadImageHelper
+    private val profileVm: ProfileViewModel by viewModels()
 
     override fun viewCreated() {
         /**Observe loading state to show loading*/
-        observe(profileVm.loadingState){ show ->
+        observe(profileVm.loadingState) { show ->
             setDialogShow(show)
         }
         binding.initView()
@@ -50,7 +47,7 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
         initOnBackPressed()
         intentLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
-        ){
+        ) {
 
         }
     }
@@ -60,53 +57,51 @@ class ProfileFragment : BaseFragmentViewBinding<FragmentProfileBinding>() {
             val action = ProfileFragmentDirections.actionProfileFragmentToUploadFoodFragment()
             navigate(action)
         }
-        clicks(relativeLayout2){
+        clicks(relativeLayout2) {
             val action = ProfileFragmentDirections.actionProfileFragmentToFavoriteFragment()
             navigate(action)
         }
         clicks(rlSignIn) {
             fireSignIn()
         }
-        clicks(rlSignOut){
+        clicks(rlSignOut) {
             fireSignOut()
         }
 
-        clicks(btnBack){
+        clicks(btnBack) {
             navigateUp()
         }
-        with(loadImageHelper){
-            ivFoodProfile.loadWithGlide(
-                getDrawables(R.drawable.foodiepedia)
-            )
-        }
+        loadImageHelper.loadWithGlide(ivFoodProfile, getDrawables(R.drawable.foodiepedia))
     }
 
     private fun observeUiState() {
-        profileVm.userData.asLiveData().observe(viewLifecycleOwner){
-            when{
-                it.errorMessage.isNotEmpty() ->{
+        profileVm.userData.asLiveData().observe(viewLifecycleOwner) {
+            when {
+                it.errorMessage.isNotEmpty() -> {
                     with(binding) {
                         rlSignOut.visibility = View.GONE
                         rlSignIn.visibility = View.VISIBLE
                         fabUpload.visibility = View.GONE
-                    }
 
-                    with(loadImageHelper) {
-                        binding.ivPhotoProfile.loadWithGlide(
-                            getDrawables( R.drawable.ic_profiles)
+                        loadImageHelper.loadWithGlide(
+                            ivPhotoProfile,
+                            getDrawables(R.drawable.ic_profiles)
                         )
                     }
+
+
                 }
-                it.user != null ->{
+                it.user != null -> {
                     with(binding) {
-                        with(loadImageHelper){
-                            ivPhotoProfile.loadWithGlide(it.user.getPhotoUrl())
-                        }
+                        loadImageHelper.loadWithGlide(
+                            ivPhotoProfile,
+                            it.user.getPhotoUrl()
+                        )
                         llProfileData.visibility = View.VISIBLE
                         tvProfileName.text = it.user.getDisplayName()
                         rlSignOut.visibility = View.VISIBLE
                         rlSignIn.visibility = View.GONE
-                        when(it.user.getUid()){
+                        when (it.user.getUid()) {
                             ADMIN_1, ADMIN_2 -> fabUpload.visibility = View.VISIBLE
                         }
                     }
