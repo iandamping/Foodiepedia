@@ -84,14 +84,6 @@
           }
         },
         {
-          "client_id": "678492392538-hv3ud4nu42jd6bbto7171b3sbvq9qmdk.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ian.junemon.foodiepedia",
-            "certificate_hash": "e7d31df3a9dc6195912045855ddabe319451da32"
-          }
-        },
-        {
           "client_id": "678492392538-o31kkh900fsu32ud5o9th9sj1tok7lbq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
