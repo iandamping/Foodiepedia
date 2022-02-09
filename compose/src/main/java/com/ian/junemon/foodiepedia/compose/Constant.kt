@@ -1,9 +1,9 @@
 package com.ian.junemon.foodiepedia.compose
 
-import com.ian.junemon.foodiepedia.compose.Constant.FILTER_0
 import com.ian.junemon.foodiepedia.compose.state.FilterItem
 
 object Constant {
+    const val KNIFE_LOADING = "knife_loading.json"
     const val FILTER_0 = "Everything"
     const val FILTER_1 = "Breakfast"
     const val FILTER_2 = "Lunch"
@@ -53,7 +53,8 @@ fun FilterItem.setIsSelected(selectedFilter: String): FilterItem =
         this.filterText -> FilterItem(
             filterIcon = this.filterIcon,
             filterText = this.filterText,
-            isFilterSelected = true)
+            isFilterSelected = true
+        )
 
         else -> FilterItem(
             filterIcon = this.filterIcon,

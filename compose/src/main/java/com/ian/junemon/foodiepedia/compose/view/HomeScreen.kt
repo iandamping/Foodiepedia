@@ -87,9 +87,16 @@ fun HomeScreen(
             }
 
         }) {
+
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
 
-            val (appName, selectedFilter, filterDialogIcon, searchButton, listFood) = createRefs()
+            val (appName, selectedFilter, filterDialogIcon, searchButton, listFood, lottieLoading) = createRefs()
+
+            LottieLoading(modifier = Modifier.constrainAs(lottieLoading) {
+                centerVerticallyTo(parent)
+                centerHorizontallyTo(parent)
+            }, isLoading = foodState.isLoading)
+
 
             Text(
                 modifier = Modifier.constrainAs(appName) {
@@ -197,7 +204,8 @@ fun HomeScreen(
                             foodState.data
                         } else foodState.data.filter { filter ->
                             checkNotNull(
-                                filter.foodName?.lowercase(Locale.getDefault())?.contains(userSearch)
+                                filter.foodName?.lowercase(Locale.getDefault())
+                                    ?.contains(userSearch)
                             )
                         }) {
                             FoodItem(data = it)
