@@ -34,6 +34,7 @@ import com.ian.junemon.foodiepedia.compose.view.FilterFoodDialog
 import com.ian.junemon.foodiepedia.compose.view.HomeScreen
 import com.ian.junemon.foodiepedia.core.util.DataConstant
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class FoodActivity : ComponentActivity() {
@@ -52,6 +53,7 @@ class FoodActivity : ComponentActivity() {
 fun MyApp(viewModel: FoodViewModel) {
     val filterFood by viewModel.filterData().observeAsState(initial = "")
     val listOfFood by viewModel.food.asLiveData().observeAsState(initial = FoodUiState.initial())
+    val userSearchFood by viewModel.searchFood.asLiveData().observeAsState(initial = "")
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background
@@ -61,6 +63,9 @@ fun MyApp(viewModel: FoodViewModel) {
             foodState = listOfFood,
             setFilterFood = {
                 viewModel.setFilterData(it)
+            }, userSearch = userSearchFood,
+            setUserSearch = {
+                viewModel.setSearchFood(it)
             }
         )
     }
@@ -109,7 +114,8 @@ fun DefaultPreview() {
             foodState = FoodUiState.initial(),
             setFilterFood = {
 
-            })
+            }, userSearch = "",
+            setUserSearch = {})
     }
 }
 

@@ -16,11 +16,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Sort
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -28,61 +28,66 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import coil.compose.rememberImagePainter
 import coil.imageLoader
 import coil.request.CachePolicy
 import coil.request.ImageRequest
-import com.ian.junemon.foodiepedia.compose.Constant
 import com.ian.junemon.foodiepedia.compose.Constant.configureFilterItem
 import com.ian.junemon.foodiepedia.compose.R
 import com.ian.junemon.foodiepedia.compose.state.FoodUiState
 import com.ian.junemon.foodiepedia.compose.ui.theme.YellowFood
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 import kotlinx.coroutines.launch
+import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     filterFood: String,
-    setFilterFood: (String) ->Unit,
+    setFilterFood: (String) -> Unit,
+    userSearch: String,
+    setUserSearch: (String) -> Unit,
     foodState: FoodUiState
 ) {
+    var isFilterClicked by remember {
+        mutableStateOf(false)
+    }
+
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetScaffoldState = rememberModalBottomSheetState(
         ModalBottomSheetValue.Hidden
     )
 
-    ModalBottomSheetLayout(sheetState = bottomSheetScaffoldState, sheetContent = {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            IconButton(modifier = Modifier
-                .padding(vertical = 8.dp)
-                .align(Alignment.End), onClick = {
-                coroutineScope.launch {
-                    if (bottomSheetScaffoldState.isVisible) {
-                        bottomSheetScaffoldState.hide()
+    ModalBottomSheetLayout(
+        modifier = modifier.fillMaxSize(),
+        sheetState = bottomSheetScaffoldState,
+        sheetContent = {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                IconButton(modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .align(Alignment.End), onClick = {
+                    coroutineScope.launch {
+                        if (bottomSheetScaffoldState.isVisible) {
+                            bottomSheetScaffoldState.hide()
+                        }
+                    }
+                }, content = {
+                    Image(imageVector = Icons.Default.Close, contentDescription = "Close Item")
+                })
+
+                LazyColumn {
+                    items(configureFilterItem(filterFood)) { singleItem ->
+                        FilterFoodDialog(filterItem = singleItem, selectedFilterItem = {
+                            setFilterFood(it.filterText)
+                        })
                     }
                 }
-            }, content = {
-                Image(imageVector = Icons.Default.Close, contentDescription = "Close Item")
-            })
-
-            LazyColumn {
-                items(configureFilterItem(filterFood)) { singleItem ->
-                    FilterFoodDialog(filterItem = singleItem, selectedFilterItem = {
-                        setFilterFood(it.filterText)
-                    })
-                }
             }
-        }
 
-    }) {
-        ConstraintLayout(
-            modifier =
-            modifier
-                .fillMaxSize()
-                .padding(8.dp)
-        ) {
+        }) {
+        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
 
             val (appName, selectedFilter, filterDialogIcon, searchButton, listFood) = createRefs()
 
@@ -120,22 +125,50 @@ fun HomeScreen(
                 imageVector = Icons.Default.Sort, contentDescription = "filter"
             )
 
-            IconButton(
+            TextField(
                 modifier = Modifier
-                    .size(45.dp)
-                    .clip(CircleShape)
-                    .background(YellowFood)
                     .constrainAs(searchButton) {
-                        top.linkTo(selectedFilter.bottom)
-                        end.linkTo(parent.end)
+                        top.linkTo(selectedFilter.bottom, margin = 8.dp)
+                        start.linkTo(parent.start, margin = 8.dp)
+                        end.linkTo(parent.end, margin = 8.dp)
+                        width = Dimension.fillToConstraints
                     },
-                onClick = {}
-            ) {
-                Image(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search"
+                value = userSearch,
+                onValueChange = {
+                    setUserSearch(it)
+                }, placeholder = {
+                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                        Text(
+                            text = "Search food",
+                            style = MaterialTheme.typography.body2
+                        )
+                    }
+                },
+                trailingIcon = {
+                    IconButton(
+                        modifier = Modifier
+                            .size(45.dp)
+                            .clip(CircleShape)
+                            .background(YellowFood),
+                        onClick = {
+                            isFilterClicked = !isFilterClicked
+                        }
+                    ) {
+                        Image(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Search"
+                        )
+                    }
+                },
+                shape = RoundedCornerShape(8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent
                 )
-            }
+            )
+
+
 
             when {
                 foodState.errorMessage.isNotEmpty() -> {
@@ -155,12 +188,18 @@ fun HomeScreen(
                 foodState.data.isNotEmpty() -> {
                     LazyVerticalGrid(
                         modifier = Modifier
-                            .fillMaxSize()
+                            .padding(vertical = 16.dp)
                             .constrainAs(listFood) {
-                                top.linkTo(searchButton.bottom, margin = 16.dp)
+                                top.linkTo(searchButton.bottom)
                             }, cells = GridCells.Fixed(2)
                     ) {
-                        items(foodState.data) {
+                        items(items = if (userSearch.isEmpty()) {
+                            foodState.data
+                        } else foodState.data.filter { filter ->
+                            checkNotNull(
+                                filter.foodName?.lowercase(Locale.getDefault())?.contains(userSearch)
+                            )
+                        }) {
                             FoodItem(data = it)
                         }
                     }
