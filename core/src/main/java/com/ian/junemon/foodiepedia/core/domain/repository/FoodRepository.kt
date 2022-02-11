@@ -16,6 +16,8 @@ interface FoodRepository {
 
     fun getCache(): Flow<RepositoryData<List<FoodCacheDomain>>>
 
+    fun getCacheById(id:Int): Flow<RepositoryData<FoodCacheDomain>>
+
     fun getCategorizeCache(foodCategory: String): Flow<RepositoryData<List<FoodCacheDomain>>>
 
     fun getSavedDetailCache(): Flow<RepositoryData<List<SavedFoodCacheDomain>>>

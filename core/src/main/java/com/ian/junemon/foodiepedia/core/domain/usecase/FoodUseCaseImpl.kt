@@ -17,6 +17,10 @@ class FoodUseCaseImpl @Inject constructor(private val repo: FoodRepository) : Fo
         return repo.getCache()
     }
 
+    override fun getCacheById(id: Int): Flow<RepositoryData<FoodCacheDomain>> {
+        return repo.getCacheById(id)
+    }
+
     override fun prefetchData():  Flow<RepositoryData<List<FoodCacheDomain>>> {
         return repo.prefetchData()
     }

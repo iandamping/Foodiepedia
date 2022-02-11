@@ -14,6 +14,8 @@ interface FoodUseCase {
 
     fun getCache(): Flow<RepositoryData<List<FoodCacheDomain>>>
 
+    fun getCacheById(id:Int): Flow<RepositoryData<FoodCacheDomain>>
+
     fun prefetchData():  Flow<RepositoryData<List<FoodCacheDomain>>>
 
     suspend fun setCache(vararg data: FoodCacheDomain)

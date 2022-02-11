@@ -28,9 +28,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.compose.R
+import com.ian.junemon.foodiepedia.compose.navigation.NavigationArgs
+import com.ian.junemon.foodiepedia.compose.navigation.ScreensNavigation
 import com.ian.junemon.foodiepedia.compose.state.FoodUiState
 import com.ian.junemon.foodiepedia.compose.ui.theme.YellowFood
+import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -42,7 +46,8 @@ fun HomeScreen(
     setFilterFood: (String) -> Unit,
     userSearch: String,
     setUserSearch: (String) -> Unit,
-    foodState: FoodUiState
+    foodState: FoodUiState,
+    selectFood: (FoodCachePresentation) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetScaffoldState = rememberModalBottomSheetState(
@@ -178,7 +183,10 @@ fun HomeScreen(
                                         ?.contains(userSearch)
                                 )
                             }) {
-                                FoodItem(data = it)
+                                FoodItem(data = it) { selectedFood ->
+                                    selectFood.invoke(selectedFood)
+
+                                }
                             }
                         }
                     }

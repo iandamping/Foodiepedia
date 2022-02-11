@@ -1,6 +1,7 @@
 package com.ian.junemon.foodiepedia.compose.view
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,8 +23,16 @@ import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 
 
 @Composable
-fun FoodItem(modifier: Modifier = Modifier, data: FoodCachePresentation) {
-    Column(modifier = modifier.padding(8.dp)) {
+fun FoodItem(
+    modifier: Modifier = Modifier,
+    data: FoodCachePresentation,
+    selectedFood: (FoodCachePresentation) -> Unit
+) {
+    Column(modifier = modifier
+        .padding(8.dp)
+        .clickable {
+            selectedFood(data)
+        }) {
         val singleInstanceImageLoader = LocalContext.current.imageLoader
         val imageRequest = ImageRequest.Builder(LocalContext.current)
             .data(data.foodImage)

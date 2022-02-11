@@ -84,6 +84,16 @@ class FoodRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getCacheById(id: Int): Flow<RepositoryData<FoodCacheDomain>> {
+        return cacheDataSource.getCacheById(id).map {
+            if (it.foodId == null){
+                RepositoryData.Error(ERROR_EMPTY_DATA)
+            } else {
+                RepositoryData.Success(it)
+            }
+        }
+    }
+
     override fun getCategorizeCache(foodCategory: String): Flow<RepositoryData<List<FoodCacheDomain>>> {
         return cacheDataSource.getCategorizeCache(foodCategory).map {
             when(it){
