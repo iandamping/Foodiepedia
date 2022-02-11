@@ -61,13 +61,13 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.4.0'
     // constraint
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0"
-
+    //permission
+    implementation "com.google.accompanist:accompanist-permissions:0.24.1-alpha"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     //lottie
     debugImplementation "com.airbnb.android:lottie-compose:4.1.0"
     //navigation
     implementation "androidx.navigation:navigation-compose:$navigationVer"
-
     implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_version"
 
     //coroutine

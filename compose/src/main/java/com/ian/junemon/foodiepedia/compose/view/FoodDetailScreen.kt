@@ -24,9 +24,7 @@ import coil.compose.rememberImagePainter
 import coil.imageLoader
 import coil.request.CachePolicy
 import coil.request.ImageRequest
-import com.google.gson.Gson
 import com.ian.junemon.foodiepedia.compose.R
-import com.ian.junemon.foodiepedia.compose.navigation.NavigationArgs
 import com.ian.junemon.foodiepedia.compose.state.DetailFoodUiState
 import com.ian.junemon.foodiepedia.compose.ui.theme.CalmWhite
 import com.ian.junemon.foodiepedia.compose.ui.theme.GrayIconButton
@@ -37,15 +35,16 @@ import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 fun FoodDetailScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    data: DetailFoodUiState
+    data: DetailFoodUiState,
+    shareData: (FoodCachePresentation) -> Unit
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        when{
-            data.data !=null ->{
+        when {
+            data.data != null -> {
                 val singleInstanceImageLoader = LocalContext.current.imageLoader
                 val imageRequest = ImageRequest.Builder(LocalContext.current)
                     .data(data.data.foodImage)
@@ -117,7 +116,9 @@ fun FoodDetailScreen(
                                 end.linkTo(parent.end, margin = 8.dp)
                                 centerVerticallyTo(parent, bias = 0.3f)
                             },
-                        onClick = {}
+                        onClick = {
+                            shareData.invoke(data.data)
+                        }
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_share_white_24dp),
@@ -163,7 +164,7 @@ fun FoodDetailScreen(
                 }
             }
 
-            data.errorMessage.isNotEmpty() ->{
+            data.errorMessage.isNotEmpty() -> {
                 Text(text = "Empty Data")
             }
         }

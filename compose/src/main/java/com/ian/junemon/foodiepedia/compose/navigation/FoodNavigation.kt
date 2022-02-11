@@ -3,6 +3,7 @@ package com.ian.junemon.foodiepedia.compose.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.asLiveData
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -10,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.ian.junemon.foodiepedia.compose.FoodViewModel
+import com.ian.junemon.foodiepedia.compose.intentShareImageAndText
 import com.ian.junemon.foodiepedia.compose.navigation.Navigating.navigateWithIntArgument
 import com.ian.junemon.foodiepedia.compose.state.DetailFoodUiState
 import com.ian.junemon.foodiepedia.compose.state.FoodUiState
@@ -21,6 +23,7 @@ fun FoodNavigationHost(
     viewModel: FoodViewModel,
     navController: NavHostController
 ) {
+    val context = LocalContext.current
     val filterFood by viewModel.filterData().observeAsState(initial = "")
     val listOfFood by viewModel.food.asLiveData().observeAsState(initial = FoodUiState.initial())
     val detailFood by viewModel.detailFood.asLiveData().observeAsState(initial = DetailFoodUiState.initial())
@@ -46,7 +49,15 @@ fun FoodNavigationHost(
             composable(ScreensNavigation.LoadDetail().name) {
                 FoodDetailScreen(
                     navController = navController,
-                    data = detailFood
+                    data = detailFood,
+                    shareData = { data ->
+                        intentShareImageAndText(
+                            tittle = data.foodName,
+                            imageUrl = data.foodImage,
+                            message = data.foodCategory,
+                            context = context
+                        )
+                    }
                 )
             }
 

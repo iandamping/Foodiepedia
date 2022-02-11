@@ -7,6 +7,7 @@ import com.ian.junemon.foodiepedia.compose.state.DetailFoodUiState
 import com.ian.junemon.foodiepedia.compose.state.FoodUiState
 import com.ian.junemon.foodiepedia.core.domain.model.RepositoryData
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
+import com.ian.junemon.foodiepedia.core.presentation.view.IntentUtilHelper
 import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -95,6 +96,5 @@ class FoodViewModel @Inject constructor(
                 }
             }
         }
-
     }
 }
