@@ -1,60 +1,60 @@
 package com.ian.junemon.foodiepedia.compose
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.ian.junemon.foodiepedia.compose.Constant.FILTER_0
+import com.ian.junemon.foodiepedia.compose.state.BookmarkedFoodUiState
 import com.ian.junemon.foodiepedia.compose.state.DetailFoodUiState
 import com.ian.junemon.foodiepedia.compose.state.FoodUiState
 import com.ian.junemon.foodiepedia.core.domain.model.RepositoryData
+import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
-import com.ian.junemon.foodiepedia.core.presentation.view.IntentUtilHelper
 import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class FoodViewModel @Inject constructor(
     private val useCase: FoodUseCase
-) : BaseViewModel() {
-
-    private val _searchFood = MutableStateFlow("")
-    val searchFood = _searchFood.asStateFlow()
+) : ViewModel() {
 
     private val _food = MutableStateFlow(FoodUiState.initial())
     val food = _food.asStateFlow()
 
+    private val _searchFood = MutableStateFlow("")
+    val searchFood = _searchFood.asStateFlow()
+
+    private val _selectedFoodId = MutableStateFlow(0)
+    val selectedFoodId = _selectedFoodId.asStateFlow()
+
+    private val _bookmarkedFood = MutableStateFlow(BookmarkedFoodUiState.initial())
+    val bookmarkedFood = _bookmarkedFood.asStateFlow()
+
     private val _detailFood = MutableStateFlow(DetailFoodUiState.initial())
     val detailFood = _detailFood.asStateFlow()
+
+    fun setSelectedFoodId(id: Int){
+        _selectedFoodId.value = id
+    }
 
     fun setSearchFood(query: String) {
         _searchFood.value = query
     }
 
-    fun getFoodById(id: Int) {
-        consumeSuspend {
-            useCase.getCacheById(id).collect { result ->
-                when (result) {
-                    is RepositoryData.Error -> _detailFood.update { currentUiState ->
-                        currentUiState.copy(
-                            data = null,
-                            errorMessage = result.msg,
-                        )
-                    }
-                    is RepositoryData.Success -> {
-                        _detailFood.update { currentUiState ->
-                            currentUiState.copy(
-                                data = result.data.mapToCachePresentation(),
-                                errorMessage = "",
-                            )
-                        }
-                    }
-                }
-            }
+    fun bookmarkFood(data: SavedFoodCacheDomain) {
+        viewModelScope.launch {
+            useCase.setCacheDetailFood(data)
+        }
+    }
+
+    fun unbookmarkFood(selectedId: Int) {
+        viewModelScope.launch {
+            useCase.deleteSelectedId(selectedId)
         }
     }
 
@@ -68,7 +68,7 @@ class FoodViewModel @Inject constructor(
 
 
     init {
-        consumeSuspend {
+        viewModelScope.launch {
             useCase.loadSharedPreferenceFilter().flatMapLatest {
                 when {
                     it.isEmpty() -> useCase.prefetchData()
@@ -90,6 +90,42 @@ class FoodViewModel @Inject constructor(
                                 data = result.data.mapToCachePresentation(),
                                 errorMessage = "",
                                 isLoading = false
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            useCase.getSavedDetailCache().collect { result ->
+                when (result) {
+                    is RepositoryData.Error -> _bookmarkedFood.update { currentUiState ->
+                        currentUiState.copy(data = emptyList(), errorMessage = result.msg)
+                    }
+                    is RepositoryData.Success -> _bookmarkedFood.update { currentUiState ->
+                        currentUiState.copy(data = result.data, errorMessage = "")
+                    }
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            selectedFoodId.flatMapLatest {
+                useCase.getCacheById(it)
+            }.collect{ result ->
+                when (result) {
+                    is RepositoryData.Error -> _detailFood.update { currentUiState ->
+                        currentUiState.copy(
+                            data = null,
+                            errorMessage = result.msg,
+                        )
+                    }
+                    is RepositoryData.Success -> {
+                        _detailFood.update { currentUiState ->
+                            currentUiState.copy(
+                                data = result.data.mapToCachePresentation(),
+                                errorMessage = "",
                             )
                         }
                     }

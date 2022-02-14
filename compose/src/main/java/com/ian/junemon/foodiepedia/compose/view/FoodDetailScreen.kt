@@ -11,6 +11,9 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -25,19 +28,28 @@ import coil.imageLoader
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.ian.junemon.foodiepedia.compose.R
+import com.ian.junemon.foodiepedia.compose.state.BookmarkedFoodUiState
 import com.ian.junemon.foodiepedia.compose.state.DetailFoodUiState
 import com.ian.junemon.foodiepedia.compose.ui.theme.CalmWhite
 import com.ian.junemon.foodiepedia.compose.ui.theme.GrayIconButton
 import com.ian.junemon.foodiepedia.compose.ui.theme.YellowFood
 import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
+import com.ian.junemon.foodiepedia.core.util.mapToDetailDatabasePresentation
 
 @Composable
 fun FoodDetailScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     data: DetailFoodUiState,
-    shareData: (FoodCachePresentation) -> Unit
+    bookmarkedFood: BookmarkedFoodUiState,
+    shareData: (FoodCachePresentation) -> Unit,
+    bookmarkData: (FoodCachePresentation) -> Unit,
+    unbookmarkData: (Int) -> Unit,
 ) {
+    var idForBookmaredItem: MutableState<Int?> = remember {
+        mutableStateOf(null)
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -136,12 +148,39 @@ fun FoodDetailScreen(
                                 bottom.linkTo(customView.top)
                                 end.linkTo(parent.end, margin = 8.dp)
                             },
-                        onClick = {}
+                        onClick = {
+                            if(idForBookmaredItem.value !=null){
+                                unbookmarkData(idForBookmaredItem.value!!)
+                            }else {
+                                idForBookmaredItem.value = null
+                                bookmarkData.invoke(data.data)
+                            }
+                        }
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_unbookmark),
-                            contentDescription = "Search"
-                        )
+
+                        val tmp =
+                            bookmarkedFood.data.filter { result -> result.foodName == data.data.foodName }
+
+                        if (tmp.isNotEmpty()) {
+                            tmp.forEach { savedFood ->
+                                if (savedFood.foodName == data.data.foodName) {
+                                    idForBookmaredItem.value = savedFood.localFoodID
+                                    Image(
+                                        painter = painterResource(
+                                            id = R.drawable.ic_bookmarked
+                                        ),
+                                        contentDescription = "Search"
+                                    )
+                                }
+                            }
+                        } else {
+                            Image(
+                                painter = painterResource(
+                                    id = R.drawable.ic_unbookmark
+                                ),
+                                contentDescription = "Search"
+                            )
+                        }
                     }
                 }
 

@@ -29,8 +29,15 @@ class FoodCacheDataSourceImpl @Inject constructor(
         return foodDao.loadFood().map { it.mapToCacheDomain() }
     }
 
-    override fun getCacheById(id: Int): Flow<FoodCacheDomain> {
-        return foodDao.loadFoodById(id).map { it.mapToCacheDomain() }
+    override fun getCacheById(id: Int): Flow<DataSourceHelper<FoodCacheDomain>> {
+        return foodDao.loadFoodById(id).map {
+            if (it == null) {
+                DataSourceHelper.DataSourceError(Exception(ERROR_EMPTY_DATA))
+            } else {
+                DataSourceHelper.DataSourceValue(it.mapToCacheDomain())
+
+            }
+        }
     }
 
     override fun getSavedDetailCache(): Flow<DataSourceHelper<List<SavedFoodCacheDomain>>> {

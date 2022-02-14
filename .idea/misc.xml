@@ -3,11 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/WORK_PROJECT/GITHUBKU/food_api_mvvm/app/src/main/res/drawable/btmsheet_curve.xml" value="0.1245" />
+        <entry key="..\:/WORK_PROJECT/GITHUBKU/food_api_mvvm/app/src/main/res/drawable/circle_gray_drawable.xml" value="0.1245" />
         <entry key="..\:/WORK_PROJECT/GITHUBKU/food_api_mvvm/app/src/main/res/drawable/circle_yellow_drawable.xml" value="0.1245" />
         <entry key="..\:/WORK_PROJECT/GITHUBKU/food_api_mvvm/app/src/main/res/layout/fragment_bottom_filter.xml" value="0.33" />
-        <entry key="..\:/WORK_PROJECT/GITHUBKU/food_api_mvvm/app/src/main/res/layout/fragment_detail.xml" value="0.1" />
+        <entry key="..\:/WORK_PROJECT/GITHUBKU/food_api_mvvm/app/src/main/res/layout/fragment_detail.xml" value="0.25" />
         <entry key="..\:/WORK_PROJECT/GITHUBKU/food_api_mvvm/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/WORK_PROJECT/GITHUBKU/food_api_mvvm/app/src/main/res/layout/fragment_profile.xml" value="0.1" />
+        <entry key="..\:/WORK_PROJECT/GITHUBKU/food_api_mvvm/compose/src/main/res/drawable/ic_arrow_back_black_24dp.xml" value="0.1245" />
+        <entry key="..\:/WORK_PROJECT/GITHUBKU/food_api_mvvm/compose/src/main/res/drawable/ic_bookmarked.xml" value="0.1245" />
+        <entry key="..\:/WORK_PROJECT/GITHUBKU/food_api_mvvm/compose/src/main/res/drawable/ic_check_circle_gray_24dp.xml" value="0.1245" />
+        <entry key="..\:/WORK_PROJECT/GITHUBKU/food_api_mvvm/compose/src/main/res/drawable/ic_share_white_24dp.xml" value="0.1245" />
       </map>
     </option>
   </component>

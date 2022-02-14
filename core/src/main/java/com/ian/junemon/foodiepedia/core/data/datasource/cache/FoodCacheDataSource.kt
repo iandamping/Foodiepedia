@@ -9,7 +9,7 @@ interface FoodCacheDataSource {
 
     fun getCache(): Flow<List<FoodCacheDomain>>
 
-    fun getCacheById(id:Int): Flow<FoodCacheDomain>
+    fun getCacheById(id:Int): Flow<DataSourceHelper<FoodCacheDomain>>
 
     fun getSavedDetailCache(): Flow<DataSourceHelper<List<SavedFoodCacheDomain>>>
 

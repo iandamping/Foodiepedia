@@ -1,21 +1,21 @@
 package com.ian.junemon.foodiepedia.core.domain.model
 
-data class GenericPairData<A, B>(val data1: A, val data2: B)
+data class GenericPairData<out A, out B>(val data1: A, val data2: B)
 
-data class GenericTripleData<A, B, C>(
+data class GenericTripleData<out A,out B,out C>(
     val data1: A,
     val data2: B,
     val data3: C
 )
 
-data class GenericQuadData<A, B, C, D>(
+data class GenericQuadData<out A,out B,out C,out  D>(
     val data1: A,
     val data2: B,
     val data3: C,
     val data4: D
 )
 
-data class GenericQuintData<A, B, C, D, E>(
+data class GenericQuintData<out A,out B,out C,out D,out E>(
     val data1: A,
     val data2: B,
     val data3: C,
@@ -23,7 +23,7 @@ data class GenericQuintData<A, B, C, D, E>(
     val data5: E
 )
 
-data class GenericSixData<A, B, C, D, E, F>(
+data class GenericSixData<out A,out B,out C,out D,out E,out F>(
     val data1: A,
     val data2: B,
     val data3: C,

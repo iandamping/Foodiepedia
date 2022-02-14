@@ -86,10 +86,13 @@ class FoodRepositoryImpl @Inject constructor(
 
     override fun getCacheById(id: Int): Flow<RepositoryData<FoodCacheDomain>> {
         return cacheDataSource.getCacheById(id).map {
-            if (it.foodId == null){
-                RepositoryData.Error(ERROR_EMPTY_DATA)
-            } else {
-                RepositoryData.Success(it)
+            when(it){
+                is DataSourceHelper.DataSourceError ->{
+                    RepositoryData.Error(it.exception.localizedMessage ?: APPLICATION_ERROR)
+                }
+                is DataSourceHelper.DataSourceValue ->{
+                    RepositoryData.Success(it.data)
+                }
             }
         }
     }

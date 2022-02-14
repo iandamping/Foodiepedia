@@ -19,7 +19,7 @@ interface FoodDao {
     fun loadFood(): Flow<List<Food>>
 
     @Query("SELECT * FROM table_food WHERE food_id=:id")
-    fun loadFoodById(id:Int): Flow<Food>
+    fun loadFoodById(id:Int): Flow<Food?>
 
     @Query("SELECT * FROM table_food WHERE food_category = :foodCategory")
     fun loadFoodByCategory(foodCategory: String): Flow<List<Food>>
