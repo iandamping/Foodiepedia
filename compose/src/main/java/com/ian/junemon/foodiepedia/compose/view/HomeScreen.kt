@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -170,9 +171,10 @@ fun HomeScreen(
                     foodState.data.isNotEmpty() -> {
                         LazyVerticalGrid(
                             modifier = Modifier
-                                .padding(vertical = 16.dp)
                                 .constrainAs(listFood) {
-                                    top.linkTo(searchButton.bottom)
+                                    top.linkTo(searchButton.bottom, margin = 8.dp)
+                                    bottom.linkTo(parent.bottom, margin = 8.dp)
+                                    height = Dimension.fillToConstraints
                                 }, cells = GridCells.Fixed(2)
                         ) {
                             items(items = if (userSearch.isEmpty()) {

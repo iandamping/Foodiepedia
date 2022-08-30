@@ -46,7 +46,7 @@ fun FoodDetailScreen(
     bookmarkData: (FoodCachePresentation) -> Unit,
     unbookmarkData: (Int) -> Unit,
 ) {
-    var idForBookmaredItem: MutableState<Int?> = remember {
+    val idForBookmaredItem: MutableState<Int?> = remember {
         mutableStateOf(null)
     }
 

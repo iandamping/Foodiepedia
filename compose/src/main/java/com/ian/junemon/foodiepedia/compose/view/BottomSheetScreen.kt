@@ -2,6 +2,7 @@ package com.ian.junemon.foodiepedia.compose.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,7 +32,7 @@ fun BottomSheetScreen(
     content: @Composable () -> Unit
 ) {
     ModalBottomSheetLayout(modifier = modifier, sheetState = state, sheetContent = {
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column{
             IconButton(modifier = Modifier
                 .padding(vertical = 8.dp)
                 .align(Alignment.End), onClick = {

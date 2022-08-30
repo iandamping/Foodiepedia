@@ -24,11 +24,11 @@ fun FoodNavigationHost(
 ) {
     val context = LocalContext.current
     val filterFood by viewModel.filterData().observeAsState(initial = "")
-    val listOfFood by viewModel.food.asLiveData().observeAsState(initial = FoodUiState.initial())
-    val detailFood by viewModel.detailFood.asLiveData().observeAsState(initial = DetailFoodUiState.initial())
-    val bookmarkedFood by viewModel.bookmarkedFood.asLiveData().observeAsState(initial = BookmarkedFoodUiState.initial())
+    val listOfFood = viewModel.uiFoodState
+    val detailFood = viewModel.uiDetailFoodState
+    val bookmarkedFood = viewModel.uiBookmarkFoodState
 
-    val userSearchFood by viewModel.searchFood.asLiveData().observeAsState(initial = "")
+    val userSearchFood = viewModel.uiSearchFoodState
 
     NavHost(
         navController = navController,
