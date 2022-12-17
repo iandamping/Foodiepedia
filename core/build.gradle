@@ -6,12 +6,12 @@ apply plugin: 'dagger.hilt.android.plugin'
 
 apply from: '../shared_dependencies.gradle'
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
 
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 33
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         consumerProguardFiles 'consumer-rules.pro'

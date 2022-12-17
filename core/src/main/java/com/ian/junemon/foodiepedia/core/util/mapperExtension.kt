@@ -136,7 +136,7 @@ fun UserProfileEntity.mapToDomain() =
 fun UserProfile.mapToDomain() =
     UserProfileDataModel(localID, userID, photoUser, nameUser, emailUser)
 
-fun Flow<UserProfile>.mapToDomain() = map { it?.mapToDomain() }
+fun Flow<UserProfile>.mapToDomain() = map { it.mapToDomain() }
 
 fun FoodEntity.mapToRemoteDomain(): FoodRemoteDomain =
     FoodRemoteDomain(foodName, foodCategory, foodArea, foodImage, foodContributor, foodDescription)
