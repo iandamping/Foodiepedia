@@ -1,20 +1,39 @@
 package com.ian.junemon.foodiepedia.view.screen
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.Chip
+import androidx.compose.material.ChipDefaults
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.Icon
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.HighlightOff
-import androidx.compose.material.icons.filled.Sort
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -23,27 +42,31 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.ian.junemon.foodiepedia.R
+import com.ian.junemon.foodiepedia.state.BookmarkedFoodUiState
+import com.ian.junemon.foodiepedia.state.FilterItem
 import com.ian.junemon.foodiepedia.state.FoodUiState
 import com.ian.junemon.foodiepedia.view.LottieLoading
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Locale
 
 @Composable
 fun HomeScreenContent(
     modifier: Modifier = Modifier,
     scope: CoroutineScope = rememberCoroutineScope(),
-    state: ModalBottomSheetState,
     foodState: FoodUiState,
+    bookmarkedFoodState: BookmarkedFoodUiState,
     userSearch: String,
+    listFilterItem: List<FilterItem>,
     onContentSelectedFood: (Int) -> Unit,
-    onFoodSearch: (String) -> Unit
+    onFoodSearch: (String) -> Unit,
+    onFilterFoodSelected: (String) -> Unit
 ) {
     val listState = rememberLazyGridState()
 
     ConstraintLayout(modifier = modifier.fillMaxSize()) {
 
-        val (appName, filterDialogIcon, searchButton, listFood, lottieLoading, scrollToTop) = createRefs()
+        val (appName, searchButton, chipGroups, listFood, lottieLoading, scrollToTop) = createRefs()
 
         LottieLoading(modifier = Modifier.constrainAs(lottieLoading) {
             centerVerticallyTo(parent)
@@ -58,23 +81,6 @@ fun HomeScreenContent(
             },
             text = stringResource(id = R.string.app_name),
             style = MaterialTheme.typography.h4
-        )
-
-        Image(
-            modifier = Modifier
-                .clickable {
-                    scope.launch {
-                        if (!state.isVisible) {
-                            state.show()
-                        }
-                    }
-                }
-                .size(35.dp)
-                .constrainAs(filterDialogIcon) {
-                    end.linkTo(parent.end, margin = 8.dp)
-                    top.linkTo(appName.top, margin = 8.dp)
-                },
-            imageVector = Icons.Default.Sort, contentDescription = stringResource(R.string.filter_food)
         )
 
         OutlinedTextField(
@@ -115,12 +121,41 @@ fun HomeScreenContent(
             singleLine = true
         )
 
+        LazyRow(modifier = Modifier.constrainAs(chipGroups) {
+            top.linkTo(searchButton.bottom, margin = 8.dp)
+            start.linkTo(parent.start, margin = 8.dp)
+            end.linkTo(parent.end, margin = 8.dp)
+            width = Dimension.fillToConstraints
+        }, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            items(listFilterItem) { singleItem ->
+                Chip(
+                    onClick = {
+                        onFilterFoodSelected.invoke(singleItem.filterText)
+                    },
+                    leadingIcon = {
+                        if (singleItem.isFilterSelected) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_check_circle_green_24dp),
+                                contentDescription = stringResource(R.string.select_filter)
+                            )
+                        }
+                    },
+                    border = BorderStroke(1.dp, Color.Black),
+                    colors = ChipDefaults.chipColors(backgroundColor = Color.White)
+                ) {
+
+
+                    Text(text = singleItem.filterText)
+                }
+            }
+        }
+
 
 
         when {
             foodState.errorMessage.isNotEmpty() -> {
                 Column(modifier = Modifier.constrainAs(listFood) {
-                    top.linkTo(searchButton.bottom)
+                    top.linkTo(chipGroups.bottom)
                     bottom.linkTo(parent.bottom)
                     centerHorizontallyTo(parent)
                 }) {
@@ -136,7 +171,7 @@ fun HomeScreenContent(
                 LazyVerticalGrid(
                     modifier = Modifier
                         .constrainAs(listFood) {
-                            top.linkTo(searchButton.bottom, margin = 8.dp)
+                            top.linkTo(chipGroups.bottom, margin = 8.dp)
                             bottom.linkTo(parent.bottom, margin = 8.dp)
                             height = Dimension.fillToConstraints
                         },
@@ -155,7 +190,7 @@ fun HomeScreenContent(
                         )
                     }, key = { key -> key.foodId!! }) {
 
-                        DetailScreenItem(data = it) { selectedFood ->
+                        DetailScreenItem(data = it, bookmarkedFoodState = bookmarkedFoodState) { selectedFood ->
                             if (selectedFood.foodId != null) {
                                 onContentSelectedFood.invoke(selectedFood.foodId!!)
                             }

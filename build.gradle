@@ -5,7 +5,7 @@ buildscript {
         kotlin_version = '1.7.10'
         livedata_version = '2.4.0'
         work_version = "2.3.3"
-        room_version = '2.2.5'
+        room_version = '2.4.2'
         anko_version = '0.10.5'
         coroutine_version = '1.6.4'
         firebaseCoreVer = '18.0.0'

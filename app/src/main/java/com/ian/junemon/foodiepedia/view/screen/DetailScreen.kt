@@ -65,9 +65,35 @@ fun DetailScreen(
                     .crossfade(true)
                     .build()
 
-                val imageHorizontalGuideLine = createGuidelineFromTop(0.4f)
-                val navigateUpHorizontalGuideLine = createGuidelineFromTop(0.1f)
-                val shareContentHorizontalGuideLine = createGuidelineFromTop(0.2f)
+                val imageHorizontalGuideLine = createGuidelineFromTop(0.45f)
+                val navigateUpHorizontalGuideLine = createGuidelineFromTop(0.02f)
+
+
+                Column(
+                    modifier = Modifier
+                        .background(CalmWhite)
+                        .padding(8.dp)
+                        .constrainAs(mainItemRef) {
+                            top.linkTo(imageHorizontalGuideLine)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(parent.bottom)
+                            height = Dimension.fillToConstraints
+                            width = Dimension.fillToConstraints
+                        }
+                        .verticalScroll(rememberScrollState())
+                ) {
+
+                    Text(
+                        text = data.data.foodName ?: stringResource(R.string.food_has_no_name),
+                        style = MaterialTheme.typography.h3.copy(color = YellowFood)
+                    )
+
+                    Text(
+                        text = data.data.foodDescription ?: stringResource(R.string.food_has_no_description),
+                        style = MaterialTheme.typography.body2.copy(textAlign = TextAlign.Justify)
+                    )
+                }
 
 
                 AsyncImage(
@@ -125,8 +151,10 @@ fun DetailScreen(
                         .clip(CircleShape)
                         .background(GrayIconButton.copy(alpha = 0.6f))
                         .constrainAs(shareItem) {
-                            top.linkTo(shareContentHorizontalGuideLine)
-                            end.linkTo(parent.end, margin = 8.dp)
+
+                            top.linkTo(customView.bottom)
+                            bottom.linkTo(customView.bottom)
+                            end.linkTo(bookmarkItem.start, margin = 16.dp)
                         },
                     onClick = {
                         shareData.invoke(data.data)
@@ -144,9 +172,9 @@ fun DetailScreen(
                         .clip(CircleShape)
                         .background(GrayIconButton.copy(alpha = 0.6f))
                         .constrainAs(bookmarkItem) {
-                            top.linkTo(customView.top)
-                            bottom.linkTo(customView.top)
-                            end.linkTo(parent.end, margin = 8.dp)
+                            top.linkTo(customView.bottom)
+                            bottom.linkTo(customView.bottom)
+                            end.linkTo(parent.end, margin = 16.dp)
                         },
                     onClick = {
                         if (idForBookmarkedItem.value != null) {
@@ -184,31 +212,7 @@ fun DetailScreen(
                 }
 
 
-                Column(
-                    modifier = Modifier
-                        .background(CalmWhite)
-                        .padding(8.dp)
-                        .constrainAs(mainItemRef) {
-                            top.linkTo(imageHorizontalGuideLine)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                            bottom.linkTo(parent.bottom)
-                            height = Dimension.fillToConstraints
-                            width = Dimension.fillToConstraints
-                        }
-                        .verticalScroll(rememberScrollState())
-                ) {
 
-                    Text(
-                        text = data.data.foodName ?: stringResource(R.string.food_has_no_name),
-                        style = MaterialTheme.typography.h3.copy(color = YellowFood)
-                    )
-
-                    Text(
-                        text = data.data.foodDescription ?: stringResource(R.string.food_has_no_description),
-                        style = MaterialTheme.typography.body2.copy(textAlign = TextAlign.Justify)
-                    )
-                }
 
             }
 

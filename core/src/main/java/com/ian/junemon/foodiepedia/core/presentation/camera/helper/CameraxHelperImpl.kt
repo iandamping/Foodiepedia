@@ -13,10 +13,12 @@ import androidx.lifecycle.LifecycleOwner
 import com.google.common.util.concurrent.ListenableFuture
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.CameraxOutputOptions
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.LensFacingBack
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.LensFacingFront
 import com.ian.junemon.foodiepedia.core.presentation.camera.afterMeasured
 import com.ian.junemon.foodiepedia.core.presentation.camera.photo.ImageCaptureListener
 import timber.log.Timber
 import java.util.concurrent.Executor
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 

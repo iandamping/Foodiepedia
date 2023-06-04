@@ -27,3 +27,8 @@ annotation class CameraxPhotoFile
 @Qualifier
 annotation class CameraxOutputOptions
 
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class CameraxContentValues
+
+

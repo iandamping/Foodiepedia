@@ -1,8 +1,12 @@
 package com.ian.junemon.foodiepedia.core.dagger.module
 
+import android.content.ContentValues
 import android.content.Context
+import android.os.Build
+import android.provider.MediaStore
 import androidx.camera.core.ImageCapture
 import com.ian.junemon.foodiepedia.core.R
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.CameraxContentValues
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.CameraxOutputDirectory
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.CameraxOutputOptions
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.CameraxPhotoFile
@@ -29,29 +33,35 @@ object CameraxFileModule {
 
     @Provides
     @Singleton
-    @CameraxOutputDirectory
-    fun provideOutputDirectory(@ApplicationContext context: Context): File {
-        val mediaDir = context.externalMediaDirs.firstOrNull()?.let {
-            File(it, context.resources.getString(R.string.app_name)).apply { mkdirs() }
-        }
-        return if (mediaDir != null && mediaDir.exists())
-            mediaDir else context.filesDir
-    }
+    @CameraxContentValues
+    fun provideContentValues(): ContentValues {
+        // Create time stamped name and MediaStore entry.
+        val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
+            .format(System.currentTimeMillis())
 
-    @Provides
-    @Singleton
-    @CameraxPhotoFile
-    fun providePhotoFile(@CameraxOutputDirectory outputDirectory: File): File {
-        return File(
-            outputDirectory,
-            SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis()) + ".jpg"
-        )
+        return ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
+            }
+        }
     }
 
     @Provides
     @Singleton
     @CameraxOutputOptions
-    fun provideOutputOption(@CameraxPhotoFile photoFile: File): ImageCapture.OutputFileOptions {
-        return ImageCapture.OutputFileOptions.Builder(photoFile).build()
+    fun provideOutputOption(
+        @ApplicationContext context: Context,
+        @CameraxContentValues contentValues: ContentValues
+    ): ImageCapture.OutputFileOptions {
+        // Create output options object which contains file + metadata
+        return ImageCapture.OutputFileOptions
+            .Builder(
+                context.contentResolver,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                contentValues
+            )
+            .build()
     }
 }

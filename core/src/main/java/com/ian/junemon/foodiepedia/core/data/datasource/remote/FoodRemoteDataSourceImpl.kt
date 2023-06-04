@@ -3,6 +3,7 @@ package com.ian.junemon.foodiepedia.core.data.datasource.remote
 import android.net.Uri
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.StorageReference
+import com.ian.junemon.foodiepedia.core.dagger.qualifier.ApplicationDefaultScope
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.DefaultDispatcher
 import com.ian.junemon.foodiepedia.core.dagger.qualifier.IoDispatcher
 import com.ian.junemon.foodiepedia.core.data.model.FoodEntity
@@ -14,7 +15,8 @@ import com.ian.junemon.foodiepedia.core.util.mapToRemoteDomain
 import com.ian.junemon.foodiepedia.core.util.valueEventFlow
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
@@ -30,6 +32,7 @@ import javax.inject.Inject
 class FoodRemoteDataSourceImpl @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    @ApplicationDefaultScope private val defaultCoroutineScope: CoroutineScope,
     private val storagePlaceReference: StorageReference,
     private val databasePlaceReference: DatabaseReference
 ) : FoodRemoteDataSource {
@@ -38,10 +41,12 @@ class FoodRemoteDataSourceImpl @Inject constructor(
         databasePlaceReference.valueEventFlow().map { value ->
             when (value) {
                 is PushFirebase.Changed -> {
-                    val result = value.snapshot.children.mapNotNull {
-                        it.getValue(FoodEntity::class.java)
-                    }.toList()
-                    DataSourceHelper.DataSourceValue(result.mapToRemoteDomain())
+                    val result = defaultCoroutineScope.async {
+                        value.snapshot.children.mapNotNull {
+                            it.getValue(FoodEntity::class.java)
+                        }.toList().shuffled()
+                    }
+                    DataSourceHelper.DataSourceValue(result.await().mapToRemoteDomain())
                 }
                 is PushFirebase.Cancelled -> {
                     DataSourceHelper.DataSourceError(value.error.toException())

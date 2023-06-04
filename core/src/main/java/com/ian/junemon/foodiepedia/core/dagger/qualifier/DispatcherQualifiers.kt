@@ -31,6 +31,11 @@ annotation class IoDispatcher
 annotation class MainDispatcher
 
 
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class ApplicationNonScope
+
 @Retention(AnnotationRetention.BINARY)
 @Qualifier
 annotation class ApplicationDefaultScope

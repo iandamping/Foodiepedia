@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.ian.junemon.foodiepedia.core.domain.model.RepositoryData
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
 import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
+import com.ian.junemon.foodiepedia.state.BookmarkedFoodUiState
 import com.ian.junemon.foodiepedia.state.FoodUiState
 import com.ian.junemon.foodiepedia.util.Constant.FILTER_0
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +27,10 @@ class FoodViewModel @Inject constructor(
 
     var uiSearchFoodState by mutableStateOf("")
         private set
+
+    var uiBookmarkFoodState by mutableStateOf(BookmarkedFoodUiState.initial())
+        private set
+
 
 
     fun setSearchFood(query: String) {
@@ -63,6 +68,19 @@ class FoodViewModel @Inject constructor(
                             errorMessage = "",
                             isLoading = false
                         )
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            useCase.getSavedDetailCache().collect { result ->
+                uiBookmarkFoodState = when (result) {
+                    is RepositoryData.Error ->
+                        uiBookmarkFoodState.copy(data = emptyList(), errorMessage = result.msg)
+
+                    is RepositoryData.Success ->
+                        uiBookmarkFoodState.copy(data = result.data, errorMessage = "")
+
                 }
             }
         }
