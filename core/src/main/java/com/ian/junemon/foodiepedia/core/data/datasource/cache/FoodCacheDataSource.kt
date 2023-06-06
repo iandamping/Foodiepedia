@@ -26,4 +26,16 @@ interface FoodCacheDataSource {
     suspend fun setSharedPreferenceFilter(data: String)
 
     suspend fun deleteFood()
+
+    fun setFoodOfTheDayExpiredDate(data: String)
+
+    fun getFoodOfTheDayExpiredDate(): String
+
+    fun clearFoodOfTheDayExpiredDate()
+
+    fun setFoodOfTheDay(data: String)
+
+    fun getFoodOfTheDay(): String
+
+    fun clearFoodOfTheDay()
 }

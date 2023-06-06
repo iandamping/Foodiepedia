@@ -24,6 +24,9 @@ object DataConstant {
     const val prefHelperInit = " init preference helper"
     const val DATABASE_NAME = "foodiepedia.db"
 
+    const val EXPIRED_DATE_FOOD_OF_THE_DAY = "Expiration date food of the day"
+    const val FOOD_OF_THE_DAY = "food of the day"
+
     val FILTER_KEY = stringPreferencesKey(filterKey)
     // val BREAKFAST_KEY = preferencesKey<String>(filterValueBreakfast)
     // val LUNCH_KEY = preferencesKey<String>(filterValueLunch)

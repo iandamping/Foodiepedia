@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.7.10'
+        kotlin_version = '1.8.21'
         livedata_version = '2.4.0'
         work_version = "2.3.3"
         room_version = '2.4.2'
@@ -55,7 +55,7 @@ buildscript {
         fragmentKtxVersion = '1.2.5'
         androidXTestVersion = '1.3.1-alpha02'
         compose_version = '1.3.0'
-        composebom_version = '2022.10.00'
+        composebom_version = '2023.05.01'
     }
 
 

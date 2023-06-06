@@ -26,6 +26,7 @@
     <string name="select_filter">select filter item</string>
     <string name="item_filtered">is item filtered</string>
     <string name="close_item">Close Item</string>
+    <string name="today_best_choice">Today\'s best choice</string>
 
 
 </resources>

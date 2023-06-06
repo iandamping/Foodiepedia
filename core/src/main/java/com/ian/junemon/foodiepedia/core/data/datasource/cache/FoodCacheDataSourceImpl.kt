@@ -3,14 +3,17 @@ package com.ian.junemon.foodiepedia.core.data.datasource.cache
 import com.ian.junemon.foodiepedia.core.data.datasource.cache.datastore.DataStoreHelper
 import com.ian.junemon.foodiepedia.core.data.datasource.cache.db.dao.FoodDao
 import com.ian.junemon.foodiepedia.core.data.datasource.cache.db.dao.SavedFoodDao
-import com.ian.junemon.foodiepedia.core.util.DataConstant
-import com.ian.junemon.foodiepedia.core.util.DataConstant.ERROR_EMPTY_DATA
-import com.ian.junemon.foodiepedia.core.util.mapToCacheDomain
-import com.ian.junemon.foodiepedia.core.util.mapToDatabase
-import com.ian.junemon.foodiepedia.core.util.mapToDetailDatabase
+import com.ian.junemon.foodiepedia.core.data.datasource.cache.preference.PreferenceHelper
 import com.ian.junemon.foodiepedia.core.domain.model.DataSourceHelper
 import com.ian.junemon.foodiepedia.core.domain.model.FoodCacheDomain
 import com.ian.junemon.foodiepedia.core.domain.model.SavedFoodCacheDomain
+import com.ian.junemon.foodiepedia.core.util.DataConstant
+import com.ian.junemon.foodiepedia.core.util.DataConstant.ERROR_EMPTY_DATA
+import com.ian.junemon.foodiepedia.core.util.DataConstant.EXPIRED_DATE_FOOD_OF_THE_DAY
+import com.ian.junemon.foodiepedia.core.util.DataConstant.FOOD_OF_THE_DAY
+import com.ian.junemon.foodiepedia.core.util.mapToCacheDomain
+import com.ian.junemon.foodiepedia.core.util.mapToDatabase
+import com.ian.junemon.foodiepedia.core.util.mapToDetailDatabase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -23,7 +26,8 @@ import javax.inject.Inject
 class FoodCacheDataSourceImpl @Inject constructor(
     private val foodDao: FoodDao,
     private val savedFoodDao: SavedFoodDao,
-    private val dataHelper: DataStoreHelper
+    private val dataHelper: DataStoreHelper,
+    private val preferenceHelper: PreferenceHelper
 ) : FoodCacheDataSource {
     override fun getCache(): Flow<List<FoodCacheDomain>> {
         return foodDao.loadFood().map { it.mapToCacheDomain() }
@@ -83,5 +87,29 @@ class FoodCacheDataSourceImpl @Inject constructor(
 
     override suspend fun deleteFood() {
         savedFoodDao.deleteAllFood()
+    }
+
+    override fun setFoodOfTheDayExpiredDate(data: String) {
+        preferenceHelper.saveStringInSharedPreference(EXPIRED_DATE_FOOD_OF_THE_DAY, data)
+    }
+
+    override fun getFoodOfTheDayExpiredDate(): String {
+        return preferenceHelper.getStringInSharedPreference(EXPIRED_DATE_FOOD_OF_THE_DAY)
+    }
+
+    override fun clearFoodOfTheDayExpiredDate() {
+        preferenceHelper.deleteSharedPreference(EXPIRED_DATE_FOOD_OF_THE_DAY)
+    }
+
+    override fun setFoodOfTheDay(data: String) {
+        preferenceHelper.saveStringInSharedPreference(FOOD_OF_THE_DAY, data)
+    }
+
+    override fun getFoodOfTheDay(): String {
+        return preferenceHelper.getStringInSharedPreference(FOOD_OF_THE_DAY)
+    }
+
+    override fun clearFoodOfTheDay() {
+        preferenceHelper.deleteSharedPreference(FOOD_OF_THE_DAY)
     }
 }
