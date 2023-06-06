@@ -25,7 +25,7 @@ class FoodUseCaseImpl @Inject constructor(private val repo: FoodRepository) : Fo
         return repo.prefetchData()
     }
 
-    override suspend fun setCache(vararg data: FoodCacheDomain) {
+    override fun setCache(vararg data: FoodCacheDomain) {
         repo.setCache(*data)
     }
 
@@ -37,6 +37,10 @@ class FoodUseCaseImpl @Inject constructor(private val repo: FoodRepository) : Fo
         return repo.getSavedDetailCache()
     }
 
+    override fun getFoodOfTheDay(): Flow<RepositoryData<List<FoodCacheDomain>>> {
+        return repo.getFoodOfTheDay()
+    }
+
     override fun uploadFirebaseData(
         data: FoodRemoteDomain,
         imageUri: Uri
@@ -44,11 +48,11 @@ class FoodUseCaseImpl @Inject constructor(private val repo: FoodRepository) : Fo
         return repo.uploadFirebaseData(data, imageUri)
     }
 
-    override suspend fun setCacheDetailFood(vararg data: SavedFoodCacheDomain) {
+    override fun setCacheDetailFood(vararg data: SavedFoodCacheDomain) {
         repo.setCacheDetailFood(*data)
     }
 
-    override suspend fun deleteSelectedId(selectedId: Int) {
+    override fun deleteSelectedId(selectedId: Int) {
         repo.deleteSelectedId(selectedId)
     }
 
@@ -56,11 +60,11 @@ class FoodUseCaseImpl @Inject constructor(private val repo: FoodRepository) : Fo
         return repo.loadSharedPreferenceFilter()
     }
 
-    override suspend fun setSharedPreferenceFilter(data: String) {
+    override fun setSharedPreferenceFilter(data: String) {
         repo.setSharedPreferenceFilter(data)
     }
 
-    override suspend fun deleteFood() {
+    override fun deleteFood() {
         repo.deleteFood()
     }
 }

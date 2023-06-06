@@ -1,5 +1,6 @@
 package com.ian.junemon.foodiepedia.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,6 +11,7 @@ import com.ian.junemon.foodiepedia.core.domain.model.RepositoryData
 import com.ian.junemon.foodiepedia.core.domain.usecase.FoodUseCase
 import com.ian.junemon.foodiepedia.core.util.mapToCachePresentation
 import com.ian.junemon.foodiepedia.state.BookmarkedFoodUiState
+import com.ian.junemon.foodiepedia.state.FoodOfTheDayUiState
 import com.ian.junemon.foodiepedia.state.FoodUiState
 import com.ian.junemon.foodiepedia.util.Constant.FILTER_0
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +25,9 @@ class FoodViewModel @Inject constructor(
 ) : ViewModel() {
 
     var uiFoodState by mutableStateOf(FoodUiState.initial())
+        private set
+
+    var uiFoodOfTheDayState by mutableStateOf(FoodOfTheDayUiState.initial())
         private set
 
     var uiSearchFoodState by mutableStateOf("")
@@ -40,9 +45,7 @@ class FoodViewModel @Inject constructor(
     fun filterData() = useCase.loadSharedPreferenceFilter().asLiveData()
 
     fun setFilterData(data: String) {
-        viewModelScope.launch {
             useCase.setSharedPreferenceFilter(data)
-        }
     }
 
 
@@ -80,6 +83,24 @@ class FoodViewModel @Inject constructor(
 
                     is RepositoryData.Success ->
                         uiBookmarkFoodState.copy(data = result.data, errorMessage = "")
+
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            useCase.getFoodOfTheDay().collect { result ->
+                uiFoodOfTheDayState = when (result) {
+                    is RepositoryData.Error ->
+                        uiFoodOfTheDayState.copy(data = emptyList(), errorMessage = result.msg)
+
+                    is RepositoryData.Success -> {
+                        Log.e("data", "${result.data.map { it.foodName }}" )
+                        uiFoodOfTheDayState.copy(
+                            data = result.data.mapToCachePresentation(),
+                            errorMessage = ""
+                        )
+                    }
 
                 }
             }

@@ -22,17 +22,19 @@ interface FoodRepository {
 
     fun getSavedDetailCache(): Flow<RepositoryData<List<SavedFoodCacheDomain>>>
 
+    fun getFoodOfTheDay(): Flow<RepositoryData<List<FoodCacheDomain>>>
+
     fun uploadFirebaseData(data: FoodRemoteDomain, imageUri: Uri): LiveData<FirebaseResult<Nothing>>
 
-    suspend fun setCache(vararg data: FoodCacheDomain)
+    fun setCache(vararg data: FoodCacheDomain)
 
-    suspend fun setCacheDetailFood(vararg data: SavedFoodCacheDomain)
+    fun setCacheDetailFood(vararg data: SavedFoodCacheDomain)
 
-    suspend fun deleteSelectedId(selectedId: Int)
+    fun deleteSelectedId(selectedId: Int)
 
     fun loadSharedPreferenceFilter():Flow<String>
 
-    suspend fun setSharedPreferenceFilter(data:String)
+    fun setSharedPreferenceFilter(data:String)
 
-    suspend fun deleteFood()
+    fun deleteFood()
 }

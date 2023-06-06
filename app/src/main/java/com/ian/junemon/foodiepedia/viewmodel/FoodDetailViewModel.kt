@@ -33,15 +33,11 @@ class FoodDetailViewModel @Inject constructor(
         private set
 
     fun bookmarkFood(data: SavedFoodCacheDomain) {
-        viewModelScope.launch {
-            useCase.setCacheDetailFood(data)
-        }
+        useCase.setCacheDetailFood(data)
     }
 
     fun unbookmarkFood(selectedId: Int) {
-        viewModelScope.launch {
-            useCase.deleteSelectedId(selectedId)
-        }
+        useCase.deleteSelectedId(selectedId)
     }
 
     init {

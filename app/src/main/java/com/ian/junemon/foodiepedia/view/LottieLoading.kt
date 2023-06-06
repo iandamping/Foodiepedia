@@ -12,7 +12,7 @@ import com.airbnb.lottie.compose.*
 import com.ian.junemon.foodiepedia.util.Constant
 
 @Composable
-fun LottieLoading(modifier: Modifier, isLoading: Boolean) {
+fun LottieLoading(modifier: Modifier = Modifier, isLoading: Boolean) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.Asset(Constant.KNIFE_LOADING))
     val progress by animateLottieCompositionAsState(
         composition,
