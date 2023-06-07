@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.view.screen
+package com.ian.junemon.foodiepedia.view.screen.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -28,13 +28,13 @@ import com.ian.junemon.foodiepedia.core.presentation.model.FoodCachePresentation
 import com.ian.junemon.foodiepedia.state.BookmarkedFoodUiState
 
 @Composable
-fun DetailScreenItem(
+fun HomeAllFoodItemContent(
     modifier: Modifier = Modifier,
     data: FoodCachePresentation,
     bookmarkedFoodState: BookmarkedFoodUiState,
     selectedFood: (FoodCachePresentation) -> Unit,
 ) {
-    val isFavorite =
+    val isFavorite:Boolean =
         bookmarkedFoodState.data.any { result -> result.foodName == data.foodName }
 
     Column(modifier = modifier
