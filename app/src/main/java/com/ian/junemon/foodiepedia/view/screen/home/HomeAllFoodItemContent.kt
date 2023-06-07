@@ -49,7 +49,7 @@ fun HomeAllFoodItemContent(
             .crossfade(true)
             .build()
 
-        Box() {
+        Box {
             AsyncImage(
                 modifier = Modifier
                     .clip(RoundedCornerShape(percent = 10))

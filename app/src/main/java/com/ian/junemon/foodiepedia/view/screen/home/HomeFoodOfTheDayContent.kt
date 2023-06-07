@@ -1,6 +1,7 @@
 package com.ian.junemon.foodiepedia.view.screen.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ fun HomeFoodOfTheDayContent(
     lazyListState: LazyListState,
     foodOfTheDaysUiState: FoodOfTheDayUiState,
     userSearch: String,
+    onContentSelectedFood: (Int) -> Unit,
 ) {
     if (userSearch.isEmpty()) {
         Text(
@@ -38,36 +40,42 @@ fun HomeFoodOfTheDayContent(
             style = MaterialTheme.typography.h5,
             fontFamily = MontserratFont
         )
+        LazyRow(
+            modifier = modifier,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            state = lazyListState,
+            flingBehavior = rememberSnapFlingBehavior(
+                lazyListState = lazyListState
+            )
+        ) {
+            when {
+                foodOfTheDaysUiState.errorMessage.isNotEmpty() -> {
+                    items(5) {
+                        Column {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_no_data),
+                                contentDescription = stringResource(R.string.failed_to_load_item)
+                            )
 
-        when {
-            foodOfTheDaysUiState.errorMessage.isNotEmpty() -> {
-                Column {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_no_data),
-                        contentDescription = stringResource(R.string.failed_to_load_item)
-                    )
-
-                    Text(
-                        text = stringResource(R.string.no_item_was_found),
-                        fontFamily = MontserratFont
-                    )
+                            Text(
+                                text = stringResource(R.string.no_item_was_found),
+                                fontFamily = MontserratFont
+                            )
+                        }
+                    }
                 }
-            }
 
-            foodOfTheDaysUiState.data.isNotEmpty() -> {
-                LazyRow(
-                    modifier = modifier,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    state = lazyListState,
-                    flingBehavior = rememberSnapFlingBehavior(
-                        lazyListState = lazyListState
-                    )
-                ) {
+                foodOfTheDaysUiState.data.isNotEmpty() -> {
                     items(foodOfTheDaysUiState.data) { singleItem ->
                         AsyncImage(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(percent = 10))
-                                .size(height = 250.dp, width = 325.dp),
+                                .size(height = 250.dp, width = 325.dp)
+                                .clickable {
+                                    if (singleItem.foodId != null) {
+                                        onContentSelectedFood.invoke(singleItem.foodId!!)
+                                    }
+                                },
                             contentScale = ContentScale.Crop,
                             model = singleItem.foodImage,
                             contentDescription = stringResource(R.string.detail_image),

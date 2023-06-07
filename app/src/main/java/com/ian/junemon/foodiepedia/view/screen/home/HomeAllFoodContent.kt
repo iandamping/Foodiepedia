@@ -27,28 +27,37 @@ fun HomeAllFoodContent(
     userSearch: String,
     onContentSelectedFood: (Int) -> Unit,
 ) {
-    when {
-        foodState.errorMessage.isNotEmpty() -> {
-            Column {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_no_data),
-                    contentDescription = stringResource(R.string.failed_to_load_item)
-                )
-
-                Text(
-                    text = stringResource(R.string.no_item_was_found),
-                    fontFamily = MontserratFont
-                )
+    LazyVerticalGrid(
+        modifier = modifier.height(
+            when {
+                foodState.errorMessage.isNotEmpty() -> 500.dp
+                foodState.data.isNotEmpty() -> 750.dp
+                else -> 500.dp
             }
-        }
+        ),
+        columns = GridCells.Fixed(2),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        when {
+            foodState.errorMessage.isNotEmpty() -> {
+                items(4) {
+                    Column {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_no_data),
+                            contentDescription = stringResource(R.string.failed_to_load_item)
+                        )
 
-        foodState.data.isNotEmpty() -> {
-            LazyVerticalGrid(
-                modifier = modifier.height(750.dp),
-                columns = GridCells.Fixed(2),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
+                        Text(
+                            text = stringResource(R.string.no_item_was_found),
+                            fontFamily = MontserratFont
+                        )
+                    }
+                }
+            }
+
+            foodState.data.isNotEmpty() -> {
+
                 if (userSearch.isEmpty()) {
                     items(foodState.data, key = { key -> key.foodId!! }) {
                         HomeAllFoodItemContent(
@@ -95,7 +104,6 @@ fun HomeAllFoodContent(
                     }
                 }
             }
-
         }
     }
 }

@@ -78,7 +78,8 @@ fun HomeScreenContent(
                 HomeFoodOfTheDayContent(
                     lazyListState = foodOfTheDayState,
                     foodOfTheDaysUiState = foodOfTheDayaState,
-                    userSearch = userSearch
+                    userSearch = userSearch,
+                    onContentSelectedFood = onContentSelectedFood
                 )
             }
 
