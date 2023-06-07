@@ -8,8 +8,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.ian.junemon.foodiepedia.intentShareImageAndText
-import com.ian.junemon.foodiepedia.view.screen.DetailScreen
-import com.ian.junemon.foodiepedia.view.screen.HomeScreen
+import com.ian.junemon.foodiepedia.view.screen.detail.DetailScreen
+import com.ian.junemon.foodiepedia.view.screen.home.HomeScreen
 
 @Composable
 fun FoodNavigationHost(

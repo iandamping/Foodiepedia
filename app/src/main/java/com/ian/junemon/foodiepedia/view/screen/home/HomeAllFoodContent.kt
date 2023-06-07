@@ -17,7 +17,6 @@ import com.ian.junemon.foodiepedia.R
 import com.ian.junemon.foodiepedia.state.BookmarkedFoodUiState
 import com.ian.junemon.foodiepedia.state.FoodUiState
 import com.ian.junemon.foodiepedia.theme.MontserratFont
-import com.ian.junemon.foodiepedia.view.screen.DetailScreenItem
 import java.util.Locale
 
 @Composable
@@ -52,7 +51,7 @@ fun HomeAllFoodContent(
             ) {
                 if (userSearch.isEmpty()) {
                     items(foodState.data, key = { key -> key.foodId!! }) {
-                        DetailScreenItem(
+                        HomeAllFoodItemContent(
                             data = it,
                             bookmarkedFoodState = bookmarkedFoodState
                         ) { selectedFood ->
@@ -70,7 +69,7 @@ fun HomeAllFoodContent(
                     }
                     if (filteredData.isNotEmpty()) {
                         items(filteredData, key = { key -> key.foodId!! }) {
-                            DetailScreenItem(
+                            HomeAllFoodItemContent(
                                 data = it,
                                 bookmarkedFoodState = bookmarkedFoodState
                             ) { selectedFood ->

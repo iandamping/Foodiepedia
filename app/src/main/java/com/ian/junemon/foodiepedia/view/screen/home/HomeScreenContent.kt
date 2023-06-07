@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.view.screen
+package com.ian.junemon.foodiepedia.view.screen.home
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
@@ -28,10 +28,6 @@ import com.ian.junemon.foodiepedia.state.FilterItem
 import com.ian.junemon.foodiepedia.state.FoodOfTheDayUiState
 import com.ian.junemon.foodiepedia.state.FoodUiState
 import com.ian.junemon.foodiepedia.theme.MontserratFont
-import com.ian.junemon.foodiepedia.view.screen.home.HomeAllFoodContent
-import com.ian.junemon.foodiepedia.view.screen.home.HomeFilterChipSelectionContent
-import com.ian.junemon.foodiepedia.view.screen.home.HomeFoodOfTheDayContent
-import com.ian.junemon.foodiepedia.view.screen.home.HomeSearchFoodContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

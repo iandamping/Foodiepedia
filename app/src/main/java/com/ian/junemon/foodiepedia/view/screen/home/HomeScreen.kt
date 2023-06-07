@@ -1,4 +1,4 @@
-package com.ian.junemon.foodiepedia.view.screen
+package com.ian.junemon.foodiepedia.view.screen.home
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
